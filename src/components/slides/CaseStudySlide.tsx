@@ -1,0 +1,71 @@
+import { motion } from "framer-motion";
+import { TrendingUp, Users, Eye, MousePointer, Gauge } from "lucide-react";
+
+const stats = [
+  { icon: Eye, value: "5.8M", label: "Social Impressions", subtext: "Over 1 year" },
+  { icon: Users, value: "1000%", label: "Follower Growth", subtext: "Year-over-year" },
+  { icon: TrendingUp, value: "99.2%", label: "Engagement Increase", subtext: "Social platforms" },
+  { icon: MousePointer, value: "104K", label: "Ad Clicks", subtext: "16% CTR increase" },
+  { icon: Gauge, value: "3X", label: "ROI Increase", subtext: "Google Ads" },
+];
+
+const CaseStudySlide = () => {
+  return (
+    <section className="slide py-20 px-6 bg-gradient-to-b from-owl-darker via-background to-owl-darker">
+      <div className="max-w-6xl mx-auto w-full">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-6"
+        >
+          <span className="text-xs tracking-[0.3em] text-secondary font-medium">CASE STUDY</span>
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-center"
+        >
+          <span className="text-foreground">Mitsui Chemicals </span>
+          <span className="text-gradient-teal">Success</span>
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto text-sm md:text-base"
+        >
+          Mitsui Chemicals India successfully boosted its brand visibility through strategic digital initiatives, achieving significant engagement, high-quality leads, and a dedicated online community.
+        </motion.p>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="card-glass rounded-2xl p-4 md:p-6 text-center"
+            >
+              <div className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-primary/20 flex items-center justify-center">
+                <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+              </div>
+              <div className="text-2xl md:text-3xl font-black text-gradient-teal mb-1">{stat.value}</div>
+              <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{stat.label}</div>
+              <div className="text-xs text-muted-foreground">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default CaseStudySlide;
