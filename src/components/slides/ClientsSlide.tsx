@@ -29,15 +29,6 @@ const ClientsSlide = () => {
           <span className="text-gradient-teal">CLIENTS</span>
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-muted-foreground text-center mb-12 max-w-xl mx-auto"
-        >
-          Trusted by industry leaders worldwide
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0 }}

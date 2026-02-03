@@ -41,7 +41,7 @@ const CaseStudySlide = () => {
           viewport={{ once: true }}
           className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto text-sm md:text-base"
         >
-          Mitsui Chemicals India successfully boosted its brand visibility through strategic digital initiatives, achieving significant engagement, high-quality leads, and a dedicated online community.
+          Boosted brand visibility, engagement, and qualified leads through strategic digital marketing.
         </motion.p>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">

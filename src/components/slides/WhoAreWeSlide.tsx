@@ -23,14 +23,10 @@ const WhoAreWeSlide = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
           viewport={{ once: true }}
-          className="card-glass rounded-3xl p-8 md:p-12 mb-10 max-w-3xl"
+          className="card-glass rounded-3xl p-8 md:p-12 mb-10 max-w-3xl text-center"
         >
-          <p className="text-lg md:text-xl leading-relaxed text-muted-foreground mb-6">
-            To be successful, the tactics of today aren't going to cut it, so we designed a new type of agency - one where{" "}
-            <span className="text-primary font-semibold">Tech Meets Design.</span>
-          </p>
-          <p className="text-lg md:text-xl leading-relaxed text-muted-foreground">
-            We are <span className="text-secondary font-bold">OWLSURF DIGITAL</span>. We are a 360° full service digital marketing agency and are here to provide our clients and their brands an incredible and seamless experience across all channels through our business acumen (fancy word for wicked smart) so that your brand can reach their maximum potential and the right audience.
+          <p className="text-lg md:text-2xl leading-relaxed text-muted-foreground">
+            We are <span className="text-secondary font-bold">OWLSURF DIGITAL</span>, a 360° digital marketing agency where <span className="text-primary font-semibold">Tech Meets Design</span>.
           </p>
         </motion.div>
 

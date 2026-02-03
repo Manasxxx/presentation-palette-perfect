@@ -41,7 +41,7 @@ const BaxsaaCaseStudy = () => {
           viewport={{ once: true }}
           className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto text-sm md:text-base"
         >
-          We effectively communicated the core brand values of The Baxsaa Co., resulting in significant follower growth and expanded profile reach through targeted digital activities centered around the Marketing Funnel.
+          Grew followers and reach through targeted social campaigns aligned with the marketing funnel.
         </motion.p>
 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10">
