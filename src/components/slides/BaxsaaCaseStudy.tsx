@@ -9,13 +9,31 @@ const stats = [
   { icon: Smartphone, value: "97/100", label: "Mobile Score", subtext: "Optimization score" },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.3 }
+  }
+};
+
+const statVariants = {
+  hidden: { opacity: 0, x: -50, rotate: -5 },
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    rotate: 0,
+    transition: { type: "spring" as const, stiffness: 100 }
+  }
+};
+
 const BaxsaaCaseStudy = () => {
   return (
-    <section className="slide py-20 px-6">
+    <section className="slide py-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           className="text-center mb-6"
@@ -24,9 +42,9 @@ const BaxsaaCaseStudy = () => {
         </motion.div>
 
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.8, type: "spring" }}
           viewport={{ once: true }}
           className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-center"
         >
@@ -35,8 +53,8 @@ const BaxsaaCaseStudy = () => {
         </motion.h2>
 
         <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
           className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto text-sm md:text-base"
@@ -44,30 +62,40 @@ const BaxsaaCaseStudy = () => {
           Grew followers and reach through targeted social campaigns aligned with the marketing funnel.
         </motion.p>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10">
-          {stats.map((stat, i) => (
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10"
+        >
+          {stats.map((stat) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              viewport={{ once: true }}
+              variants={statVariants}
+              whileHover={{ y: -8, scale: 1.05 }}
               className="card-glass rounded-2xl p-4 md:p-6 text-center"
             >
-              <div className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-secondary/20 flex items-center justify-center">
+              <motion.div 
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ delay: 0.5, type: "spring", bounce: 0.6 }}
+                viewport={{ once: true }}
+                className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-secondary/20 flex items-center justify-center"
+              >
                 <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-secondary" />
-              </div>
+              </motion.div>
               <div className="text-2xl md:text-3xl font-black text-gradient-gold mb-1">{stat.value}</div>
               <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{stat.label}</div>
               <div className="text-xs text-muted-foreground">{stat.subtext}</div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
+          initial={{ opacity: 0, y: 40, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
           className="card-glass rounded-2xl p-6 md:p-8 text-center max-w-2xl mx-auto"
         >
