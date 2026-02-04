@@ -13,7 +13,7 @@ const SkyrocketSlide = () => {
   const rotate = useTransform(scrollYProgress, [0, 1], [-10, 10]);
 
   return (
-    <section ref={ref} className="slide bg-gradient-to-br from-background via-owl-darker to-background overflow-hidden">
+    <section ref={ref} className="slide bg-gradient-to-br from-background via-owl-charcoal to-background overflow-hidden">
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-5xl">
         <motion.div
           style={{ y, rotate }}
@@ -23,7 +23,7 @@ const SkyrocketSlide = () => {
           viewport={{ once: true }}
           className="mb-8"
         >
-          <div className="w-20 h-20 rounded-2xl bg-primary/20 flex items-center justify-center glow-teal">
+          <div className="w-20 h-20 rounded-2xl bg-primary/20 flex items-center justify-center glow-green">
             <Rocket className="w-10 h-10 text-primary" />
           </div>
         </motion.div>
@@ -36,7 +36,7 @@ const SkyrocketSlide = () => {
           className="text-4xl md:text-7xl font-black tracking-tight"
         >
           <motion.span 
-            className="text-gradient-teal inline-block"
+            className="text-gradient-green inline-block"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}

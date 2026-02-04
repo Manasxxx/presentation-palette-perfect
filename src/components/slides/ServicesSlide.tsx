@@ -48,7 +48,7 @@ const cardVariants = {
 
 const ServicesSlide = () => {
   return (
-    <section className="slide py-20 px-6 bg-gradient-to-b from-background via-owl-darker to-background overflow-hidden">
+    <section className="slide py-20 px-6 bg-gradient-to-b from-background via-owl-charcoal to-background overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
         <motion.h2
           initial={{ opacity: 0, y: 60 }}
@@ -58,7 +58,7 @@ const ServicesSlide = () => {
           className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-center"
         >
           <span className="text-foreground">OUR </span>
-          <span className="text-gradient-gold">SERVICES</span>
+          <span className="text-gradient-green">SERVICES</span>
         </motion.h2>
 
         <motion.p
@@ -96,7 +96,7 @@ const ServicesSlide = () => {
                   <service.icon className={`w-7 h-7 ${service.color === 'primary' ? 'text-primary' : 'text-secondary'}`} />
                 </motion.div>
                 
-                <h3 className={`text-xl md:text-2xl font-bold mb-4 ${service.color === 'primary' ? 'text-gradient-teal' : 'text-gradient-gold'}`}>
+                <h3 className={`text-xl md:text-2xl font-bold mb-4 ${service.color === 'primary' ? 'text-gradient-green' : 'text-gradient-green'}`}>
                   {service.title}
                 </h3>
                 

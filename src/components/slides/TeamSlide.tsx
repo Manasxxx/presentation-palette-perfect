@@ -40,7 +40,7 @@ const TeamSlide = () => {
           className="text-4xl md:text-6xl font-black tracking-tight mb-12 text-center"
         >
           <span className="text-foreground">OUR </span>
-          <span className="text-gradient-teal">TEAM</span>
+          <span className="text-gradient-green">TEAM</span>
         </motion.h2>
 
         <motion.div 

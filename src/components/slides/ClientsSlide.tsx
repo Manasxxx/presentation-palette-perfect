@@ -44,7 +44,7 @@ const ClientsSlide = () => {
           className="text-4xl md:text-6xl font-black tracking-tight mb-12 text-center"
         >
           <span className="text-foreground">MAJOR </span>
-          <span className="text-gradient-teal">CLIENTS</span>
+          <span className="text-gradient-green">CLIENTS</span>
         </motion.h2>
 
         <motion.div
