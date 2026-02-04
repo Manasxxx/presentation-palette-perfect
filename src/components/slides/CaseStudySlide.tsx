@@ -67,6 +67,29 @@ const CaseStudySlide = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
+          className="grid grid-cols-3 gap-4 md:gap-6 mb-10"
+        >
+          {[1, 2, 3].map((i) => (
+            <motion.div
+              key={i}
+              variants={statVariants}
+              className="aspect-[4/3] rounded-2xl overflow-hidden"
+              style={{
+                background: "linear-gradient(135deg, hsl(180 45% 53% / 0.3), hsl(180 45% 40% / 0.5))"
+              }}
+            >
+              <div className="w-full h-full flex items-center justify-center border border-primary/20 rounded-2xl">
+                <span className="text-primary/50 text-sm font-medium">Creative {i}</span>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6"
         >
           {stats.map((stat) => (
