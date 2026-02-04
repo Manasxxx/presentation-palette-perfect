@@ -23,7 +23,7 @@ const cardVariants = {
 const ContactSlide = () => {
   return (
     <section className="slide hexagon-pattern overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-owl-darker to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-owl-charcoal to-background" />
       
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl">
         <motion.div
@@ -46,7 +46,7 @@ const ContactSlide = () => {
           className="text-3xl md:text-5xl font-black tracking-tight mb-4"
         >
           <span className="text-foreground">REACH OUT </span>
-          <span className="text-gradient-teal">WHERE</span>
+          <span className="text-gradient-green">WHERE</span>
         </motion.h2>
 
         <motion.p

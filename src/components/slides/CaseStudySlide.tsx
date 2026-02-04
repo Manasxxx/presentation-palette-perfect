@@ -29,7 +29,7 @@ const statVariants = {
 
 const CaseStudySlide = () => {
   return (
-    <section className="slide py-20 px-6 bg-gradient-to-b from-owl-darker via-background to-owl-darker overflow-hidden">
+    <section className="slide py-20 px-6 bg-gradient-to-b from-owl-charcoal via-background to-owl-charcoal overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -49,7 +49,7 @@ const CaseStudySlide = () => {
           className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-center"
         >
           <span className="text-foreground">Mitsui Chemicals </span>
-          <span className="text-gradient-teal">Success</span>
+          <span className="text-gradient-green">Success</span>
         </motion.h2>
 
         <motion.p
@@ -85,7 +85,7 @@ const CaseStudySlide = () => {
               >
                 <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </motion.div>
-              <div className="text-2xl md:text-3xl font-black text-gradient-teal mb-1">{stat.value}</div>
+              <div className="text-2xl md:text-3xl font-black text-gradient-green mb-1">{stat.value}</div>
               <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{stat.label}</div>
               <div className="text-xs text-muted-foreground">{stat.subtext}</div>
             </motion.div>

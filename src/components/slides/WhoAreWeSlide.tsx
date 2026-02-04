@@ -33,7 +33,7 @@ const WhoAreWeSlide = () => {
     <section ref={ref} className="slide hexagon-pattern py-20 overflow-hidden">
       <motion.div 
         style={{ y: backgroundY }}
-        className="absolute inset-0 bg-gradient-to-b from-owl-darker via-background to-background" 
+        className="absolute inset-0 bg-gradient-to-b from-owl-charcoal via-background to-background" 
       />
       
       <div className="relative z-10 flex flex-col items-center justify-center px-6 max-w-5xl mx-auto">
@@ -45,7 +45,7 @@ const WhoAreWeSlide = () => {
           className="text-4xl md:text-6xl font-black tracking-tight mb-12 text-center"
         >
           <span className="text-foreground">WHO ARE </span>
-          <span className="text-gradient-teal">WE?</span>
+          <span className="text-gradient-green">WE?</span>
         </motion.h2>
 
         <motion.div

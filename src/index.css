@@ -6,68 +6,72 @@
 
 @layer base {
   :root {
-    /* OwlSurf Brand Colors - Dark theme by default */
-    --background: 220 15% 13%;
-    --foreground: 0 0% 98%;
+    /* OwlSurf Brand Colors - Primary: Black #000000, Green #4bc2c2, White #ffffff */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
 
-    --card: 220 15% 16%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 220 15% 16%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 100%;
 
-    /* Teal/Turquoise - Primary Brand Color */
-    --primary: 174 55% 55%;
-    --primary-foreground: 220 15% 13%;
+    /* OwlSurf Green #4bc2c2 - Primary Brand Color */
+    --primary: 180 45% 53%;
+    --primary-foreground: 0 0% 0%;
 
-    /* Gold/Yellow - Accent Highlight */
-    --secondary: 50 80% 55%;
-    --secondary-foreground: 220 15% 13%;
+    /* OwlSurf Charcoal #333333 - Secondary */
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    /* Teal accent for UI elements */
-    --accent: 174 55% 55%;
-    --accent-foreground: 220 15% 13%;
+    /* OwlSurf Green accent for UI elements */
+    --accent: 180 45% 53%;
+    --accent-foreground: 0 0% 0%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 352 100% 58%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 25%;
-    --input: 220 15% 25%;
-    --ring: 174 55% 55%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 180 45% 53%;
 
     --radius: 0.75rem;
 
-    /* Custom brand tokens */
-    --owl-dark: 220 15% 13%;
-    --owl-darker: 220 18% 8%;
-    --owl-teal: 174 55% 55%;
-    --owl-teal-dark: 174 55% 45%;
-    --owl-gold: 50 80% 55%;
-    --owl-gold-dark: 50 80% 45%;
-    --owl-orange: 25 95% 55%;
+    /* Custom brand tokens - OwlSurf Official Colors */
+    --owl-black: 0 0% 0%;
+    --owl-charcoal: 0 0% 20%;
+    --owl-green: 180 45% 53%;
+    --owl-green-dark: 180 45% 43%;
+    --owl-white: 0 0% 100%;
+    
+    /* Secondary palette (supporting colors) */
+    --owl-purple: 262 95% 64%;
+    --owl-orange: 22 100% 59%;
+    --owl-chartreuse: 68 99% 50%;
+    --owl-blue: 195 99% 50%;
+    --owl-red: 352 100% 58%;
     
     /* Gradients */
-    --gradient-teal: linear-gradient(135deg, hsl(174 55% 55%), hsl(174 55% 40%));
-    --gradient-gold: linear-gradient(135deg, hsl(50 80% 55%), hsl(40 85% 50%));
-    --gradient-dark: linear-gradient(180deg, hsl(220 15% 13%), hsl(220 18% 8%));
-    --gradient-card: linear-gradient(145deg, hsl(220 15% 18%), hsl(220 15% 12%));
+    --gradient-green: linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%));
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 0%), hsl(0 0% 5%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 10%), hsl(0 0% 5%));
     
     /* Shadows */
-    --shadow-teal: 0 10px 40px -10px hsl(174 55% 55% / 0.3);
+    --shadow-green: 0 10px 40px -10px hsl(180 45% 53% / 0.3);
     --shadow-card: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
-    --shadow-glow: 0 0 60px -15px hsl(174 55% 55% / 0.4);
+    --shadow-glow: 0 0 60px -15px hsl(180 45% 53% / 0.4);
 
-    --sidebar-background: 220 15% 10%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 174 55% 55%;
-    --sidebar-primary-foreground: 220 15% 13%;
-    --sidebar-accent: 220 15% 18%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 174 55% 55%;
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 180 45% 53%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 180 45% 53%;
   }
 }
 
@@ -95,25 +99,25 @@
   }
 
   .hexagon-pattern {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234db8b5' fill-opacity='0.06'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234bc2c2' fill-opacity='0.08'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
-  .text-gradient-teal {
+  .text-gradient-green {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(174 55% 55%), hsl(174 55% 70%));
+    background-image: linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 70%));
   }
 
-  .text-gradient-gold {
+  .text-gradient-white {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(50 80% 55%), hsl(50 80% 70%));
+    background-image: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 85%));
   }
 
-  .glow-teal {
-    box-shadow: 0 0 60px -15px hsl(174 55% 55% / 0.5);
+  .glow-green {
+    box-shadow: 0 0 60px -15px hsl(180 45% 53% / 0.5);
   }
 
-  .glow-gold {
-    box-shadow: 0 0 60px -15px hsl(50 80% 55% / 0.5);
+  .glow-white {
+    box-shadow: 0 0 40px -10px hsl(0 0% 100% / 0.3);
   }
 
   .card-glass {
@@ -137,7 +141,7 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 40px -10px hsl(174 55% 55% / 0.4); }
-    50% { box-shadow: 0 0 60px -5px hsl(174 55% 55% / 0.6); }
+    0%, 100% { box-shadow: 0 0 40px -10px hsl(180 45% 53% / 0.4); }
+    50% { box-shadow: 0 0 60px -5px hsl(180 45% 53% / 0.6); }
   }
 }

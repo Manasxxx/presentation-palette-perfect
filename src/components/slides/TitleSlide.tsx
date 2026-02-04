@@ -15,7 +15,7 @@ const TitleSlide = () => {
 
   return (
     <section ref={ref} className="slide hexagon-pattern">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-owl-darker" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-owl-charcoal" />
       
       <motion.div 
         style={{ y, opacity, scale }}

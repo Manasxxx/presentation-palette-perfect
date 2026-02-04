@@ -38,7 +38,7 @@ const BaxsaaCaseStudy = () => {
           viewport={{ once: true }}
           className="text-center mb-6"
         >
-          <span className="text-xs tracking-[0.3em] text-secondary font-medium">CASE STUDY</span>
+          <span className="text-xs tracking-[0.3em] text-primary font-medium">CASE STUDY</span>
         </motion.div>
 
         <motion.h2
@@ -49,7 +49,7 @@ const BaxsaaCaseStudy = () => {
           className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-center"
         >
           <span className="text-foreground">The Baxsaa Co. </span>
-          <span className="text-gradient-gold">Success</span>
+          <span className="text-gradient-green">Success</span>
         </motion.h2>
 
         <motion.p
@@ -81,11 +81,11 @@ const BaxsaaCaseStudy = () => {
                 whileInView={{ scale: 1 }}
                 transition={{ delay: 0.5, type: "spring", bounce: 0.6 }}
                 viewport={{ once: true }}
-                className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-secondary/20 flex items-center justify-center"
+                className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-primary/20 flex items-center justify-center"
               >
-                <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-secondary" />
+                <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
               </motion.div>
-              <div className="text-2xl md:text-3xl font-black text-gradient-gold mb-1">{stat.value}</div>
+              <div className="text-2xl md:text-3xl font-black text-gradient-green mb-1">{stat.value}</div>
               <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{stat.label}</div>
               <div className="text-xs text-muted-foreground">{stat.subtext}</div>
             </motion.div>
