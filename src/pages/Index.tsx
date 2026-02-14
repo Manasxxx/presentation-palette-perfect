@@ -10,6 +10,7 @@ import BaxsaaCaseStudy from "@/components/slides/BaxsaaCaseStudy";
 import ContactSlide from "@/components/slides/ContactSlide";
 import SlideNavigation from "@/components/SlideNavigation";
 import ThemeToggle from "@/components/ThemeToggle";
+import SlideReveal from "@/components/SlideReveal";
 
 const slides = [
   TitleSlide,
@@ -66,7 +67,9 @@ const Index = () => {
       />
       
       {slides.map((SlideComponent, index) => (
-        <SlideComponent key={index} />
+        <SlideReveal key={index} className="relative">
+          <SlideComponent />
+        </SlideReveal>
       ))}
     </div>
   );
