@@ -21,34 +21,46 @@ const TitleSlide = () => {
         style={{ y, opacity, scale }}
         className="relative z-10 flex flex-col items-center justify-center text-center px-6"
       >
+        {/* Logo reveal animation */}
         <motion.div
-          initial={{ opacity: 0, scale: 0, rotate: -180 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="mb-8"
+          initial={{ opacity: 0, scale: 0.3 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-8 relative"
         >
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-primary/20 p-4 animate-pulse-glow">
-            <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-contain rounded-full" />
-          </div>
+          <motion.div
+            initial={{ clipPath: "circle(0% at 50% 50%)" }}
+            animate={{ clipPath: "circle(50% at 50% 50%)" }}
+            transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-primary/20 p-3 animate-pulse-glow flex items-center justify-center"
+          >
+            <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 1.5 }}
+            animate={{ opacity: 0, scale: 2.5 }}
+            transition={{ duration: 1.5, delay: 0.3 }}
+            className="absolute inset-0 rounded-full border-2 border-primary/40"
+          />
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, x: -100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-xl md:text-2xl font-light tracking-[0.3em] text-secondary mb-4"
-        >
-          OWLSURF
-        </motion.p>
-
         <motion.h1
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="text-5xl md:text-8xl font-black tracking-tight mb-6"
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-5xl md:text-8xl font-black tracking-tight mb-4"
         >
-          <span className="text-foreground">DIGITAL</span>
+          <span className="text-gradient-green">OWLSURF</span>
         </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="text-xl md:text-3xl font-light tracking-[0.3em] text-muted-foreground mb-6"
+        >
+          DIGITAL
+        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
