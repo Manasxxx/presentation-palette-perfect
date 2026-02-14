@@ -29,7 +29,7 @@ const statVariants = {
 
 const CaseStudySlide = () => {
   return (
-    <section className="slide py-20 px-6 bg-gradient-to-b from-owl-charcoal via-background to-owl-charcoal overflow-hidden">
+    <section className="slide py-20 px-6 bg-background overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: -30 }}

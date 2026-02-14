@@ -33,7 +33,7 @@ const WhoAreWeSlide = () => {
     <section ref={ref} className="slide hexagon-pattern py-20 overflow-hidden">
       <motion.div 
         style={{ y: backgroundY }}
-        className="absolute inset-0 bg-gradient-to-b from-owl-charcoal via-background to-background" 
+        className="absolute inset-0 bg-background" 
       />
       
       <div className="relative z-10 flex flex-col items-center justify-center px-6 max-w-5xl mx-auto">

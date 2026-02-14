@@ -48,7 +48,7 @@ const cardVariants = {
 
 const ServicesSlide = () => {
   return (
-    <section className="slide py-20 px-6 bg-gradient-to-b from-background via-owl-charcoal to-background overflow-hidden">
+    <section className="slide py-20 px-6 bg-background overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
         <motion.h2
           initial={{ opacity: 0, y: 60 }}

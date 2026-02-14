@@ -13,7 +13,7 @@ const SkyrocketSlide = () => {
   const rotate = useTransform(scrollYProgress, [0, 1], [-10, 10]);
 
   return (
-    <section ref={ref} className="slide bg-gradient-to-br from-background via-owl-charcoal to-background overflow-hidden">
+    <section ref={ref} className="slide bg-background overflow-hidden">
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-5xl">
         <motion.div
           style={{ y, rotate }}
