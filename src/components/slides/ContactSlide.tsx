@@ -23,7 +23,7 @@ const cardVariants = {
 const ContactSlide = () => {
   return (
     <section className="slide hexagon-pattern overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-owl-charcoal to-background" />
+      <div className="absolute inset-0 bg-background" />
       
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl">
         <motion.div
