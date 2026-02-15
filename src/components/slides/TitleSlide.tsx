@@ -34,11 +34,11 @@ const TitleSlide = () => {
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 animate-pulse-glow flex items-center justify-center"
             style={{
-              background: "linear-gradient(135deg, hsl(180 45% 53% / 0.15), hsl(0 0% 100% / 0.08))",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid hsl(180 45% 53% / 0.2)",
-              boxShadow: "0 8px 32px hsl(180 45% 53% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.1)",
+              background: "linear-gradient(135deg, hsl(180 45% 53% / 0.12), hsl(200 20% 50% / 0.08))",
+              backdropFilter: "blur(24px) saturate(1.4)",
+              WebkitBackdropFilter: "blur(24px) saturate(1.4)",
+              border: "1.5px solid hsl(0 0% 100% / 0.18)",
+              boxShadow: "0 8px 32px hsl(180 45% 53% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.15), inset 0 -1px 0 hsl(0 0% 0% / 0.05)",
             }}
           >
             <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
@@ -52,11 +52,11 @@ const TitleSlide = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mb-4 px-8 py-4 rounded-2xl"
           style={{
-            background: "linear-gradient(135deg, hsl(0 0% 100% / 0.05), hsl(0 0% 100% / 0.02))",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            border: "1px solid hsl(0 0% 100% / 0.08)",
-            boxShadow: "0 4px 24px hsl(0 0% 0% / 0.1), inset 0 1px 0 hsl(0 0% 100% / 0.06)",
+            background: "linear-gradient(135deg, hsl(200 20% 50% / 0.1), hsl(200 15% 60% / 0.05))",
+            backdropFilter: "blur(20px) saturate(1.3)",
+            WebkitBackdropFilter: "blur(20px) saturate(1.3)",
+            border: "1.5px solid hsl(0 0% 100% / 0.15)",
+            boxShadow: "0 4px 24px hsl(0 0% 0% / 0.1), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.04)",
           }}
         >
           <h1 className="text-5xl md:text-8xl font-black tracking-tight">
@@ -74,11 +74,11 @@ const TitleSlide = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="flex items-center gap-4 mb-8 px-8 py-3 rounded-full"
           style={{
-            background: "linear-gradient(135deg, hsl(0 0% 100% / 0.06), hsl(0 0% 100% / 0.02))",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            border: "1px solid hsl(0 0% 100% / 0.1)",
-            boxShadow: "0 2px 16px hsl(0 0% 0% / 0.08), inset 0 1px 0 hsl(0 0% 100% / 0.05)",
+            background: "linear-gradient(135deg, hsl(200 20% 50% / 0.1), hsl(200 15% 60% / 0.05))",
+            backdropFilter: "blur(16px) saturate(1.3)",
+            WebkitBackdropFilter: "blur(16px) saturate(1.3)",
+            border: "1.5px solid hsl(0 0% 100% / 0.15)",
+            boxShadow: "0 2px 16px hsl(0 0% 0% / 0.08), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.04)",
           }}
         >
           <div className="h-px w-10 bg-owl-orange" />

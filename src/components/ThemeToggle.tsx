@@ -38,7 +38,7 @@ const ThemeToggle = () => {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[60] pointer-events-none"
             style={{
-              backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 100%)",
+              backgroundColor: isDark ? "hsl(214 30% 6%)" : "hsl(0 0% 100%)",
             }}
           />
         )}
