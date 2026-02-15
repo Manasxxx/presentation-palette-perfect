@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(true);
-  const [sweepActive, setSweepActive] = useState(false);
+  const [sweepColor, setSweepColor] = useState<string | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const root = document.documentElement;
@@ -17,29 +18,43 @@ const ThemeToggle = () => {
     }
   }, [isDark]);
 
-  const handleToggle = () => {
-    setSweepActive(true);
-    // Apply theme immediately to avoid jitter
-    setIsDark(!isDark);
+  const handleToggle = useCallback(() => {
+    if (sweepColor) return; // prevent double-click
+
+    // The sweep color is the DESTINATION theme's background
+    const targetColor = isDark ? "hsl(0 0% 100%)" : "hsl(214 30% 6%)";
+    setSweepColor(targetColor);
+
+    // Flip the actual theme partway through the sweep
+    timeoutRef.current = setTimeout(() => {
+      setIsDark(prev => !prev);
+    }, 350);
+
+    // Clear the sweep after animation completes
     setTimeout(() => {
-      setSweepActive(false);
-    }, 700);
-  };
+      setSweepColor(null);
+    }, 800);
+  }, [isDark, sweepColor]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <>
       {/* Circular sweep overlay */}
       <AnimatePresence>
-        {sweepActive && (
+        {sweepColor && (
           <motion.div
+            key={sweepColor}
             initial={{ clipPath: "circle(0% at calc(100% - 38px) calc(100% - 38px))" }}
             animate={{ clipPath: "circle(200% at calc(100% - 38px) calc(100% - 38px))" }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[60] pointer-events-none"
-            style={{
-              backgroundColor: isDark ? "hsl(214 30% 6%)" : "hsl(0 0% 100%)",
-            }}
+            style={{ backgroundColor: sweepColor }}
           />
         )}
       </AnimatePresence>
@@ -56,11 +71,9 @@ const ThemeToggle = () => {
           className="relative w-16 h-8 rounded-full bg-muted/60 backdrop-blur-md border border-border p-1 flex items-center cursor-pointer transition-colors"
           aria-label="Toggle theme"
         >
-          {/* Track icons */}
           <Sun className="absolute left-1.5 w-3.5 h-3.5 text-muted-foreground/50" />
           <Moon className="absolute right-1.5 w-3.5 h-3.5 text-muted-foreground/50" />
 
-          {/* Sliding knob */}
           <motion.div
             layout
             transition={{ type: "spring", stiffness: 500, damping: 25 }}
