@@ -19,12 +19,11 @@ const ThemeToggle = () => {
 
   const handleToggle = () => {
     setSweepActive(true);
-    setTimeout(() => {
-      setIsDark(!isDark);
-    }, 300);
+    // Apply theme immediately to avoid jitter
+    setIsDark(!isDark);
     setTimeout(() => {
       setSweepActive(false);
-    }, 800);
+    }, 700);
   };
 
   return (
@@ -36,10 +35,10 @@ const ThemeToggle = () => {
             initial={{ clipPath: "circle(0% at calc(100% - 2.5rem) calc(100% - 2.5rem))" }}
             animate={{ clipPath: "circle(150% at calc(100% - 2.5rem) calc(100% - 2.5rem))" }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[60] pointer-events-none"
             style={{
-              backgroundColor: isDark ? "hsl(0 0% 100%)" : "hsl(0 0% 0%)",
+              backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 100%)",
             }}
           />
         )}
