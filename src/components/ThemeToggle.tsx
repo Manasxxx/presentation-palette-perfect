@@ -32,10 +32,10 @@ const ThemeToggle = () => {
       <AnimatePresence>
         {sweepActive && (
           <motion.div
-            initial={{ clipPath: "circle(0% at calc(100% - 2.5rem) calc(100% - 2.5rem))" }}
-            animate={{ clipPath: "circle(150% at calc(100% - 2.5rem) calc(100% - 2.5rem))" }}
+            initial={{ clipPath: "circle(0% at calc(100% - 38px) calc(100% - 38px))" }}
+            animate={{ clipPath: "circle(200% at calc(100% - 38px) calc(100% - 38px))" }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[60] pointer-events-none"
             style={{
               backgroundColor: isDark ? "hsl(0 0% 0%)" : "hsl(0 0% 100%)",
