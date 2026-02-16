@@ -18,10 +18,10 @@ const SlideNavigation = ({ totalSlides, currentSlide, onNavigate }: SlideNavigat
         <button
           key={i}
           onClick={() => onNavigate(i)}
-          className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
+          className={`w-1.5 rounded-full transition-all duration-300 ${
             currentSlide === i 
-              ? "bg-primary scale-125 shadow-lg shadow-primary/50" 
-              : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
+              ? "h-6 md:h-8 bg-primary shadow-lg shadow-primary/50" 
+              : "h-2.5 md:h-3 bg-muted-foreground/30 hover:bg-muted-foreground/60"
           }`}
           aria-label={`Go to slide ${i + 1}`}
         />

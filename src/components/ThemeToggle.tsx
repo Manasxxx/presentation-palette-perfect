@@ -28,12 +28,12 @@ const ThemeToggle = () => {
     // Flip the actual theme partway through the sweep
     timeoutRef.current = setTimeout(() => {
       setIsDark(prev => !prev);
-    }, 350);
+    }, 600);
 
     // Clear the sweep after animation completes
     setTimeout(() => {
       setSweepColor(null);
-    }, 800);
+    }, 1400);
   }, [isDark, sweepColor]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const ThemeToggle = () => {
             initial={{ clipPath: "circle(0% at calc(100% - 38px) calc(100% - 38px))" }}
             animate={{ clipPath: "circle(200% at calc(100% - 38px) calc(100% - 38px))" }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[60] pointer-events-none"
             style={{ backgroundColor: sweepColor }}
           />
