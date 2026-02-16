@@ -1,124 +1,162 @@
-import { motion } from "framer-motion";
-import { BarChart3, Palette, Globe, Code } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { BarChart3, Palette, Globe, Code, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 const services = [
-  { 
-    icon: BarChart3, 
+  {
+    icon: BarChart3,
     title: "Digital Strategy",
-    items: ["Building Brands", "Media Placements", "Writing and Repurposing", "Strategic Communications"],
-    color: "primary"
+    description: "Data-driven campaigns that amplify your brand's reach and impact across every channel.",
+    items: ["Building Brands", "Media Placements", "Writing & Repurposing", "Strategic Communications"],
+    accent: "from-primary to-primary/60",
   },
-  { 
-    icon: Palette, 
+  {
+    icon: Palette,
     title: "Creative Strategy",
-    items: ["Visual Identity", "Graphic Design", "Creative Advertising", "Space Design and Events"],
-    color: "secondary"
+    description: "Bold visual storytelling that captures attention and communicates your unique value.",
+    items: ["Visual Identity", "Graphic Design", "Creative Advertising", "Space Design & Events"],
+    accent: "from-owl-orange to-owl-orange/60",
   },
-  { 
-    icon: Globe, 
+  {
+    icon: Globe,
     title: "Web Presence",
-    items: ["Web Design", "SEO", "Social Media", "+ more services"],
-    color: "primary"
+    description: "Dominate search results and social feeds with an optimized, engaging online presence.",
+    items: ["Web Design", "SEO", "Social Media", "Content Marketing"],
+    accent: "from-owl-blue to-owl-blue/60",
   },
-  { 
-    icon: Code, 
-    title: "Development Services",
-    items: ["Technology Consulting", "Turnkey Product Development", "Product Strategy", "Manual and Automated Testing"],
-    color: "secondary"
+  {
+    icon: Code,
+    title: "Development",
+    description: "End-to-end product engineering from strategy and design to launch and testing.",
+    items: ["Technology Consulting", "Product Development", "Product Strategy", "QA & Testing"],
+    accent: "from-owl-chartreuse to-owl-chartreuse/60",
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 80, rotateY: -15 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    rotateY: 0,
-    transition: { duration: 0.8, ease: "easeOut" as const }
-  }
-};
-
 const ServicesSlide = () => {
+  const [active, setActive] = useState(0);
+
   return (
-    <section className="slide py-20 px-6 bg-background overflow-hidden">
+    <section className="slide py-16 px-6 bg-background overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
-        <motion.h2
-          initial={{ opacity: 0, y: 60 }}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-center"
+          className="text-center mb-10 md:mb-14"
         >
-          <span className="text-foreground">OUR </span>
-          <span className="text-gradient-green">SERVICES</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-muted-foreground text-center mb-12 max-w-xl mx-auto"
-        >
-          Comprehensive solutions for your digital needs
-        </motion.p>
-
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {services.map((service) => (
-            <motion.div
-              key={service.title}
-              variants={cardVariants}
-              whileHover={{ scale: 1.02, y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="card-glass rounded-2xl p-6 md:p-8 h-full transition-all duration-300 hover:border-primary/30">
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ delay: 0.3, type: "spring", bounce: 0.5 }}
-                  viewport={{ once: true }}
-                  className={`w-14 h-14 rounded-xl ${service.color === 'primary' ? 'bg-primary/20' : 'bg-secondary/20'} flex items-center justify-center mb-5`}
-                >
-                  <service.icon className={`w-7 h-7 ${service.color === 'primary' ? 'text-primary' : 'text-secondary'}`} />
-                </motion.div>
-                
-                <h3 className={`text-xl md:text-2xl font-bold mb-4 ${service.color === 'primary' ? 'text-gradient-green' : 'text-gradient-green'}`}>
-                  {service.title}
-                </h3>
-                
-                <ul className="space-y-2">
-                  {service.items.map((item, j) => (
-                    <motion.li 
-                      key={j} 
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 + j * 0.1 }}
-                      viewport={{ once: true }}
-                      className="flex items-center gap-3 text-muted-foreground"
-                    >
-                      <span className={`w-1.5 h-1.5 rounded-full ${service.color === 'primary' ? 'bg-primary' : 'bg-secondary'}`} />
-                      <span className="text-sm md:text-base">{item}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
+          <span className="text-xs tracking-[0.3em] text-primary font-medium mb-3 block">WHAT WE DO</span>
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight">
+            <span className="text-foreground">OUR </span>
+            <span className="text-gradient-green">SERVICES</span>
+          </h2>
         </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 md:gap-10 items-start">
+          {/* Left tabs */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="flex md:flex-col gap-2"
+          >
+            {services.map((service, i) => (
+              <button
+                key={service.title}
+                onClick={() => setActive(i)}
+                className={`relative flex items-center gap-3 px-4 py-3 md:py-4 rounded-xl text-left transition-all duration-300 group w-full ${
+                  active === i
+                    ? "bg-primary/10 border border-primary/30"
+                    : "hover:bg-muted/50 border border-transparent"
+                }`}
+              >
+                {active === i && (
+                  <motion.div
+                    layoutId="active-tab"
+                    className="absolute left-0 top-[20%] bottom-[20%] w-[3px] rounded-full bg-primary"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <div
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-300 ${
+                    active === i ? "bg-primary/20" : "bg-muted"
+                  }`}
+                >
+                  <service.icon
+                    className={`w-4 h-4 transition-colors duration-300 ${
+                      active === i ? "text-primary" : "text-muted-foreground"
+                    }`}
+                  />
+                </div>
+                <span
+                  className={`text-sm font-semibold transition-colors duration-300 hidden md:block ${
+                    active === i ? "text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  {service.title}
+                </span>
+              </button>
+            ))}
+          </motion.div>
+
+          {/* Right content panel */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="card-glass rounded-2xl p-6 md:p-10 min-h-[320px] relative overflow-hidden"
+          >
+            {/* Accent glow */}
+            <div
+              className={`absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br ${services[active].accent} opacity-10 blur-3xl transition-all duration-700`}
+            />
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-10"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${services[active].accent} flex items-center justify-center`}>
+                    {(() => {
+                      const Icon = services[active].icon;
+                      return <Icon className="w-6 h-6 text-background" />;
+                    })()}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black text-foreground">
+                    {services[active].title}
+                  </h3>
+                </div>
+
+                <p className="text-muted-foreground text-sm md:text-base mb-8 max-w-lg">
+                  {services[active].description}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {services[active].items.map((item, j) => (
+                    <motion.div
+                      key={item}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: j * 0.08 }}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/30 border border-border/50 group hover:border-primary/30 transition-colors duration-200"
+                    >
+                      <ChevronRight className="w-3.5 h-3.5 text-primary shrink-0" />
+                      <span className="text-sm font-medium text-foreground">{item}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
