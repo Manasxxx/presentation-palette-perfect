@@ -15,7 +15,15 @@ const TitleSlide = () => {
 
   return (
     <section ref={ref} className="slide hexagon-pattern">
+      {/* Animated gradient background */}
       <div className="absolute inset-0 bg-background" />
+      <div
+        className="absolute inset-0 opacity-30 animate-gradient-shift"
+        style={{
+          background: "radial-gradient(ellipse 80% 60% at 20% 40%, hsl(180 45% 53% / 0.4), transparent), radial-gradient(ellipse 60% 80% at 80% 60%, hsl(262 95% 64% / 0.25), transparent), radial-gradient(ellipse 70% 50% at 50% 80%, hsl(22 100% 59% / 0.2), transparent)",
+          backgroundSize: "200% 200%",
+        }}
+      />
       
       <motion.div 
         style={{ y, opacity, scale }}
