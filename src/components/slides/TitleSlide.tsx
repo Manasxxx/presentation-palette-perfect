@@ -50,17 +50,18 @@ const TitleSlide = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mb-4 px-8 py-4 rounded-2xl"
-          style={{
-            background: "linear-gradient(135deg, hsl(200 20% 50% / 0.1), hsl(200 15% 60% / 0.05))",
-            backdropFilter: "blur(20px) saturate(1.3)",
-            WebkitBackdropFilter: "blur(20px) saturate(1.3)",
-            border: "1.5px solid hsl(0 0% 100% / 0.15)",
-            boxShadow: "0 4px 24px hsl(0 0% 0% / 0.1), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.04)",
-          }}
+          className="mb-4"
         >
           <h1 className="text-5xl md:text-8xl font-black tracking-tight">
-            <span className="text-gradient-green">OWLSURF</span>
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(135deg, hsl(180 45% 53% / 0.6), hsl(180 45% 70% / 0.4))",
+                WebkitTextStroke: "1px hsl(180 45% 53% / 0.3)",
+                filter: "blur(0.3px)",
+                textShadow: "0 0 40px hsl(180 45% 53% / 0.3), 0 0 80px hsl(180 45% 53% / 0.15)",
+              }}
+            >OWLSURF</span>
           </h1>
           <p className="text-xl md:text-3xl font-light tracking-[0.3em] text-muted-foreground mt-2">
             DIGITAL
