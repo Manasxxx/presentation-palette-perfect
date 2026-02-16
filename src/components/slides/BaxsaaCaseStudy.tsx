@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Eye, Users, Share2, Smartphone, Zap } from "lucide-react";
+import AnimatedStat from "@/components/AnimatedStat";
 
 const stats = [
   { icon: Eye, value: "2.76M", label: "Impressions", subtext: "32.7% increase in 3 months" },
@@ -92,26 +93,15 @@ const BaxsaaCaseStudy = () => {
           viewport={{ once: true }}
           className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-10"
         >
-          {stats.map((stat) => (
-            <motion.div
+          {stats.map((stat, i) => (
+            <AnimatedStat
               key={stat.label}
-              variants={statVariants}
-              whileHover={{ y: -8, scale: 1.05 }}
-              className="card-glass rounded-2xl p-4 md:p-6 text-center"
-            >
-              <motion.div 
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                transition={{ delay: 0.5, type: "spring", bounce: 0.6 }}
-                viewport={{ once: true }}
-                className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-primary/20 flex items-center justify-center"
-              >
-                <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-              </motion.div>
-              <div className="text-2xl md:text-3xl font-black text-gradient-green mb-1">{stat.value}</div>
-              <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{stat.label}</div>
-              <div className="text-xs text-muted-foreground">{stat.subtext}</div>
-            </motion.div>
+              icon={stat.icon}
+              value={stat.value}
+              label={stat.label}
+              subtext={stat.subtext}
+              delay={i * 150}
+            />
           ))}
         </motion.div>
 
