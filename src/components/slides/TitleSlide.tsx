@@ -49,7 +49,22 @@ const TitleSlide = () => {
               boxShadow: "0 8px 32px hsl(180 45% 53% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.15), inset 0 -1px 0 hsl(0 0% 0% / 0.05)",
             }}
           >
-            <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+            <motion.img
+              src={logo}
+              alt="OwlSurf Digital"
+              className="w-full h-full object-cover rounded-full"
+              animate={{
+                y: [0, -4, 0, -2, 0],
+                rotate: [0, -3, 0, 2, 0],
+                scale: [1, 1.02, 1, 1.01, 1],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: [0, 0.25, 0.5, 0.75, 1],
+              }}
+            />
           </motion.div>
         </motion.div>
 
