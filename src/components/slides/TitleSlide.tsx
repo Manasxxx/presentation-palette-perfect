@@ -49,22 +49,26 @@ const TitleSlide = () => {
               boxShadow: "0 8px 32px hsl(180 45% 53% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.15), inset 0 -1px 0 hsl(0 0% 0% / 0.05)",
             }}
           >
-            <motion.img
-              src={logo}
-              alt="OwlSurf Digital"
-              className="w-full h-full object-cover rounded-full"
+            {/* Base full logo */}
+            <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+            
+            {/* Animated head layer - clipped upper portion */}
+            <motion.div
+              className="absolute inset-0 rounded-full overflow-hidden"
+              style={{ clipPath: "ellipse(50% 35% at 50% 30%)" }}
               animate={{
-                y: [0, -4, 0, -2, 0],
-                rotate: [0, -3, 0, 2, 0],
-                scale: [1, 1.02, 1, 1.01, 1],
+                rotate: [0, -4, 0, 3, -2, 0],
+                y: [0, -1.5, 0, -1, 0.5, 0],
               }}
               transition={{
-                duration: 5,
+                duration: 4,
                 repeat: Infinity,
                 ease: "easeInOut",
-                times: [0, 0.25, 0.5, 0.75, 1],
+                times: [0, 0.2, 0.4, 0.6, 0.8, 1],
               }}
-            />
+            >
+              <img src={logo} alt="" className="w-full h-full object-cover rounded-full" />
+            </motion.div>
           </motion.div>
         </motion.div>
 
