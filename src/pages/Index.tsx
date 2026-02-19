@@ -8,7 +8,7 @@ import ClientsSlide from "@/components/slides/ClientsSlide";
 import CaseStudySlide from "@/components/slides/CaseStudySlide";
 import BaxsaaCaseStudy from "@/components/slides/BaxsaaCaseStudy";
 import ContactSlide from "@/components/slides/ContactSlide";
-import SlideNavigation from "@/components/SlideNavigation";
+
 import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
 import PersistentHeader from "@/components/PersistentHeader";
@@ -60,13 +60,12 @@ const Index = () => {
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
-      <PersistentHeader visible={currentSlide > 0 && currentSlide < slides.length - 1} />
-      <ThemeToggle />
-      <SlideNavigation 
-        totalSlides={slides.length} 
-        currentSlide={currentSlide} 
+      <PersistentHeader
+        visible={currentSlide > 0 && currentSlide < slides.length - 1}
+        currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
+      <ThemeToggle />
       
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
