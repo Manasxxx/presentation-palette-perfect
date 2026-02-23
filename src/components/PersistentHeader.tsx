@@ -21,10 +21,10 @@ const PersistentHeader = ({ visible, currentSlide, onNavigate }: PersistentHeade
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -30, opacity: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed top-4 left-1/2 -translate-x-1/2 z-40"
+          className="fixed top-4 left-0 right-0 z-40 flex justify-center px-4"
         >
           <nav
-            className="flex items-center gap-0.5 px-2 py-1.5 rounded-full border border-white/20"
+            className="flex items-center gap-0.5 px-2 py-1.5 rounded-full border border-white/20 max-w-full overflow-x-auto scrollbar-hide"
             style={{
               background: "linear-gradient(135deg, hsl(var(--background) / 0.45), hsl(var(--background) / 0.3))",
               backdropFilter: "blur(24px) saturate(1.6)",
