@@ -7,6 +7,7 @@ import ServicesSlide from "@/components/slides/ServicesSlide";
 import ClientsSlide from "@/components/slides/ClientsSlide";
 import CaseStudySlide from "@/components/slides/CaseStudySlide";
 import BaxsaaCaseStudy from "@/components/slides/BaxsaaCaseStudy";
+import CultFitCaseStudy from "@/components/slides/CultFitCaseStudy";
 import ContactSlide from "@/components/slides/ContactSlide";
 
 import ThemeToggle from "@/components/ThemeToggle";
@@ -22,6 +23,7 @@ const slides = [
   ClientsSlide,
   CaseStudySlide,
   BaxsaaCaseStudy,
+  CultFitCaseStudy,
   ContactSlide,
 ];
 

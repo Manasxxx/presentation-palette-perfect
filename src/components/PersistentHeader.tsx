@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const slideLabels = [
   "Intro", "Why Us", "About", "Team",
-  "Services", "Clients", "Case Study", "Baxsaa", "Contact"
+  "Services", "Clients", "Case Study", "Baxsaa", "Cult Fit", "Contact"
 ];
 
 interface PersistentHeaderProps {
