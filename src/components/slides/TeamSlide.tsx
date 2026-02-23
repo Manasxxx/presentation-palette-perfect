@@ -93,10 +93,10 @@ const TeamSlide = () => {
                   </h3>
                   <div className="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                     <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Linkedin size={16} />
+                      <Linkedin size={16} fill="currentColor" />
                     </a>
                     <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Instagram size={16} />
+                      <Instagram size={16} fill="currentColor" />
                     </a>
                   </div>
                 </div>
