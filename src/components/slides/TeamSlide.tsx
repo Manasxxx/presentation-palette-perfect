@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Linkedin, Instagram } from "lucide-react";
 import harshitAvatar from "@/assets/harshit-avatar.png";
 import sakshiAvatar from "@/assets/sakshi-avatar.png";
 import pankajAvatar from "@/assets/pankaj-avatar.png";
@@ -90,6 +91,14 @@ const TeamSlide = () => {
                   >
                     {member.name}
                   </h3>
+                  <div className="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      <Linkedin size={16} />
+                    </a>
+                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                      <Instagram size={16} />
+                    </a>
+                  </div>
                 </div>
               </motion.div>
             ))}
