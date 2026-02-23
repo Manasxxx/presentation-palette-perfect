@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import harshitAvatar from "@/assets/harshit-avatar.png";
 import sakshiAvatar from "@/assets/sakshi-avatar.png";
+import pankajAvatar from "@/assets/pankaj-avatar.png";
 
 const teamMembers = [
   { name: "Harshit Srivastava", avatar: harshitAvatar },
@@ -8,7 +9,7 @@ const teamMembers = [
   { name: "Sanskriti Navin" },
   { name: "Vishnu Madhupal" },
   { name: "Sakshi Srivastava", avatar: sakshiAvatar },
-  { name: "Pankaj Singh" },
+  { name: "Pankaj Singh", avatar: pankajAvatar },
 ];
 
 const containerVariants = {
