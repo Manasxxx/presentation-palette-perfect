@@ -7,9 +7,9 @@ import sanskritiAvatar from "@/assets/sanskriti-avatar.png";
 
 const teamMembers = [
   { name: "Harshit", avatar: harshitAvatar },
+  { name: "Sakshi", avatar: sakshiAvatar },
   { name: "Manas", avatar: manasAvatar },
   { name: "Sanskriti", avatar: sanskritiAvatar },
-  { name: "Sakshi", avatar: sakshiAvatar },
   { name: "Pankaj", avatar: pankajAvatar },
 ];
 
@@ -51,17 +51,17 @@ const TeamSlide = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-6 md:gap-8"
+          className="flex flex-wrap justify-center gap-5 md:gap-7"
         >
           {teamMembers.map((member) => (
             <motion.div
               key={member.name}
               variants={cardVariants}
               whileHover={{ scale: 1.06, y: -6 }}
-              className="w-[calc(50%-12px)] md:w-[calc(20%-26px)]"
+              className="w-[calc(50%-10px)] md:w-[calc(20%-22px)]"
             >
               <div
-                className="rounded-2xl p-5 md:p-6 text-center flex flex-col items-center border border-white/15"
+                className="rounded-2xl p-4 md:p-5 text-center flex flex-col items-center border border-white/15"
                 style={{
                   background: "linear-gradient(145deg, hsl(var(--background) / 0.4), hsl(var(--background) / 0.25))",
                   backdropFilter: "blur(24px) saturate(1.6)",
@@ -73,11 +73,11 @@ const TeamSlide = () => {
                 <img
                   src={member.avatar}
                   alt={member.name}
-                  className="w-24 h-24 md:w-28 md:h-28 rounded-full object-contain mb-4"
+                  className="w-32 h-32 md:w-36 md:h-36 rounded-full object-contain mb-4"
                 />
                 <h3
-                  className="font-semibold text-sm md:text-base tracking-wide uppercase"
-                  style={{ color: "hsl(var(--primary) / 0.85)" }}
+                  className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
+                  style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
                 >
                   {member.name}
                 </h3>
