@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Eye, Users, TrendingUp, Dumbbell, Target } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
-
+import cultfitCreative1 from "@/assets/cultfit-creative-1.png";
+import cultfitCreative2 from "@/assets/cultfit-creative-2.png";
 const stats = [
   { icon: Eye, value: "4.2M", label: "Impressions", subtext: "Across platforms" },
   { icon: Users, value: "25K", label: "New Members", subtext: "In 6 months" },
@@ -71,17 +72,13 @@ const CultFitCaseStudy = () => {
           viewport={{ once: true }}
           className="grid grid-cols-2 gap-4 md:gap-6 mb-10"
         >
-          {[1, 2].map((i) => (
+          {[cultfitCreative1, cultfitCreative2].map((src, i) => (
             <motion.div
               key={i}
               variants={statVariants}
-              className="aspect-square rounded-2xl overflow-hidden card-glass flex items-center justify-center"
+              className="aspect-square rounded-2xl overflow-hidden"
             >
-              <div className="text-center p-6">
-                <Dumbbell className="w-12 h-12 text-primary mx-auto mb-3" />
-                <p className="text-muted-foreground text-sm">Creative {i}</p>
-                <p className="text-muted-foreground/50 text-xs mt-1">Upload image to replace</p>
-              </div>
+              <img src={src} alt={`Cult Fit creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>
