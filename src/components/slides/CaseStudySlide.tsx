@@ -76,7 +76,7 @@ const CaseStudySlide = () => {
             <motion.div
               key={i}
               variants={statVariants}
-              className="aspect-[4/3] rounded-2xl overflow-hidden"
+              className="aspect-square rounded-2xl overflow-hidden"
             >
               <img src={src} alt={`Mitsui Chemicals creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
             </motion.div>
