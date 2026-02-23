@@ -38,7 +38,7 @@ const PersistentHeader = ({ visible, currentSlide, onNavigate }: PersistentHeade
                 <button
                   key={label}
                   onClick={() => onNavigate(i)}
-                  className="relative px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-semibold tracking-wider uppercase whitespace-nowrap rounded-full transition-all duration-300"
+                  className="relative px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-semibold tracking-wider uppercase whitespace-nowrap rounded-full"
                   style={{
                     color: isActive
                       ? "hsl(var(--primary-foreground))"
@@ -49,6 +49,7 @@ const PersistentHeader = ({ visible, currentSlide, onNavigate }: PersistentHeade
                     boxShadow: isActive
                       ? "0 2px 12px hsl(var(--primary) / 0.4)"
                       : "none",
+                    transition: "all 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
                 >
                   {label}
