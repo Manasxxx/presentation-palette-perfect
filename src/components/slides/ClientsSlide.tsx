@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
 
 const clients = [
-  "Mitsui Chemicals",
-  "DEHN",
-  "VNT",
-  "Kuraray",
-  "GirlUp",
-  "Cliques",
-  "IIM Lucknow",
-  "AVI Global Plast",
-  "The Baxsaa Co.",
+  { name: "Mitsui Chemicals", color: "210 100% 30%" },   // Blue
+  { name: "DEHN", color: "0 80% 45%" },                    // Red
+  { name: "VNT", color: "220 60% 50%" },                   // Steel blue
+  { name: "Kuraray", color: "210 70% 40%" },               // Corporate blue
+  { name: "GirlUp", color: "340 80% 55%" },                // Pink/magenta
+  { name: "Cliques", color: "260 60% 55%" },               // Purple
+  { name: "IIM Lucknow", color: "25 80% 50%" },            // Saffron/orange
+  { name: "AVI Global Plast", color: "145 60% 40%" },      // Green
+  { name: "The Baxsaa Co.", color: "0 68% 33%" },          // Maroon
 ];
 
 const containerVariants = {
@@ -21,25 +21,22 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0, rotate: -10 },
+  hidden: { opacity: 0, y: 30 },
   visible: { 
     opacity: 1, 
-    scale: 1, 
-    rotate: 0,
-    transition: { type: "spring" as const, stiffness: 200, damping: 15 }
+    y: 0,
+    transition: { type: "spring" as const, stiffness: 120, damping: 14 }
   }
 };
 
 const ClientsSlide = () => {
   return (
-    <section className="slide py-20 px-6 hexagon-pattern overflow-hidden">
-      <div className="absolute inset-0 bg-background/90" />
-      
-      <div className="relative z-10 max-w-5xl mx-auto w-full">
+    <section className="slide py-20 px-6 overflow-hidden">
+      <div className="max-w-5xl mx-auto w-full">
         <motion.h2
-          initial={{ opacity: 0, y: 80, scale: 0.8 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, type: "spring" }}
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true }}
           className="text-4xl md:text-6xl font-black tracking-tight mb-12 text-center"
         >
@@ -52,16 +49,28 @@ const ClientsSlide = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-4 md:gap-6"
+          className="flex flex-wrap justify-center gap-4 md:gap-5"
         >
           {clients.map((client) => (
             <motion.div
-              key={client}
+              key={client.name}
               variants={itemVariants}
-              whileHover={{ scale: 1.1, rotate: 2 }}
-              className="card-glass px-6 py-4 rounded-xl border border-primary/10 hover:border-primary/30 transition-all duration-300 cursor-default"
+              whileHover={{ scale: 1.06, y: -4 }}
+              className="px-6 py-4 rounded-full border border-white/10 hover:border-white/25 cursor-default"
+              style={{
+                background: `linear-gradient(135deg, hsl(${client.color} / 0.12), hsl(${client.color} / 0.05))`,
+                backdropFilter: "blur(20px) saturate(1.5)",
+                WebkitBackdropFilter: "blur(20px) saturate(1.5)",
+                boxShadow: `inset 0 1px 0 hsl(${client.color} / 0.15), 0 4px 20px hsl(${client.color} / 0.08)`,
+                transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
             >
-              <span className="text-sm md:text-base font-semibold text-foreground">{client}</span>
+              <span
+                className="text-sm md:text-base font-semibold"
+                style={{ color: `hsl(${client.color})` }}
+              >
+                {client.name}
+              </span>
             </motion.div>
           ))}
         </motion.div>
