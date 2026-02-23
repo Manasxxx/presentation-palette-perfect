@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Eye, Users, Share2, Smartphone, Zap } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
+import baxsaaCreative1 from "@/assets/baxsaa-creative-1.png";
+import baxsaaCreative2 from "@/assets/baxsaa-creative-2.png";
 
 const stats = [
   { icon: Eye, value: "2.76M", label: "Impressions", subtext: "32.7% increase in 3 months" },
@@ -68,20 +70,15 @@ const BaxsaaCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-3 gap-4 md:gap-6 mb-10"
+          className="grid grid-cols-2 gap-4 md:gap-6 mb-10"
         >
-          {[1, 2, 3].map((i) => (
+          {[baxsaaCreative1, baxsaaCreative2].map((src, i) => (
             <motion.div
               key={i}
               variants={statVariants}
-              className="aspect-[4/3] rounded-2xl overflow-hidden"
-              style={{
-                background: "linear-gradient(135deg, hsl(180 45% 53% / 0.3), hsl(180 45% 40% / 0.5))"
-              }}
+              className="aspect-square rounded-2xl overflow-hidden"
             >
-              <div className="w-full h-full flex items-center justify-center border border-primary/20 rounded-2xl">
-                <span className="text-primary/50 text-sm font-medium">Creative {i}</span>
-              </div>
+              <img src={src} alt={`Baxsaa Co. creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>
