@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
+import harshitAvatar from "@/assets/harshit-avatar.png";
 
 const teamMembers = [
-  { name: "Harshit Srivastava", role: "Head of Client Relations" },
-  { name: "Manas Srivastava", role: "Digital Enablement Head" },
-  { name: "Sanskriti Navin", role: "Social Media Manager" },
-  { name: "Vishnu Madhupal", role: "Graphic Design Consultant" },
-  { name: "Sakshi Srivastava", role: "Business Development Manager" },
-  { name: "Pankaj Singh", role: "SEO Strategist" },
+  { name: "Harshit Srivastava", avatar: harshitAvatar },
+  { name: "Manas Srivastava" },
+  { name: "Sanskriti Navin" },
+  { name: "Vishnu Madhupal" },
+  { name: "Sakshi Srivastava" },
+  { name: "Pankaj Singh" },
 ];
 
 const containerVariants = {
@@ -56,9 +57,11 @@ const TeamSlide = () => {
               variants={cardVariants}
               whileHover={{ scale: 1.05, y: -8 }}
             >
-              <div className="card-glass rounded-2xl p-6 md:p-8 text-center transition-all duration-300 hover:border-primary/30">
-                <h3 className="font-bold text-base md:text-lg text-foreground mb-2">{member.name}</h3>
-                <p className="text-sm md:text-base text-primary font-medium">{member.role}</p>
+              <div className="card-glass rounded-2xl p-6 md:p-8 text-center transition-all duration-300 hover:border-primary/30 flex flex-col items-center">
+                {member.avatar && (
+                  <img src={member.avatar} alt={member.name} className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain mb-4" />
+                )}
+                <h3 className="font-bold text-base md:text-lg text-foreground">{member.name}</h3>
               </div>
             </motion.div>
           ))}
