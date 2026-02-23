@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
+import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import mitsuiCreative1 from "@/assets/mitsui-creative-1.png";
 import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
 
 const stats = [
-  { value: "5.8M", label: "Impressions" },
-  { value: "1000%", label: "Follower Growth" },
-  { value: "99.2%", label: "Engagement ↑" },
-  { value: "104K", label: "Ad Clicks" },
-  { value: "3X", label: "ROI" },
+  { icon: Eye, value: "5.8M", label: "Impressions" },
+  { icon: Users, value: "1000%", label: "Follower Growth" },
+  { icon: TrendingUp, value: "99.2%", label: "Engagement ↑" },
+  { icon: MousePointer, value: "104K", label: "Ad Clicks" },
+  { icon: Gauge, value: "3X", label: "ROI" },
 ];
 
 const containerVariants = {
@@ -99,46 +100,49 @@ const CaseStudySlide = () => {
               key={i}
               variants={itemVariants}
               className="aspect-square rounded-2xl overflow-hidden"
-              style={{
-                boxShadow: `0 12px 40px hsl(${mitsuiBlue} / 0.5)`,
-              }}
             >
               <img src={src} alt={`Mitsui Chemicals creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Compact inline stats bar */}
+        {/* Stats as liquid glass pills */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3 md:gap-0 md:divide-x"
-          style={{
-            borderColor: `hsl(${mitsuiCyan} / 0.2)`,
-          }}
+          className="flex flex-wrap justify-center gap-3"
         >
-          {stats.map((stat) => (
-            <motion.div
-              key={stat.label}
-              variants={itemVariants}
-              className="flex items-center gap-2 px-4 md:px-6 py-2"
-            >
-              <span
-                className="text-xl md:text-2xl font-black"
-                style={{ color: `hsl(${mitsuiCyan})` }}
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                variants={itemVariants}
+                className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15"
+                style={{
+                  background: "linear-gradient(135deg, hsl(210 60% 40% / 0.3), hsl(193 80% 50% / 0.15))",
+                  backdropFilter: "blur(20px) saturate(1.5)",
+                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
+                  boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 4px 16px hsl(210 100% 10% / 0.3)",
+                }}
               >
-                {stat.value}
-              </span>
-              <span
-                className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                style={{ color: "hsl(210 20% 70%)" }}
-              >
-                {stat.label}
-              </span>
-            </motion.div>
-          ))}
+                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${mitsuiCyan})` }} />
+                <span
+                  className="text-sm md:text-base font-bold text-white"
+                >
+                  {stat.value}
+                </span>
+                <span
+                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
+                  style={{ color: "hsl(210 20% 75%)" }}
+                >
+                  {stat.label}
+                </span>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
