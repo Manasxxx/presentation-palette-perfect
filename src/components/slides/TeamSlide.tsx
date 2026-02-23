@@ -5,12 +5,15 @@ import pankajAvatar from "@/assets/pankaj-avatar.png";
 import manasAvatar from "@/assets/manas-avatar.png";
 import sanskritiAvatar from "@/assets/sanskriti-avatar.png";
 
-const teamMembers = [
+const row1 = [
   { name: "Harshit", avatar: harshitAvatar },
   { name: "Sakshi", avatar: sakshiAvatar },
   { name: "Manas", avatar: manasAvatar },
-  { name: "Sanskriti", avatar: sanskritiAvatar },
+];
+
+const row2 = [
   { name: "Pankaj", avatar: pankajAvatar },
+  { name: "Sanskriti", avatar: sanskritiAvatar },
 ];
 
 const containerVariants = {
@@ -46,45 +49,52 @@ const TeamSlide = () => {
           <span className="text-gradient-green">TEAM</span>
         </motion.h2>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-5 md:gap-7"
-        >
-          {teamMembers.map((member) => (
-            <motion.div
-              key={member.name}
-              variants={cardVariants}
-              whileHover={{ scale: 1.06, y: -6 }}
-              className="w-[calc(50%-10px)] md:w-[calc(20%-22px)]"
-            >
-              <div
-                className="rounded-2xl p-4 md:p-5 text-center flex flex-col items-center border border-white/15"
-                style={{
-                  background: "linear-gradient(145deg, hsl(var(--background) / 0.4), hsl(var(--background) / 0.25))",
-                  backdropFilter: "blur(24px) saturate(1.6)",
-                  WebkitBackdropFilter: "blur(24px) saturate(1.6)",
-                  boxShadow: "0 8px 32px hsl(var(--background) / 0.4), inset 0 1px 0 hsl(var(--foreground) / 0.06)",
-                  transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        {[row1, row2].map((row, rowIndex) => (
+          <motion.div
+            key={rowIndex}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex justify-center gap-5 md:gap-7 mb-5 md:mb-7 last:mb-0"
+          >
+            {row.map((member) => (
+              <motion.div
+                key={member.name}
+                variants={cardVariants}
+                whileHover={{
+                  scale: 1.08,
+                  y: -8,
+                  transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
                 }}
+                className="w-[45%] md:w-[200px]"
               >
-                <img
-                  src={member.avatar}
-                  alt={member.name}
-                  className="w-32 h-32 md:w-36 md:h-36 rounded-full object-contain mb-4"
-                />
-                <h3
-                  className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
-                  style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
+                <div
+                  className="group rounded-2xl p-4 md:p-5 text-center flex flex-col items-center border border-white/10 hover:border-primary/40 cursor-pointer"
+                  style={{
+                    background: "linear-gradient(145deg, hsl(var(--foreground) / 0.06), hsl(var(--foreground) / 0.02))",
+                    backdropFilter: "blur(30px) saturate(1.8)",
+                    WebkitBackdropFilter: "blur(30px) saturate(1.8)",
+                    boxShadow: "0 8px 32px hsl(var(--background) / 0.5), inset 0 1px 0 hsl(var(--foreground) / 0.08), inset 0 -1px 0 hsl(var(--foreground) / 0.03)",
+                    transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                  }}
                 >
-                  {member.name}
-                </h3>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                  <img
+                    src={member.avatar}
+                    alt={member.name}
+                    className="w-32 h-32 md:w-36 md:h-36 rounded-full object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <h3
+                    className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
+                    style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
+                  >
+                    {member.name}
+                  </h3>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        ))}
       </div>
     </section>
   );
