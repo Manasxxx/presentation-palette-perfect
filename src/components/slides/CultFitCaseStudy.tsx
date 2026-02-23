@@ -2,6 +2,11 @@ import { motion } from "framer-motion";
 import cultfitCreative1 from "@/assets/cultfit-creative-1.png";
 import cultfitCreative2 from "@/assets/cultfit-creative-2.png";
 
+/* Cult Fit brand: dark black #1A1A1A, pink/magenta #E91E63, yellow #FFC107 */
+const cultPink = "340 82% 52%";
+const cultYellow = "45 100% 51%";
+const cultDark = "0 0% 10%";
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -22,16 +27,40 @@ const itemVariants = {
 
 const CultFitCaseStudy = () => {
   return (
-    <section className="slide py-20 px-6 overflow-hidden">
-      <div className="max-w-6xl mx-auto w-full">
+    <section className="slide py-20 px-6 overflow-hidden relative">
+      {/* Circular wipe background */}
+      <motion.div
+        initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
+        whileInView={{ clipPath: "circle(150% at 50% 50%)", opacity: 1 }}
+        transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true, amount: 0.5 }}
+        className="absolute inset-0 z-0"
+        style={{
+          background: `linear-gradient(160deg, hsl(${cultDark}), hsl(0 0% 8%), hsl(${cultPink} / 0.2))`,
+        }}
+      />
+      {/* Fallback background */}
+      <div
+        className="absolute inset-0 z-[-1]"
+        style={{
+          background: `linear-gradient(160deg, hsl(${cultDark}), hsl(0 0% 8%), hsl(${cultPink} / 0.2))`,
+        }}
+      />
+
+      <div className="max-w-6xl mx-auto w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-6"
+          className="text-center mb-5"
         >
-          <span className="text-xs tracking-[0.3em] text-primary font-medium">CASE STUDY</span>
+          <span
+            className="text-xs tracking-[0.3em] font-medium uppercase"
+            style={{ color: `hsl(${cultPink})` }}
+          >
+            Case Study
+          </span>
         </motion.div>
 
         <motion.h2
@@ -39,10 +68,17 @@ const CultFitCaseStudy = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, type: "spring" }}
           viewport={{ once: true }}
-          className="text-3xl md:text-5xl font-black tracking-tight mb-4 text-center"
+          className="text-3xl md:text-5xl font-black tracking-tight mb-3 text-center text-white"
         >
-          <span className="text-foreground">Cult Fit </span>
-          <span className="text-gradient-green">Success</span>
+          Cult Fit{" "}
+          <span
+            className="bg-clip-text text-transparent"
+            style={{
+              backgroundImage: `linear-gradient(135deg, hsl(${cultPink}), hsl(${cultYellow}))`,
+            }}
+          >
+            Success
+          </span>
         </motion.h2>
 
         <motion.p
@@ -50,7 +86,8 @@ const CultFitCaseStudy = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-muted-foreground text-center mb-12 max-w-2xl mx-auto text-sm md:text-base"
+          className="text-center mb-10 max-w-2xl mx-auto text-sm md:text-base"
+          style={{ color: "hsl(0 0% 65%)" }}
         >
           Drove membership growth and brand awareness through performance marketing and engaging social content.
         </motion.p>
