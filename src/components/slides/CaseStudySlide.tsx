@@ -35,14 +35,19 @@ const mitsuiCyan = "193 100% 42%";
 
 const CaseStudySlide = () => {
   return (
-    <section
-      className="slide py-20 px-6 overflow-hidden"
-      style={{
-        background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))`,
-        backdropFilter: "blur(12px)",
-      }}
-    >
-      <div className="max-w-6xl mx-auto w-full">
+    <section className="slide py-20 px-6 overflow-hidden relative">
+      {/* Circular wipe background reveal */}
+      <motion.div
+        initial={{ clipPath: "circle(0% at 50% 50%)" }}
+        whileInView={{ clipPath: "circle(150% at 50% 50%)" }}
+        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true, amount: 0.15 }}
+        className="absolute inset-0 z-0"
+        style={{
+          background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))`,
+        }}
+      />
+      <div className="max-w-6xl mx-auto w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
