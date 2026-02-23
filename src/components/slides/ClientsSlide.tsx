@@ -56,19 +56,17 @@ const ClientsSlide = () => {
               key={client.name}
               variants={itemVariants}
               whileHover={{ scale: 1.06, y: -4 }}
-              className="px-6 py-4 rounded-full border border-white/10 hover:border-white/25 cursor-default"
+              className="px-6 py-4 rounded-full border border-white/15 hover:border-white/30 cursor-default"
               style={{
-                background: `linear-gradient(135deg, hsl(${client.color} / 0.12), hsl(${client.color} / 0.05))`,
-                backdropFilter: "blur(20px) saturate(1.5)",
-                WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                boxShadow: `inset 0 1px 0 hsl(${client.color} / 0.15), 0 4px 20px hsl(${client.color} / 0.08)`,
+                background: `linear-gradient(135deg, hsl(var(--foreground) / 0.07), hsl(var(--foreground) / 0.03)), linear-gradient(135deg, hsl(${client.color} / 0.06), hsl(${client.color} / 0.02))`,
+                backdropFilter: "blur(24px) saturate(1.6)",
+                WebkitBackdropFilter: "blur(24px) saturate(1.6)",
+                boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 4px 16px hsl(var(--background) / 0.3)`,
+                borderLeft: `2px solid hsl(${client.color} / 0.3)`,
                 transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
-              <span
-                className="text-sm md:text-base font-semibold"
-                style={{ color: `hsl(${client.color})` }}
-              >
+              <span className="text-sm md:text-base font-semibold text-foreground">
                 {client.name}
               </span>
             </motion.div>
