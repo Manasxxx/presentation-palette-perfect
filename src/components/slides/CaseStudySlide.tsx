@@ -37,7 +37,8 @@ const CaseStudySlide = () => {
     <section
       className="slide py-20 px-6 overflow-hidden"
       style={{
-        background: `linear-gradient(160deg, hsl(${mitsuiBlue}), hsl(210 80% 18%))`,
+        background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))`,
+        backdropFilter: "blur(12px)",
       }}
     >
       <div className="max-w-6xl mx-auto w-full">
