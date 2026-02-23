@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Users, Eye, MousePointer, Gauge } from "lucide-react";
 import AnimatedStat from "@/components/AnimatedStat";
+import mitsuiCreative1 from "@/assets/mitsui-creative-1.png";
+import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
 
 const stats = [
   { icon: Eye, value: "5.8M", label: "Social Impressions", subtext: "Over 1 year" },
@@ -68,20 +70,15 @@ const CaseStudySlide = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-3 gap-4 md:gap-6 mb-10"
+          className="grid grid-cols-2 gap-4 md:gap-6 mb-10"
         >
-          {[1, 2, 3].map((i) => (
+          {[mitsuiCreative1, mitsuiCreative2].map((src, i) => (
             <motion.div
               key={i}
               variants={statVariants}
               className="aspect-[4/3] rounded-2xl overflow-hidden"
-              style={{
-                background: "linear-gradient(135deg, hsl(180 45% 53% / 0.3), hsl(180 45% 40% / 0.5))"
-              }}
             >
-              <div className="w-full h-full flex items-center justify-center border border-primary/20 rounded-2xl">
-                <span className="text-primary/50 text-sm font-medium">Creative {i}</span>
-              </div>
+              <img src={src} alt={`Mitsui Chemicals creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>
