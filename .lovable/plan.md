@@ -1,60 +1,80 @@
 
 
-## Plan: Section Navigation Bar with Labels + Partner Badges
+## Plan: Logo Marquee on Clients Slide
 
 ### What changes
 
-**1. Replace the right-side pill dots with a top navigation bar of labeled section links**
+Replace the current text-only client pills on the Clients slide with individual company logo images displayed in a smooth, infinitely scrolling marquee animation with a white/light tinted background behind each logo.
 
-The current vertical pill indicator on the right side will be removed. Instead, the persistent header (visible from slide 1 onward, hidden on the last slide) will be expanded to include clickable section labels that jump to each slide. The labels will be:
+### Logos to extract (12 companies from uploaded image)
 
-- Intro | Why Us | About | Team | Services | Clients | Case Study | Baxsaa | Contact
+The uploaded image will be cropped into 12 individual logo files:
+1. Mitsui Chemicals
+2. DEHN
+3. VNT
+4. Kuraray
+5. AVI Global Plast
+6. GirlUp
+7. Cliques
+8. IIM Lucknow
+9. The Doon School
+10. Welham Girls' School
+11. TCPL Packaging Limited
+12. Ferroli
 
-The active section gets a subtle underline/highlight indicator. Clicking any label smooth-scrolls to that slide.
+Each logo will be saved as a separate file in `src/assets/clients/`.
 
-**2. Add Google Certified Partner and Meta (Facebook) Partner badges to the Title Slide**
+### Marquee design
 
-Below the "www.owlsurf.com" link on the cover page, add a row of partner badges:
-- Google Partner badge (SVG icon + "Google Certified" label)
-- Meta Business Partner badge (SVG icon + "Meta Partner" label)
-
-These will be styled as small glass pills with the respective brand colors, appearing with a staggered fade-in animation.
-
----
+- Two rows of logos scrolling horizontally in opposite directions (row 1 left-to-right, row 2 right-to-left)
+- Each logo sits inside a white/light rounded pill container (providing contrast on the dark background)
+- Logos are duplicated to create a seamless infinite loop
+- Pure CSS `@keyframes` animation for smooth, performant scrolling
+- Gradient fade masks on left and right edges for a polished look
+- The "MAJOR CLIENTS" heading stays as-is above the marquee
 
 ### Technical Details
 
-**Remove `SlideNavigation` component usage from `Index.tsx`**
-- Remove the `SlideNavigation` import and component render
-- The `SlideNavigation.tsx` file can remain but will no longer be used
+**New asset files (12 files)**
+- Copy the uploaded image, then create individual logo images. Since we only have one composite image, we'll save it and use CSS background positioning, OR better: save the full image and use individual `<img>` tags with the composite. However, since we can't crop in-browser, we'll use the single uploaded image displayed as individual styled containers with the company names as fallback text, paired with the full image.
 
-**Update `PersistentHeader.tsx`**
-- Accept `currentSlide` and `onNavigate` props in addition to `visible`
-- Add a row of section label buttons below or integrated into the header bar
-- Each label is a compact clickable text button with:
-  - Muted text by default, brighter text + bottom accent bar when active
-  - `onClick` calls `onNavigate(index)` to scroll to that slide
-- On mobile: labels become a horizontally scrollable row with smaller text
-- The header will now also be visible on the first slide (slide 0) so users always have navigation, OR it stays hidden on slide 0 (cover) and appears from slide 1 -- keeping current behavior since the cover already has its own branding
+Actually, since we only have one composite image and cannot programmatically crop it, the best approach is:
+- Save the composite image as a single asset
+- Display individual logo containers with white backgrounds, using the company name as text (similar to current but styled as a marquee)
+- The user can later replace each with individual cropped logos
 
-**Update `Index.tsx`**
-- Pass `currentSlide` and `onNavigate={navigateToSlide}` to `PersistentHeader`
-- Remove `SlideNavigation` component
+**OR** we use the composite image sliced via CSS `object-position` -- but this is fragile.
 
-**Update `TitleSlide.tsx`**
-- Add a badges row after the website link with two glass-styled badge pills
-- Use Lucide icons (`Award`, `BadgeCheck`) or inline SVG for Google/Meta logos
-- Staggered animation with delay after the website link appears
+**Recommended approach**: Save the full image, display it in the marquee as one long banner that scrolls, duplicated for seamless looping. This gives the exact visual effect the user wants without needing individual crops.
 
-**Slide label mapping:**
-```
-const slideLabels = [
-  "Intro", "Why Us", "About", "Team",
-  "Services", "Clients", "Case Study", "Baxsaa", "Contact"
-];
-```
+**Files to create:**
+- `src/assets/clients-logos.png` -- the uploaded composite image
 
-### Files to modify
-- `src/components/PersistentHeader.tsx` -- add section nav labels with active state
-- `src/pages/Index.tsx` -- pass new props, remove SlideNavigation
-- `src/components/slides/TitleSlide.tsx` -- add Google + Meta partner badges
+**Files to modify:**
+- `src/components/slides/ClientsSlide.tsx` -- complete rewrite:
+  - Replace text pills with a marquee component
+  - Two rows: each row contains the full logo banner image repeated twice
+  - CSS animation scrolls each row continuously
+  - White/light semi-transparent background behind the image strip
+  - Gradient edge masks using `mask-image` CSS property
+  - Keep the heading
+
+- `src/index.css` -- add marquee keyframes:
+  ```css
+  @keyframes marquee-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-right {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+  ```
+
+### Visual result
+- Dark slide background with hexagon pattern
+- "MAJOR CLIENTS" heading
+- Two horizontal strips with white/frosted backgrounds scrolling smoothly
+- Each strip shows the row of logos continuously looping
+- Gradient fade on edges for polish
+
