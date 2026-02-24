@@ -79,15 +79,15 @@ const BaxsaaCaseStudy = () => {
           className="text-3xl md:text-5xl font-black tracking-tight mb-3 text-center"
           style={{ color: "hsl(0 0% 15%)" }}
         >
-          The Baxsaa Co.{" "}
           <span
             className="bg-clip-text text-transparent"
             style={{
               backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(0 55% 45%))`,
             }}
           >
-            Success
-          </span>
+            The Baxsaa Co.
+          </span>{" "}
+          Success
         </motion.h2>
 
         <motion.p

@@ -77,15 +77,15 @@ const GirlUpCaseStudy = () => {
           viewport={{ once: true }}
           className="text-3xl md:text-5xl font-black tracking-tight mb-3 text-center text-white"
         >
-          Girl Up{" "}
           <span
             className="bg-clip-text text-transparent"
             style={{
               backgroundImage: `linear-gradient(135deg, hsl(${girlUpTeal}), hsl(${girlUpPurple}))`,
             }}
           >
-            Success
-          </span>
+            Girl Up
+          </span>{" "}
+          Success
         </motion.h2>
 
         <motion.p

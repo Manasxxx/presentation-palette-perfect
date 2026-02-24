@@ -77,15 +77,15 @@ const CultFitCaseStudy = () => {
           viewport={{ once: true }}
           className="text-3xl md:text-5xl font-black tracking-tight mb-3 text-center text-white"
         >
-          Cult Fit{" "}
           <span
             className="bg-clip-text text-transparent"
             style={{
               backgroundImage: `linear-gradient(135deg, hsl(${cultPink}), hsl(${cultYellow}))`,
             }}
           >
-            Success
-          </span>
+            Cult Fit
+          </span>{" "}
+          Success
         </motion.h2>
 
         <motion.p
