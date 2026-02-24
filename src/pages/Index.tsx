@@ -65,7 +65,7 @@ const Index = () => {
       style={{ scrollSnapType: "y mandatory" }}
     >
       <PersistentHeader
-        visible={currentSlide > 0 && currentSlide < slides.length - 1}
+        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 6 && currentSlide <= 9)}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
