@@ -79,15 +79,15 @@ const CTPCaseStudy = () => {
           className="text-3xl md:text-5xl font-black tracking-tight mb-3 text-center"
           style={{ color: "hsl(0 0% 15%)" }}
         >
-          Check This Property{" "}
           <span
             className="bg-clip-text text-transparent"
             style={{
               backgroundImage: `linear-gradient(135deg, hsl(${ctpGreen}), hsl(${ctpTeal}))`,
             }}
           >
-            Success
-          </span>
+            Check This Property
+          </span>{" "}
+          Success
         </motion.h2>
 
         <motion.p
