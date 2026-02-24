@@ -3,8 +3,21 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const slideLabels = [
   "Intro", "Why Us", "About", "Team",
-  "Services", "Clients", "Case Study", "Baxsaa", "Cult Fit", "Contact"
+  "Services", "Clients", "Case Study", "Contact"
 ];
+
+// Maps slide index to nav label index (slides 6-9 are all case studies → label index 6)
+const slideToNavIndex = (slideIndex: number): number => {
+  if (slideIndex <= 6) return slideIndex;
+  if (slideIndex <= 9) return 6;
+  return 7; // Contact
+};
+
+// Maps nav label index back to slide index for navigation
+const navToSlideIndex = (navIndex: number): number => {
+  if (navIndex <= 6) return navIndex;
+  return 10; // Contact
+};
 
 interface PersistentHeaderProps {
   visible: boolean;
@@ -33,11 +46,11 @@ const PersistentHeader = ({ visible, currentSlide, onNavigate }: PersistentHeade
             }}
           >
             {slideLabels.map((label, i) => {
-              const isActive = currentSlide === i;
+              const isActive = slideToNavIndex(currentSlide) === i;
               return (
                 <button
                   key={label}
-                  onClick={() => onNavigate(i)}
+                  onClick={() => onNavigate(navToSlideIndex(i))}
                   className="relative px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-semibold tracking-wider uppercase whitespace-nowrap rounded-full"
                   style={{
                     color: isActive
