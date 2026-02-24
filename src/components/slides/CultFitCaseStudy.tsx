@@ -105,7 +105,7 @@ const CultFitCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 mb-8"
+          className="grid grid-cols-2 gap-4 md:gap-6 mb-8 items-center"
         >
           {[cultfitCreative1, cultfitCreative2].map((src, i) => (
             <motion.div
