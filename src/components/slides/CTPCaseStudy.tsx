@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import ctpCreative1 from "@/assets/ctp-creative-1.png";
 import ctpCreative2 from "@/assets/ctp-creative-2.png";
+import ctpCreative3 from "@/assets/ctp-creative-3.png";
 
 /* Check This Property brand: olive green #6B9B37, dark teal #2C4A4E, light sage #E8F0E0 */
 const ctpGreen = "95 48% 41%";
@@ -106,9 +107,9 @@ const CTPCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 mb-8 items-center"
+          className="grid grid-cols-3 gap-4 md:gap-6 mb-8 items-center"
         >
-          {[ctpCreative1, ctpCreative2].map((src, i) => (
+          {[ctpCreative1, ctpCreative2, ctpCreative3].map((src, i) => (
             <motion.div
               key={i}
               variants={itemVariants}
