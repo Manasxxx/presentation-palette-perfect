@@ -10,6 +10,7 @@ const clients = [
   { name: "IIM Lucknow", color: "25 80% 50%" },            // Saffron/orange
   { name: "AVI Global Plast", color: "145 60% 40%" },      // Green
   { name: "The Baxsaa Co.", color: "0 68% 33%" },          // Maroon
+  { name: "Check This Property", color: "95 48% 41%" },   // Olive green
 ];
 
 const containerVariants = {

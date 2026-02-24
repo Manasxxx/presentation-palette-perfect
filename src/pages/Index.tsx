@@ -9,6 +9,7 @@ import CaseStudySlide from "@/components/slides/CaseStudySlide";
 import BaxsaaCaseStudy from "@/components/slides/BaxsaaCaseStudy";
 import CultFitCaseStudy from "@/components/slides/CultFitCaseStudy";
 import GirlUpCaseStudy from "@/components/slides/GirlUpCaseStudy";
+import CTPCaseStudy from "@/components/slides/CTPCaseStudy";
 import ContactSlide from "@/components/slides/ContactSlide";
 
 import ThemeToggle from "@/components/ThemeToggle";
@@ -26,6 +27,7 @@ const slides = [
   BaxsaaCaseStudy,
   CultFitCaseStudy,
   GirlUpCaseStudy,
+  CTPCaseStudy,
   ContactSlide,
 ];
 
@@ -65,7 +67,7 @@ const Index = () => {
       style={{ scrollSnapType: "y mandatory" }}
     >
       <PersistentHeader
-        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 6 && currentSlide <= 9)}
+        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 6 && currentSlide <= 10)}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
