@@ -75,7 +75,11 @@ const Index = () => {
       
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
-          <SlideComponent />
+          {index === 0 ? (
+            <SlideComponent onViewCaseStudies={() => navigateToSlide(6)} />
+          ) : (
+            <SlideComponent />
+          )}
         </SlideReveal>
       ))}
     </div>
