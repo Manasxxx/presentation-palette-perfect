@@ -9,14 +9,14 @@ const slideLabels = [
 // Maps slide index to nav label index (slides 6-9 are all case studies → label index 6)
 const slideToNavIndex = (slideIndex: number): number => {
   if (slideIndex <= 6) return slideIndex;
-  if (slideIndex <= 10) return 6;
+  if (slideIndex <= 11) return 6;
   return 7; // Contact
 };
 
 // Maps nav label index back to slide index for navigation
 const navToSlideIndex = (navIndex: number): number => {
   if (navIndex <= 6) return navIndex;
-  return 11; // Contact
+  return 12; // Contact
 };
 
 interface PersistentHeaderProps {
