@@ -35,7 +35,7 @@ const itemVariants = {
 
 const GirlUpCaseStudy = () => {
   return (
-    <section className="slide py-20 px-6 overflow-hidden relative">
+    <section className="slide py-10 px-6 overflow-hidden relative">
       {/* Circular wipe background — teal to purple glow */}
       <motion.div
         initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
@@ -60,7 +60,7 @@ const GirlUpCaseStudy = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-5"
+          className="text-center mb-3"
         >
           <span
             className="text-xs tracking-[0.3em] font-medium uppercase"
@@ -93,7 +93,7 @@ const GirlUpCaseStudy = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center mb-10 max-w-2xl mx-auto text-sm md:text-base"
+          className="text-center mb-6 max-w-2xl mx-auto text-sm md:text-base"
           style={{ color: "hsl(168 30% 75%)" }}
         >
           Amplified youth-led advocacy through vibrant social media content and community-driven engagement strategies.
@@ -105,7 +105,7 @@ const GirlUpCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 mb-8"
+          className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-4xl mx-auto"
         >
           {[girlupCreative1, girlupCreative2].map((src, i) => (
             <motion.div
