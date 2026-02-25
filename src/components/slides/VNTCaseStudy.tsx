@@ -1,19 +1,10 @@
 import { motion } from "framer-motion";
-import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import vntCreative1 from "@/assets/vnt-creative-1.png";
 import vntCreative2 from "@/assets/vnt-creative-2.png";
 
 /* VNT brand: electric green #7CC83E, teal #00B4D8, dark #1B3A2D */
 const vntGreen = "100 55% 50%";
 const vntTeal = "192 100% 42%";
-
-const stats = [
-  { icon: Eye, value: "2.4M", label: "Impressions" },
-  { icon: Users, value: "520%", label: "Follower Growth" },
-  { icon: TrendingUp, value: "11.8%", label: "Engagement" },
-  { icon: MousePointer, value: "42K", label: "Link Clicks" },
-  { icon: Gauge, value: "4.1X", label: "ROI" },
-];
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -36,7 +27,7 @@ const itemVariants = {
 const VNTCaseStudy = () => {
   return (
     <section className="slide py-20 px-6 overflow-hidden relative">
-      {/* Circular wipe background — clean mint/grey */}
+      {/* Circular wipe background — rich green */}
       <motion.div
         initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
         whileInView={{ clipPath: "circle(150% at 50% 50%)", opacity: 1 }}
@@ -44,13 +35,13 @@ const VNTCaseStudy = () => {
         viewport={{ once: true, amount: 0.5 }}
         className="absolute inset-0 z-0"
         style={{
-          background: `linear-gradient(145deg, hsl(160 20% 94%), hsl(190 15% 90%), hsl(${vntTeal} / 0.12))`,
+          background: `linear-gradient(145deg, hsl(120 25% 88%), hsl(140 30% 82%), hsl(${vntGreen} / 0.35))`,
         }}
       />
       <div
         className="absolute inset-0 z-[-1]"
         style={{
-          background: `linear-gradient(145deg, hsl(160 20% 94%), hsl(190 15% 90%), hsl(${vntTeal} / 0.12))`,
+          background: `linear-gradient(145deg, hsl(120 25% 88%), hsl(140 30% 82%), hsl(${vntGreen} / 0.35))`,
         }}
       />
 
@@ -106,7 +97,7 @@ const VNTCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 mb-8 items-center max-w-3xl mx-auto"
+          className="grid grid-cols-2 gap-4 md:gap-6 items-center max-w-3xl mx-auto"
         >
           {[vntCreative1, vntCreative2].map((src, i) => (
             <motion.div
@@ -117,44 +108,6 @@ const VNTCaseStudy = () => {
               <img src={src} alt={`VNT creative ${i + 1}`} className="w-full h-auto object-contain rounded-2xl" />
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Stats as liquid glass pills */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3"
-        >
-          {stats.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                variants={itemVariants}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border"
-                style={{
-                  borderColor: `hsl(${vntGreen} / 0.2)`,
-                  background: `linear-gradient(135deg, hsl(0 0% 100% / 0.6), hsl(160 20% 94% / 0.4))`,
-                  backdropFilter: "blur(20px) saturate(1.5)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                  boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.5), 0 4px 16px hsl(${vntGreen} / 0.1)`,
-                }}
-              >
-                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${vntGreen})` }} />
-                <span className="text-sm md:text-base font-bold" style={{ color: "hsl(0 0% 15%)" }}>
-                  {stat.value}
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "hsl(0 0% 45%)" }}
-                >
-                  {stat.label}
-                </span>
-              </motion.div>
-            );
-          })}
         </motion.div>
       </div>
     </section>
