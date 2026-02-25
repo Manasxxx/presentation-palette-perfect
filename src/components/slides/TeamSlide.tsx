@@ -85,12 +85,23 @@ const TeamSlide = () => {
                     alt={member.name}
                     className="w-32 h-32 md:w-36 md:h-36 rounded-full object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
                   />
-                  <h3
-                    className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
-                    style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
+                  <div
+                    className="mt-1 px-5 py-1.5 rounded-full"
+                    style={{
+                      background: "linear-gradient(135deg, hsl(var(--foreground) / 0.08), hsl(var(--foreground) / 0.03))",
+                      backdropFilter: "blur(20px) saturate(1.5)",
+                      WebkitBackdropFilter: "blur(20px) saturate(1.5)",
+                      border: "1px solid hsl(var(--foreground) / 0.1)",
+                      boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.12), 0 2px 8px hsl(var(--background) / 0.3)",
+                    }}
                   >
-                    {member.name}
-                  </h3>
+                    <h3
+                      className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
+                      style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
+                    >
+                      {member.name}
+                    </h3>
+                  </div>
                   <div className="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
                     <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                       <Linkedin size={16} fill="currentColor" strokeWidth={0} />
