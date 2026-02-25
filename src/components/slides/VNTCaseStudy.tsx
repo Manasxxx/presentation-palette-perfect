@@ -26,7 +26,7 @@ const itemVariants = {
 
 const VNTCaseStudy = () => {
   return (
-    <section className="slide py-20 px-6 overflow-hidden relative">
+    <section className="slide py-10 px-6 overflow-hidden relative">
       {/* Circular wipe background — rich green */}
       <motion.div
         initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
@@ -85,7 +85,7 @@ const VNTCaseStudy = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center mb-10 max-w-2xl mx-auto text-sm md:text-base"
+          className="text-center mb-6 max-w-2xl mx-auto text-sm md:text-base"
           style={{ color: "hsl(0 0% 40%)" }}
         >
           Amplified VNT's EV charging network presence through impactful visual storytelling and strategic digital campaigns across India.
@@ -97,7 +97,7 @@ const VNTCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 items-center max-w-3xl mx-auto"
+          className="grid grid-cols-2 gap-4 md:gap-6 items-center max-w-4xl mx-auto"
         >
           {[vntCreative1, vntCreative2].map((src, i) => (
             <motion.div

@@ -25,7 +25,7 @@ const itemVariants = {
 
 const MitsuiCaseStudy2 = () => {
   return (
-    <section className="slide py-20 px-6 overflow-hidden relative">
+    <section className="slide py-10 px-6 overflow-hidden relative">
       <motion.div
         initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
         whileInView={{ clipPath: "circle(150% at 50% 50%)", opacity: 1 }}
@@ -49,7 +49,7 @@ const MitsuiCaseStudy2 = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-5"
+          className="text-center mb-3"
         >
           <span
             className="text-xs tracking-[0.3em] font-medium uppercase"
@@ -82,7 +82,7 @@ const MitsuiCaseStudy2 = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center mb-10 max-w-2xl mx-auto text-sm md:text-base"
+          className="text-center mb-6 max-w-2xl mx-auto text-sm md:text-base"
           style={{ color: "hsl(210 30% 75%)" }}
         >
           High-impact visual campaigns crafted for Mitsui Chemicals' product lines and sustainability initiatives.
@@ -93,7 +93,7 @@ const MitsuiCaseStudy2 = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 items-center max-w-3xl mx-auto"
+          className="grid grid-cols-2 gap-4 md:gap-6 items-center max-w-4xl mx-auto"
         >
           {[mitsuiCreative3, mitsuiCreative4].map((src, i) => (
             <motion.div
