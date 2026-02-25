@@ -209,3 +209,8 @@
     animation: shimmer 2s ease-in-out 1 forwards;
   }
 }
+
+@keyframes shimmer-cascade {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

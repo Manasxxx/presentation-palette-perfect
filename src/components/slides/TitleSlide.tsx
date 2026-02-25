@@ -115,14 +115,22 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.0 }}
             onClick={onViewCaseStudies}
-            className="mt-5 px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105"
+            className="mt-5 px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
             style={{
               background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(262 95% 64%))",
               color: "white",
               boxShadow: "0 4px 20px hsl(180 45% 53% / 0.35), 0 0 40px hsl(262 95% 64% / 0.15)",
             }}
           >
-            View Case Studies
+            <span className="relative z-10">Jump to Creatives</span>
+            <span
+              className="absolute inset-0 z-0"
+              style={{
+                background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
+                backgroundSize: "200% 100%",
+                animation: "shimmer-cascade 2s ease-in-out infinite",
+              }}
+            />
           </motion.button>
         )}
 
