@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import logo from "@/assets/logo.jpg";
 
-const TitleSlide = () => {
+const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -108,6 +108,23 @@ const TitleSlide = () => {
         >
           www.owlsurf.com
         </motion.a>
+
+        {onViewCaseStudies && (
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+            onClick={onViewCaseStudies}
+            className="mt-5 px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105"
+            style={{
+              background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(262 95% 64%))",
+              color: "white",
+              boxShadow: "0 4px 20px hsl(180 45% 53% / 0.35), 0 0 40px hsl(262 95% 64% / 0.15)",
+            }}
+          >
+            View Case Studies
+          </motion.button>
+        )}
 
         {/* Partner Badges */}
         <motion.div
