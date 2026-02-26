@@ -72,7 +72,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   }, []);
 
   const getSlideStyle = (index: number): React.CSSProperties => {
-    const slideWidth = "min(30vw, 280px)";
+    const slideWidth = "min(35vw, 340px)";
 
     if (index === currentIndex) {
       return {
@@ -107,7 +107,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     <div
       ref={containerRef}
       className="relative flex items-center justify-center select-none"
-      style={{ width: "calc(3 * min(30vw, 280px))", height: "calc(min(30vw, 280px) * 1.3)" }}
+      style={{ width: "calc(3 * min(35vw, 340px))", height: "calc(min(35vw, 340px) * 1.4)" }}
     >
       {/* Nav buttons */}
       <button
@@ -128,7 +128,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
                 key={i}
                 className="col-start-1 row-start-1"
                 style={{
-                  width: "min(30vw, 280px)",
+                  width: "min(35vw, 340px)",
                   aspectRatio: "1 / 1",
                   perspective: "800px",
                   transition: "transform 800ms ease",
@@ -147,7 +147,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
                     transition: isCurrent ? undefined : "transform 800ms ease",
                   }}
                 >
-                  <div className="relative w-full h-full overflow-hidden rounded-2xl">
+                  <div className="relative w-full h-full overflow-hidden">
                     <img
                       src={slide.image}
                       alt={slide.alt}
@@ -177,7 +177,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
       </button>
 
       {/* Dot indicators */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
         {slides.map((_, i) => (
           <button
             key={i}
