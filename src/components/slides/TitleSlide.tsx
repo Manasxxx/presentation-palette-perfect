@@ -26,13 +26,13 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         }}
       />
       
-      {/* Globe background */}
-      <div className="absolute inset-0 flex items-end justify-center overflow-hidden pointer-events-none" style={{ top: '30%' }}>
-        <Globe className="opacity-40" />
+      {/* Globe background - zoomed in, only top half visible */}
+      <div className="absolute left-1/2 -translate-x-1/2 overflow-hidden pointer-events-none" style={{ top: '45%', width: '150%', height: '100%' }}>
+        <Globe className="opacity-40 !max-w-none !w-full" />
       </div>
       <motion.div 
         style={{ y, opacity, scale }}
-        className="relative z-10 flex flex-col items-center justify-center text-center px-6"
+        className="relative z-10 flex flex-col items-center justify-center text-center px-6 -mt-16 md:-mt-24"
       >
         {/* Logo with glass effect */}
         <motion.div
