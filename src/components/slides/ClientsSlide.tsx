@@ -66,26 +66,17 @@ const ClientsSlide = () => {
               key={client.name}
               variants={itemVariants}
               whileHover={{ scale: 1.06, y: -4 }}
-              className="px-6 py-4 rounded-2xl border border-white/15 hover:border-white/30 cursor-default flex items-center justify-center"
+              className="px-6 py-4 rounded-2xl flex items-center justify-center"
               style={{
-                background: `linear-gradient(135deg, hsl(var(--foreground) / 0.07), hsl(var(--foreground) / 0.03)), linear-gradient(135deg, hsl(${client.color} / 0.06), hsl(${client.color} / 0.02))`,
-                backdropFilter: "blur(24px) saturate(1.6)",
-                WebkitBackdropFilter: "blur(24px) saturate(1.6)",
-                boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 4px 16px hsl(var(--background) / 0.3)`,
-                borderLeft: `2px solid hsl(${client.color} / 0.3)`,
-                transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
                 minHeight: "56px",
+                transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
               {client.logo ? (
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-8 md:h-10 w-auto object-contain brightness-0 invert dark:brightness-0 dark:invert opacity-80"
-                  style={{
-                    filter: "brightness(0) invert(1)",
-                    opacity: 0.85,
-                  }}
+                  className="h-8 md:h-10 w-auto object-contain"
                 />
               ) : (
                 <span className="text-sm md:text-base font-semibold text-foreground">
