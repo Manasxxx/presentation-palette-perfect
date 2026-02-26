@@ -115,7 +115,7 @@ const CaseStudySlide = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="flex justify-center mb-6"
+          className="flex justify-center mb-14"
         >
           <ParallaxCardSlider slides={sliderImages} accentColor={mitsuiCyan} />
         </motion.div>

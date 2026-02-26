@@ -151,11 +151,11 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
                     <img
                       src={slide.image}
                       alt={slide.alt}
-                      className="absolute top-1/2 left-1/2 w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                       style={{
                         transform: isCurrent
-                          ? `translate(-50%, -50%) scale(1.25) translate3d(${tilt.bgX.toFixed(2)}%, ${tilt.bgY.toFixed(2)}%, 0)`
-                          : "translate(-50%, -50%) scale(1.25)",
+                          ? `scale(1.05) translate3d(${tilt.bgX.toFixed(2)}%, ${tilt.bgY.toFixed(2)}%, 0)`
+                          : "scale(1.05)",
                         filter: isCurrent ? "brightness(0.85)" : "brightness(0.5)",
                         transition: "filter 800ms ease",
                       }}
