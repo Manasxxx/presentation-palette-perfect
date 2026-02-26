@@ -114,7 +114,7 @@ const GirlUpCaseStudy = () => {
               variants={itemVariants}
               className="rounded-2xl overflow-hidden"
             >
-              <img src={src} alt={`Girl Up creative ${i + 1}`} className="w-full h-auto object-contain rounded-2xl" />
+              <img src={src} alt={`Girl Up creative ${i + 1}`} loading="lazy" className="w-full h-auto object-contain rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>

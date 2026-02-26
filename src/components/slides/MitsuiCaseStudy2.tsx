@@ -101,7 +101,7 @@ const MitsuiCaseStudy2 = () => {
               variants={itemVariants}
               className="rounded-2xl overflow-hidden"
             >
-              <img src={src} alt={`Mitsui Chemicals creative ${i + 3}`} className="w-full h-auto object-contain rounded-2xl" />
+              <img src={src} alt={`Mitsui Chemicals creative ${i + 3}`} loading="lazy" className="w-full h-auto object-contain rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>

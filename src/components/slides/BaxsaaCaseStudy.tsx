@@ -115,7 +115,7 @@ const BaxsaaCaseStudy = () => {
               variants={itemVariants}
               className="aspect-square rounded-2xl overflow-hidden"
             >
-              <img src={src} alt={`Baxsaa Co. creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
+              <img src={src} alt={`Baxsaa Co. creative ${i + 1}`} loading="lazy" className="w-full h-full object-cover rounded-2xl" />
             </motion.div>
           ))}
         </motion.div>
