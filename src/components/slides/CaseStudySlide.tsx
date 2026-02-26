@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import mitsuiCreative1 from "@/assets/mitsui-creative-1.png";
 import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
+import mitsuiCreative3 from "@/assets/mitsui-creative-3.png";
+import mitsuiCreative4 from "@/assets/mitsui-creative-4.png";
+import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 
 const stats = [
   { icon: Eye, value: "5.8M", label: "Impressions" },
@@ -32,6 +35,13 @@ const itemVariants = {
 /* Mitsui brand: deep blue #004B97, accent cyan #00B4D8, white */
 const mitsuiBlue = "210 100% 30%";
 const mitsuiCyan = "193 100% 42%";
+
+const sliderImages = [
+  { image: mitsuiCreative1, alt: "Mitsui Chemicals creative 1" },
+  { image: mitsuiCreative2, alt: "Mitsui Chemicals creative 2" },
+  { image: mitsuiCreative3, alt: "Mitsui Chemicals creative 3" },
+  { image: mitsuiCreative4, alt: "Mitsui Chemicals creative 4" },
+];
 
 const CaseStudySlide = () => {
   return (
@@ -99,23 +109,15 @@ const CaseStudySlide = () => {
           Boosted brand visibility, engagement, and qualified leads through strategic digital marketing.
         </motion.p>
 
-        {/* Creatives */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+        {/* 3D Parallax Card Slider */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-4xl mx-auto"
+          className="flex justify-center mb-6"
         >
-          {[mitsuiCreative1, mitsuiCreative2].map((src, i) => (
-            <motion.div
-              key={i}
-              variants={itemVariants}
-              className="aspect-square rounded-2xl overflow-hidden"
-            >
-              <img src={src} alt={`Mitsui Chemicals creative ${i + 1}`} className="w-full h-full object-cover rounded-2xl" />
-            </motion.div>
-          ))}
+          <ParallaxCardSlider slides={sliderImages} accentColor={mitsuiCyan} />
         </motion.div>
 
         {/* Stats as liquid glass pills */}
@@ -141,9 +143,7 @@ const CaseStudySlide = () => {
                 }}
               >
                 <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${mitsuiCyan})` }} />
-                <span
-                  className="text-sm md:text-base font-bold text-white"
-                >
+                <span className="text-sm md:text-base font-bold text-white">
                   {stat.value}
                 </span>
                 <span
