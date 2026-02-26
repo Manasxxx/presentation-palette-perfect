@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import logo from "@/assets/logo.jpg";
 import { Globe } from "@/components/ui/globe";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const ref = useRef(null);
@@ -45,16 +46,11 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             initial={{ clipPath: "circle(0% at 50% 50%)" }}
             animate={{ clipPath: "circle(50% at 50% 50%)" }}
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 animate-pulse-glow flex items-center justify-center"
-            style={{
-              background: "linear-gradient(135deg, hsl(180 45% 53% / 0.12), hsl(200 20% 50% / 0.08))",
-              backdropFilter: "blur(24px) saturate(1.4)",
-              WebkitBackdropFilter: "blur(24px) saturate(1.4)",
-              border: "1.5px solid hsl(0 0% 100% / 0.18)",
-              boxShadow: "0 8px 32px hsl(180 45% 53% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.15), inset 0 -1px 0 hsl(0 0% 0% / 0.05)",
-            }}
+            className="w-32 h-32 md:w-40 md:h-40 animate-pulse-glow flex items-center justify-center"
           >
-            <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+            <LiquidGlassCard borderRadius="50%" padding="4px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
+              <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+            </LiquidGlassCard>
           </motion.div>
         </motion.div>
 
@@ -86,20 +82,17 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className="flex items-center gap-4 mb-8 px-8 py-3 rounded-full"
-          style={{
-            background: "linear-gradient(135deg, hsl(200 20% 50% / 0.1), hsl(200 15% 60% / 0.05))",
-            backdropFilter: "blur(16px) saturate(1.3)",
-            WebkitBackdropFilter: "blur(16px) saturate(1.3)",
-            border: "1.5px solid hsl(0 0% 100% / 0.15)",
-            boxShadow: "0 2px 16px hsl(0 0% 0% / 0.08), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.04)",
-          }}
+          className="mb-8"
         >
-          <div className="h-px w-10 bg-owl-orange" />
-          <p className="text-sm md:text-base font-semibold tracking-[0.25em] text-muted-foreground">
-            PORTFOLIO & CREDENTIALS
-          </p>
-          <div className="h-px w-10 bg-owl-orange" />
+          <LiquidGlassCard padding="0.75rem 2rem" borderRadius="9999px" blur={12} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
+            <div className="flex items-center gap-4">
+              <div className="h-px w-10 bg-owl-orange" />
+              <p className="text-sm md:text-base font-semibold tracking-[0.25em] text-muted-foreground">
+                PORTFOLIO & CREDENTIALS
+              </p>
+              <div className="h-px w-10 bg-owl-orange" />
+            </div>
+          </LiquidGlassCard>
         </motion.div>
 
         <motion.a
@@ -147,40 +140,28 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           className="flex flex-wrap items-center justify-center gap-3 mt-6"
         >
           {/* Google Certified Badge */}
-          <div
-            className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wider"
-            style={{
-              background: "linear-gradient(135deg, hsl(200 20% 50% / 0.1), hsl(200 15% 60% / 0.05))",
-              backdropFilter: "blur(16px)",
-              border: "1.5px solid hsl(0 0% 100% / 0.12)",
-              boxShadow: "0 2px 12px hsl(0 0% 0% / 0.06)",
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
-              <path d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" fill="#4285F4"/>
-              <path d="M4.2 14.8l7 5.1C13 15.5 18 12 24 12c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 15.4 2 8.1 7.3 4.2 14.8z" fill="#EA4335"/>
-              <path d="M24 46c5.4 0 10.3-1.8 14.1-5l-6.9-5.7C29.1 37 26.7 38 24 38c-6.1 0-11.2-4.1-13-9.7l-7.1 5.5C7.8 40.6 15.3 46 24 46z" fill="#34A853"/>
-              <path d="M44.5 20H24v8.5h11.8c-1 3-2.8 5.3-5.5 6.8l6.9 5.7c4-3.7 6.8-9.2 6.8-17 0-1.3-.2-2.7-.5-4z" fill="#FBBC05"/>
-            </svg>
-            <span className="text-muted-foreground">Google Certified</span>
-          </div>
+          <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
+            <div className="flex items-center gap-2 text-xs font-semibold tracking-wider">
+              <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
+                <path d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" fill="#4285F4"/>
+                <path d="M4.2 14.8l7 5.1C13 15.5 18 12 24 12c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 15.4 2 8.1 7.3 4.2 14.8z" fill="#EA4335"/>
+                <path d="M24 46c5.4 0 10.3-1.8 14.1-5l-6.9-5.7C29.1 37 26.7 38 24 38c-6.1 0-11.2-4.1-13-9.7l-7.1 5.5C7.8 40.6 15.3 46 24 46z" fill="#34A853"/>
+                <path d="M44.5 20H24v8.5h11.8c-1 3-2.8 5.3-5.5 6.8l6.9 5.7c4-3.7 6.8-9.2 6.8-17 0-1.3-.2-2.7-.5-4z" fill="#FBBC05"/>
+              </svg>
+              <span className="text-muted-foreground">Google Certified</span>
+            </div>
+          </LiquidGlassCard>
 
           {/* Meta Partner Badge */}
-          <div
-            className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wider"
-            style={{
-              background: "linear-gradient(135deg, hsl(200 20% 50% / 0.1), hsl(200 15% 60% / 0.05))",
-              backdropFilter: "blur(16px)",
-              border: "1.5px solid hsl(0 0% 100% / 0.12)",
-              boxShadow: "0 2px 12px hsl(0 0% 0% / 0.06)",
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
-              <path d="M24 4C12.95 4 4 12.95 4 24c0 9.94 7.28 18.17 16.8 19.67V29.4h-5.04V24h5.04v-4.12c0-4.98 2.97-7.73 7.5-7.73 2.17 0 4.44.39 4.44.39v4.88h-2.5c-2.47 0-3.24 1.53-3.24 3.1V24h5.5l-.88 5.4h-4.62v14.27C36.72 42.17 44 33.94 44 24c0-11.05-8.95-20-20-20z" fill="#1877F2"/>
-              <path d="M33.12 29.4L34 24h-5.5v-3.48c0-1.57.77-3.1 3.24-3.1h2.5v-4.88s-2.27-.39-4.44-.39c-4.53 0-7.5 2.75-7.5 7.73V24h-5.04v5.4h5.04v14.27a20.3 20.3 0 006.4 0V29.4h4.62z" fill="white"/>
-            </svg>
-            <span className="text-muted-foreground">Meta Partner</span>
-          </div>
+          <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
+            <div className="flex items-center gap-2 text-xs font-semibold tracking-wider">
+              <svg width="18" height="18" viewBox="0 0 48 48" fill="none">
+                <path d="M24 4C12.95 4 4 12.95 4 24c0 9.94 7.28 18.17 16.8 19.67V29.4h-5.04V24h5.04v-4.12c0-4.98 2.97-7.73 7.5-7.73 2.17 0 4.44.39 4.44.39v4.88h-2.5c-2.47 0-3.24 1.53-3.24 3.1V24h5.5l-.88 5.4h-4.62v14.27C36.72 42.17 44 33.94 44 24c0-11.05-8.95-20-20-20z" fill="#1877F2"/>
+                <path d="M33.12 29.4L34 24h-5.5v-3.48c0-1.57.77-3.1 3.24-3.1h2.5v-4.88s-2.27-.39-4.44-.39c-4.53 0-7.5 2.75-7.5 7.73V24h-5.04v5.4h5.04v14.27a20.3 20.3 0 006.4 0V29.4h4.62z" fill="white"/>
+              </svg>
+              <span className="text-muted-foreground">Meta Partner</span>
+            </div>
+          </LiquidGlassCard>
         </motion.div>
       </motion.div>
 

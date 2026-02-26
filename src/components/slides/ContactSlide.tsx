@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Phone, Globe, Mail } from "lucide-react";
 import logo from "@/assets/logo.jpg";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -70,12 +71,16 @@ const ContactSlide = () => {
             href="tel:+919520367546"
             variants={cardVariants}
             whileHover={{ scale: 1.05, y: -5 }}
-            className="card-glass rounded-2xl p-6 flex flex-col items-center gap-3 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+            className="transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-              <Phone className="w-6 h-6 text-primary" />
-            </div>
-            <span className="text-sm font-medium text-foreground">+91 9520 367546</span>
+            <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Phone className="w-6 h-6 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground">+91 9520 367546</span>
+              </div>
+            </LiquidGlassCard>
           </motion.a>
 
           <motion.a 
@@ -84,24 +89,32 @@ const ContactSlide = () => {
             rel="noopener noreferrer"
             variants={cardVariants}
             whileHover={{ scale: 1.05, y: -5 }}
-            className="card-glass rounded-2xl p-6 flex flex-col items-center gap-3 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+            className="transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-              <Globe className="w-6 h-6 text-primary" />
-            </div>
-            <span className="text-sm font-medium text-foreground">www.owlsurf.com</span>
+            <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Globe className="w-6 h-6 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground">www.owlsurf.com</span>
+              </div>
+            </LiquidGlassCard>
           </motion.a>
 
           <motion.a 
             href="mailto:growth@owlsurf.com"
             variants={cardVariants}
             whileHover={{ scale: 1.05, y: -5 }}
-            className="card-glass rounded-2xl p-6 flex flex-col items-center gap-3 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+            className="transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-              <Mail className="w-6 h-6 text-primary" />
-            </div>
-            <span className="text-sm font-medium text-foreground">growth@owlsurf.com</span>
+            <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Mail className="w-6 h-6 text-primary" />
+                </div>
+                <span className="text-sm font-medium text-foreground">growth@owlsurf.com</span>
+              </div>
+            </LiquidGlassCard>
           </motion.a>
         </motion.div>
 

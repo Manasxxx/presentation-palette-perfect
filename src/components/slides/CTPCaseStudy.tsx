@@ -3,6 +3,7 @@ import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import ctpCreative1 from "@/assets/ctp-creative-1.png";
 import ctpCreative2 from "@/assets/ctp-creative-2.png";
 import ctpCreative3 from "@/assets/ctp-creative-3.png";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 /* Check This Property brand: olive green #6B9B37, dark teal #2C4A4E, light sage #E8F0E0 */
 const ctpGreen = "95 48% 41%";
@@ -134,25 +135,21 @@ const CTPCaseStudy = () => {
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border"
-                style={{
-                  borderColor: `hsl(${ctpGreen} / 0.2)`,
-                  background: `linear-gradient(135deg, hsl(0 0% 100% / 0.6), hsl(95 30% 92% / 0.4))`,
-                  backdropFilter: "blur(20px) saturate(1.5)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                  boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.5), 0 4px 16px hsl(${ctpGreen} / 0.1)`,
-                }}
               >
-                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${ctpGreen})` }} />
-                <span className="text-sm md:text-base font-bold" style={{ color: "hsl(0 0% 15%)" }}>
-                  {stat.value}
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "hsl(0 0% 45%)" }}
-                >
-                  {stat.label}
-                </span>
+                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.3)">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${ctpGreen})` }} />
+                    <span className="text-sm md:text-base font-bold" style={{ color: "hsl(0 0% 15%)" }}>
+                      {stat.value}
+                    </span>
+                    <span
+                      className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
+                      style={{ color: "hsl(0 0% 45%)" }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                </LiquidGlassCard>
               </motion.div>
             );
           })}

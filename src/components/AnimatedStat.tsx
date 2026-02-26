@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useCountUp } from "@/hooks/use-count-up";
 import { LucideIcon } from "lucide-react";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 interface AnimatedStatProps {
   icon: LucideIcon;
@@ -62,22 +63,24 @@ const AnimatedStat = ({ icon: Icon, value, label, subtext, delay = 0 }: Animated
       ref={ref}
       variants={statVariants}
       whileHover={{ y: -8, scale: 1.05 }}
-      className="card-glass rounded-2xl p-4 md:p-6 text-center"
+      className="text-center"
     >
-      <motion.div
-        initial={{ rotate: -180, scale: 0 }}
-        whileInView={{ rotate: 0, scale: 1 }}
-        transition={{ delay: 0.5, type: "spring" }}
-        viewport={{ once: true }}
-        className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-primary/20 flex items-center justify-center"
-      >
-        <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-      </motion.div>
-      <div className={`text-2xl md:text-3xl font-black text-gradient-green mb-1 ${done ? "shimmer-text" : ""}`}>
-        {hasStarted ? display : `${prefix}0${suffix}`}
-      </div>
-      <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{label}</div>
-      <div className="text-xs text-muted-foreground">{subtext}</div>
+      <LiquidGlassCard padding="1rem 1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+        <motion.div
+          initial={{ rotate: -180, scale: 0 }}
+          whileInView={{ rotate: 0, scale: 1 }}
+          transition={{ delay: 0.5, type: "spring" }}
+          viewport={{ once: true }}
+          className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 rounded-lg bg-primary/20 flex items-center justify-center"
+        >
+          <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+        </motion.div>
+        <div className={`text-2xl md:text-3xl font-black text-gradient-green mb-1 ${done ? "shimmer-text" : ""}`}>
+          {hasStarted ? display : `${prefix}0${suffix}`}
+        </div>
+        <div className="text-xs md:text-sm font-semibold text-foreground mb-1">{label}</div>
+        <div className="text-xs text-muted-foreground">{subtext}</div>
+      </LiquidGlassCard>
     </motion.div>
   );
 };

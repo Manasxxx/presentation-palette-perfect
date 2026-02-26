@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import cultfitCreative1 from "@/assets/cultfit-creative-1.png";
 import cultfitCreative2 from "@/assets/cultfit-creative-2.png";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 /* Cult Fit brand: dark black, pink/magenta #E91E63, yellow #FFC107 */
 const cultPink = "340 82% 52%";
@@ -132,24 +133,21 @@ const CultFitCaseStudy = () => {
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15"
-                style={{
-                  background: `linear-gradient(135deg, hsl(${cultPink} / 0.15), hsl(${cultYellow} / 0.08))`,
-                  backdropFilter: "blur(20px) saturate(1.5)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                  boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 4px 16px hsl(0 0% 0% / 0.3)",
-                }}
               >
-                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${cultPink})` }} />
-                <span className="text-sm md:text-base font-bold text-white">
-                  {stat.value}
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "hsl(0 0% 65%)" }}
-                >
-                  {stat.label}
-                </span>
+                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${cultPink})` }} />
+                    <span className="text-sm md:text-base font-bold text-white">
+                      {stat.value}
+                    </span>
+                    <span
+                      className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
+                      style={{ color: "hsl(0 0% 65%)" }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                </LiquidGlassCard>
               </motion.div>
             );
           })}

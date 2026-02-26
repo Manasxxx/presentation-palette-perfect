@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Lightbulb, Target, Zap } from "lucide-react";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -53,11 +54,13 @@ const WhoAreWeSlide = () => {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
           viewport={{ once: true }}
-          className="card-glass rounded-3xl p-8 md:p-12 mb-10 max-w-3xl text-center"
+          className="mb-10 max-w-3xl text-center"
         >
-          <p className="text-lg md:text-2xl leading-relaxed text-muted-foreground">
-            We are <span className="text-secondary font-bold">OWLSURF DIGITAL</span>, a 360° digital marketing agency where <span className="text-primary font-semibold">Tech Meets Design</span>.
-          </p>
+          <LiquidGlassCard padding="2rem 3rem" borderRadius="1.5rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
+            <p className="text-lg md:text-2xl leading-relaxed text-muted-foreground">
+              We are <span className="text-secondary font-bold">OWLSURF DIGITAL</span>, a 360° digital marketing agency where <span className="text-primary font-semibold">Tech Meets Design</span>.
+            </p>
+          </LiquidGlassCard>
         </motion.div>
 
         <motion.div

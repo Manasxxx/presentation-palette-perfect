@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Eye, Users, Share2, Smartphone, Zap } from "lucide-react";
 import baxsaaCreative1 from "@/assets/baxsaa-creative-1.png";
 import baxsaaCreative2 from "@/assets/baxsaa-creative-2.png";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 const stats = [
   { icon: Eye, value: "2.76M", label: "Impressions" },
@@ -133,25 +134,21 @@ const BaxsaaCaseStudy = () => {
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border"
-                style={{
-                  borderColor: `hsl(${baxsaaMaroon} / 0.2)`,
-                  background: `linear-gradient(135deg, hsl(0 0% 100% / 0.6), hsl(${baxsaaCream} / 0.4))`,
-                  backdropFilter: "blur(20px) saturate(1.5)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                  boxShadow: `inset 0 1px 0 hsl(0 0% 100% / 0.5), 0 4px 16px hsl(${baxsaaMaroon} / 0.1)`,
-                }}
               >
-                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${baxsaaMaroon})` }} />
-                <span className="text-sm md:text-base font-bold" style={{ color: "hsl(0 0% 15%)" }}>
-                  {stat.value}
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "hsl(0 0% 45%)" }}
-                >
-                  {stat.label}
-                </span>
+                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.3)">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${baxsaaMaroon})` }} />
+                    <span className="text-sm md:text-base font-bold" style={{ color: "hsl(0 0% 15%)" }}>
+                      {stat.value}
+                    </span>
+                    <span
+                      className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
+                      style={{ color: "hsl(0 0% 45%)" }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                </LiquidGlassCard>
               </motion.div>
             );
           })}
@@ -162,17 +159,16 @@ const BaxsaaCaseStudy = () => {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.5 }}
           viewport={{ once: true }}
-          className="rounded-2xl p-6 md:p-8 text-center max-w-2xl mx-auto border"
-          style={{
-            borderColor: `hsl(${baxsaaMaroon} / 0.15)`,
-            background: `linear-gradient(145deg, hsl(0 0% 100% / 0.5), hsl(${baxsaaCream} / 0.3))`,
-            backdropFilter: "blur(20px)",
-          }}
+          className="max-w-2xl mx-auto"
         >
-          <p className="text-lg md:text-xl font-semibold mb-2" style={{ color: "hsl(0 0% 15%)" }}>SEO Transformation</p>
-          <p className="text-sm md:text-base" style={{ color: "hsl(0 0% 40%)" }}>
-            Reduced website errors from <span style={{ color: `hsl(${baxsaaMaroon})` }} className="font-bold">3000+</span> to <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">0</span> and improved page load time by <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">34%</span>
-          </p>
+          <LiquidGlassCard padding="1.5rem 2rem" borderRadius="1rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.25)">
+            <div className="text-center">
+              <p className="text-lg md:text-xl font-semibold mb-2" style={{ color: "hsl(0 0% 15%)" }}>SEO Transformation</p>
+              <p className="text-sm md:text-base" style={{ color: "hsl(0 0% 40%)" }}>
+                Reduced website errors from <span style={{ color: `hsl(${baxsaaMaroon})` }} className="font-bold">3000+</span> to <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">0</span> and improved page load time by <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">34%</span>
+              </p>
+            </div>
+          </LiquidGlassCard>
         </motion.div>
       </div>
     </section>
