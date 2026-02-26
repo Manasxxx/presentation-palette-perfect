@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import logo from "@/assets/logo.jpg";
+import { Globe } from "@/components/ui/globe";
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const ref = useRef(null);
@@ -25,6 +26,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         }}
       />
       
+      {/* Globe background */}
+      <div className="absolute inset-0 flex items-end justify-center overflow-hidden pointer-events-none" style={{ top: '30%' }}>
+        <Globe className="opacity-40" />
+      </div>
       <motion.div 
         style={{ y, opacity, scale }}
         className="relative z-10 flex flex-col items-center justify-center text-center px-6"
