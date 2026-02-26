@@ -19,6 +19,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   const tiltTarget = useRef({ rotX: 0, rotY: 0, bgX: 0, bgY: 0 });
   const rafRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isVisibleRef = useRef(false);
 
   const total = slides.length;
   const getPrev = (i: number) => (i - 1 + total) % total;
@@ -34,24 +35,39 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
   }, [total]);
 
-  // Auto-advance every 4 seconds
+  // Visibility observer - pause everything when off-screen
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-advance only when visible
   useEffect(() => {
     const interval = setInterval(() => {
+      if (!isVisibleRef.current) return;
       setCurrentIndex((prev) => getNext(prev));
       tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
     }, 4000);
     return () => clearInterval(interval);
   }, [total]);
 
-  // Tilt animation loop
+  // Tilt animation loop - only runs when visible
   useEffect(() => {
     const animate = () => {
-      setTilt((prev) => ({
-        rotX: lerp(prev.rotX, tiltTarget.current.rotX, 0.08),
-        rotY: lerp(prev.rotY, tiltTarget.current.rotY, 0.08),
-        bgX: lerp(prev.bgX, tiltTarget.current.bgX, 0.08),
-        bgY: lerp(prev.bgY, tiltTarget.current.bgY, 0.08),
-      }));
+      if (isVisibleRef.current) {
+        setTilt((prev) => ({
+          rotX: lerp(prev.rotX, tiltTarget.current.rotX, 0.08),
+          rotY: lerp(prev.rotY, tiltTarget.current.rotY, 0.08),
+          bgX: lerp(prev.bgX, tiltTarget.current.bgX, 0.08),
+          bgY: lerp(prev.bgY, tiltTarget.current.bgY, 0.08),
+        }));
+      }
       rafRef.current = requestAnimationFrame(animate);
     };
     rafRef.current = requestAnimationFrame(animate);
@@ -109,7 +125,6 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
       className="relative flex items-center justify-center select-none"
       style={{ width: "calc(3 * min(35vw, 340px))", height: "calc(min(35vw, 340px) * 1.4)" }}
     >
-      {/* Nav buttons */}
       <button
         onClick={goPrev}
         className="absolute left-0 z-[999] p-2 opacity-70 hover:opacity-100 transition-opacity"
@@ -118,7 +133,6 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
         <ChevronLeft className="w-8 h-8" style={{ color: `hsl(${accentColor})` }} />
       </button>
 
-      {/* Slides wrapper */}
       <div className="w-full h-full grid place-items-center">
         <div className="w-full h-full grid place-items-center" style={{ gridArea: "1 / -1" }}>
           {slides.map((slide, i) => {
@@ -151,6 +165,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
                     <img
                       src={slide.image}
                       alt={slide.alt}
+                      loading="lazy"
                       className="w-full h-full object-contain"
                       style={{
                         transform: isCurrent
@@ -176,7 +191,6 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
         <ChevronRight className="w-8 h-8" style={{ color: `hsl(${accentColor})` }} />
       </button>
 
-      {/* Dot indicators */}
       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
         {slides.map((_, i) => (
           <button

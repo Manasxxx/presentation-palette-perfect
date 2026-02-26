@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import createGlobe, { COBEOptions } from "cobe";
 import { useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-const MOVEMENT_DAMPING = 1400;
 
 const GLOBE_CONFIG: COBEOptions = {
   width: 800,
@@ -46,8 +44,11 @@ export function Globe({
   let phi = 0;
   let width = 0;
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const pointerInteracting = useRef<number | null>(null);
   const pointerInteractionMovement = useRef(0);
+  const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   const r = useMotionValue(0);
   const rs = useSpring(r, {
@@ -71,7 +72,28 @@ export function Globe({
     }
   };
 
+  // IntersectionObserver to only render when visible
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible || !canvasRef.current) {
+      // Destroy globe when not visible
+      if (globeRef.current) {
+        globeRef.current.destroy();
+        globeRef.current = null;
+      }
+      return;
+    }
+
     const onResize = () => {
       if (canvasRef.current) {
         width = canvasRef.current.offsetWidth;
@@ -91,6 +113,7 @@ export function Globe({
         state.height = width * 2;
       },
     });
+    globeRef.current = globe;
 
     setTimeout(() => {
       if (canvasRef.current) canvasRef.current.style.opacity = "1";
@@ -98,13 +121,15 @@ export function Globe({
 
     return () => {
       globe.destroy();
+      globeRef.current = null;
       window.removeEventListener("resize", onResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isVisible]);
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         "absolute inset-0 mx-auto aspect-[1/1] w-full max-w-[600px]",
         className
