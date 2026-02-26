@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
 import girlupCreative1 from "@/assets/girlup-creative-1.png";
 import girlupCreative2 from "@/assets/girlup-creative-2.png";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 /* Girl Up brand: teal/green #00B89F, lavender/purple #9B72CF */
 const girlUpTeal = "168 100% 36%";
@@ -132,24 +133,21 @@ const GirlUpCaseStudy = () => {
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15"
-                style={{
-                  background: `linear-gradient(135deg, hsl(${girlUpTeal} / 0.2), hsl(${girlUpPurple} / 0.1))`,
-                  backdropFilter: "blur(20px) saturate(1.5)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                  boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 4px 16px hsl(168 100% 10% / 0.3)",
-                }}
               >
-                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${girlUpTeal})` }} />
-                <span className="text-sm md:text-base font-bold text-white">
-                  {stat.value}
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "hsl(168 20% 75%)" }}
-                >
-                  {stat.label}
-                </span>
+                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${girlUpTeal})` }} />
+                    <span className="text-sm md:text-base font-bold text-white">
+                      {stat.value}
+                    </span>
+                    <span
+                      className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
+                      style={{ color: "hsl(168 20% 75%)" }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                </LiquidGlassCard>
               </motion.div>
             );
           })}

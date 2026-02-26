@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Linkedin, Instagram } from "lucide-react";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 import harshitAvatar from "@/assets/harshit-avatar.png";
 import sakshiAvatar from "@/assets/sakshi-avatar.png";
 import pankajAvatar from "@/assets/pankaj-avatar.png";
@@ -70,47 +71,31 @@ const TeamSlide = () => {
                 }}
                 className="w-[45%] md:w-[200px]"
               >
-                <div
-                  className="group rounded-2xl p-4 md:p-5 text-center flex flex-col items-center border border-white/10 hover:border-primary/40 cursor-pointer"
-                  style={{
-                    background: "linear-gradient(145deg, hsl(var(--foreground) / 0.06), hsl(var(--foreground) / 0.02))",
-                    backdropFilter: "blur(30px) saturate(1.8)",
-                    WebkitBackdropFilter: "blur(30px) saturate(1.8)",
-                    boxShadow: "0 8px 32px hsl(var(--background) / 0.5), inset 0 1px 0 hsl(var(--foreground) / 0.08), inset 0 -1px 0 hsl(var(--foreground) / 0.03)",
-                    transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-                  }}
-                >
-                  <img
-                    src={member.avatar}
-                    alt={member.name}
-                    className="w-32 h-32 md:w-36 md:h-36 rounded-full object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div
-                    className="mt-1 px-5 py-1.5 rounded-full"
-                    style={{
-                      background: "linear-gradient(135deg, hsl(var(--foreground) / 0.08), hsl(var(--foreground) / 0.03))",
-                      backdropFilter: "blur(20px) saturate(1.5)",
-                      WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                      border: "1px solid hsl(var(--foreground) / 0.1)",
-                      boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.12), 0 2px 8px hsl(var(--background) / 0.3)",
-                    }}
-                  >
-                    <h3
-                      className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
-                      style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
-                    >
-                      {member.name}
-                    </h3>
+                <LiquidGlassCard padding="1rem 1.25rem" borderRadius="1rem" blur={15} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+                  <div className="group text-center flex flex-col items-center cursor-pointer">
+                    <img
+                      src={member.avatar}
+                      alt={member.name}
+                      className="w-32 h-32 md:w-36 md:h-36 rounded-full object-contain mb-4 transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <LiquidGlassCard padding="0.375rem 1.25rem" borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+                      <h3
+                        className="shimmer-text text-sm md:text-base tracking-[0.15em] uppercase"
+                        style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 300 }}
+                      >
+                        {member.name}
+                      </h3>
+                    </LiquidGlassCard>
+                    <div className="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                      <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                        <Linkedin size={16} fill="currentColor" strokeWidth={0} />
+                      </a>
+                      <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                        <Instagram size={16} />
+                      </a>
+                    </div>
                   </div>
-                  <div className="flex gap-3 mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
-                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Linkedin size={16} fill="currentColor" strokeWidth={0} />
-                    </a>
-                    <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                      <Instagram size={16} />
-                    </a>
-                  </div>
-                </div>
+                </LiquidGlassCard>
               </motion.div>
             ))}
           </motion.div>

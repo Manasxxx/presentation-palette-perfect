@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { BarChart3, Palette, Globe, Code, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 const services = [
   {
@@ -107,54 +108,56 @@ const ServicesSlide = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
             viewport={{ once: true }}
-            className="card-glass rounded-2xl p-6 md:p-10 min-h-[320px] relative overflow-hidden"
+            className="min-h-[320px] relative overflow-hidden"
           >
-            {/* Accent glow */}
-            <div
-              className={`absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br ${services[active].accent} opacity-10 blur-3xl transition-all duration-700`}
-            />
+            <LiquidGlassCard padding="1.5rem 2.5rem" borderRadius="1rem" blur={12} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+              {/* Accent glow */}
+              <div
+                className={`absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br ${services[active].accent} opacity-10 blur-3xl transition-all duration-700`}
+              />
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-10"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${services[active].accent} flex items-center justify-center`}>
-                    {(() => {
-                      const Icon = services[active].icon;
-                      return <Icon className="w-6 h-6 text-background" />;
-                    })()}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="relative z-10"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${services[active].accent} flex items-center justify-center`}>
+                      {(() => {
+                        const Icon = services[active].icon;
+                        return <Icon className="w-6 h-6 text-background" />;
+                      })()}
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-black text-foreground">
+                      {services[active].title}
+                    </h3>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-black text-foreground">
-                    {services[active].title}
-                  </h3>
-                </div>
 
-                <p className="text-muted-foreground text-sm md:text-base mb-8 max-w-lg">
-                  {services[active].description}
-                </p>
+                  <p className="text-muted-foreground text-sm md:text-base mb-8 max-w-lg">
+                    {services[active].description}
+                  </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {services[active].items.map((item, j) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: j * 0.08 }}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/30 border border-border/50 group hover:border-primary/30 transition-colors duration-200"
-                    >
-                      <ChevronRight className="w-3.5 h-3.5 text-primary shrink-0" />
-                      <span className="text-sm font-medium text-foreground">{item}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {services[active].items.map((item, j) => (
+                      <motion.div
+                        key={item}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: j * 0.08 }}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted/30 border border-border/50 group hover:border-primary/30 transition-colors duration-200"
+                      >
+                        <ChevronRight className="w-3.5 h-3.5 text-primary shrink-0" />
+                        <span className="text-sm font-medium text-foreground">{item}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </LiquidGlassCard>
           </motion.div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
 import mitsuiCreative3 from "@/assets/mitsui-creative-3.png";
 import mitsuiCreative4 from "@/assets/mitsui-creative-4.png";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
+import { LiquidGlassCard } from "react-liquid-glass-card";
 
 const stats = [
   { icon: Eye, value: "5.8M", label: "Impressions" },
@@ -134,24 +135,21 @@ const CaseStudySlide = () => {
               <motion.div
                 key={stat.label}
                 variants={itemVariants}
-                className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15"
-                style={{
-                  background: "linear-gradient(135deg, hsl(210 60% 40% / 0.3), hsl(193 80% 50% / 0.15))",
-                  backdropFilter: "blur(20px) saturate(1.5)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.5)",
-                  boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 4px 16px hsl(210 100% 10% / 0.3)",
-                }}
               >
-                <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${mitsuiCyan})` }} />
-                <span className="text-sm md:text-base font-bold text-white">
-                  {stat.value}
-                </span>
-                <span
-                  className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "hsl(210 20% 75%)" }}
-                >
-                  {stat.label}
-                </span>
+                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${mitsuiCyan})` }} />
+                    <span className="text-sm md:text-base font-bold text-white">
+                      {stat.value}
+                    </span>
+                    <span
+                      className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
+                      style={{ color: "hsl(210 20% 75%)" }}
+                    >
+                      {stat.label}
+                    </span>
+                  </div>
+                </LiquidGlassCard>
               </motion.div>
             );
           })}
