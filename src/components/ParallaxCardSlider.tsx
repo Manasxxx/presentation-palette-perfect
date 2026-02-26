@@ -34,6 +34,15 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
   }, [total]);
 
+  // Auto-advance every 4 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => getNext(prev));
+      tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [total]);
+
   // Tilt animation loop
   useEffect(() => {
     const animate = () => {
@@ -98,7 +107,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     <div
       ref={containerRef}
       className="relative flex items-center justify-center select-none"
-      style={{ width: "calc(3 * min(30vw, 280px))", height: "calc(min(30vw, 280px) * 1.5 * 1.3)" }}
+      style={{ width: "calc(3 * min(30vw, 280px))", height: "calc(min(30vw, 280px) * 1.3)" }}
     >
       {/* Nav buttons */}
       <button
@@ -120,7 +129,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
                 className="col-start-1 row-start-1"
                 style={{
                   width: "min(30vw, 280px)",
-                  aspectRatio: "2 / 3",
+                  aspectRatio: "1 / 1",
                   perspective: "800px",
                   transition: "transform 800ms ease",
                   ...getSlideStyle(i),
