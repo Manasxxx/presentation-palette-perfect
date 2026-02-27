@@ -9,6 +9,7 @@ type Client = {
   name: string;
   color: string;
   logo?: string;
+  large?: boolean;
 };
 
 const clients: Client[] = [
@@ -22,8 +23,8 @@ const clients: Client[] = [
   { name: "AVI Global Plast", color: "145 60% 40%" },
   { name: "The Baxsaa Co.", color: "0 68% 33%" },
   { name: "Check This Property", color: "95 48% 41%" },
-  { name: "Welham Girls' School", color: "174 100% 50%", logo: welhamLogo },
-  { name: "", color: "0 0% 50%", logo: unknownLogo },
+  { name: "Welham Girls' School", color: "174 100% 50%", logo: welhamLogo, large: true },
+  { name: "", color: "0 0% 50%", logo: unknownLogo, large: true },
 ];
 
 const containerVariants = {
@@ -80,7 +81,7 @@ const ClientsSlide = () => {
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-8 md:h-10 w-auto object-contain"
+                  className={client.large ? "h-14 md:h-18 w-auto object-contain" : "h-8 md:h-10 w-auto object-contain"}
                 />
               ) : (
                 <span className="text-sm md:text-base font-semibold text-foreground">
