@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import mitsuiLogo from "@/assets/client-mitsui.png";
 import dehnLogo from "@/assets/client-dehn.png";
 import kurarayLogo from "@/assets/client-kuraray.png";
+import welhamLogo from "@/assets/client-welham.png";
 
 type Client = {
   name: string;
@@ -20,6 +21,7 @@ const clients: Client[] = [
   { name: "AVI Global Plast", color: "145 60% 40%" },
   { name: "The Baxsaa Co.", color: "0 68% 33%" },
   { name: "Check This Property", color: "95 48% 41%" },
+  { name: "Welham Girls' School", color: "174 100% 50%", logo: welhamLogo },
 ];
 
 const containerVariants = {
