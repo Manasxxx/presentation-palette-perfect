@@ -3,6 +3,7 @@ import mitsuiLogo from "@/assets/client-mitsui.png";
 import dehnLogo from "@/assets/client-dehn.png";
 import kurarayLogo from "@/assets/client-kuraray.png";
 import welhamLogo from "@/assets/client-welham.png";
+import unknownLogo from "@/assets/client-unknown.png";
 
 type Client = {
   name: string;
@@ -22,6 +23,7 @@ const clients: Client[] = [
   { name: "The Baxsaa Co.", color: "0 68% 33%" },
   { name: "Check This Property", color: "95 48% 41%" },
   { name: "Welham Girls' School", color: "174 100% 50%", logo: welhamLogo },
+  { name: "", color: "0 0% 50%", logo: unknownLogo },
 ];
 
 const containerVariants = {
