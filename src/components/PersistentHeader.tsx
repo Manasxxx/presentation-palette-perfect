@@ -2,21 +2,21 @@ import { motion, AnimatePresence } from "framer-motion";
 
 
 const slideLabels = [
-  "Intro", "Why Us", "About", "Team",
+  "Intro", "Why Us", "About",
   "Services", "Clients", "Case Study", "Contact"
 ];
 
 // Maps slide index to nav label index (slides 6-9 are all case studies → label index 6)
 const slideToNavIndex = (slideIndex: number): number => {
-  if (slideIndex <= 6) return slideIndex;
-  if (slideIndex <= 12) return 6;
-  return 7; // Contact
+  if (slideIndex <= 5) return slideIndex;
+  if (slideIndex <= 11) return 5;
+  return 6; // Contact
 };
 
 // Maps nav label index back to slide index for navigation
 const navToSlideIndex = (navIndex: number): number => {
-  if (navIndex <= 6) return navIndex;
-  return 13; // Contact
+  if (navIndex <= 5) return navIndex;
+  return 12; // Contact
 };
 
 interface PersistentHeaderProps {
