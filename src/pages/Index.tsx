@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import TitleSlide from "@/components/slides/TitleSlide";
 import SkyrocketSlide from "@/components/slides/SkyrocketSlide";
 import WhoAreWeSlide from "@/components/slides/WhoAreWeSlide";
-import TeamSlide from "@/components/slides/TeamSlide";
 import ServicesSlide from "@/components/slides/ServicesSlide";
 import ClientsSlide from "@/components/slides/ClientsSlide";
 import CaseStudySlide from "@/components/slides/CaseStudySlide";
@@ -22,7 +21,6 @@ const slides = [
   TitleSlide,
   SkyrocketSlide,
   WhoAreWeSlide,
-  TeamSlide,
   ServicesSlide,
   ClientsSlide,
   CaseStudySlide,
@@ -71,7 +69,7 @@ const Index = () => {
       style={{ scrollSnapType: "y mandatory" }}
     >
       <PersistentHeader
-        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 6 && currentSlide <= 12)}
+        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 11)}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
@@ -80,7 +78,7 @@ const Index = () => {
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {index === 0 ? (
-            <SlideComponent onViewCaseStudies={() => navigateToSlide(6)} />
+            <SlideComponent onViewCaseStudies={() => navigateToSlide(5)} />
           ) : (
             <SlideComponent />
           )}
