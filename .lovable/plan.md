@@ -1,60 +1,39 @@
 
 
-## Plan: Section Navigation Bar with Labels + Partner Badges
+## Plan: Add Anime.js Animations to 3 Slides
 
-### What changes
+### Install dependency
+- Add `animejs` package
 
-**1. Replace the right-side pill dots with a top navigation bar of labeled section links**
+### Create reusable hook: `src/hooks/use-anime-scope.ts`
+- Wraps `createScope({ root })` with a `useRef` for the root element
+- Cleanup via `scope.current.revert()` in useEffect return
+- Returns `{ root, scope }` for use in components
 
-The current vertical pill indicator on the right side will be removed. Instead, the persistent header (visible from slide 1 onward, hidden on the last slide) will be expanded to include clickable section labels that jump to each slide. The labels will be:
+### 1. Skyrocket Slide — Elastic letter-by-letter slam
+- Split "SKYROCKETING" into individual `<span>` elements with a shared class (e.g., `.sky-letter`)
+- On viewport intersection, trigger anime.js `animate('.sky-letter', { translateY: [100, 0], opacity: [0, 1], scale: [0.3, 1], delay: stagger(40, { from: 'center' }) })` with `createSpring({ stiffness: 300 })` easing
+- Remove the existing Framer Motion animation on that word (keep Framer Motion for the container fade and "YOUR PRESENCE" text)
+- Use IntersectionObserver to trigger once when slide enters view
 
-- Intro | Why Us | About | Team | Services | Clients | Case Study | Baxsaa | Contact
+### 2. Case Study Slide (Mitsui) — Animated stat number tickers
+- Replace the static `{stat.value}` text in the stat pills with anime.js-driven number count-ups
+- For each stat, parse the numeric value and suffix (e.g., "5.8M" → animate 0 to 5.8, append "M")
+- Use `animate(targetObj, { value: [0, numericValue] })` with `round: decimals` and update a React state via `onUpdate` callback
+- Trigger on IntersectionObserver entering the stats section
+- Keep existing Framer Motion stagger for the pill entrance; anime.js only handles the number animation inside each pill
 
-The active section gets a subtle underline/highlight indicator. Clicking any label smooth-scrolls to that slide.
+### 3. Contact Slide — Staggered elastic card entrance
+- Add anime.js scope to the contact section
+- Replace the Framer Motion `containerVariants`/`cardVariants` stagger on the 3 contact cards with anime.js `animate('.contact-card', { translateY: [60, 0], opacity: [0, 1], scale: [0.8, 1], delay: stagger(120), ease: createSpring({ stiffness: 200 }) })`
+- Cards start hidden (opacity: 0) via CSS, anime.js reveals them on intersection
+- Keep Framer Motion for the logo spin, heading, and footer animations
 
-**2. Add Google Certified Partner and Meta (Facebook) Partner badges to the Title Slide**
-
-Below the "www.owlsurf.com" link on the cover page, add a row of partner badges:
-- Google Partner badge (SVG icon + "Google Certified" label)
-- Meta Business Partner badge (SVG icon + "Meta Partner" label)
-
-These will be styled as small glass pills with the respective brand colors, appearing with a staggered fade-in animation.
-
----
-
-### Technical Details
-
-**Remove `SlideNavigation` component usage from `Index.tsx`**
-- Remove the `SlideNavigation` import and component render
-- The `SlideNavigation.tsx` file can remain but will no longer be used
-
-**Update `PersistentHeader.tsx`**
-- Accept `currentSlide` and `onNavigate` props in addition to `visible`
-- Add a row of section label buttons below or integrated into the header bar
-- Each label is a compact clickable text button with:
-  - Muted text by default, brighter text + bottom accent bar when active
-  - `onClick` calls `onNavigate(index)` to scroll to that slide
-- On mobile: labels become a horizontally scrollable row with smaller text
-- The header will now also be visible on the first slide (slide 0) so users always have navigation, OR it stays hidden on slide 0 (cover) and appears from slide 1 -- keeping current behavior since the cover already has its own branding
-
-**Update `Index.tsx`**
-- Pass `currentSlide` and `onNavigate={navigateToSlide}` to `PersistentHeader`
-- Remove `SlideNavigation` component
-
-**Update `TitleSlide.tsx`**
-- Add a badges row after the website link with two glass-styled badge pills
-- Use Lucide icons (`Award`, `BadgeCheck`) or inline SVG for Google/Meta logos
-- Staggered animation with delay after the website link appears
-
-**Slide label mapping:**
-```
-const slideLabels = [
-  "Intro", "Why Us", "About", "Team",
-  "Services", "Clients", "Case Study", "Baxsaa", "Contact"
-];
-```
+### Files to create
+- `src/hooks/use-anime-scope.ts`
 
 ### Files to modify
-- `src/components/PersistentHeader.tsx` -- add section nav labels with active state
-- `src/pages/Index.tsx` -- pass new props, remove SlideNavigation
-- `src/components/slides/TitleSlide.tsx` -- add Google + Meta partner badges
+- `src/components/slides/SkyrocketSlide.tsx`
+- `src/components/slides/CaseStudySlide.tsx`
+- `src/components/slides/ContactSlide.tsx`
+
