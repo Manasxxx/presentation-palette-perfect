@@ -1,9 +1,38 @@
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Rocket } from "lucide-react";
+import { animate, stagger, createSpring } from "animejs";
+
+const letters = "SKYROCKETING".split("");
 
 const SkyrocketSlide = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [triggered, setTriggered] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered) {
+          setTriggered(true);
+          animate(el.querySelectorAll(".sky-letter"), {
+            translateY: [100, 0],
+            opacity: [0, 1],
+            scale: [0.3, 1],
+            delay: stagger(40, { from: "center" }),
+            ease: createSpring({ stiffness: 300, damping: 18 }),
+          });
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [triggered]);
+
   return (
-    <section className="slide bg-background overflow-hidden">
+    <section ref={sectionRef} className="slide bg-background overflow-hidden">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -23,24 +52,20 @@ const SkyrocketSlide = () => {
           </div>
         </motion.div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-7xl font-black tracking-tight"
-        >
-          <motion.span 
-            className="text-gradient-green inline-block"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            SKYROCKETING
-          </motion.span>
+        <h2 className="text-4xl md:text-7xl font-black tracking-tight">
+          <span className="inline-flex">
+            {letters.map((letter, i) => (
+              <span
+                key={i}
+                className="sky-letter text-gradient-green inline-block"
+                style={{ opacity: 0 }}
+              >
+                {letter}
+              </span>
+            ))}
+          </span>
           <br />
-          <motion.span 
+          <motion.span
             className="text-foreground inline-block"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -49,7 +74,7 @@ const SkyrocketSlide = () => {
           >
             YOUR PRESENCE
           </motion.span>
-        </motion.h2>
+        </h2>
 
         <motion.div
           initial={{ scaleX: 0 }}

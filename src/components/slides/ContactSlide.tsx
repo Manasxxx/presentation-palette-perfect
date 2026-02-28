@@ -1,29 +1,38 @@
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Phone, Globe, Mail } from "lucide-react";
+import { animate, stagger, createSpring } from "animejs";
 import logo from "@/assets/logo.jpg";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.4 }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 150 }
-  }
-};
-
 const ContactSlide = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [triggered, setTriggered] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered) {
+          setTriggered(true);
+          animate(el.querySelectorAll(".contact-card"), {
+            translateY: [60, 0],
+            opacity: [0, 1],
+            scale: [0.8, 1],
+            delay: stagger(120),
+            ease: createSpring({ stiffness: 200, damping: 15 }),
+          });
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [triggered]);
+
   return (
-    <section className="slide hexagon-pattern overflow-hidden">
+    <section ref={sectionRef} className="slide hexagon-pattern overflow-hidden">
       <div className="absolute inset-0 bg-background" />
       
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl">
@@ -60,18 +69,11 @@ const ContactSlide = () => {
           TECH MEETS DESIGN
         </motion.p>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl"
-        >
-          <motion.a 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl">
+          <a 
             href="tel:+919520367546"
-            variants={cardVariants}
-            whileHover={{ scale: 1.05, y: -5 }}
-            className="transition-all duration-300"
+            className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+            style={{ opacity: 0 }}
           >
             <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               <div className="flex flex-col items-center gap-3">
@@ -81,15 +83,14 @@ const ContactSlide = () => {
                 <span className="text-sm font-medium text-foreground">+91 9520 367546</span>
               </div>
             </LiquidGlassCard>
-          </motion.a>
+          </a>
 
-          <motion.a 
+          <a 
             href="https://www.owlsurf.com"
             target="_blank"
             rel="noopener noreferrer"
-            variants={cardVariants}
-            whileHover={{ scale: 1.05, y: -5 }}
-            className="transition-all duration-300"
+            className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+            style={{ opacity: 0 }}
           >
             <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               <div className="flex flex-col items-center gap-3">
@@ -99,13 +100,12 @@ const ContactSlide = () => {
                 <span className="text-sm font-medium text-foreground">www.owlsurf.com</span>
               </div>
             </LiquidGlassCard>
-          </motion.a>
+          </a>
 
-          <motion.a 
+          <a 
             href="mailto:growth@owlsurf.com"
-            variants={cardVariants}
-            whileHover={{ scale: 1.05, y: -5 }}
-            className="transition-all duration-300"
+            className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+            style={{ opacity: 0 }}
           >
             <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               <div className="flex flex-col items-center gap-3">
@@ -115,8 +115,8 @@ const ContactSlide = () => {
                 <span className="text-sm font-medium text-foreground">growth@owlsurf.com</span>
               </div>
             </LiquidGlassCard>
-          </motion.a>
-        </motion.div>
+          </a>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
