@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
+import { Eye, Users, TrendingUp, MousePointer, Gauge, LucideIcon } from "lucide-react";
+import { animate } from "animejs";
 import mitsuiCreative1 from "@/assets/mitsui-creative-1.png";
 import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
 import mitsuiCreative3 from "@/assets/mitsui-creative-3.png";
@@ -7,12 +9,21 @@ import mitsuiCreative4 from "@/assets/mitsui-creative-4.png";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 
-const stats = [
-  { icon: Eye, value: "5.8M", label: "Impressions" },
-  { icon: Users, value: "1000%", label: "Follower Growth" },
-  { icon: TrendingUp, value: "99.2%", label: "Engagement ↑" },
-  { icon: MousePointer, value: "104K", label: "Ad Clicks" },
-  { icon: Gauge, value: "3X", label: "ROI" },
+interface StatDef {
+  icon: LucideIcon;
+  rawValue: string;
+  label: string;
+  num: number;
+  suffix: string;
+  decimals: number;
+}
+
+const statDefs: StatDef[] = [
+  { icon: Eye, rawValue: "5.8M", label: "Impressions", num: 5.8, suffix: "M", decimals: 1 },
+  { icon: Users, rawValue: "1000%", label: "Follower Growth", num: 1000, suffix: "%", decimals: 0 },
+  { icon: TrendingUp, rawValue: "99.2%", label: "Engagement ↑", num: 99.2, suffix: "%", decimals: 1 },
+  { icon: MousePointer, rawValue: "104K", label: "Ad Clicks", num: 104, suffix: "K", decimals: 0 },
+  { icon: Gauge, rawValue: "3X", label: "ROI", num: 3, suffix: "X", decimals: 0 },
 ];
 
 const containerVariants = {
@@ -33,7 +44,6 @@ const itemVariants = {
   }
 };
 
-/* Mitsui brand: deep blue #004B97, accent cyan #00B4D8, white */
 const mitsuiBlue = "210 100% 30%";
 const mitsuiCyan = "193 100% 42%";
 
@@ -44,10 +54,47 @@ const sliderImages = [
   { image: mitsuiCreative4, alt: "Mitsui Chemicals creative 4" },
 ];
 
+function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; suffix: string; decimals: number; triggered: boolean }) {
+  const [display, setDisplay] = useState("0" + suffix);
+  const objRef = useRef({ value: 0 });
+
+  useEffect(() => {
+    if (!triggered) return;
+    objRef.current.value = 0;
+    animate(objRef.current, {
+      value: [0, num],
+      duration: 2000,
+      ease: "outExpo",
+      onUpdate: () => {
+        setDisplay(objRef.current.value.toFixed(decimals) + suffix);
+      },
+    });
+  }, [triggered, num, suffix, decimals]);
+
+  return <>{display}</>;
+}
+
 const CaseStudySlide = () => {
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [statsTriggered, setStatsTriggered] = useState(false);
+
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !statsTriggered) {
+          setStatsTriggered(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [statsTriggered]);
+
   return (
     <section className="slide py-10 px-6 overflow-hidden relative">
-      {/* Blue gradient background with circular wipe reveal */}
       <motion.div
         initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
         whileInView={{ clipPath: "circle(150% at 50% 50%)", opacity: 1 }}
@@ -58,7 +105,6 @@ const CaseStudySlide = () => {
           background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))`,
         }}
       />
-      {/* Fallback background that shows after animation */}
       <div
         className="absolute inset-0 z-[-1]"
         style={{
@@ -110,7 +156,6 @@ const CaseStudySlide = () => {
           Boosted brand visibility, engagement, and qualified leads through strategic digital marketing.
         </motion.p>
 
-        {/* 3D Parallax Card Slider */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -121,26 +166,28 @@ const CaseStudySlide = () => {
           <ParallaxCardSlider slides={sliderImages} accentColor={mitsuiCyan} />
         </motion.div>
 
-        {/* Stats as liquid glass pills */}
         <motion.div
+          ref={statsRef}
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           className="flex flex-wrap justify-center gap-3"
         >
-          {stats.map((stat) => {
+          {statDefs.map((stat) => {
             const Icon = stat.icon;
             return (
-              <motion.div
-                key={stat.label}
-                variants={itemVariants}
-              >
+              <motion.div key={stat.label} variants={itemVariants}>
                 <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
                   <div className="flex items-center gap-2">
                     <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${mitsuiCyan})` }} />
                     <span className="text-sm md:text-base font-bold text-white">
-                      {stat.value}
+                      <AnimatedStatValue
+                        num={stat.num}
+                        suffix={stat.suffix}
+                        decimals={stat.decimals}
+                        triggered={statsTriggered}
+                      />
                     </span>
                     <span
                       className="text-[10px] md:text-xs font-medium uppercase tracking-wider"
