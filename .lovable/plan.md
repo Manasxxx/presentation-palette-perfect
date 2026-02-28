@@ -1,25 +1,31 @@
 
 
-## Plan: Replace Theme Toggle with UIverse Sun/Moon Switch
+## Plan: Add Pencil Loading Animation
 
 ### What changes
-Replace the current simple icon button with the animated sun/moon slider toggle from UIverse (by Galahhad). Keep all existing functionality: `isDark` state, View Transitions API circular sweep, persistent fixed position, and dark/light class toggling.
+Add a full-screen loading overlay with the UIverse pencil SVG animation that displays while the site loads, then fades out to reveal the content.
 
 ### Implementation
 
-**File: `src/components/ThemeToggle.tsx`**
-- Remove `Moon`/`Sun` lucide imports
-- Replace the button with a `<label class="theme-switch">` wrapping a hidden checkbox + the container div structure (clouds, stars SVG, circle-container with sun-moon and moon spots)
-- Bind `checked={isDark}` on the checkbox so night mode shows when dark
-- On checkbox `onChange`, call the existing `toggleTheme` function (with View Transitions API)
-- Attach `buttonRef` to the label element for the circular sweep origin calculation
-- Keep `fixed bottom-6 right-6 z-[70]` positioning wrapper
+**File: `src/components/LoadingScreen.tsx`** (new)
+- Full-screen fixed overlay (`z-[100]`) with dark background matching `--owl-black`
+- Contains the pencil SVG from UIverse (the animated drawing pencil with circle stroke)
+- Optional "Loading..." text below in brand font
+- Accepts `onComplete` callback prop
+- Uses `useState` for `visible` and `fading` states
+- On mount, listens for `window.onload`; once fired, sets `fading=true` (triggers opacity transition), then after 500ms sets `visible=false` and calls `onComplete`
+- If window already loaded, trigger fade immediately
 
-**File: `src/index.css`**
-- Add all the `.theme-switch` CSS rules (variables, container, circle-container, sun-moon, moon spots, clouds, stars, checked states, hover states) at the end of the file
-- Reduce `--toggle-size` from `30px` to `16px` so the toggle is compact enough for a persistent corner widget
+**File: `src/styles/pencil-loader.css`** (new)
+- All `.pencil` and `.pencil__*` CSS rules and `@keyframes` (pencilBody1-3, pencilEraser, pencilEraserSkew, pencilPoint, pencilRotate, pencilStroke)
+- Customize pencil colors to use OwlSurf green (`hsl(180,45%,53%)`) instead of default blue
 
-### Files to modify
-- `src/components/ThemeToggle.tsx`
-- `src/index.css`
+**File: `src/App.tsx`**
+- Import `LoadingScreen`
+- Add `<LoadingScreen />` as the first child inside `QueryClientProvider`, rendered above everything else
+
+### Files
+- Create `src/components/LoadingScreen.tsx`
+- Create `src/styles/pencil-loader.css`
+- Edit `src/App.tsx`
 
