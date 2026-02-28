@@ -1,15 +1,30 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { animate, stagger, createSpring } from "animejs";
 import logo from "@/assets/logo.jpg";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 
+const owlLetters = "OWLSURF".split("");
+
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
   });
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    animate(el.querySelectorAll(".owl-letter"), {
+      translateY: [40, 0],
+      opacity: [0, 1],
+      scale: [0.5, 1],
+      delay: stagger(60),
+      ease: createSpring({ stiffness: 260, damping: 16 }),
+    });
+  }, []);
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
@@ -54,28 +69,31 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           </motion.div>
         </motion.div>
 
-        {/* Title with glass backdrop */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="mb-4"
-        >
+        {/* Title with anime.js letter animation */}
+        <div className="mb-4">
           <h1 className="text-5xl md:text-8xl font-black tracking-tight">
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage: "linear-gradient(135deg, hsl(180 45% 53% / 0.6), hsl(180 45% 70% / 0.4))",
-                WebkitTextStroke: "1px hsl(180 45% 53% / 0.3)",
-                filter: "blur(0.3px)",
-                textShadow: "0 0 40px hsl(180 45% 53% / 0.3), 0 0 80px hsl(180 45% 53% / 0.15)",
-              }}
-            >OWLSURF</span>
+            <span className="inline-flex">
+              {owlLetters.map((letter, i) => (
+                <span
+                  key={i}
+                  className="owl-letter inline-block bg-clip-text text-transparent"
+                  style={{
+                    opacity: 0,
+                    backgroundImage: "linear-gradient(135deg, hsl(180 45% 53% / 0.6), hsl(180 45% 70% / 0.4))",
+                    WebkitTextStroke: "1px hsl(180 45% 53% / 0.3)",
+                    filter: "blur(0.3px)",
+                    textShadow: "0 0 40px hsl(180 45% 53% / 0.3), 0 0 80px hsl(180 45% 53% / 0.15)",
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
           </h1>
           <p className="text-xl md:text-3xl font-light tracking-[0.3em] text-muted-foreground mt-2">
             DIGITAL
           </p>
-        </motion.div>
+        </div>
 
         {/* Portfolio pill with glass effect */}
         <motion.div
