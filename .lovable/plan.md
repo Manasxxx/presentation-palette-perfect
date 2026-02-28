@@ -1,29 +1,25 @@
 
 
-## Plan: Add Anime.js Letter Animation to Title Slide
+## Plan: Replace Theme Toggle with UIverse Sun/Moon Switch
 
 ### What changes
-Split the "OWLSURF" title into individual letter `<span>` elements and animate them with a staggered entrance using anime.js, replacing the current static gradient text.
+Replace the current simple icon button with the animated sun/moon slider toggle from UIverse (by Galahhad). Keep all existing functionality: `isDark` state, View Transitions API circular sweep, persistent fixed position, and dark/light class toggling.
 
 ### Implementation
 
-**File: `src/components/slides/TitleSlide.tsx`**
+**File: `src/components/ThemeToggle.tsx`**
+- Remove `Moon`/`Sun` lucide imports
+- Replace the button with a `<label class="theme-switch">` wrapping a hidden checkbox + the container div structure (clouds, stars SVG, circle-container with sun-moon and moon spots)
+- Bind `checked={isDark}` on the checkbox so night mode shows when dark
+- On checkbox `onChange`, call the existing `toggleTheme` function (with View Transitions API)
+- Attach `buttonRef` to the label element for the circular sweep origin calculation
+- Keep `fixed bottom-6 right-6 z-[70]` positioning wrapper
 
-1. Import `animate`, `stagger`, `createSpring` from `animejs`
-2. Split "OWLSURF" into letter spans with class `.owl-letter`, starting at `opacity: 0; transform: translateY(40px)`
-3. On mount (inside `useEffect`), run:
-   ```
-   animate('.owl-letter', {
-     translateY: [40, 0],
-     opacity: [0, 1],
-     scale: [0.5, 1],
-     delay: stagger(60),
-     ease: createSpring({ stiffness: 260, damping: 16 }),
-   })
-   ```
-4. Remove the existing Framer Motion `initial`/`animate` on the title `<motion.div>` wrapper (keep it as a plain `<div>`) — the letters themselves handle the entrance
-5. Keep all other Framer Motion animations (logo reveal, pill, badges, scroll indicator) unchanged
+**File: `src/index.css`**
+- Add all the `.theme-switch` CSS rules (variables, container, circle-container, sun-moon, moon spots, clouds, stars, checked states, hover states) at the end of the file
+- Reduce `--toggle-size` from `30px` to `16px` so the toggle is compact enough for a persistent corner widget
 
-### Result
-Each letter of "OWLSURF" will spring in one-by-one with elastic bounce on page load, giving a more dramatic branded entrance than the current simple fade.
+### Files to modify
+- `src/components/ThemeToggle.tsx`
+- `src/index.css`
 
