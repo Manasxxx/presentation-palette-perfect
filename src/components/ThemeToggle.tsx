@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import "@/styles/theme-switch.css";
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(true);
