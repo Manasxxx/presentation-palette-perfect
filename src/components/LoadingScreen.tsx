@@ -3,22 +3,21 @@ import "@/styles/pencil-loader.css";
 
 const LoadingScreen = () => {
   const [visible, setVisible] = useState(true);
-  const [fading, setFading] = useState(false);
+  const [exiting, setExiting] = useState(false);
 
   useEffect(() => {
-    const triggerFade = () => {
-      // Add a minimum display time of 1.5s so users actually see the animation
+    const triggerExit = () => {
       setTimeout(() => {
-        setFading(true);
-        setTimeout(() => setVisible(false), 600);
+        setExiting(true);
+        setTimeout(() => setVisible(false), 1000);
       }, 1500);
     };
 
     if (document.readyState === "complete") {
-      triggerFade();
+      triggerExit();
     } else {
-      window.addEventListener("load", triggerFade);
-      return () => window.removeEventListener("load", triggerFade);
+      window.addEventListener("load", triggerExit);
+      return () => window.removeEventListener("load", triggerExit);
     }
   }, []);
 
@@ -27,13 +26,50 @@ const LoadingScreen = () => {
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{
-        backgroundColor: "hsl(214 30% 6%)",
-        opacity: fading ? 0 : 1,
-        transition: "opacity 0.6s ease-out",
-      }}
+      style={{ backgroundColor: "hsl(214 30% 6%)" }}
     >
-      <div className="flex flex-col items-center gap-8">
+      {/* Spiraling ripple reveal — a growing circle clip-path that expands from center */}
+      <div
+        className="fixed inset-0 z-[101]"
+        style={{
+          clipPath: exiting
+            ? "circle(150% at 50% 50%)"
+            : "circle(0% at 50% 50%)",
+          transition: "clip-path 1s cubic-bezier(0.4, 0, 0.2, 1)",
+          backgroundColor: "transparent",
+          pointerEvents: "none",
+        }}
+      >
+        {/* This div punches through the loading screen to reveal content behind */}
+      </div>
+
+      {/* Ripple rings that spiral outward when exiting */}
+      {exiting && (
+        <>
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="absolute rounded-full border-2"
+              style={{
+                borderColor: `hsl(180 45% 53% / ${0.6 - i * 0.12})`,
+                width: 0,
+                height: 0,
+                animation: `rippleExpand 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${i * 0.12}s forwards`,
+              }}
+            />
+          ))}
+        </>
+      )}
+
+      {/* Loading content — fades & scales down when exiting */}
+      <div
+        className="flex flex-col items-center gap-8"
+        style={{
+          opacity: exiting ? 0 : 1,
+          transform: exiting ? "scale(0.5) rotate(180deg)" : "scale(1) rotate(0deg)",
+          transition: "opacity 0.5s ease-out, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="200px"
@@ -112,6 +148,22 @@ const LoadingScreen = () => {
           Loading...
         </p>
       </div>
+
+      {/* Inline keyframes for ripple rings */}
+      <style>{`
+        @keyframes rippleExpand {
+          0% {
+            width: 0;
+            height: 0;
+            opacity: 1;
+          }
+          100% {
+            width: 300vmax;
+            height: 300vmax;
+            opacity: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 };
