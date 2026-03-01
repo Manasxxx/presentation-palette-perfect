@@ -14,7 +14,7 @@ import ContactSlide from "@/components/slides/ContactSlide";
 
 import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
-import PersistentHeader from "@/components/PersistentHeader";
+import PillNav from "@/components/PillNav";
 
 const slides = [
   TitleSlide,
@@ -66,8 +66,8 @@ const Index = () => {
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
-      <PersistentHeader
-        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 11)}
+      <PillNav
+        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 10)}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
