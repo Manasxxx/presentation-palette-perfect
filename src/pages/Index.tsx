@@ -15,6 +15,7 @@ import ContactSlide from "@/components/slides/ContactSlide";
 import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
+import SplashCursor from "@/components/SplashCursor";
 
 const slides = [
   TitleSlide,
@@ -66,6 +67,7 @@ const Index = () => {
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
+      <SplashCursor />
       <PillNav
         visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 10)}
         currentSlide={currentSlide}
