@@ -1,31 +1,10 @@
 
 
-## Plan: Add Pencil Loading Animation
+## Plan: Compact Partner Badges with Auto-Hide
 
-### What changes
-Add a full-screen loading overlay with the UIverse pencil SVG animation that displays while the site loads, then fades out to reveal the content.
+**Changes to `src/components/slides/TitleSlide.tsx`:**
 
-### Implementation
-
-**File: `src/components/LoadingScreen.tsx`** (new)
-- Full-screen fixed overlay (`z-[100]`) with dark background matching `--owl-black`
-- Contains the pencil SVG from UIverse (the animated drawing pencil with circle stroke)
-- Optional "Loading..." text below in brand font
-- Accepts `onComplete` callback prop
-- Uses `useState` for `visible` and `fading` states
-- On mount, listens for `window.onload`; once fired, sets `fading=true` (triggers opacity transition), then after 500ms sets `visible=false` and calls `onComplete`
-- If window already loaded, trigger fade immediately
-
-**File: `src/styles/pencil-loader.css`** (new)
-- All `.pencil` and `.pencil__*` CSS rules and `@keyframes` (pencilBody1-3, pencilEraser, pencilEraserSkew, pencilPoint, pencilRotate, pencilStroke)
-- Customize pencil colors to use OwlSurf green (`hsl(180,45%,53%)`) instead of default blue
-
-**File: `src/App.tsx`**
-- Import `LoadingScreen`
-- Add `<LoadingScreen />` as the first child inside `QueryClientProvider`, rendered above everything else
-
-### Files
-- Create `src/components/LoadingScreen.tsx`
-- Create `src/styles/pencil-loader.css`
-- Edit `src/App.tsx`
+1. **Reduce badge width**: Remove the long text, shorten padding, and make the Google/Meta badges more compact so they fit on one line.
+2. **Ensure horizontal layout**: They already use `flex` with `gap-3` — just need to ensure `flex-wrap` doesn't kick in by making badges smaller.
+3. **Auto-hide after 2 seconds**: Wrap the badges container in a `motion.div` with an `animate` that fades out after a 2-second delay using framer-motion's `animate` prop with keyframes: `opacity: [1, 1, 0]` over 3 seconds (visible for 2s, fade over 1s).
 
