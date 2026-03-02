@@ -15,7 +15,7 @@ import ContactSlide from "@/components/slides/ContactSlide";
 import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
-import SplashCursor from "@/components/SplashCursor";
+import Ribbons from "@/components/Ribbons";
 
 const slides = [
   TitleSlide,
@@ -67,7 +67,19 @@ const Index = () => {
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
-      <SplashCursor />
+      <Ribbons
+        colors={["#1cb8ba", "#0b0a0a"]}
+        baseSpring={0.03}
+        baseFriction={0.9}
+        baseThickness={30}
+        offsetFactor={0.05}
+        maxAge={500}
+        pointCount={50}
+        speedMultiplier={0.6}
+        enableFade
+        enableShaderEffect={false}
+        effectAmplitude={2}
+      />
       <PillNav
         visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 10)}
         currentSlide={currentSlide}
