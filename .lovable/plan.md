@@ -1,10 +1,23 @@
 
 
-## Plan: Compact Partner Badges with Auto-Hide
+## Plan: Replace SplashCursor with Ribbons Component
 
-**Changes to `src/components/slides/TitleSlide.tsx`:**
+**What**: Remove the WebGL fluid simulation (`SplashCursor`) and replace it with the ReactBits `Ribbons` component — a canvas-based ribbon trail animation using the `ogl` library.
 
-1. **Reduce badge width**: Remove the long text, shorten padding, and make the Google/Meta badges more compact so they fit on one line.
-2. **Ensure horizontal layout**: They already use `flex` with `gap-3` — just need to ensure `flex-wrap` doesn't kick in by making badges smaller.
-3. **Auto-hide after 2 seconds**: Wrap the badges container in a `motion.div` with an `animate` that fades out after a 2-second delay using framer-motion's `animate` prop with keyframes: `opacity: [1, 1, 0]` over 3 seconds (visible for 2s, fade over 1s).
+### Changes
+
+1. **Install `ogl` dependency** — required by the Ribbons component for WebGL rendering (Renderer, Transform, Vec3, Color, Polyline).
+
+2. **Create `src/components/Ribbons.tsx`** — Port the ReactBits Ribbons component (TypeScript). It renders a full-screen fixed canvas overlay (like SplashCursor did) with `pointer-events: none` and `z-index: 50`. Props from user's snippet:
+   - `colors={["#1cb8ba","#0b0a0a"]}`
+   - `baseSpring={0.03}`, `baseFriction={0.9}`, `baseThickness={30}`
+   - `offsetFactor={0.05}`, `maxAge={500}`, `pointCount={50}`
+   - `speedMultiplier={0.6}`, `enableFade={true}`, `enableShaderEffect={false}`, `effectAmplitude={2}`
+
+3. **Update `src/pages/Index.tsx`** — Replace `<SplashCursor />` import and usage with `<Ribbons />` using the specified props.
+
+4. **Delete `src/components/SplashCursor.tsx`** — No longer needed.
+
+### Technical Detail
+The Ribbons component uses the `ogl` library to create WebGL polylines that follow the mouse cursor with spring physics. Each color in the array creates a separate ribbon trail. The container div will be positioned `fixed` with `inset: 0` and `pointer-events: none` so it overlays the entire page without blocking interactions — same approach as the previous SplashCursor.
 
