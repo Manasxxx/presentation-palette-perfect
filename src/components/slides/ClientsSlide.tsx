@@ -39,12 +39,12 @@ const firstRow = allClients.slice(0, Math.ceil(allClients.length / 2));
 const secondRow = allClients.slice(Math.ceil(allClients.length / 2));
 
 const ClientCard = ({ client }: { client: Client }) => (
-  <div className="flex items-center justify-center px-8 py-4 rounded-2xl border border-border/30 bg-card/50 backdrop-blur-sm min-w-[160px] h-[80px]">
+  <div className="flex items-center justify-center px-10 py-6 rounded-2xl border border-border/30 bg-card/50 backdrop-blur-sm min-w-[200px] h-[100px]">
     {client.logo ? (
       <img
         src={client.logo}
         alt={client.name}
-        className="h-14 md:h-16 w-auto object-contain"
+        className="h-16 md:h-20 w-auto object-contain max-w-[180px]"
       />
     ) : (
       <span className="text-sm md:text-base font-semibold text-foreground whitespace-nowrap">
