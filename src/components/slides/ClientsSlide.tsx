@@ -78,7 +78,7 @@ const ClientsSlide = () => {
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className={client.large ? "h-14 md:h-18 w-auto object-contain" : "h-8 md:h-10 w-auto object-contain"}
+                  className={client.large ? "h-20 md:h-28 w-auto object-contain" : "h-8 md:h-10 w-auto object-contain"}
                 />
               ) : (
                 <span className="text-sm md:text-base font-semibold text-foreground">
