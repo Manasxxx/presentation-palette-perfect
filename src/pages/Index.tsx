@@ -67,7 +67,7 @@ const Index = () => {
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
-      <TargetCursor targetSelector="h1, h2, h3, h4, h5, h6, p, .cursor-target" />
+      <TargetCursor targetSelector="button, a, img, svg, .cursor-target" />
       <PillNav
         visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 10)}
         currentSlide={currentSlide}
