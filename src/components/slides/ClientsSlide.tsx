@@ -4,25 +4,28 @@ import mitsuiLogo from "@/assets/client-mitsui.png";
 import dehnLogo from "@/assets/client-dehn.png";
 import kurarayLogo from "@/assets/client-kuraray.png";
 import cultfitLogo from "@/assets/client-cultfit.png";
+import vntLogo from "@/assets/client-vnt.png";
+import girlupLogo from "@/assets/client-girlup.png";
+import cliquesLogo from "@/assets/client-cliques.png";
+import aviLogo from "@/assets/client-avi.png";
 
 type Client = {
   name: string;
   logo?: string;
-  large?: boolean;
 };
 
 const allClients: Client[] = [
   { name: "Mitsui Chemicals", logo: mitsuiLogo },
   { name: "DEHN", logo: dehnLogo },
-  { name: "VNT" },
+  { name: "VNT", logo: vntLogo },
   { name: "Kuraray", logo: kurarayLogo },
-  { name: "GirlUp" },
-  { name: "Cliques" },
+  { name: "GirlUp", logo: girlupLogo },
+  { name: "Cliques", logo: cliquesLogo },
   { name: "IIM Lucknow" },
-  { name: "AVI Global Plast" },
+  { name: "AVI Global Plast", logo: aviLogo },
   { name: "The Baxsaa Co." },
   { name: "Check This Property" },
-  { name: "Cult.fit", logo: cultfitLogo, large: true },
+  { name: "Cult.fit", logo: cultfitLogo },
 ];
 
 const firstRow = allClients.slice(0, Math.ceil(allClients.length / 2));
@@ -34,7 +37,7 @@ const ClientCard = ({ client }: { client: Client }) => (
       <img
         src={client.logo}
         alt={client.name}
-        className={client.large ? "h-16 md:h-20 w-auto object-contain" : "h-8 md:h-10 w-auto object-contain"}
+        className="h-10 md:h-12 w-auto object-contain"
       />
     ) : (
       <span className="text-sm md:text-base font-semibold text-foreground whitespace-nowrap">
