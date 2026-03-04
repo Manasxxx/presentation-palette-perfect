@@ -1,8 +1,5 @@
 import { motion } from "framer-motion";
 import { Marquee } from "@/components/ui/marquee";
-import mitsuiLogo from "@/assets/client-mitsui.png";
-import dehnLogo from "@/assets/client-dehn.png";
-import kurarayLogo from "@/assets/client-kuraray.png";
 import cultfitLogo from "@/assets/client-cultfit.png";
 import vntLogo from "@/assets/client-vnt.png";
 import girlupLogo from "@/assets/client-girlup.png";
@@ -20,10 +17,7 @@ type Client = {
 };
 
 const allClients: Client[] = [
-  { name: "Mitsui Chemicals", logo: mitsuiLogo },
-  { name: "DEHN", logo: dehnLogo },
   { name: "VNT", logo: vntLogo },
-  { name: "Kuraray", logo: kurarayLogo },
   { name: "GirlUp", logo: girlupLogo },
   { name: "Cliques", logo: cliquesLogo },
   { name: "IIM Lucknow", logo: iimlLogo },
