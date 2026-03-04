@@ -69,7 +69,7 @@ const Index = () => {
     >
       <TargetCursor targetSelector="button, a, img, svg, .cursor-target" />
       <PillNav
-        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !(currentSlide >= 5 && currentSlide <= 10)}
+        visible={currentSlide > 0 && currentSlide < slides.length - 1}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
