@@ -167,6 +167,7 @@ const PillNav = ({
 
     const hamburger = hamburgerRef.current;
     const menu = mobileMenuRef.current;
+    const backdrop = document.querySelector('.mobile-menu-backdrop') as HTMLElement;
 
     if (hamburger) {
       const lines = hamburger.querySelectorAll('.hamburger-line');
@@ -176,6 +177,15 @@ const PillNav = ({
       } else {
         gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease });
         gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease });
+      }
+    }
+
+    if (backdrop) {
+      if (newState) {
+        gsap.set(backdrop, { visibility: 'visible' });
+        gsap.to(backdrop, { opacity: 1, duration: 0.3, ease });
+      } else {
+        gsap.to(backdrop, { opacity: 0, duration: 0.2, ease, onComplete: () => gsap.set(backdrop, { visibility: 'hidden' }) });
       }
     }
 
@@ -259,6 +269,13 @@ const PillNav = ({
         </button>
       </nav>
 
+      <div
+        className="mobile-menu-backdrop mobile-only"
+        onClick={() => {
+          if (isMobileMenuOpen) toggleMobileMenu();
+        }}
+      />
+
       <div className="mobile-menu-popover mobile-only" ref={mobileMenuRef} style={cssVars}>
         <ul className="mobile-menu-list">
           {navItems.map((item) => (
@@ -266,7 +283,7 @@ const PillNav = ({
               <button
                 className={`mobile-menu-link${activeNavIndex === navItems.indexOf(item) ? ' is-active' : ''}`}
                 onClick={() => {
-                  setIsMobileMenuOpen(false);
+                  toggleMobileMenu();
                   onNavigate(item.slideIndex);
                 }}
               >
