@@ -8,6 +8,7 @@ import mitsuiCreative3 from "@/assets/mitsui-creative-3.png";
 import mitsuiCreative4 from "@/assets/mitsui-creative-4.png";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 import { LiquidGlassCard } from "react-liquid-glass-card";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface StatDef {
   icon: LucideIcon;
@@ -77,6 +78,7 @@ function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; 
 const CaseStudySlide = () => {
   const statsRef = useRef<HTMLDivElement>(null);
   const [statsTriggered, setStatsTriggered] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const el = statsRef.current;
@@ -94,7 +96,7 @@ const CaseStudySlide = () => {
   }, [statsTriggered]);
 
   return (
-    <section className="slide py-10 px-6 overflow-hidden relative">
+    <section className="slide py-10 px-6 overflow-hidden relative flex flex-col">
       <motion.div
         initial={{ clipPath: "circle(5% at 50% 50%)", opacity: 0 }}
         whileInView={{ clipPath: "circle(150% at 50% 50%)", opacity: 1 }}
@@ -111,13 +113,13 @@ const CaseStudySlide = () => {
           background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))`,
         }}
       />
-      <div className="max-w-6xl mx-auto w-full relative z-10">
+      <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-3"
+          className={`text-center ${isMobile ? 'mb-1' : 'mb-3'}`}
         >
           <span
             className="text-xs tracking-[0.3em] font-medium uppercase"
@@ -132,7 +134,7 @@ const CaseStudySlide = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-5xl font-black tracking-tight mb-3 text-center text-white"
+          className={`text-3xl md:text-5xl font-black tracking-tight text-center text-white ${isMobile ? 'mb-1' : 'mb-3'}`}
         >
           Mitsui Chemicals{" "}
           <span
@@ -150,7 +152,7 @@ const CaseStudySlide = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-center mb-6 max-w-2xl mx-auto text-sm md:text-base"
+          className={`text-center max-w-2xl mx-auto text-sm md:text-base ${isMobile ? 'mb-3' : 'mb-6'}`}
           style={{ color: "hsl(210 30% 75%)" }}
         >
           Boosted brand visibility, engagement, and qualified leads through strategic digital marketing.
@@ -161,7 +163,7 @@ const CaseStudySlide = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="flex justify-center mb-14"
+          className={`flex justify-center ${isMobile ? 'flex-1 items-center' : 'mb-14'}`}
         >
           <ParallaxCardSlider slides={sliderImages} accentColor={mitsuiCyan} />
         </motion.div>
@@ -172,7 +174,7 @@ const CaseStudySlide = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3"
+          className={`flex flex-wrap justify-center gap-3 ${isMobile ? 'mt-4' : ''}`}
         >
           {statDefs.map((stat) => {
             const Icon = stat.icon;
