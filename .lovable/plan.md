@@ -1,23 +1,35 @@
 
 
-## Plan: Replace SplashCursor with Ribbons Component
+## Mobile Case Study Redesign: Hero Image + Bottom Metrics
 
-**What**: Remove the WebGL fluid simulation (`SplashCursor`) and replace it with the ReactBits `Ribbons` component — a canvas-based ribbon trail animation using the `ogl` library.
+### Problem
+On mobile, case study slides show images in a cramped grid (2-3 columns) and the ParallaxCardSlider uses desktop-sized 3D transforms that don't work well on small screens. Metrics compete with images for attention.
 
-### Changes
+### Approach
 
-1. **Install `ogl` dependency** — required by the Ribbons component for WebGL rendering (Renderer, Transform, Vec3, Color, Polyline).
+**1. Make ParallaxCardSlider mobile-friendly** (`ParallaxCardSlider.tsx`)
+- On mobile (`< 768px`), switch from the 3-card perspective layout to a single full-width image with fade/slide transitions
+- Remove the 3D rotateY transforms on mobile — just show the current image large, centered
+- Container sizing: `width: 85vw`, `height: auto` on mobile instead of the `calc(3 * min(35vw, 340px))` formula
+- Keep dot navigation and auto-advance; hide chevron arrows on mobile
+- Use the `useIsMobile` hook already in the project
 
-2. **Create `src/components/Ribbons.tsx`** — Port the ReactBits Ribbons component (TypeScript). It renders a full-screen fixed canvas overlay (like SplashCursor did) with `pointer-events: none` and `z-index: 50`. Props from user's snippet:
-   - `colors={["#1cb8ba","#0b0a0a"]}`
-   - `baseSpring={0.03}`, `baseFriction={0.9}`, `baseThickness={30}`
-   - `offsetFactor={0.05}`, `maxAge={500}`, `pointCount={50}`
-   - `speedMultiplier={0.6}`, `enableFade={true}`, `enableShaderEffect={false}`, `effectAmplitude={2}`
+**2. Convert all case study image grids to use ParallaxCardSlider on mobile** (Baxsaa, CultFit, GirlUp, CTP, VNT)
+- On mobile: replace the `grid-cols-2` / `grid-cols-3` layout with `ParallaxCardSlider` showing one image at a time
+- On desktop: keep the existing grid layout unchanged
+- Each slide imports `useIsMobile` and conditionally renders slider vs grid
 
-3. **Update `src/pages/Index.tsx`** — Replace `<SplashCursor />` import and usage with `<Ribbons />` using the specified props.
+**3. Restructure mobile layout: image hero, metrics at bottom** (all 6 case study files)
+- On mobile, use a flex-column layout: compact title/subtitle at top → large hero image slider in the middle → metrics row pinned at the bottom
+- Reduce title `mb` and description `mb` on mobile to give more space to the image
+- For Baxsaa's SEO card: hide it on mobile or collapse it into the stats row
 
-4. **Delete `src/components/SplashCursor.tsx`** — No longer needed.
-
-### Technical Detail
-The Ribbons component uses the `ogl` library to create WebGL polylines that follow the mouse cursor with spring physics. Each color in the array creates a separate ribbon trail. The container div will be positioned `fixed` with `inset: 0` and `pointer-events: none` so it overlays the entire page without blocking interactions — same approach as the previous SplashCursor.
+### Files to modify
+- `src/components/ParallaxCardSlider.tsx` — add mobile mode (single image, full width, no 3D)
+- `src/components/slides/CaseStudySlide.tsx` — mobile layout reorder
+- `src/components/slides/BaxsaaCaseStudy.tsx` — use slider on mobile, move stats down
+- `src/components/slides/CultFitCaseStudy.tsx` — use slider on mobile, move stats down
+- `src/components/slides/GirlUpCaseStudy.tsx` — use slider on mobile, move stats down
+- `src/components/slides/CTPCaseStudy.tsx` — use slider on mobile, move stats down
+- `src/components/slides/VNTCaseStudy.tsx` — use slider on mobile
 
