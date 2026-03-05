@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SlideData {
   image: string;
@@ -20,6 +22,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   const rafRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const isVisibleRef = useRef(false);
+  const isMobile = useIsMobile();
 
   const total = slides.length;
   const getPrev = (i: number) => (i - 1 + total) % total;
@@ -35,7 +38,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
   }, [total]);
 
-  // Visibility observer - pause everything when off-screen
+  // Visibility observer
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -47,7 +50,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     return () => observer.disconnect();
   }, []);
 
-  // Auto-advance only when visible
+  // Auto-advance
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isVisibleRef.current) return;
@@ -57,8 +60,9 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     return () => clearInterval(interval);
   }, [total]);
 
-  // Tilt animation loop - only runs when visible
+  // Tilt animation loop - desktop only
   useEffect(() => {
+    if (isMobile) return;
     const animate = () => {
       if (isVisibleRef.current) {
         setTilt((prev) => ({
@@ -72,7 +76,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     };
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  }, [isMobile]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -86,6 +90,19 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   const handleMouseLeave = useCallback(() => {
     tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
   }, []);
+
+  // Touch swipe support for mobile
+  const touchStartX = useRef(0);
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    const diff = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goPrev();
+      else goNext();
+    }
+  }, [goNext, goPrev]);
 
   const getSlideStyle = (index: number): React.CSSProperties => {
     const slideWidth = "min(35vw, 340px)";
@@ -119,6 +136,51 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     };
   };
 
+  // ─── Mobile: single full-width image with fade transition ───
+  if (isMobile) {
+    return (
+      <div
+        ref={containerRef}
+        className="relative w-full flex flex-col items-center select-none"
+        style={{ width: "85vw", margin: "0 auto" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="relative w-full overflow-hidden rounded-2xl" style={{ aspectRatio: "1 / 1" }}>
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentIndex}
+              src={slides[currentIndex].image}
+              alt={slides[currentIndex].alt}
+              initial={{ opacity: 0, x: 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -60 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="absolute inset-0 w-full h-full object-contain rounded-2xl"
+            />
+          </AnimatePresence>
+        </div>
+
+        {/* Dot navigation */}
+        <div className="flex gap-2 mt-3">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className="w-2 h-2 rounded-full transition-all duration-300"
+              style={{
+                background: i === currentIndex ? `hsl(${accentColor})` : "hsl(0 0% 50% / 0.3)",
+                transform: i === currentIndex ? "scale(1.4)" : "scale(1)",
+              }}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Desktop: 3D parallax card layout ───
   return (
     <div
       ref={containerRef}
