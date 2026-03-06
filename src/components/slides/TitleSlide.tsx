@@ -4,6 +4,7 @@ import { animate, stagger, createSpring } from "animejs";
 import logo from "@/assets/logo.jpg";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
+import LightRays from "@/components/LightRays";
 
 const owlLetters = "OWLSURF".split("");
 
@@ -40,6 +41,19 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           background: "radial-gradient(ellipse 80% 60% at 20% 40%, hsl(180 45% 53% / 0.4), transparent), radial-gradient(ellipse 60% 80% at 80% 60%, hsl(262 95% 64% / 0.25), transparent), radial-gradient(ellipse 70% 50% at 50% 80%, hsl(22 100% 59% / 0.2), transparent)",
           backgroundSize: "200% 200%",
         }}
+      />
+
+      {/* Light Rays */}
+      <LightRays
+        raysColor="#4bc2c2"
+        raysOrigin="top-center"
+        raysSpeed={0.8}
+        lightSpread={0.5}
+        rayLength={3}
+        fadeDistance={1}
+        saturation={0.8}
+        mouseInfluence={0.1}
+        className="opacity-50 pointer-events-none"
       />
       
       {/* Globe background - zoomed in, only top half visible */}
