@@ -1,35 +1,41 @@
+## Mobile Stats Pills: Compact Left-Aligned Layout
 
+### Change
 
-## Mobile Case Study Redesign: Hero Image + Bottom Metrics
+In all 6 case study files, update the mobile stats container from centered flex-wrap to a left-aligned, tighter layout pushed toward the bottom.
 
-### Problem
-On mobile, case study slides show images in a cramped grid (2-3 columns) and the ParallaxCardSlider uses desktop-sized 3D transforms that don't work well on small screens. Metrics compete with images for attention.
+### What changes per file
 
-### Approach
+For each case study component (`CaseStudySlide`, `BaxsaaCaseStudy`, `CultFitCaseStudy`, `GirlUpCaseStudy`, `CTPCaseStudy`), change the stats `motion.div` wrapper class from:
 
-**1. Make ParallaxCardSlider mobile-friendly** (`ParallaxCardSlider.tsx`)
-- On mobile (`< 768px`), switch from the 3-card perspective layout to a single full-width image with fade/slide transitions
-- Remove the 3D rotateY transforms on mobile — just show the current image large, centered
-- Container sizing: `width: 85vw`, `height: auto` on mobile instead of the `calc(3 * min(35vw, 340px))` formula
-- Keep dot navigation and auto-advance; hide chevron arrows on mobile
-- Use the `useIsMobile` hook already in the project
+```
+flex flex-wrap justify-center gap-3 ${isMobile ? 'mt-4' : ''}
+```
 
-**2. Convert all case study image grids to use ParallaxCardSlider on mobile** (Baxsaa, CultFit, GirlUp, CTP, VNT)
-- On mobile: replace the `grid-cols-2` / `grid-cols-3` layout with `ParallaxCardSlider` showing one image at a time
-- On desktop: keep the existing grid layout unchanged
-- Each slide imports `useIsMobile` and conditionally renders slider vs grid
+to:
 
-**3. Restructure mobile layout: image hero, metrics at bottom** (all 6 case study files)
-- On mobile, use a flex-column layout: compact title/subtitle at top → large hero image slider in the middle → metrics row pinned at the bottom
-- Reduce title `mb` and description `mb` on mobile to give more space to the image
-- For Baxsaa's SEO card: hide it on mobile or collapse it into the stats row
+```
+flex flex-wrap gap-3 ${isMobile ? 'mt-auto pt-4 justify-start gap-1.5' : 'justify-center'}
+```
 
-### Files to modify
-- `src/components/ParallaxCardSlider.tsx` — add mobile mode (single image, full width, no 3D)
-- `src/components/slides/CaseStudySlide.tsx` — mobile layout reorder
-- `src/components/slides/BaxsaaCaseStudy.tsx` — use slider on mobile, move stats down
-- `src/components/slides/CultFitCaseStudy.tsx` — use slider on mobile, move stats down
-- `src/components/slides/GirlUpCaseStudy.tsx` — use slider on mobile, move stats down
-- `src/components/slides/CTPCaseStudy.tsx` — use slider on mobile, move stats down
-- `src/components/slides/VNTCaseStudy.tsx` — use slider on mobile
+On mobile this will:
 
+- Use `mt-auto` to push stats to the bottom of the flex container
+- Use `justify-start` instead of `justify-center` for left alignment
+- Use `gap-1.5` instead of `gap-3` for tighter spacing
+
+Also reduce mobile pill padding from `0.5rem 1rem` to `0.4rem 0.75rem` on mobile, and reduce font sizes slightly (`text-xs` for values, `text-[9px]` for labels).
+
+**VNT** has no stats — skip it.
+
+### Files
+
+- `src/components/slides/CaseStudySlide.tsx` (line 177)
+- `src/components/slides/BaxsaaCaseStudy.tsx` (stats section)
+- `src/components/slides/CultFitCaseStudy.tsx` (line 77)
+- `src/components/slides/GirlUpCaseStudy.tsx` (line 77)
+- `src/components/slides/CTPCaseStudy.tsx` (stats section)
+
+&nbsp;
+
+Improve text readability in terms of colour 
