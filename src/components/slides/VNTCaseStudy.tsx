@@ -38,9 +38,6 @@ const VNTCaseStudy = () => {
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(145deg, hsl(120 25% 75%), hsl(140 30% 68%), hsl(${vntGreen} / 0.5))` }} />
 
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
-        <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className={`text-center ${isMobile ? 'mb-1' : 'mb-5'}`}>
-          <span className="text-xs tracking-[0.3em] font-medium uppercase" style={{ color: `hsl(${vntGreen})` }}>Case Study</span>
-        </motion.div>
 
         <motion.h2 initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, type: "spring" }} viewport={{ once: true }} className={`text-3xl md:text-5xl font-black tracking-tight text-center ${isMobile ? 'mb-1' : 'mb-3'}`} style={{ color: "hsl(0 0% 15%)" }}>
           VNT{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${vntGreen}), hsl(${vntTeal}))` }}>Success</span>

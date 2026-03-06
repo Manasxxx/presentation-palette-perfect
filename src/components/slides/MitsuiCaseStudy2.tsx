@@ -44,20 +44,6 @@ const MitsuiCaseStudy2 = () => {
       />
 
       <div className="max-w-6xl mx-auto w-full relative z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-3"
-        >
-          <span
-            className="text-xs tracking-[0.3em] font-medium uppercase"
-            style={{ color: `hsl(${mitsuiCyan})` }}
-          >
-            Case Study
-          </span>
-        </motion.div>
 
         <motion.h2
           initial={{ opacity: 0, y: 80 }}

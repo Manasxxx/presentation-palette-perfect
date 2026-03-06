@@ -37,9 +37,9 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 40, scale: 0.9 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
     transition: { type: "spring" as const, stiffness: 100 }
   }
@@ -114,20 +114,6 @@ const CaseStudySlide = () => {
         }}
       />
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className={`text-center ${isMobile ? 'mb-1' : 'mb-3'}`}
-        >
-          <span
-            className="text-xs tracking-[0.3em] font-medium uppercase"
-            style={{ color: `hsl(${mitsuiCyan})` }}
-          >
-            Case Study
-          </span>
-        </motion.div>
 
         <motion.h2
           initial={{ opacity: 0, y: 60 }}
