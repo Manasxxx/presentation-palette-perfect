@@ -15,7 +15,7 @@ import ContactSlide from "@/components/slides/ContactSlide";
 import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
-import TargetCursor from "@/components/TargetCursor";
+
 
 const slides = [
   TitleSlide,
@@ -67,7 +67,7 @@ const Index = () => {
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
-      <TargetCursor targetSelector="button, a, img, svg, .cursor-target" />
+      
       <PillNav
         visible={currentSlide > 0 && currentSlide < slides.length - 1}
         currentSlide={currentSlide}
