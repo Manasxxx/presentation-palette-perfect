@@ -27,9 +27,9 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, x: -50, rotate: -5 },
-  visible: { 
-    opacity: 1, 
-    x: 0, 
+  visible: {
+    opacity: 1,
+    x: 0,
     rotate: 0,
     transition: { type: "spring" as const, stiffness: 100 }
   }
@@ -87,15 +87,15 @@ const BaxsaaCaseStudy = () => {
           className={`text-3xl md:text-5xl font-black tracking-tight text-center ${isMobile ? 'mb-1' : 'mb-3'}`}
           style={{ color: "hsl(0 0% 15%)" }}
         >
+          The Baxsaa Co.{" "}
           <span
             className="bg-clip-text text-transparent"
             style={{
               backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(0 55% 45%))`,
             }}
           >
-            The Baxsaa Co.
-          </span>{" "}
-          Success
+            Success
+          </span>
         </motion.h2>
 
         <motion.p
@@ -121,7 +121,7 @@ const BaxsaaCaseStudy = () => {
             <ParallaxCardSlider slides={sliderImages} accentColor={baxsaaMaroon} />
           </motion.div>
         ) : (
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"

@@ -4,8 +4,8 @@ import vntCreative2 from "@/assets/vnt-creative-2.png";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 
-const vntGreen = "100 55% 50%";
-const vntTeal = "192 100% 42%";
+const vntGreen = "100 55% 38%";
+const vntTeal = "192 100% 32%";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -33,9 +33,9 @@ const VNTCaseStudy = () => {
         transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
         viewport={{ once: true, amount: 0.5 }}
         className="absolute inset-0 z-0"
-        style={{ background: `linear-gradient(145deg, hsl(120 25% 88%), hsl(140 30% 82%), hsl(${vntGreen} / 0.35))` }}
+        style={{ background: `linear-gradient(145deg, hsl(120 25% 75%), hsl(140 30% 68%), hsl(${vntGreen} / 0.5))` }}
       />
-      <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(145deg, hsl(120 25% 88%), hsl(140 30% 82%), hsl(${vntGreen} / 0.35))` }} />
+      <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(145deg, hsl(120 25% 75%), hsl(140 30% 68%), hsl(${vntGreen} / 0.5))` }} />
 
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
         <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className={`text-center ${isMobile ? 'mb-1' : 'mb-5'}`}>
@@ -43,7 +43,7 @@ const VNTCaseStudy = () => {
         </motion.div>
 
         <motion.h2 initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, type: "spring" }} viewport={{ once: true }} className={`text-3xl md:text-5xl font-black tracking-tight text-center ${isMobile ? 'mb-1' : 'mb-3'}`} style={{ color: "hsl(0 0% 15%)" }}>
-          <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${vntGreen}), hsl(${vntTeal}))` }}>VNT</span>{" "}Success
+          VNT{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${vntGreen}), hsl(${vntTeal}))` }}>Success</span>
         </motion.h2>
 
         <motion.p initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} className={`text-center max-w-2xl mx-auto text-sm md:text-base ${isMobile ? 'mb-3' : 'mb-6'}`} style={{ color: "hsl(0 0% 40%)" }}>

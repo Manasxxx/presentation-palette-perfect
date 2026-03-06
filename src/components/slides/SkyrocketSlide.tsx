@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Rocket } from "lucide-react";
 import { animate, stagger, createSpring } from "animejs";
+import LightRays from "@/components/LightRays";
 
 const letters = "SKYROCKETING".split("");
 
@@ -33,6 +34,17 @@ const SkyrocketSlide = () => {
 
   return (
     <section ref={sectionRef} className="slide bg-background overflow-hidden">
+      <LightRays
+        raysColor="#4bc2c2"
+        raysOrigin="top-center"
+        raysSpeed={0.8}
+        lightSpread={0.5}
+        rayLength={3}
+        fadeDistance={1}
+        saturation={0.8}
+        mouseInfluence={0.1}
+        className="opacity-50 pointer-events-none"
+      />
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

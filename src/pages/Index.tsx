@@ -10,6 +10,7 @@ import CultFitCaseStudy from "@/components/slides/CultFitCaseStudy";
 import GirlUpCaseStudy from "@/components/slides/GirlUpCaseStudy";
 import CTPCaseStudy from "@/components/slides/CTPCaseStudy";
 import VNTCaseStudy from "@/components/slides/VNTCaseStudy";
+import RaychemRPGCaseStudy from "@/components/slides/RaychemRPGCaseStudy";
 import ContactSlide from "@/components/slides/ContactSlide";
 
 import ThemeToggle from "@/components/ThemeToggle";
@@ -29,6 +30,7 @@ const slides = [
   GirlUpCaseStudy,
   CTPCaseStudy,
   VNTCaseStudy,
+  RaychemRPGCaseStudy,
   ContactSlide,
 ];
 
@@ -54,7 +56,7 @@ const Index = () => {
   const navigateToSlide = (index: number) => {
     const container = containerRef.current;
     if (!container) return;
-    
+
     container.scrollTo({
       top: index * window.innerHeight,
       behavior: "smooth",
@@ -62,19 +64,19 @@ const Index = () => {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="h-screen overflow-y-auto scroll-smooth"
       style={{ scrollSnapType: "y mandatory" }}
     >
-      
+
       <PillNav
         visible={currentSlide > 0 && currentSlide < slides.length - 1}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
       <ThemeToggle />
-      
+
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {index === 0 ? (

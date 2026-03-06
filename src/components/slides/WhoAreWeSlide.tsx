@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Lightbulb, Target, Zap } from "lucide-react";
 import { LiquidGlassCard } from "react-liquid-glass-card";
+import LightRays from "@/components/LightRays";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -13,9 +14,9 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 50, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
     transition: { type: "spring" as const, stiffness: 100, damping: 12 }
   }
@@ -32,11 +33,22 @@ const WhoAreWeSlide = () => {
 
   return (
     <section ref={ref} className="slide hexagon-pattern py-20 overflow-hidden">
-      <motion.div 
+      <motion.div
         style={{ y: backgroundY }}
-        className="absolute inset-0 bg-background" 
+        className="absolute inset-0 bg-background"
       />
-      
+      <LightRays
+        raysColor="#4bc2c2"
+        raysOrigin="top-center"
+        raysSpeed={0.8}
+        lightSpread={0.5}
+        rayLength={3}
+        fadeDistance={1}
+        saturation={0.8}
+        mouseInfluence={0.1}
+        className="opacity-50 pointer-events-none"
+      />
+
       <div className="relative z-10 flex flex-col items-center justify-center px-6 max-w-5xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 80, rotateX: 45 }}
@@ -76,7 +88,7 @@ const WhoAreWeSlide = () => {
             { icon: Zap, label: "Execution" },
           ].map((item, i) => (
             <motion.div key={i} variants={itemVariants} className="flex flex-col items-center gap-3">
-              <motion.div 
+              <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20"
               >

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { BarChart3, Palette, Globe, Code, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { LiquidGlassCard } from "react-liquid-glass-card";
+import LightRays from "@/components/LightRays";
 
 const services = [
   {
@@ -39,6 +40,17 @@ const ServicesSlide = () => {
 
   return (
     <section className="slide py-16 px-6 bg-background overflow-hidden">
+      <LightRays
+        raysColor="#4bc2c2"
+        raysOrigin="top-center"
+        raysSpeed={0.8}
+        lightSpread={0.5}
+        rayLength={3}
+        fadeDistance={1}
+        saturation={0.8}
+        mouseInfluence={0.1}
+        className="opacity-50 pointer-events-none"
+      />
       <div className="max-w-6xl mx-auto w-full">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -68,8 +80,8 @@ const ServicesSlide = () => {
                 key={service.title}
                 onClick={() => setActive(i)}
                 className={`relative flex items-center gap-3 px-4 py-3 md:py-4 rounded-xl text-left transition-all duration-300 group w-full ${active === i
-                    ? "bg-primary/10 border border-primary/30"
-                    : "hover:bg-muted/50 border border-transparent"
+                  ? "bg-primary/10 border border-primary/30"
+                  : "hover:bg-muted/50 border border-transparent"
                   }`}
               >
                 {active === i && (
