@@ -74,16 +74,16 @@ const GirlUpCaseStudy = () => {
           </motion.div>
         )}
 
-        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`flex flex-wrap justify-center gap-3 ${isMobile ? 'mt-4' : ''}`}>
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className={`flex flex-wrap gap-3 ${isMobile ? 'mt-auto pt-4 justify-start gap-1.5' : 'justify-center'}`}>
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
               <motion.div key={stat.label} variants={itemVariants}>
-                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
+                <LiquidGlassCard padding={isMobile ? "0.4rem 0.75rem" : "0.5rem 1rem"} borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
                   <div className="flex items-center gap-2">
-                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${girlUpTeal})` }} />
-                    <span className="text-sm md:text-base font-bold text-white">{stat.value}</span>
-                    <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(168 20% 75%)" }}>{stat.label}</span>
+                    <Icon className={`${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} style={{ color: `hsl(${girlUpTeal})` }} />
+                    <span className={`${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-bold text-white`}>{stat.value}</span>
+                    <span className={`${isMobile ? 'text-[9px]' : 'text-[10px] md:text-xs'} font-medium uppercase tracking-wider`} style={{ color: "hsl(168 20% 80%)" }}>{stat.label}</span>
                   </div>
                 </LiquidGlassCard>
               </motion.div>

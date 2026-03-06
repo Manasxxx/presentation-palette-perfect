@@ -146,19 +146,19 @@ const BaxsaaCaseStudy = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className={`flex flex-wrap justify-center gap-3 ${isMobile ? 'mt-4' : 'mb-8'}`}
+          className={`flex flex-wrap gap-3 ${isMobile ? 'mt-auto pt-4 justify-start gap-1.5' : 'justify-center mb-8'}`}
         >
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
               <motion.div key={stat.label} variants={itemVariants}>
-                <LiquidGlassCard padding="0.5rem 1rem" borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.3)">
+                <LiquidGlassCard padding={isMobile ? "0.4rem 0.75rem" : "0.5rem 1rem"} borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.3)">
                   <div className="flex items-center gap-2">
-                    <Icon className="w-3.5 h-3.5" style={{ color: `hsl(${baxsaaMaroon})` }} />
-                    <span className="text-sm md:text-base font-bold" style={{ color: "hsl(0 0% 15%)" }}>
+                    <Icon className={`${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} style={{ color: `hsl(${baxsaaMaroon})` }} />
+                    <span className={`${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-bold`} style={{ color: "hsl(0 0% 15%)" }}>
                       {stat.value}
                     </span>
-                    <span className="text-[10px] md:text-xs font-medium uppercase tracking-wider" style={{ color: "hsl(0 0% 45%)" }}>
+                    <span className={`${isMobile ? 'text-[9px]' : 'text-[10px] md:text-xs'} font-medium uppercase tracking-wider`} style={{ color: "hsl(0 0% 35%)" }}>
                       {stat.label}
                     </span>
                   </div>
