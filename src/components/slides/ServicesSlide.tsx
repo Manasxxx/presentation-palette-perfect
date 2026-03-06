@@ -50,7 +50,7 @@ const ServicesSlide = () => {
           <span className="text-xs tracking-[0.3em] text-primary font-medium mb-3 block">WHAT WE DO</span>
           <h2 className="text-3xl md:text-5xl font-black tracking-tight">
             <span className="text-foreground">OUR </span>
-            <span className="text-gradient-green">SERVICES</span>
+            <span className="text-gradient-green">CAPABILITIES</span>
           </h2>
         </motion.div>
 
@@ -67,11 +67,10 @@ const ServicesSlide = () => {
               <button
                 key={service.title}
                 onClick={() => setActive(i)}
-                className={`relative flex items-center gap-3 px-4 py-3 md:py-4 rounded-xl text-left transition-all duration-300 group w-full ${
-                  active === i
+                className={`relative flex items-center gap-3 px-4 py-3 md:py-4 rounded-xl text-left transition-all duration-300 group w-full ${active === i
                     ? "bg-primary/10 border border-primary/30"
                     : "hover:bg-muted/50 border border-transparent"
-                }`}
+                  }`}
               >
                 {active === i && (
                   <motion.div
@@ -81,20 +80,17 @@ const ServicesSlide = () => {
                   />
                 )}
                 <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-300 ${
-                    active === i ? "bg-primary/20" : "bg-muted"
-                  }`}
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-300 ${active === i ? "bg-primary/20" : "bg-muted"
+                    }`}
                 >
                   <service.icon
-                    className={`w-4 h-4 transition-colors duration-300 ${
-                      active === i ? "text-primary" : "text-muted-foreground"
-                    }`}
+                    className={`w-4 h-4 transition-colors duration-300 ${active === i ? "text-primary" : "text-muted-foreground"
+                      }`}
                   />
                 </div>
                 <span
-                  className={`text-sm font-semibold transition-colors duration-300 hidden md:block ${
-                    active === i ? "text-foreground" : "text-muted-foreground"
-                  }`}
+                  className={`text-sm font-semibold transition-colors duration-300 hidden md:block ${active === i ? "text-foreground" : "text-muted-foreground"
+                    }`}
                 >
                   {service.title}
                 </span>
