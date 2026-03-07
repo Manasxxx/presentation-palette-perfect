@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger, createSpring } from "animejs";
 import { Lightbulb, Target, Zap } from "lucide-react";
 import { LiquidGlassCard } from "react-liquid-glass-card";
-import LightRays from "@/components/LightRays";
+import Ballpit from "@/components/ui/Ballpit/Ballpit";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const WhoAreWeSlide = () => {
@@ -76,21 +76,25 @@ const WhoAreWeSlide = () => {
   }, [triggered]);
 
   return (
-    <section ref={sectionRef} className="slide hexagon-pattern py-20 overflow-hidden">
-      <div className="wa-parallax-bg absolute inset-0 bg-background" />
-      <LightRays
-        raysColor="#4bc2c2"
-        raysOrigin="top-center"
-        raysSpeed={0.8}
-        lightSpread={0.5}
-        rayLength={3}
-        fadeDistance={1}
-        saturation={0.8}
-        mouseInfluence={0.1}
-        className="opacity-50 pointer-events-none"
-      />
+    <section ref={sectionRef} className="slide py-20 overflow-hidden relative w-full h-full min-h-screen">
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Ballpit
+          count={100}
+          gravity={0.05}
+          friction={0.9975}
+          wallBounce={0.95}
+          followCursor={false}
+          colors={[0x0b0f14, 0x4bc2c2, 0x14b8a6, 0x0f766e, 0xffffff, 0x2dd4bf]}
+          materialParams={{
+            metalness: 0.1,
+            roughness: 0.8,
+            clearcoat: 0.1,
+            clearcoatRoughness: 0.5
+          }}
+        />
+      </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center px-6 max-w-5xl mx-auto">
+      <div className="relative z-[10] flex flex-col items-center justify-center px-6 max-w-5xl mx-auto">
         <h2 className="wa-heading text-4xl md:text-6xl font-black tracking-tight mb-12 text-center" style={{ opacity: 0 }}>
           <span className="text-foreground">WHO ARE </span>
           <span className="text-gradient-green">WE?</span>
@@ -99,7 +103,7 @@ const WhoAreWeSlide = () => {
         <div className="wa-card mb-10 max-w-3xl text-center" style={{ opacity: 0 }}>
           <LiquidGlassCard padding={isMobile ? "1.5rem 1rem" : "2rem 3rem"} borderRadius="1.5rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
             <p className="text-lg md:text-2xl leading-relaxed text-muted-foreground">
-              We are <span className="text-secondary font-bold">OWLSURF DIGITAL</span>, a 360° digital marketing agency where <span className="text-primary font-semibold">Tech Meets Design</span>.
+              We are <span className="text-foreground font-bold">OWLSURF DIGITAL</span>, a 360° digital marketing agency where <span className="text-primary font-semibold">Tech Meets Design</span>.
             </p>
           </LiquidGlassCard>
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, createSpring } from "animejs";
+import { animate, createSpring, stagger } from "animejs";
 import { Marquee } from "@/components/ui/marquee";
-import LightRays from "@/components/LightRays";
+import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import cultfitLogo from "@/assets/client-cultfit.png";
 import vntLogo from "@/assets/client-vnt.png";
 import girlupLogo from "@/assets/client-girlup.png";
@@ -68,6 +68,14 @@ const ClientsSlide = () => {
             duration: 700,
             ease: "cubicBezier(0.22, 1, 0.36, 1)",
           });
+
+          animate(el.querySelector(".cl-cards")!, {
+            opacity: [0, 1],
+            translateY: [40, 0],
+            duration: 800,
+            delay: 150,
+            ease: createSpring({ stiffness: 100, damping: 12 }),
+          });
         }
       },
       { threshold: 0.2 }
@@ -77,25 +85,18 @@ const ClientsSlide = () => {
   }, [triggered]);
 
   return (
-    <section ref={sectionRef} className="slide py-20 px-6 overflow-hidden">
-      <LightRays
-        raysColor="#4bc2c2"
-        raysOrigin="top-center"
-        raysSpeed={0.8}
-        lightSpread={0.5}
-        rayLength={3}
-        fadeDistance={1}
-        saturation={0.8}
-        mouseInfluence={0.1}
-        className="opacity-50 pointer-events-none"
-      />
-      <div className="max-w-5xl mx-auto w-full">
+    <section ref={sectionRef} className="slide py-20 px-6 overflow-hidden relative">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
+        <PrismaticBurst colors={['#4bc2c2', '#14b8a6', '#0f766e', '#134e4a', '#0a2322']} />
+      </div>
+
+      <div className="max-w-5xl mx-auto w-full relative z-10">
         <h2 className="cl-heading text-3xl md:text-6xl font-black tracking-tight mb-8 md:mb-12 text-center" style={{ opacity: 0 }}>
           <span className="text-foreground">MAJOR </span>
           <span className="text-gradient-green">CLIENTS</span>
         </h2>
 
-        <div className="relative flex flex-col gap-4 md:gap-6">
+        <div className="cl-cards relative flex flex-col gap-4 md:gap-6 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]" style={{ opacity: 0 }}>
           <Marquee pauseOnHover className="[--duration:18s] md:[--duration:22s] [--gap:1rem] md:[--gap:1.5rem]">
             {firstRow.map((client) => (
               <ClientCard key={client.name} client={client} />
@@ -106,8 +107,6 @@ const ClientsSlide = () => {
               <ClientCard key={client.name} client={client} />
             ))}
           </Marquee>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-[10%] md:w-1/4 bg-gradient-to-r from-background" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-[10%] md:w-1/4 bg-gradient-to-l from-background" />
         </div>
       </div>
     </section>
