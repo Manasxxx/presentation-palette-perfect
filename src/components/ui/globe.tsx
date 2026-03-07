@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import createGlobe, { COBEOptions } from "cobe";
-import { useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const GLOBE_CONFIG: COBEOptions = {
   width: 800,
   height: 800,
-  onRender: () => {},
+  onRender: () => { },
   devicePixelRatio: 2,
   phi: 0,
   theta: 0.3,
@@ -34,6 +33,34 @@ const GLOBE_CONFIG: COBEOptions = {
   ],
 };
 
+/**
+ * Simple spring-like smoothing: lerps toward a target value each frame.
+ * Replaces framer-motion's useMotionValue + useSpring for the globe rotation offset.
+ */
+function useSpringValue(initial: number, config = { damping: 30, stiffness: 100 }) {
+  const current = useRef(initial);
+  const target = useRef(initial);
+  const velocity = useRef(0);
+
+  const set = useCallback((value: number) => {
+    target.current = value;
+  }, []);
+
+  const get = useCallback(() => current.current, []);
+
+  // Simple spring step (called per frame inside globe's onRender)
+  const step = useCallback(() => {
+    const { stiffness, damping } = config;
+    const dt = 1 / 60; // assumed 60fps
+    const force = stiffness * (target.current - current.current);
+    velocity.current += force * dt;
+    velocity.current *= Math.exp(-damping * dt);
+    current.current += velocity.current * dt;
+  }, [config.damping, config.stiffness]);
+
+  return { set, get, step };
+}
+
 export function Globe({
   className,
   config = GLOBE_CONFIG,
@@ -50,12 +77,7 @@ export function Globe({
   const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
-  const r = useMotionValue(0);
-  const rs = useSpring(r, {
-    mass: 1,
-    damping: 30,
-    stiffness: 100,
-  });
+  const spring = useSpringValue(0, { damping: 30, stiffness: 100 });
 
   const updatePointerInteraction = (value: number | null) => {
     pointerInteracting.current = value;
@@ -68,7 +90,7 @@ export function Globe({
     if (pointerInteracting.current !== null) {
       const delta = clientX - pointerInteracting.current;
       pointerInteractionMovement.current = delta;
-      r.set(delta / 200);
+      spring.set(delta / 200);
     }
   };
 
@@ -107,8 +129,9 @@ export function Globe({
       width: width * 2,
       height: width * 2,
       onRender: (state) => {
+        spring.step();
         if (!pointerInteracting.current) phi += 0.005;
-        state.phi = phi + rs.get();
+        state.phi = phi + spring.get();
         state.width = width * 2;
         state.height = width * 2;
       },

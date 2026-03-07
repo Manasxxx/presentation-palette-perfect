@@ -4,6 +4,7 @@
 
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Yantramanav:wght@400;500;700;900&family=Trykker&display=swap');
 
 
 @layer base {
@@ -48,19 +49,19 @@
     --owl-green: 180 45% 53%;
     --owl-green-dark: 180 45% 43%;
     --owl-white: 0 0% 100%;
-    
+
     /* Secondary palette (supporting colors) */
     --owl-purple: 262 95% 64%;
     --owl-orange: 22 100% 59%;
     --owl-chartreuse: 68 99% 50%;
     --owl-blue: 195 99% 50%;
     --owl-red: 352 100% 58%;
-    
+
     /* Gradients */
     --gradient-green: linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%));
     --gradient-dark: linear-gradient(180deg, hsl(214 30% 6%), hsl(214 30% 4%));
     --gradient-card: linear-gradient(145deg, hsl(214 25% 14%), hsl(214 30% 8%));
-    
+
     /* Shadows */
     --shadow-green: 0 10px 40px -10px hsl(180 45% 53% / 0.3);
     --shadow-card: 0 25px 50px -12px hsl(214 30% 4% / 0.5);
@@ -166,10 +167,23 @@
   }
 
   @keyframes gradient-shift {
-    0%, 100% { background-position: 0% 0%; }
-    25% { background-position: 100% 50%; }
-    50% { background-position: 50% 100%; }
-    75% { background-position: 0% 50%; }
+
+    0%,
+    100% {
+      background-position: 0% 0%;
+    }
+
+    25% {
+      background-position: 100% 50%;
+    }
+
+    50% {
+      background-position: 50% 100%;
+    }
+
+    75% {
+      background-position: 0% 50%;
+    }
   }
 
   .animate-float {
@@ -177,8 +191,15 @@
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
   }
 
   .animate-pulse-glow {
@@ -186,25 +207,35 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 40px -10px hsl(180 45% 53% / 0.4); }
-    50% { box-shadow: 0 0 60px -5px hsl(180 45% 53% / 0.6); }
+
+    0%,
+    100% {
+      box-shadow: 0 0 40px -10px hsl(180 45% 53% / 0.4);
+    }
+
+    50% {
+      box-shadow: 0 0 60px -5px hsl(180 45% 53% / 0.6);
+    }
   }
 
   @keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
+    0% {
+      background-position: -200% center;
+    }
+
+    100% {
+      background-position: 200% center;
+    }
   }
 
   .shimmer-text {
     background-size: 200% auto;
-    background-image: linear-gradient(
-      90deg,
-      hsl(180 45% 53%) 0%,
-      hsl(180 45% 70%) 25%,
-      hsl(0 0% 100% / 0.9) 50%,
-      hsl(180 45% 70%) 75%,
-      hsl(180 45% 53%) 100%
-    );
+    background-image: linear-gradient(90deg,
+        hsl(180 45% 53%) 0%,
+        hsl(180 45% 70%) 25%,
+        hsl(0 0% 100% / 0.9) 50%,
+        hsl(180 45% 70%) 75%,
+        hsl(180 45% 53%) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -213,8 +244,13 @@
 }
 
 @keyframes shimmer-cascade {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 ::view-transition-old(root),

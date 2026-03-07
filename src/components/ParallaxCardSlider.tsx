@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface SlideData {
   image: string;
@@ -17,6 +16,9 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCardSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayIndex, setDisplayIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+  const [isAnimating, setIsAnimating] = useState(false);
   const [tilt, setTilt] = useState({ rotX: 0, rotY: 0, bgX: 0, bgY: 0 });
   const tiltTarget = useRef({ rotX: 0, rotY: 0, bgX: 0, bgY: 0 });
   const rafRef = useRef<number>(0);
@@ -28,15 +30,27 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   const getPrev = (i: number) => (i - 1 + total) % total;
   const getNext = (i: number) => (i + 1) % total;
 
+  const changeSlide = useCallback((newIndex: number, direction: "left" | "right") => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setSlideDirection(direction);
+
+    // Start exit animation, then after transition swap
+    setTimeout(() => {
+      setDisplayIndex(newIndex);
+      setCurrentIndex(newIndex);
+      tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
+      setTimeout(() => setIsAnimating(false), 400);
+    }, 200);
+  }, [isAnimating]);
+
   const goNext = useCallback(() => {
-    setCurrentIndex((prev) => getNext(prev));
-    tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
-  }, [total]);
+    changeSlide(getNext(currentIndex), "right");
+  }, [currentIndex, total, changeSlide]);
 
   const goPrev = useCallback(() => {
-    setCurrentIndex((prev) => getPrev(prev));
-    tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
-  }, [total]);
+    changeSlide(getPrev(currentIndex), "left");
+  }, [currentIndex, total, changeSlide]);
 
   // Visibility observer
   useEffect(() => {
@@ -53,17 +67,16 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   // Auto-advance
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isVisibleRef.current) return;
-      setCurrentIndex((prev) => getNext(prev));
-      tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
+      if (!isVisibleRef.current || isAnimating) return;
+      changeSlide(getNext(currentIndex), "right");
     }, 4000);
     return () => clearInterval(interval);
-  }, [total]);
+  }, [total, currentIndex, isAnimating, changeSlide]);
 
   // Tilt animation loop - desktop only
   useEffect(() => {
     if (isMobile) return;
-    const animate = () => {
+    const animateTilt = () => {
       if (isVisibleRef.current) {
         setTilt((prev) => ({
           rotX: lerp(prev.rotX, tiltTarget.current.rotX, 0.08),
@@ -72,9 +85,9 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
           bgY: lerp(prev.bgY, tiltTarget.current.bgY, 0.08),
         }));
       }
-      rafRef.current = requestAnimationFrame(animate);
+      rafRef.current = requestAnimationFrame(animateTilt);
     };
-    rafRef.current = requestAnimationFrame(animate);
+    rafRef.current = requestAnimationFrame(animateTilt);
     return () => cancelAnimationFrame(rafRef.current);
   }, [isMobile]);
 
@@ -136,8 +149,11 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     };
   };
 
-  // ─── Mobile: single full-width image with fade transition ───
+  // ─── Mobile: single full-width image with CSS transition ───
   if (isMobile) {
+    const exitTransform = slideDirection === "right" ? "translateX(-60px)" : "translateX(60px)";
+    const enterTransform = slideDirection === "right" ? "translateX(60px)" : "translateX(-60px)";
+
     return (
       <div
         ref={containerRef}
@@ -147,18 +163,17 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
         onTouchEnd={handleTouchEnd}
       >
         <div className="relative w-full overflow-hidden rounded-2xl" style={{ aspectRatio: "1 / 1" }}>
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={currentIndex}
-              src={slides[currentIndex].image}
-              alt={slides[currentIndex].alt}
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -60 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full object-contain rounded-2xl"
-            />
-          </AnimatePresence>
+          <img
+            key={displayIndex}
+            src={slides[displayIndex].image}
+            alt={slides[displayIndex].alt}
+            className="absolute inset-0 w-full h-full object-contain rounded-2xl"
+            style={{
+              opacity: isAnimating ? 0 : 1,
+              transform: isAnimating ? (displayIndex === currentIndex ? exitTransform : enterTransform) : "translateX(0)",
+              transition: "opacity 0.4s ease-in-out, transform 0.4s ease-in-out",
+            }}
+          />
         </div>
 
         {/* Dot navigation */}
@@ -166,7 +181,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
           {slides.map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrentIndex(i)}
+              onClick={() => changeSlide(i, i > currentIndex ? "right" : "left")}
               className="w-2 h-2 rounded-full transition-all duration-300"
               style={{
                 background: i === currentIndex ? `hsl(${accentColor})` : "hsl(0 0% 50% / 0.3)",
@@ -257,7 +272,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
         {slides.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrentIndex(i)}
+            onClick={() => changeSlide(i, i > currentIndex ? "right" : "left")}
             className="w-2 h-2 rounded-full transition-all duration-300"
             style={{
               background: i === currentIndex ? `hsl(${accentColor})` : "hsl(0 0% 100% / 0.3)",

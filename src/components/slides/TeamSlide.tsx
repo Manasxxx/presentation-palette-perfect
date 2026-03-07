@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { animate, stagger, createSpring } from "animejs";
 import { Linkedin, Instagram } from "lucide-react";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import harshitAvatar from "@/assets/harshit-avatar.png";
@@ -18,58 +19,56 @@ const row2 = [
   { name: "Sanskriti", avatar: sanskritiAvatar },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 60, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 100, damping: 12 }
-  }
-};
-
 const TeamSlide = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [triggered, setTriggered] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered) {
+          setTriggered(true);
+
+          animate(el.querySelector(".tm-heading")!, {
+            opacity: [0, 1],
+            translateY: [80, 0],
+            scale: [0.8, 1],
+            duration: 800,
+            ease: createSpring({ stiffness: 100, damping: 12 }),
+          });
+
+          animate(el.querySelectorAll(".tm-card"), {
+            opacity: [0, 1],
+            translateY: [60, 0],
+            scale: [0.8, 1],
+            delay: stagger(120),
+            ease: createSpring({ stiffness: 100, damping: 12 }),
+          });
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [triggered]);
+
   return (
-    <section className="slide py-20 px-6 overflow-hidden">
+    <section ref={sectionRef} className="slide py-20 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto w-full">
-        <motion.h2
-          initial={{ opacity: 0, y: 80, scale: 0.8 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, type: "spring" }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-6xl font-black tracking-tight mb-14 text-center"
-        >
+        <h2 className="tm-heading text-4xl md:text-6xl font-black tracking-tight mb-14 text-center" style={{ opacity: 0 }}>
           <span className="text-foreground">OUR </span>
           <span className="text-gradient-green">TEAM</span>
-        </motion.h2>
+        </h2>
 
         {[row1, row2].map((row, rowIndex) => (
-          <motion.div
-            key={rowIndex}
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="flex justify-center gap-5 md:gap-7 mb-5 md:mb-7 last:mb-0"
-          >
+          <div key={rowIndex} className="flex justify-center gap-5 md:gap-7 mb-5 md:mb-7 last:mb-0">
             {row.map((member) => (
-              <motion.div
+              <div
                 key={member.name}
-                variants={cardVariants}
-                whileHover={{
-                  scale: 1.08,
-                  y: -8,
-                  transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] }
-                }}
-                className="w-[45%] md:w-[200px]"
+                className="tm-card w-[45%] md:w-[200px] transition-transform duration-300 hover:scale-[1.08] hover:-translate-y-2"
+                style={{ opacity: 0 }}
               >
                 <LiquidGlassCard padding="1rem 1.25rem" borderRadius="1rem" blur={15} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
                   <div className="group text-center flex flex-col items-center cursor-pointer">
@@ -96,9 +95,9 @@ const TeamSlide = () => {
                     </div>
                   </div>
                 </LiquidGlassCard>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         ))}
       </div>
     </section>

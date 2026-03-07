@@ -1,51 +1,67 @@
-import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { useEffect, useRef, ReactNode } from "react";
+import { animate } from "animejs";
 
 interface SlideRevealProps {
   children: ReactNode;
   className?: string;
 }
 
-const slideVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.97 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.9,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  },
-};
-
 const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const triggered = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered.current) {
+          triggered.current = true;
+
+          // Container reveal
+          animate(el, {
+            opacity: [0, 1],
+            translateY: [40, 0],
+            scale: [0.97, 1],
+            duration: 900,
+            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+          });
+
+          // Top wipe line
+          animate(el.querySelector(".sr-top-line")!, {
+            scaleX: [0, 1],
+            duration: 800,
+            delay: 200,
+            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+          });
+
+          // Bottom wipe line
+          animate(el.querySelector(".sr-bottom-line")!, {
+            scaleX: [0, 1],
+            duration: 800,
+            delay: 400,
+            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+          });
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      variants={slideVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
-      className={className}
-    >
-      {/* Top wipe line */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        viewport={{ once: true }}
-        className="absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
+    <div ref={ref} className={className} style={{ opacity: 0 }}>
+      <div
+        className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
+        style={{ transform: "scaleX(0)" }}
       />
-      {/* Bottom wipe line */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        viewport={{ once: true }}
-        className="absolute bottom-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent z-20"
+      <div
+        className="sr-bottom-line absolute bottom-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent z-20"
+        style={{ transform: "scaleX(0)" }}
       />
       {children}
-    </motion.div>
+    </div>
   );
 };
 

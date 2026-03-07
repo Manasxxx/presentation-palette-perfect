@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { animate, createSpring } from "animejs";
 import { Marquee } from "@/components/ui/marquee";
 import LightRays from "@/components/LightRays";
 import cultfitLogo from "@/assets/client-cultfit.png";
@@ -50,8 +51,33 @@ const ClientCard = ({ client }: { client: Client }) => (
 );
 
 const ClientsSlide = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [triggered, setTriggered] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !triggered) {
+          setTriggered(true);
+
+          animate(el.querySelector(".cl-heading")!, {
+            opacity: [0, 1],
+            translateY: [60, 0],
+            duration: 700,
+            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+          });
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [triggered]);
+
   return (
-    <section className="slide py-20 px-6 overflow-hidden">
+    <section ref={sectionRef} className="slide py-20 px-6 overflow-hidden">
       <LightRays
         raysColor="#4bc2c2"
         raysOrigin="top-center"
@@ -64,16 +90,10 @@ const ClientsSlide = () => {
         className="opacity-50 pointer-events-none"
       />
       <div className="max-w-5xl mx-auto w-full">
-        <motion.h2
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-6xl font-black tracking-tight mb-8 md:mb-12 text-center"
-        >
+        <h2 className="cl-heading text-3xl md:text-6xl font-black tracking-tight mb-8 md:mb-12 text-center" style={{ opacity: 0 }}>
           <span className="text-foreground">MAJOR </span>
           <span className="text-gradient-green">CLIENTS</span>
-        </motion.h2>
+        </h2>
 
         <div className="relative flex flex-col gap-4 md:gap-6">
           <Marquee pauseOnHover className="[--duration:18s] md:[--duration:22s] [--gap:1rem] md:[--gap:1.5rem]">

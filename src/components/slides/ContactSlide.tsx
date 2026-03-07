@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { Phone, Globe, Mail } from "lucide-react";
 import { animate, stagger, createSpring } from "animejs";
 import logo from "@/assets/01.4 Owl Icon Final.png";
@@ -17,12 +16,50 @@ const ContactSlide = () => {
       ([entry]) => {
         if (entry.isIntersecting && !triggered) {
           setTriggered(true);
+
+          // Logo spin-in
+          animate(el.querySelector(".ct-logo")!, {
+            opacity: [0, 1],
+            scale: [0, 1],
+            rotate: [-180, 0],
+            duration: 1000,
+            ease: createSpring({ stiffness: 100, damping: 12 }),
+          });
+
+          // Heading
+          animate(el.querySelector(".ct-heading")!, {
+            opacity: [0, 1],
+            translateY: [60, 0],
+            duration: 800,
+            delay: 200,
+            ease: "out(3)",
+          });
+
+          // Subtitle
+          animate(el.querySelector(".ct-subtitle")!, {
+            opacity: [0, 1],
+            translateX: [-50, 0],
+            duration: 600,
+            delay: 300,
+            ease: "out(3)",
+          });
+
+          // Contact cards
           animate(el.querySelectorAll(".contact-card"), {
             translateY: [60, 0],
             opacity: [0, 1],
             scale: [0.8, 1],
             delay: stagger(120),
             ease: createSpring({ stiffness: 200, damping: 15 }),
+          });
+
+          // Footer
+          animate(el.querySelector(".ct-footer")!, {
+            opacity: [0, 1],
+            scaleX: [0, 1],
+            duration: 800,
+            delay: 600,
+            ease: "out(3)",
           });
         }
       },
@@ -48,38 +85,20 @@ const ContactSlide = () => {
       />
 
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl">
-        <motion.div
-          initial={{ opacity: 0, scale: 0, rotate: -180 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, type: "spring" }}
-          viewport={{ once: true }}
-          className="mb-8"
-        >
+        <div className="ct-logo mb-8" style={{ opacity: 0 }}>
           <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-primary/20 p-2 animate-pulse-glow overflow-visible">
             <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-contain" />
           </div>
-        </motion.div>
+        </div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 60, rotateX: 45 }}
-          whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-5xl font-black tracking-tight mb-4"
-        >
+        <h2 className="ct-heading text-3xl md:text-5xl font-black tracking-tight mb-4" style={{ opacity: 0 }}>
           <span className="text-foreground">REACH OUT </span>
           <span className="text-gradient-green">WHERE</span>
-        </motion.h2>
+        </h2>
 
-        <motion.p
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-xl md:text-2xl font-bold tracking-wider text-secondary mb-10"
-        >
+        <p className="ct-subtitle text-xl md:text-2xl font-bold tracking-wider text-secondary mb-10" style={{ opacity: 0 }}>
           TECH MEETS DESIGN
-        </motion.p>
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl">
           <a
@@ -130,17 +149,11 @@ const ContactSlide = () => {
           </a>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-12 flex items-center gap-4"
-        >
+        <div className="ct-footer mt-12 flex items-center gap-4" style={{ opacity: 0, transform: "scaleX(0)" }}>
           <div className="h-px w-12 bg-border" />
           <span className="text-xs tracking-widest text-muted-foreground">© OWLSURF DIGITAL</span>
           <div className="h-px w-12 bg-border" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
