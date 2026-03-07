@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, createSpring } from "animejs";
-import raychemCreative1 from "@/assets/Raychemcasestudy 1.webp";
-import raychemCreative2 from "@/assets/Raychemcasestudy 2.webp";
+import raychemCreative1 from "@/assets/raychem-creative-1.webp";
+import raychemCreative2 from "@/assets/raychem-creative-2.webp";
 import raychemCreative3 from "@/assets/Raychemcasestudy 3.webp";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";

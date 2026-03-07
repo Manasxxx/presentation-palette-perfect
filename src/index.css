@@ -1,10 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Yantramanav:wght@400;500;700;900&family=Trykker&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Yantramanav:wght@400;500;700;900&family=Trykker&display=swap');
 
 
 @layer base {
@@ -115,7 +114,7 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
+    background-color: hsl(214 30% 6%);
   }
 
   body {
@@ -123,11 +122,23 @@
     font-family: 'Montserrat', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+
+  h1 {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  h2 {
+    font-family: 'Yantramanav', sans-serif;
+  }
+
+  h3 {
+    font-family: 'Trykker', serif;
+  }
 }
 
 @layer components {
   .slide {
-    @apply min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden;
+    @apply min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }

@@ -99,11 +99,13 @@ const LightRays = ({
       await new Promise(resolve => setTimeout(resolve, 10));
       if (!containerRef.current) return;
 
-      const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true });
+      const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true, premultipliedAlpha: false });
       rendererRef.current = renderer;
       const gl = renderer.gl;
+      gl.clearColor(0, 0, 0, 0);
       gl.canvas.style.width = '100%';
       gl.canvas.style.height = '100%';
+      gl.canvas.style.background = 'transparent';
 
       while (containerRef.current.firstChild) {
         containerRef.current.removeChild(containerRef.current.firstChild);
@@ -318,7 +320,7 @@ void main() {
     }
   }, [followMouse]);
 
-  return <div ref={containerRef} className={`absolute inset-0 w-full h-full ${className}`.trim()} />;
+  return <div ref={containerRef} className={`absolute inset-0 w-full h-full ${className}`.trim()} style={{ background: 'transparent' }} />;
 };
 
 export default LightRays;

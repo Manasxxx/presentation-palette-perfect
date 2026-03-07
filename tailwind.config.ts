@@ -15,6 +15,9 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Montserrat', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+        yantra: ['Yantramanav', 'sans-serif'],
+        trykker: ['Trykker', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

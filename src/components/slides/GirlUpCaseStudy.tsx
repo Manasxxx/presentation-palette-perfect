@@ -100,7 +100,7 @@ const GirlUpCaseStudy = () => {
             <ParallaxCardSlider slides={sliderImages} accentColor={girlUpTeal} />
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-3xl mx-auto">
             {[girlupCreative1, girlupCreative2].map((src, i) => (
               <div key={i} className="cs-image rounded-2xl overflow-hidden" style={{ opacity: 0 }}>
                 <img src={src} alt={`Girl Up creative ${i + 1}`} loading="lazy" className="w-full h-auto object-contain rounded-2xl" />

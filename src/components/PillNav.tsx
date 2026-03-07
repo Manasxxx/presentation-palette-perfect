@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import '@/styles/PillNav.css';
-import logoImg from '@/assets/logo.jpg';
+import logoImg from '@/assets/logo-main.jpg';
 
 const navItems = [
   { label: 'Intro', slideIndex: 0 },
@@ -103,7 +103,7 @@ const PillNav = ({
     layout();
     window.addEventListener('resize', layout);
     if (document.fonts?.ready) {
-      document.fonts.ready.then(layout).catch(() => {});
+      document.fonts.ready.then(layout).catch(() => { });
     }
 
     const menu = mobileMenuRef.current;

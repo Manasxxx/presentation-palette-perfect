@@ -3,6 +3,7 @@ import { animate, stagger, createSpring } from "animejs";
 import { BarChart3, Palette, Globe, Code, ChevronRight } from "lucide-react";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const services = [
   {
@@ -36,6 +37,7 @@ const services = [
 ];
 
 const ServicesSlide = () => {
+  const isMobile = useIsMobile();
   const [active, setActive] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -139,7 +141,7 @@ const ServicesSlide = () => {
           <span className="text-xs tracking-[0.3em] text-primary font-medium mb-3 block">WHAT WE DO</span>
           <h2 className="text-3xl md:text-5xl font-black tracking-tight">
             <span className="text-foreground">OUR </span>
-            <span className="text-gradient-green">CAPABILITIES</span>
+            <span className="text-gradient-green">SERVICES</span>
           </h2>
         </div>
 
@@ -151,8 +153,8 @@ const ServicesSlide = () => {
                 key={service.title}
                 onClick={() => handleTabChange(i)}
                 className={`relative flex items-center gap-3 px-4 py-3 md:py-4 rounded-xl text-left transition-all duration-300 group w-full ${active === i
-                    ? "bg-primary/10 border border-primary/30"
-                    : "hover:bg-muted/50 border border-transparent"
+                  ? "bg-primary/10 border border-primary/30"
+                  : "hover:bg-muted/50 border border-transparent"
                   }`}
               >
                 {active === i && (
@@ -181,7 +183,7 @@ const ServicesSlide = () => {
 
           {/* Right content panel */}
           <div className="sv-panel min-h-[320px] relative overflow-hidden" style={{ opacity: 0 }}>
-            <LiquidGlassCard padding="1.5rem 2.5rem" borderRadius="1rem" blur={12} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
+            <LiquidGlassCard padding={isMobile ? "1.5rem 1rem" : "1.5rem 2.5rem"} borderRadius="1rem" blur={12} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               {/* Accent glow */}
               <div
                 className={`absolute -top-20 -right-20 w-60 h-60 rounded-full bg-gradient-to-br ${services[active].accent} opacity-10 blur-3xl transition-all duration-700`}

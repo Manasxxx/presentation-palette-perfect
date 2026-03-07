@@ -12,14 +12,16 @@ const Arrow19 = React.forwardRef<Arrow19Element, Arrow19Props>(
 );
 Arrow19.displayName = "Arrow19";
 import { animate, stagger, createSpring } from "animejs";
-import logo from "@/assets/logo.jpg";
+import logo from "@/assets/logo-main.jpg";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const owlLetters = "OWLSURF".split("");
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
+  const isMobile = useIsMobile();
   const ref = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -168,7 +170,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       />
 
       {/* Globe background */}
-      <div className="absolute left-1/2 -translate-x-1/2 overflow-hidden pointer-events-none" style={{ top: '45%', width: '150%', height: '100%' }}>
+      <div className="absolute left-1/2 -translate-x-1/2 overflow-hidden pointer-events-none" style={{ top: isMobile ? '35%' : '45%', width: isMobile ? '200%' : '150%', height: '100%' }}>
         <Globe className="opacity-40 !max-w-none !w-full" />
       </div>
 
@@ -177,9 +179,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         className="relative z-10 flex flex-col items-center justify-center text-center px-6 -mt-16 md:-mt-24"
       >
         {/* Logo with glass effect */}
-        <div className="ts-logo-outer mb-8 relative" style={{ opacity: 0 }}>
+        <div className="ts-logo-outer mb-6 md:mb-8 relative" style={{ opacity: 0 }}>
           <div
-            className="ts-logo-inner w-32 h-32 md:w-40 md:h-40 animate-pulse-glow flex items-center justify-center"
+            className="ts-logo-inner w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 animate-pulse-glow flex items-center justify-center"
             style={{ clipPath: "circle(0% at 50% 50%)" }}
           >
             <LiquidGlassCard borderRadius="50%" padding="4px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
@@ -261,7 +263,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
         {/* Partner Badges */}
         <div className="ts-badges flex items-center justify-center gap-2 mt-6" style={{ opacity: 0 }}>
-          <LiquidGlassCard padding="0.35rem 0.6rem" borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
+          <LiquidGlassCard padding={isMobile ? "0.25rem 0.5rem" : "0.35rem 0.6rem"} borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
             <div className="flex items-center gap-1.5">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none">
                 <path d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" fill="#4285F4" />
@@ -273,7 +275,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             </div>
           </LiquidGlassCard>
 
-          <LiquidGlassCard padding="0.35rem 0.6rem" borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
+          <LiquidGlassCard padding={isMobile ? "0.25rem 0.5rem" : "0.35rem 0.6rem"} borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
             <div className="flex items-center gap-1.5">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none">
                 <path d="M24 4C12.95 4 4 12.95 4 24c0 9.94 7.28 18.17 16.8 19.67V29.4h-5.04V24h5.04v-4.12c0-4.98 2.97-7.73 7.5-7.73 2.17 0 4.44.39 4.44.39v4.88h-2.5c-2.47 0-3.24 1.53-3.24 3.1V24h5.5l-.88 5.4h-4.62v14.27C36.72 42.17 44 33.94 44 24c0-11.05-8.95-20-20-20z" fill="#1877F2" />

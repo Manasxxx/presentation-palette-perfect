@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Phone, Globe, Mail } from "lucide-react";
 import { animate, stagger, createSpring } from "animejs";
-import logo from "@/assets/01.4 Owl Icon Final.png";
+import logo from "@/assets/logo-icon.png";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
 

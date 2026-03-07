@@ -3,8 +3,10 @@ import { animate, stagger, createSpring } from "animejs";
 import { Lightbulb, Target, Zap } from "lucide-react";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const WhoAreWeSlide = () => {
+  const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
 
@@ -95,7 +97,7 @@ const WhoAreWeSlide = () => {
         </h2>
 
         <div className="wa-card mb-10 max-w-3xl text-center" style={{ opacity: 0 }}>
-          <LiquidGlassCard padding="2rem 3rem" borderRadius="1.5rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
+          <LiquidGlassCard padding={isMobile ? "1.5rem 1rem" : "2rem 3rem"} borderRadius="1.5rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
             <p className="text-lg md:text-2xl leading-relaxed text-muted-foreground">
               We are <span className="text-secondary font-bold">OWLSURF DIGITAL</span>, a 360° digital marketing agency where <span className="text-primary font-semibold">Tech Meets Design</span>.
             </p>

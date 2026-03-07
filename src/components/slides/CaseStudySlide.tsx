@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Eye, Users, TrendingUp, MousePointer, Gauge, LucideIcon } from "lucide-react";
 import { animate, stagger, createSpring } from "animejs";
-import mitsuiCreative1 from "@/assets/mitsui-creative-1.png";
+import mitsuiCreative1 from "@/assets/mitsui-creative-1.webp";
 import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
-import mitsuiCreative3 from "@/assets/mitsui-creative-3.png";
-import mitsuiCreative4 from "@/assets/mitsui-creative-4.png";
+import mitsuiCreative3 from "@/assets/mitsui-creative-3.webp";
+import mitsuiCreative4 from "@/assets/mitsui-creative-4.webp";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -123,7 +123,7 @@ const CaseStudySlide = () => {
   }, [statsTriggered]);
 
   return (
-    <section ref={sectionRef} className="slide py-10 px-6 overflow-hidden relative flex flex-col">
+    <section ref={sectionRef} className="slide py-10 px-6 overflow-hidden relative flex flex-col bg-background">
       <div
         className="bg-wipe absolute inset-0 z-0"
         style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}

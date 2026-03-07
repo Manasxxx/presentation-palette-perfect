@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger, createSpring } from "animejs";
 import { Eye, Users, Share2, Smartphone, Zap } from "lucide-react";
 import baxsaaCreative1 from "@/assets/baxsaa-creative-1.png";
-import baxsaaCreative2 from "@/assets/baxsaa-creative-2.png";
+import baxsaaCreative2 from "@/assets/baxsaa-creative-2.webp";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
@@ -109,7 +109,7 @@ const BaxsaaCaseStudy = () => {
             <ParallaxCardSlider slides={sliderImages} accentColor={baxsaaMaroon} />
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-3xl mx-auto">
             {[baxsaaCreative1, baxsaaCreative2].map((src, i) => (
               <div key={i} className="cs-image aspect-square rounded-2xl overflow-hidden" style={{ opacity: 0 }}>
                 <img src={src} alt={`Baxsaa Co. creative ${i + 1}`} loading="lazy" className="w-full h-full object-cover rounded-2xl" />

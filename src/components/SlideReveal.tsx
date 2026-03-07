@@ -7,19 +7,19 @@ interface SlideRevealProps {
 }
 
 const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const triggered = useRef(false);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const content = contentRef.current;
+    if (!content) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !triggered.current) {
           triggered.current = true;
 
-          // Container reveal
-          animate(el, {
+          // Content reveal — only animate the inner wrapper, not the outer container
+          animate(content, {
             opacity: [0, 1],
             translateY: [40, 0],
             scale: [0.97, 1],
@@ -28,7 +28,7 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
           });
 
           // Top wipe line
-          animate(el.querySelector(".sr-top-line")!, {
+          animate(content.querySelector(".sr-top-line")!, {
             scaleX: [0, 1],
             duration: 800,
             delay: 200,
@@ -36,7 +36,7 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
           });
 
           // Bottom wipe line
-          animate(el.querySelector(".sr-bottom-line")!, {
+          animate(content.querySelector(".sr-bottom-line")!, {
             scaleX: [0, 1],
             duration: 800,
             delay: 400,
@@ -46,21 +46,23 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
       },
       { threshold: 0.15 }
     );
-    observer.observe(el);
+    observer.observe(content);
     return () => observer.disconnect();
   }, []);
 
   return (
-    <div ref={ref} className={className} style={{ opacity: 0 }}>
-      <div
-        className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
-        style={{ transform: "scaleX(0)" }}
-      />
-      <div
-        className="sr-bottom-line absolute bottom-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent z-20"
-        style={{ transform: "scaleX(0)" }}
-      />
-      {children}
+    <div className={`${className} bg-background`}>
+      <div ref={contentRef} className="relative" style={{ opacity: 0 }}>
+        <div
+          className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
+          style={{ transform: "scaleX(0)" }}
+        />
+        <div
+          className="sr-bottom-line absolute bottom-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent z-20"
+          style={{ transform: "scaleX(0)" }}
+        />
+        {children}
+      </div>
     </div>
   );
 };

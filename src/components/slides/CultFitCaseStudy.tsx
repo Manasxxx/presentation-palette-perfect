@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, stagger, createSpring } from "animejs";
 import { Eye, Users, TrendingUp, MousePointer, Gauge } from "lucide-react";
-import cultfitCreative1 from "@/assets/cultfit-creative-1.png";
+import cultfitCreative1 from "@/assets/cultfit-creative-1.webp";
 import cultfitCreative2 from "@/assets/cultfit-creative-2.png";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -100,7 +100,7 @@ const CultFitCaseStudy = () => {
             <ParallaxCardSlider slides={sliderImages} accentColor={cultPink} />
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 items-center max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 items-center max-w-3xl mx-auto">
             {[cultfitCreative1, cultfitCreative2].map((src, i) => (
               <div key={i} className="cs-image rounded-2xl overflow-hidden" style={{ opacity: 0 }}>
                 <img src={src} alt={`Cult Fit creative ${i + 1}`} loading="lazy" className="w-full h-auto object-contain rounded-2xl" />

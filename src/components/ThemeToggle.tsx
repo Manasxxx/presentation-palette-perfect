@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "@/styles/theme-switch.css";
 
-const ThemeToggle = () => {
+const ThemeToggle = ({ hidden = false }: { hidden?: boolean }) => {
   const [isDark, setIsDark] = useState(true);
   const labelRef = useRef<HTMLLabelElement>(null);
 
@@ -54,7 +54,7 @@ const ThemeToggle = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[70]">
+    <div className="fixed bottom-6 right-6 z-[70]" style={{ opacity: hidden ? 0 : 1, pointerEvents: hidden ? 'none' : 'auto', transition: 'opacity 0.4s ease' }}>
       <label ref={labelRef} className="theme-switch">
         <input
           type="checkbox"
