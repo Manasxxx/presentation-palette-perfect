@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import TitleSlide from "@/components/slides/TitleSlide";
 import SkyrocketSlide from "@/components/slides/SkyrocketSlide";
 import WhoAreWeSlide from "@/components/slides/WhoAreWeSlide";
+import OurTeamSlide from "@/components/slides/OurTeamSlide";
 import ServicesSlide from "@/components/slides/ServicesSlide";
 import ClientsSlide from "@/components/slides/ClientsSlide";
 import CaseStudySlide from "@/components/slides/CaseStudySlide";
@@ -22,6 +23,7 @@ const slides = [
   TitleSlide,
   SkyrocketSlide,
   WhoAreWeSlide,
+  OurTeamSlide,
   ServicesSlide,
   ClientsSlide,
   CaseStudySlide,
@@ -37,12 +39,21 @@ const slides = [
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Controls the visibility of overlapping UI like PillNav and ThemeToggle
   const [uiHidden, setUiHidden] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const isCaseStudySlide = currentSlide >= 5 && currentSlide <= 11;
+  /**
+   * Tracks whether the current slide index is within the "Case Study" block.
+   * Slide 6 to 12 represent the interactive case study gallery.
+   */
+  const isCaseStudySlide = currentSlide >= 6 && currentSlide <= 12;
 
-  // Auto-hide UI on case study slides after 2s of inactivity
+  /**
+   * Auto-hides UI elements during case studies after 2 seconds of inactivity
+   * to provide a distraction-free, immersive viewing experience.
+   */
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -74,6 +85,10 @@ const Index = () => {
     };
   }, [isCaseStudySlide]);
 
+  /**
+   * Tracks the user's vertical scroll position across the full-height sections
+   * and maps it to the `currentSlide` index.
+   */
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -85,10 +100,13 @@ const Index = () => {
       setCurrentSlide(Math.min(newSlide, slides.length - 1));
     };
 
-    container.addEventListener("scroll", handleScroll);
+    container.addEventListener("scroll", handleScroll, { passive: true });
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
+  /**
+   * Programmatically scrolls the container to a specific slide index.
+   */
   const navigateToSlide = (index: number) => {
     const container = containerRef.current;
     if (!container) return;
@@ -114,11 +132,10 @@ const Index = () => {
         onNavigate={navigateToSlide}
       />
       <ThemeToggle hidden={shouldHideNav} />
-
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {index === 0 ? (
-            <SlideComponent onViewCaseStudies={() => navigateToSlide(5)} />
+            <SlideComponent onViewCaseStudies={() => navigateToSlide(6)} />
           ) : (
             <SlideComponent />
           )}

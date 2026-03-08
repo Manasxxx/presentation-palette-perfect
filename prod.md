@@ -7,7 +7,9 @@ The codebase is structured as a **Single-Page Application (SPA)** using **Vite +
 Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Presentation** architecture.
 - **Entry Point:** The application essentially routes entirely through `App.tsx` into `Index.tsx`.
 - **Slide Array Pattern:** `Index.tsx` mounts an array of `SlideComponent`s. These components represent sequential, full-screen vertical sections.
+- **Our Team Slide:** Recently introduced between the "Who Are We?" and "Services" slides. Serves as a dynamic placeholder for team profiles (`OurTeamSlide.tsx`).
 - **Scroll Hijacking:** Native CSS scroll behaviors (`scroll-snap-type: y mandatory`, `scroll-snap-align: start`) are used heavily on `.slide` elements to emulate a traditional "PowerPoint-like" or "Deck-like" feel on the web.
+- **Case Study Sub-Stack:** Slides 6 through 12 form a continuous block of interactive case studies. UI elements (nav pills, theme toggles) auto-hide during inactivity while inside this indices range to enhance immersive viewing.
 
 ## 2. Code Principles
 
@@ -28,8 +30,8 @@ Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Pr
 - **Tailwind Utility Classes:** Components rely extensively on Tailwind classes for scaffolding, structure, layout (`flex`, `grid`, `absolute inset-0`), and standard spacing. 
 
 ### Fluidity and Animations
-- **Anime.js for Sequential Timing:** `Anime.js` handles sequenced, staggered entrance animations (resolving opacity, translatation, scale) using the `SlideReveal` HOC. 
-- **GSAP for Complex Timeline Control:** Previously integrated logic uses GSAP for complex timelines (e.g. `PillNav` hovering and structural layouts).
+- **Anime.js for All Sequencing:** The project was recently migrated entirely away from Framer Motion. `Anime.js` now exclusively handles staggered entrance animations (resolving opacity, translatation, scale) both directly in components (like `TitleSlide.tsx`) and through the `SlideReveal` HOC. 
+- **GSAP for Complex Timeline Control:** Interdependent nested timelines use GSAP (e.g., `PillNav` hovering and structural layouts).
 - **CSS Transitions:** Standard hover effects and states explicitly specify easing parameters, ensuring fluid hover state inversions. Easing curves like `cubic-bezier(0.4, 0, 0.2, 1)` are used over harsh linear jumps.
 
 ### Aesthetic Patterns "The Glass and Glow"

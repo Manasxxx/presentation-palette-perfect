@@ -20,12 +20,25 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const owlLetters = "OWLSURF".split("");
 
+/**
+ * TitleSlide Component
+ * 
+ * Entry slide of the presentation containing the core branding assets.
+ * Utilizes `anime.js` for complex, sequenced entry animations upon mount,
+ * and standard `requestAnimationFrame` for scroll-driven parallax effects.
+ */
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const isMobile = useIsMobile();
   const ref = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // OWL letter animation on mount
+  /**
+   * INITIAL ENTRY ANIMATION TIMELINE
+   * Uses Anime.js to orchestrate the entrance sequence of all title elements.
+   * Broken into specialized `useEffect` hooks for separation of concerns.
+   */
+
+  // 1. OWL Splash text entrance (Staggered translation + opacity)
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -38,7 +51,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     });
   }, []);
 
-  // Mount animations (logo, link, button, badges, scroll indicator)
+  // 2. Secondary content entrance (Logo, Link, CTAs, Badges, Scroller)
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -228,39 +241,6 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           www.owlsurf.com
         </a>
 
-        {onViewCaseStudies && (
-          <div className="relative mt-3 md:mt-5">
-            {/* Arrow pointing to the button */}
-            <Arrow19
-              className="ts-arrow absolute -top-14 -right-10 md:-top-16 md:-right-12 w-16 h-16 md:w-20 md:h-20 text-primary/70 pointer-events-none"
-              style={{
-                opacity: 0,
-                transform: "rotate(120deg) scaleX(-1)",
-              }}
-            />
-            <button
-              onClick={onViewCaseStudies}
-              className="ts-button px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
-              style={{
-                opacity: 0,
-                background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(262 95% 64%))",
-                color: "white",
-                boxShadow: "0 4px 20px hsl(180 45% 53% / 0.35), 0 0 40px hsl(262 95% 64% / 0.15)",
-              }}
-            >
-              <span className="relative z-10">Jump to Creatives</span>
-              <span
-                className="absolute inset-0 z-0"
-                style={{
-                  background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
-                  backgroundSize: "200% 100%",
-                  animation: "shimmer-cascade 2s ease-in-out infinite",
-                }}
-              />
-            </button>
-          </div>
-        )}
-
         {/* Partner Badges */}
         <div className="ts-badges flex items-center justify-center gap-2 mt-4 md:mt-6" style={{ opacity: 0 }}>
           <LiquidGlassCard padding={isMobile ? "0.25rem 0.5rem" : "0.35rem 0.6rem"} borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
@@ -286,6 +266,39 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           </LiquidGlassCard>
         </div>
       </div>
+
+      {onViewCaseStudies && (
+        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-20">
+          {/* Arrow pointing to the button */}
+          <Arrow19
+            className="ts-arrow absolute -top-14 -right-8 md:-top-16 md:-right-10 w-16 h-16 md:w-20 md:h-20 text-primary/70 pointer-events-none"
+            style={{
+              opacity: 0,
+              transform: "rotate(120deg) scaleX(-1)",
+            }}
+          />
+          <button
+            onClick={onViewCaseStudies}
+            className="ts-button px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
+            style={{
+              opacity: 0,
+              background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(262 95% 64%))",
+              color: "white",
+              boxShadow: "0 4px 20px hsl(180 45% 53% / 0.35), 0 0 40px hsl(262 95% 64% / 0.15)",
+            }}
+          >
+            <span className="relative z-10">Jump to Creatives</span>
+            <span
+              className="absolute inset-0 z-0"
+              style={{
+                background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
+                backgroundSize: "200% 100%",
+                animation: "shimmer-cascade 2s ease-in-out infinite",
+              }}
+            />
+          </button>
+        </div>
+      )}
 
       <div className="ts-scroll absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2" style={{ opacity: 0 }}>
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
