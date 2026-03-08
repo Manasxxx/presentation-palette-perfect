@@ -85,13 +85,13 @@ const ClientsSlide = () => {
   }, [triggered]);
 
   return (
-    <section ref={sectionRef} className="slide py-20 px-6 overflow-hidden relative">
+    <section ref={sectionRef} className="slide py-10 md:py-20 px-4 md:px-6 overflow-hidden relative">
       <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
         <PrismaticBurst colors={['#4bc2c2', '#14b8a6', '#0f766e', '#134e4a', '#0a2322']} />
       </div>
 
       <div className="max-w-5xl mx-auto w-full relative z-10">
-        <h2 className="cl-heading text-3xl md:text-6xl font-black tracking-tight mb-8 md:mb-12 text-center" style={{ opacity: 0 }}>
+        <h2 className="cl-heading text-2xl md:text-6xl font-black tracking-tight mb-6 md:mb-12 text-center" style={{ opacity: 0 }}>
           <span className="text-foreground">MAJOR </span>
           <span className="text-gradient-green">CLIENTS</span>
         </h2>

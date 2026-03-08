@@ -123,7 +123,7 @@ const CaseStudySlide = () => {
   }, [statsTriggered]);
 
   return (
-    <section ref={sectionRef} className="slide py-10 px-6 overflow-hidden relative flex flex-col bg-background">
+    <section ref={sectionRef} className="slide pt-16 pb-6 md:py-10 px-4 md:px-6 overflow-hidden relative flex flex-col bg-background">
       <div
         className="bg-wipe absolute inset-0 z-0"
         style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
@@ -132,7 +132,7 @@ const CaseStudySlide = () => {
 
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
-        <h2 className="cs-heading text-3xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
+        <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
           Mitsui Chemicals{" "}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${mitsuiCyan}), hsl(193 80% 65%))` }}>
             Success

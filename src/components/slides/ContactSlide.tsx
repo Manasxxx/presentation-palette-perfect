@@ -86,21 +86,21 @@ const ContactSlide = () => {
 
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl">
         <div className="ct-logo mb-8" style={{ opacity: 0 }}>
-          <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-primary/20 p-2 animate-pulse-glow overflow-visible">
+          <div className="w-20 h-20 md:w-36 md:h-36 rounded-full bg-primary/20 p-2 animate-pulse-glow overflow-visible">
             <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-contain" />
           </div>
         </div>
 
-        <h2 className="ct-heading text-3xl md:text-5xl font-black tracking-tight mb-4" style={{ opacity: 0 }}>
+        <h2 className="ct-heading text-2xl md:text-5xl font-black tracking-tight mb-2 md:mb-4" style={{ opacity: 0 }}>
           <span className="text-foreground">REACH OUT </span>
           <span className="text-gradient-green">WHERE</span>
         </h2>
 
-        <p className="ct-subtitle text-xl md:text-2xl font-bold tracking-wider text-secondary mb-10" style={{ opacity: 0 }}>
+        <p className="ct-subtitle text-base md:text-2xl font-bold tracking-wider text-secondary mb-6 md:mb-10" style={{ opacity: 0 }}>
           TECH MEETS DESIGN
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 w-full max-w-2xl">
           <a
             href="tel:+919520367546"
             className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
@@ -108,8 +108,8 @@ const ContactSlide = () => {
           >
             <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Phone className="w-6 h-6 text-primary" />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Phone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-foreground">+91 9520 367546</span>
               </div>
@@ -125,8 +125,8 @@ const ContactSlide = () => {
           >
             <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Globe className="w-6 h-6 text-primary" />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Globe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-foreground">www.owlsurf.com</span>
               </div>
@@ -140,8 +140,8 @@ const ContactSlide = () => {
           >
             <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
               <div className="flex flex-col items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-primary" />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Mail className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-foreground">growth@owlsurf.com</span>
               </div>
@@ -149,7 +149,7 @@ const ContactSlide = () => {
           </a>
         </div>
 
-        <div className="ct-footer mt-12 flex items-center gap-4" style={{ opacity: 0, transform: "scaleX(0)" }}>
+        <div className="ct-footer mt-6 md:mt-12 flex items-center gap-4" style={{ opacity: 0, transform: "scaleX(0)" }}>
           <div className="h-px w-12 bg-border" />
           <span className="text-xs tracking-widest text-muted-foreground">© OWLSURF DIGITAL</span>
           <div className="h-px w-12 bg-border" />

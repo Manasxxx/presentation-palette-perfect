@@ -115,12 +115,18 @@
   html {
     scroll-behavior: smooth;
     background-color: hsl(214 30% 6%);
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior-y: none;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Montserrat', sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
+    height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior-y: none;
   }
 
   h1 {
@@ -138,7 +144,7 @@
 
 @layer components {
   .slide {
-    @apply min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
+    @apply h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }

@@ -81,13 +81,13 @@ const GirlUpCaseStudy = () => {
   }, [triggered, isMobile]);
 
   return (
-    <section ref={sectionRef} className="slide py-10 px-6 overflow-hidden relative flex flex-col">
+    <section ref={sectionRef} className="slide pt-16 pb-6 md:py-10 px-4 md:px-6 overflow-hidden relative flex flex-col">
       <div className="bg-wipe absolute inset-0 z-0" style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(145deg, hsl(${girlUpTeal} / 0.85), hsl(168 60% 22% / 0.7), hsl(${girlUpPurple} / 0.35))` }} />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(145deg, hsl(${girlUpTeal} / 0.85), hsl(168 60% 22% / 0.7), hsl(${girlUpPurple} / 0.35))` }} />
 
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
-        <h2 className="cs-heading text-3xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
+        <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
           Girl Up{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${girlUpTeal}), hsl(${girlUpPurple}))` }}>Success</span>
         </h2>
 

@@ -104,7 +104,7 @@ const Index = () => {
   return (
     <div
       ref={containerRef}
-      className="h-screen overflow-y-auto scroll-smooth bg-background"
+      className="h-[100dvh] overflow-y-auto scroll-smooth bg-background"
       style={{ scrollSnapType: "y mandatory" }}
     >
 

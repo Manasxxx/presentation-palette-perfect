@@ -176,7 +176,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
       <div
         ref={contentRef}
-        className="relative z-10 flex flex-col items-center justify-center text-center px-6 -mt-16 md:-mt-24"
+        className="relative z-10 flex flex-col items-center justify-center text-center px-6 -mt-12 md:-mt-24"
       >
         {/* Logo with glass effect */}
         <div className="ts-logo-outer mb-6 md:mb-8 relative" style={{ opacity: 0 }}>
@@ -192,7 +192,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
         {/* Title with anime.js letter animation + cascading shimmer */}
         <div className="mb-4">
-          <h1 className="text-7xl md:text-9xl font-black tracking-tight">
+          <h1 className="text-5xl md:text-9xl font-black tracking-tight">
             <span className="inline-flex">
               {owlLetters.map((letter, i) => (
                 <span
@@ -213,7 +213,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               ))}
             </span>
           </h1>
-          <p className="text-xl md:text-3xl font-light tracking-[0.3em] text-muted-foreground mt-2">
+          <p className="text-lg md:text-3xl font-light tracking-[0.3em] text-muted-foreground mt-2">
             DIGITAL
           </p>
         </div>
@@ -222,14 +222,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           href="https://www.owlsurf.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="ts-link text-sm font-medium tracking-widest text-primary hover:text-primary/80 transition-colors"
+          className="ts-link text-xs md:text-sm font-medium tracking-widest text-primary hover:text-primary/80 transition-colors"
           style={{ opacity: 0 }}
         >
           www.owlsurf.com
         </a>
 
         {onViewCaseStudies && (
-          <div className="relative mt-5">
+          <div className="relative mt-3 md:mt-5">
             {/* Arrow pointing to the button */}
             <Arrow19
               className="ts-arrow absolute -top-14 -right-10 md:-top-16 md:-right-12 w-16 h-16 md:w-20 md:h-20 text-primary/70 pointer-events-none"
@@ -262,7 +262,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         )}
 
         {/* Partner Badges */}
-        <div className="ts-badges flex items-center justify-center gap-2 mt-6" style={{ opacity: 0 }}>
+        <div className="ts-badges flex items-center justify-center gap-2 mt-4 md:mt-6" style={{ opacity: 0 }}>
           <LiquidGlassCard padding={isMobile ? "0.25rem 0.5rem" : "0.35rem 0.6rem"} borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
             <div className="flex items-center gap-1.5">
               <svg width="14" height="14" viewBox="0 0 48 48" fill="none">
@@ -287,10 +287,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
       </div>
 
-      <div className="ts-scroll absolute bottom-8 left-1/2 -translate-x-1/2" style={{ opacity: 0 }}>
+      <div className="ts-scroll absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2" style={{ opacity: 0 }}>
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
-          <span className="text-xs tracking-widest">SCROLL</span>
-          <div className="ts-scroll-line w-px h-8 bg-gradient-to-b from-primary to-transparent" />
+          <span className="text-[10px] md:text-xs tracking-widest">SCROLL</span>
+          <div className="ts-scroll-line w-px h-6 md:h-8 bg-gradient-to-b from-primary to-transparent" />
         </div>
       </div>
     </section>

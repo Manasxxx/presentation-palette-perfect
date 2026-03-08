@@ -65,7 +65,7 @@ const RaychemRPGCaseStudy = () => {
     }, [triggered]);
 
     return (
-        <section ref={sectionRef} className="slide py-10 px-6 overflow-hidden relative flex flex-col">
+        <section ref={sectionRef} className="slide py-6 md:py-10 px-4 md:px-6 overflow-hidden relative flex flex-col">
             <div
                 className="bg-wipe absolute inset-0 z-0"
                 style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(145deg, hsl(210 30% 10%), hsl(210 50% 15%), hsl(${raychemBlue} / 0.6), hsl(${raychemRed} / 0.15))` }}
@@ -74,7 +74,7 @@ const RaychemRPGCaseStudy = () => {
 
             <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
-                <h2 className="cs-heading text-3xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
+                <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
                     Raychem RPG{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${raychemRed}), hsl(${raychemBlue}))` }}>Success</span>
                 </h2>
 
