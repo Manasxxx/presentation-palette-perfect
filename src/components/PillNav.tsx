@@ -31,10 +31,10 @@ const PillNav = ({
   onNavigate,
 }: PillNavProps) => {
   const ease = 'power3.easeOut';
-  const baseColor = 'hsl(214, 30%, 6%)';
-  const pillColor = 'hsl(0, 0%, 100%)';
-  const hoveredPillTextColor = 'hsl(0, 0%, 100%)';
-  const pillTextColor = 'hsl(214, 30%, 6%)';
+  const baseColor = 'hsl(0, 0%, 100%)';
+  const pillColor = 'hsl(214, 30%, 6%)';
+  const hoveredPillTextColor = 'hsl(214, 30%, 6%)';
+  const pillTextColor = 'hsl(0, 0%, 100%)';
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);

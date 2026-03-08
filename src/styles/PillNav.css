@@ -39,11 +39,7 @@
   display: flex;
   align-items: center;
   height: var(--nav-h);
-  background: hsla(214, 30%, 6%, 0.45);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid hsla(0, 0%, 100%, 0.12);
-  box-shadow: 0 8px 32px hsla(214, 30%, 6%, 0.3), inset 0 1px 0 hsla(0, 0%, 100%, 0.08);
+  background: transparent;
   border-radius: 9999px;
 }
 
@@ -51,11 +47,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: hsla(214, 30%, 6%, 0.45);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid hsla(0, 0%, 100%, 0.12);
-  box-shadow: 0 4px 16px hsla(214, 30%, 6%, 0.3);
+  background: transparent;
   padding: 8px;
   display: inline-flex;
   align-items: center;
@@ -83,7 +75,7 @@
   height: 100%;
 }
 
-.pill-list > li {
+.pill-list>li {
   display: flex;
   height: 100%;
 }
@@ -110,6 +102,7 @@
   overflow: hidden;
   border: none;
   font-family: 'Montserrat', sans-serif;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pill .hover-circle {
@@ -149,17 +142,9 @@
   will-change: transform, opacity;
 }
 
-.pill.is-active::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 12px;
-  background: var(--base, #000);
-  border-radius: 50px;
-  z-index: 4;
+.pill.is-active {
+  background: var(--base, #fff);
+  color: var(--pill-bg, #000);
 }
 
 .desktop-only {
@@ -214,7 +199,7 @@
 .mobile-menu-backdrop {
   position: fixed;
   inset: 0;
-  background: hsla(214, 30%, 6%, 0.6);
+  background: hsla(0, 0%, 100%, 0.6);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 997;
@@ -227,12 +212,12 @@
   top: 4em;
   left: 1rem;
   right: 1rem;
-  background: hsla(214, 30%, 6%, 0.85);
+  background: hsla(0, 0%, 100%, 0.85);
   backdrop-filter: blur(20px) saturate(1.5);
   -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid hsla(0, 0%, 100%, 0.12);
+  border: 1px solid hsla(214, 30%, 6%, 0.12);
   border-radius: 27px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   z-index: 998;
   opacity: 0;
   transform-origin: top center;
@@ -251,8 +236,8 @@
 .mobile-menu-popover .mobile-menu-link {
   display: block;
   padding: 12px 16px;
-  color: hsla(0, 0%, 100%, 0.9);
-  background-color: hsla(0, 0%, 100%, 0.08);
+  color: hsla(214, 30%, 6%, 0.9);
+  background-color: hsla(214, 30%, 6%, 0.08);
   text-decoration: none;
   font-size: 16px;
   font-weight: 500;

@@ -104,8 +104,8 @@ const Index = () => {
   return (
     <div
       ref={containerRef}
-      className="h-[100dvh] overflow-y-auto scroll-smooth bg-background"
-      style={{ scrollSnapType: "y mandatory" }}
+      className="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth bg-background"
+      style={{ scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch" }}
     >
 
       <PillNav
