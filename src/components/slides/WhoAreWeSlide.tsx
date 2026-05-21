@@ -16,21 +16,25 @@ const WhoAreWeSlide = () => {
     if (!el) return;
     const bgEl = el.querySelector(".wa-parallax-bg") as HTMLElement;
     if (!bgEl) return;
+    const scrollTarget = el.closest("[data-deck-scroll-container]");
+    if (!scrollTarget) return;
 
     let raf = 0;
     const onScroll = () => {
+      if (raf) return;
       raf = requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
         const progress = (rect.top + rect.height) / (window.innerHeight + rect.height);
         const y = -10 + progress * 20; // -10% to 10%
         bgEl.style.transform = `translateY(${y}%)`;
+        raf = 0;
       });
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    scrollTarget.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      scrollTarget.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
   }, []);

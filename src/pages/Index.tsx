@@ -1,25 +1,25 @@
-import { useState, useEffect, useRef } from "react";
+import { lazy, Suspense, useState, useEffect, useRef, type ComponentType } from "react";
 import TitleSlide from "@/components/slides/TitleSlide";
-import SkyrocketSlide from "@/components/slides/SkyrocketSlide";
-import WhoAreWeSlide from "@/components/slides/WhoAreWeSlide";
-import OurTeamSlide from "@/components/slides/OurTeamSlide";
-import ServicesSlide from "@/components/slides/ServicesSlide";
-import ClientsSlide from "@/components/slides/ClientsSlide";
-import CaseStudySlide from "@/components/slides/CaseStudySlide";
-import BaxsaaCaseStudy from "@/components/slides/BaxsaaCaseStudy";
-import CultFitCaseStudy from "@/components/slides/CultFitCaseStudy";
-import GirlUpCaseStudy from "@/components/slides/GirlUpCaseStudy";
-import CTPCaseStudy from "@/components/slides/CTPCaseStudy";
-import VNTCaseStudy from "@/components/slides/VNTCaseStudy";
-import RaychemRPGCaseStudy from "@/components/slides/RaychemRPGCaseStudy";
-import ContactSlide from "@/components/slides/ContactSlide";
 
 import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 
+const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
+const WhoAreWeSlide = lazy(() => import("@/components/slides/WhoAreWeSlide"));
+const OurTeamSlide = lazy(() => import("@/components/slides/OurTeamSlide"));
+const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
+const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
+const CaseStudySlide = lazy(() => import("@/components/slides/CaseStudySlide"));
+const BaxsaaCaseStudy = lazy(() => import("@/components/slides/BaxsaaCaseStudy"));
+const CultFitCaseStudy = lazy(() => import("@/components/slides/CultFitCaseStudy"));
+const GirlUpCaseStudy = lazy(() => import("@/components/slides/GirlUpCaseStudy"));
+const CTPCaseStudy = lazy(() => import("@/components/slides/CTPCaseStudy"));
+const VNTCaseStudy = lazy(() => import("@/components/slides/VNTCaseStudy"));
+const RaychemRPGCaseStudy = lazy(() => import("@/components/slides/RaychemRPGCaseStudy"));
+const ContactSlide = lazy(() => import("@/components/slides/ContactSlide"));
 
-const slides = [
+const slides: ComponentType[] = [
   TitleSlide,
   SkyrocketSlide,
   WhoAreWeSlide,
@@ -36,8 +36,13 @@ const slides = [
   ContactSlide,
 ];
 
+const SLIDE_MOUNT_RADIUS = 1;
+
+const SlideFallback = () => <section className="slide" aria-hidden="true" />;
+
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [mountedSlides, setMountedSlides] = useState(() => new Set([0, 1]));
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Controls the visibility of overlapping UI like PillNav and ThemeToggle
@@ -49,6 +54,18 @@ const Index = () => {
    * Slide 6 to 12 represent the interactive case study gallery.
    */
   const isCaseStudySlide = currentSlide >= 6 && currentSlide <= 12;
+
+  useEffect(() => {
+    setMountedSlides((previous) => {
+      const next = new Set(previous);
+      const start = Math.max(0, currentSlide - SLIDE_MOUNT_RADIUS);
+      const end = Math.min(slides.length - 1, currentSlide + SLIDE_MOUNT_RADIUS);
+      for (let index = start; index <= end; index += 1) {
+        next.add(index);
+      }
+      return next.size === previous.size ? previous : next;
+    });
+  }, [currentSlide]);
 
   /**
    * Auto-hides UI elements during case studies after 2 seconds of inactivity
@@ -131,6 +148,7 @@ const Index = () => {
   return (
     <div
       ref={containerRef}
+      data-deck-scroll-container
       className="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth bg-background"
       style={{ scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch" }}
     >
@@ -143,10 +161,16 @@ const Index = () => {
       <ThemeToggle hidden={shouldHideNav} />
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
-          {index === 0 ? (
-            <SlideComponent onViewCaseStudies={() => navigateToSlide(6)} />
+          {mountedSlides.has(index) ? (
+            <Suspense fallback={<SlideFallback />}>
+              {index === 0 ? (
+                <TitleSlide onViewCaseStudies={() => navigateToSlide(6)} />
+              ) : (
+                <SlideComponent />
+              )}
+            </Suspense>
           ) : (
-            <SlideComponent />
+            <SlideFallback />
           )}
         </SlideReveal>
       ))}

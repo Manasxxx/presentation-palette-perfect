@@ -934,6 +934,7 @@ class App {
   speedUpTarget: number;
   speedUp: number;
   timeOffset: number;
+  animationFrameId: number | null;
 
   constructor(container: HTMLElement, options: HyperspeedOptions) {
     this.options = options;
@@ -997,10 +998,12 @@ class App {
     this.speedUpTarget = 0;
     this.speedUp = 0;
     this.timeOffset = 0;
+    this.animationFrameId = null;
 
     this.tick = this.tick.bind(this);
     this.init = this.init.bind(this);
     this.setSize = this.setSize.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
@@ -1008,7 +1011,7 @@ class App {
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onContextMenu = this.onContextMenu.bind(this);
 
-    window.addEventListener('resize', this.onWindowResize.bind(this));
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   onWindowResize() {
@@ -1075,6 +1078,7 @@ class App {
   }
 
   init() {
+    if (this.disposed) return;
     this.initPasses();
     const options = this.options;
     this.road.init();
@@ -1185,7 +1189,12 @@ class App {
       this.scene.clear();
     }
 
-    window.removeEventListener('resize', this.onWindowResize.bind(this));
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+
+    window.removeEventListener('resize', this.onWindowResize);
     if (this.container) {
       this.container.removeEventListener('mousedown', this.onMouseDown);
       this.container.removeEventListener('mouseup', this.onMouseUp);
@@ -1212,7 +1221,7 @@ class App {
     const delta = this.clock.getDelta();
     this.render(delta);
     this.update(delta);
-    requestAnimationFrame(this.tick);
+    this.animationFrameId = requestAnimationFrame(this.tick);
   }
 }
 
@@ -1251,11 +1260,14 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTION
       myApp.renderer.domElement.style.display = 'block';
     }
 
-    myApp.loadAssets().then(myApp.init);
+    myApp.loadAssets().then(() => {
+      if (!myApp.disposed) myApp.init();
+    });
 
     return () => {
       if (appRef.current) {
         appRef.current.dispose();
+        appRef.current = null;
       }
     };
   }, [effectOptions]);

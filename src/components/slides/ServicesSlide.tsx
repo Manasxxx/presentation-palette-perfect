@@ -133,6 +133,7 @@ const ServicesSlide = () => {
         rayLength={3}
         fadeDistance={1}
         saturation={0.8}
+        followMouse={false}
         mouseInfluence={0.1}
         className="opacity-50 pointer-events-none"
       />

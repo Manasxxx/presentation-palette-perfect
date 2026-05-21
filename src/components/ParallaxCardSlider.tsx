@@ -23,12 +23,13 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   const tiltTarget = useRef({ rotX: 0, rotY: 0, bgX: 0, bgY: 0 });
   const rafRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isVisibleRef = useRef(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const timeoutsRef = useRef<number[]>([]);
   const isMobile = useIsMobile();
 
   const total = slides.length;
-  const getPrev = (i: number) => (i - 1 + total) % total;
-  const getNext = (i: number) => (i + 1) % total;
+  const getPrev = useCallback((i: number) => (i - 1 + total) % total, [total]);
+  const getNext = useCallback((i: number) => (i + 1) % total, [total]);
 
   const changeSlide = useCallback((newIndex: number, direction: "left" | "right") => {
     if (isAnimating) return;
@@ -36,60 +37,68 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     setSlideDirection(direction);
 
     // Start exit animation, then after transition swap
-    setTimeout(() => {
+    const swapTimeout = window.setTimeout(() => {
       setDisplayIndex(newIndex);
       setCurrentIndex(newIndex);
       tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
-      setTimeout(() => setIsAnimating(false), 400);
+      const finishTimeout = window.setTimeout(() => setIsAnimating(false), 400);
+      timeoutsRef.current.push(finishTimeout);
     }, 200);
+    timeoutsRef.current.push(swapTimeout);
   }, [isAnimating]);
 
   const goNext = useCallback(() => {
     changeSlide(getNext(currentIndex), "right");
-  }, [currentIndex, total, changeSlide]);
+  }, [currentIndex, getNext, changeSlide]);
 
   const goPrev = useCallback(() => {
     changeSlide(getPrev(currentIndex), "left");
-  }, [currentIndex, total, changeSlide]);
+  }, [currentIndex, getPrev, changeSlide]);
 
   // Visibility observer
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { isVisibleRef.current = entry.isIntersecting; },
+      ([entry]) => setIsVisible(entry.isIntersecting),
       { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    return () => {
+      timeoutsRef.current.forEach(window.clearTimeout);
+      timeoutsRef.current = [];
+    };
+  }, []);
+
   // Auto-advance
   useEffect(() => {
+    if (!isVisible) return;
     const interval = setInterval(() => {
-      if (!isVisibleRef.current || isAnimating) return;
+      if (isAnimating) return;
       changeSlide(getNext(currentIndex), "right");
     }, 4000);
     return () => clearInterval(interval);
-  }, [total, currentIndex, isAnimating, changeSlide]);
+  }, [isVisible, currentIndex, isAnimating, getNext, changeSlide]);
 
   // Tilt animation loop - desktop only
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile || !isVisible) return;
     const animateTilt = () => {
-      if (isVisibleRef.current) {
-        setTilt((prev) => ({
-          rotX: lerp(prev.rotX, tiltTarget.current.rotX, 0.08),
-          rotY: lerp(prev.rotY, tiltTarget.current.rotY, 0.08),
-          bgX: lerp(prev.bgX, tiltTarget.current.bgX, 0.08),
-          bgY: lerp(prev.bgY, tiltTarget.current.bgY, 0.08),
-        }));
-      }
+      setTilt((prev) => ({
+        rotX: lerp(prev.rotX, tiltTarget.current.rotX, 0.08),
+        rotY: lerp(prev.rotY, tiltTarget.current.rotY, 0.08),
+        bgX: lerp(prev.bgX, tiltTarget.current.bgX, 0.08),
+        bgY: lerp(prev.bgY, tiltTarget.current.bgY, 0.08),
+      }));
       rafRef.current = requestAnimationFrame(animateTilt);
     };
     rafRef.current = requestAnimationFrame(animateTilt);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [isMobile]);
+  }, [isMobile, isVisible]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();

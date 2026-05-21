@@ -105,11 +105,18 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     if (!section || !content) return;
 
     let raf = 0;
+    const scrollTarget = section.closest("[data-deck-scroll-container]");
+    if (!scrollTarget) return;
+
     const onScroll = () => {
+      if (raf) return;
       raf = requestAnimationFrame(() => {
         const rect = section.getBoundingClientRect();
         const total = section.offsetHeight;
-        if (total === 0) return;
+        if (total === 0) {
+          raf = 0;
+          return;
+        }
         const progress = Math.max(0, Math.min(1, -rect.top / total));
 
         const y = progress * 120;
@@ -117,13 +124,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
         content.style.transform = `translateY(${y}px)`;
         content.style.opacity = `${opacity}`;
+        raf = 0;
       });
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    scrollTarget.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      scrollTarget.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
   }, []);
@@ -151,6 +159,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         rayLength={3}
         fadeDistance={1}
         saturation={0.7}
+        followMouse={false}
         mouseInfluence={0.08}
         className="opacity-30 pointer-events-none"
       />
