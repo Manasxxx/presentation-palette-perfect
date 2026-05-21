@@ -11,85 +11,80 @@ const Arrow19 = React.forwardRef<Arrow19Element, Arrow19Props>(
   )
 );
 Arrow19.displayName = "Arrow19";
-import { animate, stagger, createSpring } from "animejs";
+import { animate, createSpring } from "animejs";
 import logo from "@/assets/logo-main.jpg";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const owlLetters = "OWLSURF".split("");
-
-/**
- * TitleSlide Component
- * 
- * Entry slide of the presentation containing the core branding assets.
- * Utilizes `anime.js` for complex, sequenced entry animations upon mount,
- * and standard `requestAnimationFrame` for scroll-driven parallax effects.
- */
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const isMobile = useIsMobile();
   const ref = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * INITIAL ENTRY ANIMATION TIMELINE
-   * Uses Anime.js to orchestrate the entrance sequence of all title elements.
-   * Broken into specialized `useEffect` hooks for separation of concerns.
-   */
-
-  // 1. OWL Splash text entrance (Staggered translation + opacity)
+  // Entry animation timeline
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    animate(el.querySelectorAll(".owl-letter"), {
-      translateY: [40, 0],
+
+    animate(el.querySelector(".ts-eyebrow")!, {
       opacity: [0, 1],
-      scale: [0.5, 1],
-      delay: stagger(60),
-      ease: createSpring({ stiffness: 260, damping: 16 }),
+      translateY: [12, 0],
+      duration: 700,
+      ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
     });
-  }, []);
 
-  // 2. Secondary content entrance (Logo, Link, CTAs, Badges, Scroller)
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    animate(el.querySelectorAll(".ts-wordmark-line"), {
+      opacity: [0, 1],
+      translateY: [24, 0],
+      duration: 900,
+      delay: (_, i) => 150 + i * 120,
+      ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
+    });
 
-    // Logo reveal
     animate(el.querySelector(".ts-logo-outer")!, {
       opacity: [0, 1],
-      scale: [0.3, 1],
-      duration: 800,
+      scale: [0.85, 1],
+      duration: 1000,
+      delay: 250,
       ease: "cubicBezier(0.16, 1, 0.3, 1)",
     });
 
     animate(el.querySelector(".ts-logo-inner")!, {
       clipPath: ["circle(0% at 50% 50%)", "circle(50% at 50% 50%)"],
       duration: 1200,
-      delay: 300,
+      delay: 400,
       ease: "cubicBezier(0.16, 1, 0.3, 1)",
     });
 
-    // www.owlsurf.com link — fade in then out over 2.3s
-    animate(el.querySelector(".ts-link")!, {
-      opacity: [0, 1, 1, 0],
-      duration: 2300,
+    animate(el.querySelectorAll(".ts-ring"), {
+      opacity: [0, 0.6],
+      scale: [0.6, 1],
+      duration: 1400,
+      delay: (_, i) => 500 + i * 120,
+      ease: "cubicBezier(0.16, 1, 0.3, 1)",
     });
 
-    // Jump to Creatives button
+    animate(el.querySelectorAll(".ts-info-col"), {
+      opacity: [0, 1],
+      translateY: [16, 0],
+      duration: 800,
+      delay: (_, i) => 600 + i * 120,
+      ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
+    });
+
     const btn = el.querySelector(".ts-button");
     if (btn) {
       animate(btn, {
         opacity: [0, 1],
         translateY: [10, 0],
-        duration: 600,
+        duration: 700,
         delay: 1000,
         ease: "out(3)",
       });
     }
 
-    // Arrow pointing to button
     const arrow = el.querySelector(".ts-arrow");
     if (arrow) {
       animate(arrow, {
@@ -101,15 +96,6 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       });
     }
 
-    // Partner badges — appear then disappear
-    animate(el.querySelector(".ts-badges")!, {
-      opacity: [0, 1, 1, 0],
-      translateY: [15, 0, 0, 0],
-      duration: 3000,
-      delay: 1100,
-    });
-
-    // Scroll indicator
     animate(el.querySelector(".ts-scroll")!, {
       opacity: [0, 1],
       duration: 1000,
@@ -117,7 +103,6 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       ease: "out(3)",
     });
 
-    // Scroll bounce animation (infinite loop)
     animate(el.querySelector(".ts-scroll-line")!, {
       translateY: [0, 8, 0],
       duration: 1500,
@@ -126,7 +111,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     });
   }, []);
 
-  // Scroll-driven parallax for the content area
+  // Scroll-driven parallax
   useEffect(() => {
     const section = ref.current;
     const content = contentRef.current;
@@ -140,11 +125,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         if (total === 0) return;
         const progress = Math.max(0, Math.min(1, -rect.top / total));
 
-        const y = progress * 150;
-        const opacity = Math.max(0, 1 - progress * 2);
-        const scale = Math.max(0.8, 1 - progress * 0.4);
+        const y = progress * 120;
+        const opacity = Math.max(0, 1 - progress * 1.8);
 
-        content.style.transform = `translateY(${y}px) scale(${scale})`;
+        content.style.transform = `translateY(${y}px)`;
         content.style.opacity = `${opacity}`;
       });
     };
@@ -158,13 +142,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
   }, []);
 
   return (
-    <section ref={ref} className="slide hexagon-pattern">
-      {/* Animated gradient background */}
+    <section ref={ref} className="slide hexagon-pattern overflow-hidden">
       <div className="absolute inset-0 bg-background" />
+
+      {/* Subtle glow wash */}
       <div
-        className="absolute inset-0 opacity-30 animate-gradient-shift"
+        className="absolute inset-0 opacity-25 animate-gradient-shift pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 80% 60% at 20% 40%, hsl(180 45% 53% / 0.4), transparent), radial-gradient(ellipse 60% 80% at 80% 60%, hsl(262 95% 64% / 0.25), transparent), radial-gradient(ellipse 70% 50% at 50% 80%, hsl(22 100% 59% / 0.2), transparent)",
+          background:
+            "radial-gradient(ellipse 80% 60% at 20% 40%, hsl(180 45% 53% / 0.35), transparent), radial-gradient(ellipse 60% 80% at 80% 60%, hsl(180 45% 53% / 0.15), transparent)",
           backgroundSize: "200% 200%",
         }}
       />
@@ -173,103 +159,114 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       <LightRays
         raysColor="#4bc2c2"
         raysOrigin="top-center"
-        raysSpeed={0.8}
+        raysSpeed={0.6}
         lightSpread={0.5}
         rayLength={3}
         fadeDistance={1}
-        saturation={0.8}
-        mouseInfluence={0.1}
-        className="opacity-50 pointer-events-none"
+        saturation={0.7}
+        mouseInfluence={0.08}
+        className="opacity-30 pointer-events-none"
       />
 
-      {/* Globe background */}
-      <div className="absolute left-1/2 -translate-x-1/2 overflow-hidden pointer-events-none" style={{ top: isMobile ? '35%' : '45%', width: isMobile ? '200%' : '150%', height: '100%' }}>
-        <Globe className="opacity-40 !max-w-none !w-full" />
+      {/* Globe — retained, pushed lower-right as ambient */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: isMobile ? '-30%' : '-40%',
+          left: isMobile ? '-50%' : '-20%',
+          width: isMobile ? '200%' : '120%',
+          height: '120%',
+        }}
+      >
+        <Globe className="opacity-25 !max-w-none !w-full" />
       </div>
 
+      {/* Main content grid */}
       <div
         ref={contentRef}
-        className="relative z-10 flex flex-col items-center justify-center text-center px-6 -mt-12 md:-mt-24"
+        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-center"
       >
-        {/* Logo with glass effect */}
-        <div className="ts-logo-outer mb-6 md:mb-8 relative" style={{ opacity: 0 }}>
-          <div
-            className="ts-logo-inner w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 animate-pulse-glow flex items-center justify-center"
-            style={{ clipPath: "circle(0% at 50% 50%)" }}
-          >
-            <LiquidGlassCard borderRadius="50%" padding="4px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
-              <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
-            </LiquidGlassCard>
+        {/* Eyebrow */}
+        <div className="ts-eyebrow flex items-center gap-3 mb-8 md:mb-12" style={{ opacity: 0 }}>
+          <span className="block w-8 h-px bg-owl-teal" />
+          <span className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-owl-teal font-sans">
+            Portfolio &amp; Credentials
+          </span>
+        </div>
+
+        {/* Wordmark + Logo row */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
+          {/* Wordmark left */}
+          <div className="flex-1 min-w-0">
+            <h1 className="font-sans font-black leading-[0.95] tracking-tight uppercase text-white text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
+              <span className="ts-wordmark-line block" style={{ opacity: 0 }}>
+                <span className="font-sans">OWL</span>
+                <span className="font-sans text-owl-teal">SURF</span>
+              </span>
+            </h1>
+            <p
+              className="ts-wordmark-line font-body font-medium uppercase text-white/90 text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.15em] mt-2 md:mt-4"
+              style={{ opacity: 0, letterSpacing: "0.15em" }}
+            >
+              Digital
+            </p>
           </div>
+
+          {/* Logo right — glass + concentric rings — clickable, links to owlsurf.com */}
+          <a
+            href="https://www.owlsurf.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit owlsurf.com"
+            className="ts-logo-outer relative flex-shrink-0 ml-auto md:ml-0 cursor-pointer transition-transform duration-300 hover:scale-105"
+            style={{ opacity: 0 }}
+          >
+            {/* Concentric rings */}
+            <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/50" style={{ opacity: 0, transform: "scale(1.18)" }} />
+            <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/30" style={{ opacity: 0, transform: "scale(1.4)" }} />
+            <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/15" style={{ opacity: 0, transform: "scale(1.65)" }} />
+
+            <div
+              className="ts-logo-inner w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 animate-pulse-glow flex items-center justify-center"
+              style={{ clipPath: "circle(0% at 50% 50%)" }}
+            >
+              <LiquidGlassCard
+                borderRadius="50%"
+                padding="6px"
+                blur={15}
+                brightness={1.15}
+                backgroundColor="rgba(75, 194, 194, 0.08)"
+              >
+                <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+              </LiquidGlassCard>
+            </div>
+          </a>
         </div>
 
-        {/* Title with anime.js letter animation + cascading shimmer */}
-        <div className="mb-4">
-          <h1 className="text-5xl md:text-9xl font-black tracking-tight">
-            <span className="inline-flex">
-              {owlLetters.map((letter, i) => (
-                <span
-                  key={i}
-                  className="owl-letter inline-block bg-clip-text text-transparent"
-                  style={{
-                    opacity: 0,
-                    backgroundImage: "linear-gradient(110deg, hsl(180 45% 53% / 0.5) 0%, hsl(180 45% 80% / 0.9) 40%, hsl(0 0% 100% / 0.95) 50%, hsl(180 45% 80% / 0.9) 60%, hsl(180 45% 53% / 0.5) 100%)",
-                    backgroundSize: "300% 100%",
-                    WebkitTextStroke: "1px hsl(180 45% 53% / 0.3)",
-                    textShadow: "0 0 40px hsl(180 45% 53% / 0.3), 0 0 80px hsl(180 45% 53% / 0.15)",
-                    animation: "shimmer-cascade 2.5s ease-in-out 1",
-                    animationDelay: `${i * 0.12}s`,
-                  }}
-                >
-                  {letter}
-                </span>
-              ))}
-            </span>
-          </h1>
-          <p className="text-lg md:text-3xl font-light tracking-[0.3em] text-muted-foreground mt-2">
-            DIGITAL
-          </p>
-        </div>
-
-        <a
-          href="https://www.owlsurf.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="ts-link text-xs md:text-sm font-medium tracking-widest text-primary hover:text-primary/80 transition-colors"
-          style={{ opacity: 0 }}
-        >
-          www.owlsurf.com
-        </a>
-
-        {/* Partner Badges */}
-        <div className="ts-badges flex items-center justify-center gap-2 mt-4 md:mt-6" style={{ opacity: 0 }}>
-          <LiquidGlassCard padding={isMobile ? "0.25rem 0.5rem" : "0.35rem 0.6rem"} borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
-            <div className="flex items-center gap-1.5">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none">
-                <path d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" fill="#4285F4" />
-                <path d="M4.2 14.8l7 5.1C13 15.5 18 12 24 12c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 15.4 2 8.1 7.3 4.2 14.8z" fill="#EA4335" />
-                <path d="M24 46c5.4 0 10.3-1.8 14.1-5l-6.9-5.7C29.1 37 26.7 38 24 38c-6.1 0-11.2-4.1-13-9.7l-7.1 5.5C7.8 40.6 15.3 46 24 46z" fill="#34A853" />
-                <path d="M44.5 20H24v8.5h11.8c-1 3-2.8 5.3-5.5 6.8l6.9 5.7c4-3.7 6.8-9.2 6.8-17 0-1.3-.2-2.7-.5-4z" fill="#FBBC05" />
-              </svg>
-              <span className="text-muted-foreground text-[10px] font-semibold tracking-wider">Google</span>
+        {/* Info columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-16 mt-12 md:mt-20 max-w-3xl">
+          <div className="ts-info-col" style={{ opacity: 0 }}>
+            <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/50 font-sans mb-2 md:mb-3">
+              B2B Marketing
             </div>
-          </LiquidGlassCard>
-
-          <LiquidGlassCard padding={isMobile ? "0.25rem 0.5rem" : "0.35rem 0.6rem"} borderRadius="9999px" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.05)">
-            <div className="flex items-center gap-1.5">
-              <svg width="14" height="14" viewBox="0 0 48 48" fill="none">
-                <path d="M24 4C12.95 4 4 12.95 4 24c0 9.94 7.28 18.17 16.8 19.67V29.4h-5.04V24h5.04v-4.12c0-4.98 2.97-7.73 7.5-7.73 2.17 0 4.44.39 4.44.39v4.88h-2.5c-2.47 0-3.24 1.53-3.24 3.1V24h5.5l-.88 5.4h-4.62v14.27C36.72 42.17 44 33.94 44 24c0-11.05-8.95-20-20-20z" fill="#1877F2" />
-                <path d="M33.12 29.4L34 24h-5.5v-3.48c0-1.57.77-3.1 3.24-3.1h2.5v-4.88s-2.27-.39-4.44-.39c-4.53 0-7.5 2.75-7.5 7.73V24h-5.04v5.4h5.04v14.27a20.3 20.3 0 006.4 0V29.4h4.62z" fill="white" />
-              </svg>
-              <span className="text-muted-foreground text-[10px] font-semibold tracking-wider">Meta</span>
+            <div className="text-base md:text-lg font-body font-semibold text-white">
+              For technical &amp; industrial brands
             </div>
-          </LiquidGlassCard>
+          </div>
+          <div className="ts-info-col" style={{ opacity: 0 }}>
+            <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/50 font-sans mb-2 md:mb-3">
+              Built For
+            </div>
+            <div className="text-base md:text-lg font-body text-white/85">
+              Long cycles. Complex products. Buyers who expect substance.
+            </div>
+          </div>
         </div>
       </div>
 
+      {/* Jump to Creatives button — bottom-left */}
       {onViewCaseStudies && (
-        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 z-20">
-          {/* Arrow pointing to the button */}
+        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-16 lg:left-24 z-20">
           <Arrow19
             className="ts-arrow absolute -top-14 -right-8 md:-top-16 md:-right-10 w-16 h-16 md:w-20 md:h-20 text-primary/70 pointer-events-none"
             style={{
@@ -282,9 +279,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             className="ts-button px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
             style={{
               opacity: 0,
-              background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(262 95% 64%))",
+              background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
               color: "white",
-              boxShadow: "0 4px 20px hsl(180 45% 53% / 0.35), 0 0 40px hsl(262 95% 64% / 0.15)",
+              boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
             }}
           >
             <span className="relative z-10">Jump to Creatives</span>
@@ -293,14 +290,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               style={{
                 background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
                 backgroundSize: "200% 100%",
-                animation: "shimmer-cascade 2s ease-in-out infinite",
+                animation: "shimmer-cascade 2.5s ease-in-out infinite",
               }}
             />
           </button>
         </div>
       )}
 
-      <div className="ts-scroll absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2" style={{ opacity: 0 }}>
+      {/* Scroll indicator */}
+      <div className="ts-scroll absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-10" style={{ opacity: 0 }}>
         <div className="flex flex-col items-center gap-2 text-muted-foreground">
           <span className="text-[10px] md:text-xs tracking-widest">SCROLL</span>
           <div className="ts-scroll-line w-px h-6 md:h-8 bg-gradient-to-b from-primary to-transparent" />

@@ -1,5 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Yantramanav:wght@400;500;700;900&family=Trykker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@font-face {
+  font-family: "Lora";
+  src: url("/fonts/Lora-Italic-VariableFont_wght.ttf") format("truetype-variations");
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Palanquin";
+  src: url("/fonts/Palanquin-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Palanquin";
+  src: url("/fonts/Palanquin-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Palanquin";
+  src: url("/fonts/Palanquin-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -42,29 +73,76 @@
 
     --radius: 0.75rem;
 
-    /* Custom brand tokens - OwlSurf Official Colors */
-    --owl-black: 214 30% 6%;
-    --owl-charcoal: 214 20% 18%;
-    --owl-green: 180 45% 53%;
-    --owl-green-dark: 180 45% 43%;
-    --owl-white: 0 0% 100%;
+    /* OwlSurf Design System Tokens */
+    --owl-black: #000000;
+    --owl-white: #FFFFFF;
+    --owl-teal: #4BC2C2;
+    --owl-teal-light: #7DD8D8;
+    --owl-teal-dark: #2E9E9E;
+    --owl-charcoal: #333333;
+    --owl-gray-100: #F5F5F5;
+    --owl-gray-200: #E0E0E0;
+    --owl-gray-400: #999999;
+    --owl-gray-600: #555555;
+    --owl-gray-800: #222222;
+    --owl-card-dark: #111111;
 
-    /* Secondary palette (supporting colors) */
-    --owl-purple: 262 95% 64%;
-    --owl-orange: 22 100% 59%;
-    --owl-chartreuse: 68 99% 50%;
-    --owl-blue: 195 99% 50%;
-    --owl-red: 352 100% 58%;
+    /* Secondary palette (supporting only) */
+    --owl-purple: #814DFA;
+    --owl-blue: #02B8FC;
+    --owl-orange: #FF7F2D;
+    --owl-red: #FF2947;
+    --owl-chartreuse: #DDFD02;
 
-    /* Gradients */
-    --gradient-green: linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%));
-    --gradient-dark: linear-gradient(180deg, hsl(214 30% 6%), hsl(214 30% 4%));
-    --gradient-card: linear-gradient(145deg, hsl(214 25% 14%), hsl(214 30% 8%));
+    /* OwlSurf Typography */
+    --font-sans: "Montserrat", system-ui, -apple-system, sans-serif;
+    --font-serif: "Lora", Georgia, "Times New Roman", serif;
+    --font-body: "Palanquin", "Montserrat", system-ui, sans-serif;
 
-    /* Shadows */
-    --shadow-green: 0 10px 40px -10px hsl(180 45% 53% / 0.3);
-    --shadow-card: 0 25px 50px -12px hsl(214 30% 4% / 0.5);
-    --shadow-glow: 0 0 60px -15px hsl(180 45% 53% / 0.4);
+    /* OwlSurf Spacing (4px base) */
+    --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+    --space-5: 20px;  --space-6: 24px;  --space-8: 32px;  --space-10: 40px;
+    --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+    --space-32: 128px;
+
+    /* OwlSurf Radii */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+    --radius-pill: 9999px;
+
+    /* OwlSurf Shadows */
+    --shadow-sm:     0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md:     0 4px 16px rgba(0,0,0,0.12);
+    --shadow-lg:     0 8px 32px rgba(0,0,0,0.16);
+    --shadow-xl:     0 16px 64px rgba(0,0,0,0.20);
+    --shadow-accent: 0 4px 24px rgba(75,194,194,0.35);
+
+    /* OwlSurf Motion */
+    --ease-default: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+    --ease-out:     cubic-bezier(0.0, 0.0, 0.2, 1.0);
+    --duration-fast: 150ms;
+    --duration-base: 250ms;
+    --duration-slow: 400ms;
+
+    /* Tracking */
+    --tracking-tight:   -0.03em;
+    --tracking-snug:    -0.02em;
+    --tracking-normal:  0;
+    --tracking-wide:    0.08em;
+    --tracking-wider:   0.12em;
+    --tracking-widest:  0.15em;
+
+    /* Gradients (limited use) */
+    --gradient-green: linear-gradient(135deg, #4BC2C2, #2E9E9E);
+    --gradient-dark: linear-gradient(180deg, #000000, #111111);
+    --gradient-card: linear-gradient(145deg, #111111, #0a0a0a);
+
+    /* Legacy shadow aliases */
+    --shadow-green: 0 4px 24px rgba(75,194,194,0.35);
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.16);
+    --shadow-glow: 0 4px 24px rgba(75,194,194,0.35);
 
     --sidebar-background: 214 30% 5%;
     --sidebar-foreground: 0 0% 100%;
@@ -118,27 +196,40 @@
     height: 100%;
     width: 100%;
     overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Montserrat', sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color var(--duration-base) var(--ease-default), color var(--duration-base) var(--ease-default);
     height: 100%;
     width: 100%;
     overscroll-behavior-y: none;
   }
 
   h1 {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
+    font-weight: 900;
+    letter-spacing: var(--tracking-tight);
   }
 
   h2 {
-    font-family: 'Yantramanav', sans-serif;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: var(--tracking-snug);
   }
 
-  h3 {
-    font-family: 'Trykker', serif;
+  h3, h4 {
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+
+  p, li, span:not([class]) {
+    font-family: var(--font-body);
   }
 }
 
@@ -146,7 +237,10 @@
   .slide {
     @apply h-[100svh] min-h-[100vh] w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
     scroll-snap-align: start;
-    scroll-snap-stop: always;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: layout style paint;
   }
 
   .hexagon-pattern {

@@ -93,15 +93,24 @@ const Index = () => {
     const container = containerRef.current;
     if (!container) return;
 
+    let rafId: number | null = null;
+
     const handleScroll = () => {
-      const scrollTop = container.scrollTop;
-      const slideHeight = window.innerHeight;
-      const newSlide = Math.round(scrollTop / slideHeight);
-      setCurrentSlide(Math.min(newSlide, slides.length - 1));
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        const scrollTop = container.scrollTop;
+        const slideHeight = window.innerHeight;
+        const newSlide = Math.round(scrollTop / slideHeight);
+        setCurrentSlide(Math.min(newSlide, slides.length - 1));
+        rafId = null;
+      });
     };
 
     container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   /**
@@ -123,7 +132,12 @@ const Index = () => {
     <div
       ref={containerRef}
       className="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth bg-background"
-      style={{ scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch" }}
+      style={{
+        scrollSnapType: "y proximity",
+        WebkitOverflowScrolling: "touch",
+        scrollBehavior: "smooth",
+        overscrollBehavior: "none",
+      }}
     >
 
       <PillNav

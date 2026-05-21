@@ -21,26 +21,25 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
           // Content reveal — only animate the inner wrapper, not the outer container
           animate(content, {
             opacity: [0, 1],
-            translateY: [40, 0],
-            scale: [0.97, 1],
-            duration: 900,
-            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+            translateY: [32, 0],
+            duration: 1100,
+            ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
           });
 
           // Top wipe line
           animate(content.querySelector(".sr-top-line")!, {
             scaleX: [0, 1],
-            duration: 800,
-            delay: 200,
-            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+            duration: 900,
+            delay: 250,
+            ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
           });
 
           // Bottom wipe line
           animate(content.querySelector(".sr-bottom-line")!, {
             scaleX: [0, 1],
-            duration: 800,
-            delay: 400,
-            ease: "cubicBezier(0.22, 1, 0.36, 1)",
+            duration: 900,
+            delay: 450,
+            ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
           });
         }
       },
@@ -52,7 +51,7 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
 
   return (
     <div className={`${className} bg-background`}>
-      <div ref={contentRef} className="relative" style={{ opacity: 0 }}>
+      <div ref={contentRef} className="relative" style={{ opacity: 0, willChange: "transform, opacity" }}>
         <div
           className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
           style={{ transform: "scaleX(0)" }}
