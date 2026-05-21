@@ -1,7 +1,6 @@
 import { lazy, Suspense, useState, useEffect, useRef, type ComponentType } from "react";
 import TitleSlide from "@/components/slides/TitleSlide";
 
-import ThemeToggle from "@/components/ThemeToggle";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 
@@ -45,7 +44,7 @@ const Index = () => {
   const [mountedSlides, setMountedSlides] = useState(() => new Set([0, 1]));
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Controls the visibility of overlapping UI like PillNav and ThemeToggle
+  // Controls the visibility of overlapping UI like PillNav
   const [uiHidden, setUiHidden] = useState(false);
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -158,7 +157,6 @@ const Index = () => {
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
-      <ThemeToggle hidden={shouldHideNav} />
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {mountedSlides.has(index) ? (

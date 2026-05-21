@@ -10,7 +10,7 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
-**Latest pushed work:** Slide 2 editorial skeleton cleanup — remove `Who / We Are`, keep the layout shell for later copy.
+**Latest pushed work:** Theme switch removal — deck is fixed to the OwlSurf dark visual system with no light/dark toggle.
 
 ---
 
@@ -127,6 +127,24 @@
 
 **Design note:** Slide 2 is now a content skeleton, not final copy. Preserve the empty body area unless the user explicitly asks to add text back.
 
+### Session 4 — Theme Toggle Removal
+
+**What was done:**
+
+**1. Dark/light mode functionality removed** (`src/pages/Index.tsx`, `src/components/ThemeToggle.tsx`, `src/styles/theme-switch.css`)
+- Removed the `ThemeToggle` import and render from the main deck shell.
+- Deleted the standalone toggle component and its animated switch stylesheet.
+- Case-study and slide-2 nav hiding now only controls `PillNav`; there is no bottom-right theme switch UI.
+
+**2. Theme plumbing cleaned up** (`src/index.css`, `src/vite-env.d.ts`)
+- Removed the `.light` CSS variable override block so the presentation stays on the dark OwlSurf theme.
+- Removed the old root view-transition CSS and `Document.startViewTransition` type that existed only for the theme animation.
+
+**Verification:**
+- `npm run build` passed after changes.
+- `npm test` passed after changes.
+- Visual screenshots of the first five slides were captured from `http://localhost:8080/` after the cleanup.
+
 ---
 
 ## Architecture Decisions (permanent)
@@ -141,6 +159,7 @@
 | Fonts local + Google hybrid | Montserrat from Google (large weight range), Lora+Palanquin local (italic VF not on Google). |
 | Progressive slide mounting | Load the visible slide and neighbors first, but keep loaded slides mounted so WebGL/animation-heavy slides do not restart or freeze. |
 | Slide 2 as editable skeleton | User wants to fill the body copy later, so keep only the reference layout frame, sectors, labels, and background animation. |
+| Fixed dark theme | The deck no longer exposes light/dark switching; OwlSurf dark mode is the single visual system. |
 
 ---
 

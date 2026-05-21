@@ -38,7 +38,7 @@ Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Pr
 - **Slide Array Pattern:** `Index.tsx` mounts an array of `SlideComponent`s. These components represent sequential, full-screen vertical sections.
 - **Our Team Slide:** Recently introduced between the "Who Are We?" and "Services" slides. Serves as a dynamic placeholder for team profiles (`OurTeamSlide.tsx`).
 - **Scroll Hijacking:** Native CSS scroll behaviors (`scroll-snap-type: y mandatory`, `scroll-snap-align: start`) are used heavily on `.slide` elements to emulate a traditional "PowerPoint-like" or "Deck-like" feel on the web.
-- **Case Study Sub-Stack:** Slides 6 through 12 form a continuous block of interactive case studies. UI elements (nav pills, theme toggles) auto-hide during inactivity while inside this indices range to enhance immersive viewing.
+- **Case Study Sub-Stack:** Slides 6 through 12 form a continuous block of interactive case studies. Navigation UI auto-hides during inactivity while inside this indices range to enhance immersive viewing.
 
 ## 2. Code Principles
 
@@ -53,9 +53,9 @@ Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Pr
 
 ## 3. Design and Aesthetic Principles
 
-### Tailwind + CSS Variables Theming
+### Tailwind + Fixed Dark Theme
 - **CSS Variable Injection:** Global styling overrides are defined fundamentally using CSS custom properties inside `@layer base` in `src/index.css`. This enforces a strict color token system (e.g. `--primary`, `--card`, `--owl-green`).
-- **Dark/Light Mode:** Readily toggled by an overarching `.light` class changing the variables.
+- **Fixed OwlSurf Dark Mode:** The deck no longer exposes a light/dark toggle. The dark OwlSurf presentation theme is the single production visual system.
 - **Tailwind Utility Classes:** Components rely extensively on Tailwind classes for scaffolding, structure, layout (`flex`, `grid`, `absolute inset-0`), and standard spacing. 
 
 ### Fluidity and Animations

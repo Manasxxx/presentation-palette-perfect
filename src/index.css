@@ -154,35 +154,6 @@
     --sidebar-ring: 180 45% 53%;
   }
 
-  .light {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
-
-    --card: 0 0% 96%;
-    --card-foreground: 0 0% 5%;
-
-    --popover: 0 0% 98%;
-    --popover-foreground: 0 0% 5%;
-
-    --primary: 180 45% 45%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 0 0% 92%;
-    --secondary-foreground: 0 0% 20%;
-
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 40%;
-
-    --accent: 180 45% 45%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 352 100% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
-    --ring: 180 45% 45%;
-  }
 }
 
 @layer base {
@@ -359,10 +330,4 @@
   100% {
     background-position: -200% 0;
   }
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
 }
