@@ -18,4 +18,18 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-gsap": ["gsap", "@gsap/react"],
+          "vendor-anime": ["animejs"],
+          "vendor-3d": ["ogl", "cobe", "postprocessing"],
+          "vendor-ui": ["@radix-ui/react-slot", "@radix-ui/react-toast", "@radix-ui/react-tooltip", "lucide-react", "react-liquid-glass-card"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 }));

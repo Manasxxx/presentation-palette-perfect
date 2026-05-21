@@ -1,5 +1,34 @@
 # Presentation Palette Perfect: Codebase Analysis and Principles
 
+> **Core product intent:** This is a PowerPoint + portfolio website hybrid. Every slide is a presentation slide first — one dominant message, bold visual, minimal reading required. Think deck, not blog post.
+
+## 0. Product Philosophy
+
+### Visual-First, Always
+- Each slide communicates **one idea**. If a slide has more than one primary message, it should be split or simplified.
+- Text is support material. The visual — stat, image, animation, graphic — is the hero.
+- If the slide can't be understood in 3 seconds of glancing, it needs redesigning.
+
+### Message Hierarchy
+- **H1-level:** The one thing you want them to remember. Big, bold, center/dominant.
+- **H2-level:** One supporting detail or proof point. Smaller. Present only if needed.
+- **Body-level:** Optional context. Never more than 2 sentences. Palanquin, muted color.
+- **No paragraphs in slides.** Ever. Use fragments, stats, or single punchy lines.
+
+### Lightweight as a Feature
+- JS bundle target: under 800KB gzipped. Current: ~392KB gzipped ✓ (raw ~1.18MB — acceptable but watch).
+- Images: all deliverable assets must be WebP. PNGs allowed only as originals in `/src/assets` during dev. Build pipeline should auto-convert (see `scripts/convert-images.js`).
+- Heavy effects (3D, particle systems, blur) are **gated on desktop only** via `useIsMobile()`. Never on mobile.
+- Lazy-load all case study images via Vite's `?url` + lazy `<img loading="lazy" />`.
+- Code-split vendors: GSAP, Anime.js, cobe/ogl, UI libs — each in its own chunk (see `vite.config.ts`).
+
+### Slide Design Rules
+- One full-bleed background or effect per slide. Never two competing backgrounds.
+- Stats and numbers: weight 900, `clamp` sizing, teal color. Units always smaller weight.
+- No carousels or tabbed UI unless absolutely necessary — every extra interaction is cognitive load.
+- Case studies: full-bleed creative on one side, stats on the other. Nothing else.
+- Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
+
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 
 ## 1. Architectural Overview
