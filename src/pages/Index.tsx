@@ -132,12 +132,7 @@ const Index = () => {
     <div
       ref={containerRef}
       className="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth bg-background"
-      style={{
-        scrollSnapType: "y proximity",
-        WebkitOverflowScrolling: "touch",
-        scrollBehavior: "smooth",
-        overscrollBehavior: "none",
-      }}
+      style={{ scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch" }}
     >
 
       <PillNav

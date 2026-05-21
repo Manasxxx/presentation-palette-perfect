@@ -237,10 +237,7 @@
   .slide {
     @apply h-[100svh] min-h-[100vh] w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
     scroll-snap-align: start;
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    contain: layout style paint;
+    scroll-snap-stop: always;
   }
 
   .hexagon-pattern {
