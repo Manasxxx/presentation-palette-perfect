@@ -16,8 +16,8 @@
 - **No paragraphs in slides.** Ever. Use fragments, stats, or single punchy lines.
 
 ### Lightweight as a Feature
-- JS bundle target: under 800KB gzipped. Current: ~392KB gzipped ✓ (raw ~1.18MB — acceptable but watch).
-- Images: all deliverable assets must be WebP. PNGs allowed only as originals in `/src/assets` during dev. Build pipeline should auto-convert (see `scripts/convert-images.js`).
+- JS bundle target: under 800KB gzipped. Current: app chunk 165KB + vendors parallel-loaded ✓ (code-split via `vite.config.ts` manualChunks).
+- Images: all deliverable assets must be WebP. PNGs allowed only as originals in `/src/assets` during dev. Run `npm run images:convert` (requires `npm i -D sharp`) to batch-convert to WebP.
 - Heavy effects (3D, particle systems, blur) are **gated on desktop only** via `useIsMobile()`. Never on mobile.
 - Lazy-load all case study images via Vite's `?url` + lazy `<img loading="lazy" />`.
 - Code-split vendors: GSAP, Anime.js, cobe/ogl, UI libs — each in its own chunk (see `vite.config.ts`).

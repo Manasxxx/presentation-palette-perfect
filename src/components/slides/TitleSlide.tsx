@@ -96,19 +96,6 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       });
     }
 
-    animate(el.querySelector(".ts-scroll")!, {
-      opacity: [0, 1],
-      duration: 1000,
-      delay: 1200,
-      ease: "out(3)",
-    });
-
-    animate(el.querySelector(".ts-scroll-line")!, {
-      translateY: [0, 8, 0],
-      duration: 1500,
-      loop: true,
-      ease: "inOut(2)",
-    });
   }, []);
 
   // Scroll-driven parallax
@@ -181,129 +168,111 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <Globe className="opacity-25 !max-w-none !w-full" />
       </div>
 
-      {/* Main content grid */}
+      {/* Main content — 3-zone layout: eyebrow top, wordmark center, info bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-center"
+        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-16"
       >
-        {/* Eyebrow */}
-        <div className="ts-eyebrow flex items-center gap-3 mb-8 md:mb-12" style={{ opacity: 0 }}>
+        {/* TOP: Eyebrow */}
+        <div className="ts-eyebrow flex items-center gap-3" style={{ opacity: 0 }}>
           <span className="block w-8 h-px bg-owl-teal" />
           <span className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-owl-teal font-sans">
             Portfolio &amp; Credentials
           </span>
         </div>
 
-        {/* Wordmark + Logo row */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-12">
-          {/* Wordmark left */}
+        {/* CENTER: Wordmark + Logo — vertically centered, items-center aligns logo to wordmark midpoint */}
+        <div className="flex flex-row items-center justify-between gap-4 md:gap-8">
           <div className="flex-1 min-w-0">
-            <h1 className="font-sans font-black leading-[0.95] tracking-tight uppercase text-white text-6xl sm:text-7xl md:text-8xl lg:text-9xl">
+            <h1 className="font-sans font-black leading-[0.9] tracking-tight uppercase text-white text-[clamp(3.5rem,10vw,7rem)]">
               <span className="ts-wordmark-line block" style={{ opacity: 0 }}>
                 <span className="font-sans">OWL</span>
                 <span className="font-sans text-owl-teal">SURF</span>
               </span>
             </h1>
             <p
-              className="ts-wordmark-line font-body font-medium uppercase text-white/90 text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[0.15em] mt-2 md:mt-4"
-              style={{ opacity: 0, letterSpacing: "0.15em" }}
+              className="ts-wordmark-line font-body font-medium uppercase text-white/85 tracking-[0.18em] mt-1 md:mt-2"
+              style={{ opacity: 0, fontSize: "clamp(1.25rem, 3.5vw, 3rem)" }}
             >
               Digital
             </p>
           </div>
 
-          {/* Logo right — glass + concentric rings — clickable, links to owlsurf.com */}
+          {/* Logo right — vertically centered with wordmark block */}
           <a
             href="https://www.owlsurf.com"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit owlsurf.com"
-            className="ts-logo-outer relative flex-shrink-0 ml-auto md:ml-0 cursor-pointer transition-transform duration-300 hover:scale-105"
+            className="ts-logo-outer relative flex-shrink-0 cursor-pointer transition-transform duration-300 hover:scale-105"
             style={{ opacity: 0 }}
           >
-            {/* Concentric rings */}
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/50" style={{ opacity: 0, transform: "scale(1.18)" }} />
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/30" style={{ opacity: 0, transform: "scale(1.4)" }} />
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/15" style={{ opacity: 0, transform: "scale(1.65)" }} />
-
             <div
-              className="ts-logo-inner w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 animate-pulse-glow flex items-center justify-center"
+              className="ts-logo-inner w-28 h-28 sm:w-36 sm:h-36 md:w-52 md:h-52 lg:w-64 lg:h-64 animate-pulse-glow flex items-center justify-center"
               style={{ clipPath: "circle(0% at 50% 50%)" }}
             >
-              <LiquidGlassCard
-                borderRadius="50%"
-                padding="6px"
-                blur={15}
-                brightness={1.15}
-                backgroundColor="rgba(75, 194, 194, 0.08)"
-              >
+              <LiquidGlassCard borderRadius="50%" padding="6px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
                 <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
               </LiquidGlassCard>
             </div>
           </a>
         </div>
 
-        {/* Info columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-16 mt-12 md:mt-20 max-w-3xl">
-          <div className="ts-info-col" style={{ opacity: 0 }}>
-            <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/50 font-sans mb-2 md:mb-3">
-              B2B Marketing
+        {/* BOTTOM: Info columns + button row */}
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-2 gap-8 md:gap-16 max-w-2xl">
+            <div className="ts-info-col" style={{ opacity: 0 }}>
+              <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
+                B2B Marketing
+              </div>
+              <div className="text-sm md:text-base font-body font-semibold text-white leading-snug">
+                For technical &amp; industrial brands
+              </div>
             </div>
-            <div className="text-base md:text-lg font-body font-semibold text-white">
-              For technical &amp; industrial brands
+            <div className="ts-info-col" style={{ opacity: 0 }}>
+              <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
+                Built For
+              </div>
+              <div className="text-sm md:text-base font-body text-white/75 leading-snug">
+                Long cycles. Complex products. Buyers who expect substance.
+              </div>
             </div>
           </div>
-          <div className="ts-info-col" style={{ opacity: 0 }}>
-            <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/50 font-sans mb-2 md:mb-3">
-              Built For
+
+          {onViewCaseStudies && (
+            <div className="relative self-start">
+              <Arrow19
+                className="ts-arrow absolute -top-12 -right-8 w-14 h-14 md:w-16 md:h-16 text-primary/70 pointer-events-none"
+                style={{ opacity: 0, transform: "rotate(120deg) scaleX(-1)" }}
+              />
+              <button
+                onClick={onViewCaseStudies}
+                className="ts-button px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
+                style={{
+                  opacity: 0,
+                  background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
+                  color: "white",
+                  boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
+                }}
+              >
+                <span className="relative z-10">Jump to Creatives</span>
+                <span
+                  className="absolute inset-0 z-0"
+                  style={{
+                    background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
+                    backgroundSize: "200% 100%",
+                    animation: "shimmer-cascade 2.5s ease-in-out infinite",
+                  }}
+                />
+              </button>
             </div>
-            <div className="text-base md:text-lg font-body text-white/85">
-              Long cycles. Complex products. Buyers who expect substance.
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Jump to Creatives button — bottom-left */}
-      {onViewCaseStudies && (
-        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-16 lg:left-24 z-20">
-          <Arrow19
-            className="ts-arrow absolute -top-14 -right-8 md:-top-16 md:-right-10 w-16 h-16 md:w-20 md:h-20 text-primary/70 pointer-events-none"
-            style={{
-              opacity: 0,
-              transform: "rotate(120deg) scaleX(-1)",
-            }}
-          />
-          <button
-            onClick={onViewCaseStudies}
-            className="ts-button px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
-            style={{
-              opacity: 0,
-              background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
-              color: "white",
-              boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
-            }}
-          >
-            <span className="relative z-10">Jump to Creatives</span>
-            <span
-              className="absolute inset-0 z-0"
-              style={{
-                background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
-                backgroundSize: "200% 100%",
-                animation: "shimmer-cascade 2.5s ease-in-out infinite",
-              }}
-            />
-          </button>
-        </div>
-      )}
-
-      {/* Scroll indicator */}
-      <div className="ts-scroll absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 z-10" style={{ opacity: 0 }}>
-        <div className="flex flex-col items-center gap-2 text-muted-foreground">
-          <span className="text-[10px] md:text-xs tracking-widest">SCROLL</span>
-          <div className="ts-scroll-line w-px h-6 md:h-8 bg-gradient-to-b from-primary to-transparent" />
-        </div>
-      </div>
     </section>
   );
 };
