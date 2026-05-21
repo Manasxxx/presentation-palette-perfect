@@ -10,6 +10,7 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
+**Latest code commit:** `cf84d71` — `Improve deck performance lifecycle`.
 
 ---
 
@@ -62,6 +63,50 @@
 - Typical saving: 40–60% per file.
 - Current assets: 2.4MB total, mostly already WebP. PNGs left: client logos + some creatives.
 
+### Session 2 — Performance Scan + Lifecycle Fixes
+
+**What was done:**
+
+**1. Live dev server started**
+- `npm run dev` started successfully at `http://localhost:8080/`.
+- Initial sandbox bind to port 8080 failed; rerun with approval fixed it.
+
+**2. Codebase inefficiency scan**
+- Build passed before changes, but warned about `vendor-3d` at ~694KB minified / ~213KB gzip.
+- Tests passed (`vitest run`, 1 test).
+- Lint failed before changes with existing visual-component typing debt (`any`, `@ts-nocheck`, hook dependency warnings, Tailwind `require()`).
+- Main inefficiency buckets found: eager slide imports, offscreen animation loops, WebGL cleanup leaks, dead/misdirected scroll listeners, and image/font payload weight.
+
+**3. Deck lazy-loading + mount strategy** (`src/pages/Index.tsx`)
+- Heavy slides changed from eager static imports to `React.lazy` dynamic imports.
+- Added a placeholder slide fallback that preserves scroll-snap height while unloaded.
+- Added `mountedSlides` tracking: current + neighboring slides are loaded progressively, and once a slide is mounted it stays mounted.
+- Important correction: first attempt unmounted far-away slides, which caused the Why Us / Hyperspeed animation to stop. Final approach preserves loaded slide lifecycles while still avoiding loading the full deck on first paint.
+- Added `data-deck-scroll-container` to the main scroll container so slide-level effects can attach to the correct scroller.
+
+**4. Hyperspeed lifecycle fixes** (`src/components/ui/Hyperspeed/Hyperspeed.tsx`, `src/components/slides/SkyrocketSlide.tsx`)
+- Fixed resize listener leak by binding `onWindowResize` once and removing the same function reference in `dispose()`.
+- Stored and cancelled the animation frame id during disposal.
+- Guarded async `loadAssets().then(init)` so disposed instances do not initialize after unmount.
+- Stabilized the Why Us slide's `effectOptions` with `useMemo` so Hyperspeed is not torn down/recreated on every render.
+
+**5. Slider/offscreen work reduction** (`src/components/ParallaxCardSlider.tsx`)
+- Replaced always-running desktop tilt loop with an IntersectionObserver-driven loop that only runs while the slider is visible.
+- Auto-advance interval now only exists while the slider is visible.
+- Slide-transition timeouts are tracked and cleared on unmount.
+- Hook dependency warnings for `getPrev` / `getNext` were addressed by memoizing them.
+
+**6. Scroll and pointer cleanup** (`TitleSlide.tsx`, `WhoAreWeSlide.tsx`, `ServicesSlide.tsx`)
+- Title parallax now listens to the actual deck scroll container, not `window`.
+- WhoAreWe parallax code was pointed at the deck scroll container too, although it currently exits early because `.wa-parallax-bg` is not present in the markup.
+- Disabled LightRays mouse-follow on Title and Services because both usages are ambient and `pointer-events-none`; this avoids global mousemove tracking for decoration-only effects.
+
+**Verification:**
+- `npm run build` passed after changes.
+- `npm test` passed after changes.
+- `npm run lint` still fails due to pre-existing strict typing issues in visual components (`LightRays`, `Ballpit`, `Hyperspeed`, `PrismaticBurst`, `SplitText`, `globe`, `tailwind.config.ts`).
+- Pushed commit `cf84d71` to `origin/main`.
+
 ---
 
 ## Architecture Decisions (permanent)
@@ -74,6 +119,7 @@
 | GSAP for PillNav only | Complex interdependent timelines. Anime.js handles everything else. |
 | 3-zone title layout (justify-between) | Eyebrow top, hero center, footnotes bottom — matches PowerPoint slide convention. |
 | Fonts local + Google hybrid | Montserrat from Google (large weight range), Lora+Palanquin local (italic VF not on Google). |
+| Progressive slide mounting | Load the visible slide and neighbors first, but keep loaded slides mounted so WebGL/animation-heavy slides do not restart or freeze. |
 
 ---
 
@@ -82,9 +128,10 @@
 - [ ] Vercel deployment broken — needs reconnect or redeploy.
 - [ ] PNGs in `src/assets` not yet converted to WebP — run `npm run images:convert` after `npm i -D sharp`.
 - [ ] `logo-main.jpg` used for owl logo — should be converted to WebP or replaced with SVG/PNG with transparency.
-- [ ] Bundle `vendor-3d` at 694KB — consider lazy-loading Globe + Hyperspeed only when slide is in view.
+- [ ] Bundle `vendor-3d` still appears as a large chunk (~694KB minified) when 3D slides load — consider splitting `ogl`, `cobe`, and `postprocessing` by feature or moving 3D code behind deeper dynamic imports.
 - [ ] Mobile layout for title slide not verified after redesign.
 - [ ] `OurTeamSlide.tsx` still placeholder — needs real team content.
+- [ ] `npm run lint` fails on existing visual-component typing debt (`any`, `@ts-nocheck`, hook warnings, Tailwind `require()`).
 
 ---
 
@@ -92,12 +139,15 @@
 
 ```
 src/
-  pages/Index.tsx          — slide array, scroll handler, rAF throttle, nav
+  pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
+    slides/SkyrocketSlide.tsx — Why Us slide, memoized Hyperspeed config
     SlideReveal.tsx        — intersection observer + anime.js entrance wrapper
+    ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav
     LightRays.tsx          — WebGL light rays background effect
+    ui/Hyperspeed/         — WebGL road effect; cleanup fixed for resize + rAF
     ui/globe.tsx           — cobe globe
   index.css                — all CSS tokens, OwlSurf design system vars
 tailwind.config.ts         — font families, owl.* colors, keyframes
