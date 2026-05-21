@@ -143,7 +143,7 @@ const Index = () => {
     });
   };
 
-  const shouldHideNav = isCaseStudySlide && uiHidden;
+  const shouldHideNav = currentSlide === 1 || (isCaseStudySlide && uiHidden);
 
   return (
     <div

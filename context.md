@@ -10,7 +10,7 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
-**Latest code commit:** `cf84d71` — `Improve deck performance lifecycle`.
+**Latest pushed work:** Slide 2 editorial skeleton cleanup — remove `Who / We Are`, keep the layout shell for later copy.
 
 ---
 
@@ -107,6 +107,26 @@
 - `npm run lint` still fails due to pre-existing strict typing issues in visual components (`LightRays`, `Ballpit`, `Hyperspeed`, `PrismaticBurst`, `SplitText`, `globe`, `tailwind.config.ts`).
 - Pushed commit `cf84d71` to `origin/main`.
 
+### Session 3 — Slide 2 Reference Layout Iteration
+
+**What was done:**
+
+**1. Slide 2 rebuilt as a reference-style editorial shell** (`src/components/slides/SkyrocketSlide.tsx`)
+- The old `Skyrocketing` / Why Us content was replaced with a dark OwlSurf version of the provided `Who We Are` reference layout.
+- The slide keeps the existing Hyperspeed background animation behind the editorial frame.
+- Current visible structure: `Owlsurf Digital` label, `02 / 05`, `Built For Industry`, `01 Introduction`, orange divider, empty body space, sectors grid, `Portfolio & Credentials`, and `www.owlsurf.com`.
+- Per the latest direction, the large `Who / We Are` title and body copy were removed so the user can fill the layout manually later.
+
+**2. Illustration removed after layout review**
+- An industrial reference illustration was briefly added and then removed because the user wanted the layout copied without the right-side illustration.
+- The current right side is intentionally minimal: only subtle technical grid texture, footer rule, and the animated background atmosphere.
+
+**3. Navigation hidden on Slide 2** (`src/pages/Index.tsx`)
+- Pill navigation is hidden when slide 2 is active so it does not cover the reference-style top labels or make the page look cluttered.
+- Existing case-study nav hide behavior remains unchanged.
+
+**Design note:** Slide 2 is now a content skeleton, not final copy. Preserve the empty body area unless the user explicitly asks to add text back.
+
 ---
 
 ## Architecture Decisions (permanent)
@@ -120,6 +140,7 @@
 | 3-zone title layout (justify-between) | Eyebrow top, hero center, footnotes bottom — matches PowerPoint slide convention. |
 | Fonts local + Google hybrid | Montserrat from Google (large weight range), Lora+Palanquin local (italic VF not on Google). |
 | Progressive slide mounting | Load the visible slide and neighbors first, but keep loaded slides mounted so WebGL/animation-heavy slides do not restart or freeze. |
+| Slide 2 as editable skeleton | User wants to fill the body copy later, so keep only the reference layout frame, sectors, labels, and background animation. |
 
 ---
 
@@ -142,7 +163,7 @@ src/
   pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
-    slides/SkyrocketSlide.tsx — Why Us slide, memoized Hyperspeed config
+    slides/SkyrocketSlide.tsx — slide 2 editorial skeleton, memoized Hyperspeed config
     SlideReveal.tsx        — intersection observer + anime.js entrance wrapper
     ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav
