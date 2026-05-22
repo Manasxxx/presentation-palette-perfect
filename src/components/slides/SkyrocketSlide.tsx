@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Factory, FlaskConical, GraduationCap, Pill, Warehouse, Zap } from "lucide-react";
 import { animate, createSpring, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
+import industrialEngineerImage from "@/assets/industrial-engineer-slide-2.png";
 
 const sectors = [
   { label: "Chemicals", icon: FlaskConical },
@@ -88,7 +89,6 @@ const SkyrocketSlide = () => {
           });
 
           animate(el.querySelectorAll(".who-sector"), {
-            opacity: [0, 1],
             translateY: [18, 0],
             delay: stagger(80, { start: 700 }),
             duration: 700,
@@ -108,38 +108,22 @@ const SkyrocketSlide = () => {
       <div className="absolute inset-0 z-0 pointer-events-none opacity-45">
         <Hyperspeed effectOptions={hyperspeedOptions} />
       </div>
-      <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_78%_48%,rgba(75,194,194,0.12),transparent_26%),linear-gradient(90deg,hsl(214_30%_6%/0.97),hsl(214_30%_6%/0.9)_54%,hsl(214_30%_6%/0.78))]" />
+      <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_63%_50%,rgba(75,194,194,0.18),transparent_34%),linear-gradient(90deg,hsl(214_30%_6%/0.98),hsl(214_30%_6%/0.92)_48%,hsl(182_70%_18%/0.38))]" />
 
-      <div className="relative z-10 h-full w-full max-w-[1720px] overflow-hidden border border-white/10 bg-[#090d12]/92 shadow-2xl">
-        <div className="absolute left-[5.6%] top-[6.2%] z-30 flex items-center gap-4">
-          <span className="h-2.5 w-2.5 rounded-full bg-owl-teal shadow-[0_0_18px_rgba(75,194,194,0.75)]" />
-          <span className="font-sans text-[10px] font-black uppercase tracking-[0.46em] text-white/45 md:text-xs">
-            Owlsurf Digital
-          </span>
+      <div className="relative z-10 h-full w-full max-w-[1720px] overflow-hidden bg-[#090d12]/92 shadow-2xl">
+        <div className="absolute inset-y-0 right-0 z-10 hidden w-[58%] overflow-hidden md:block">
+          <img
+            src={industrialEngineerImage}
+            alt=""
+            className="h-full w-full origin-right translate-x-[23%] scale-[1.72] object-contain object-right opacity-90 mix-blend-screen"
+            loading="lazy"
+          />
         </div>
 
-        <div className="absolute right-[5.9%] top-[6.5%] z-30 hidden text-right md:block">
-          <div className="font-sans text-[11px] font-black uppercase tracking-[0.42em] text-white/45 md:text-sm">
-            <span className="text-white/75">02</span> / 05
-          </div>
-          <div className="mt-4 flex items-center justify-end gap-3">
-            <span className="h-px w-10 bg-owl-teal/50" />
-            <span className="font-sans text-[10px] font-black uppercase tracking-[0.42em] text-white/35 md:text-xs">
-              Built For Industry
-            </span>
-          </div>
-        </div>
-
-        <div className="relative z-20 hidden h-full w-[54%] max-w-[960px] flex-col justify-between px-[6.1%] pb-[6.6%] pt-[18.2%] md:flex">
+        <div className="relative z-30 hidden h-full w-[54%] max-w-[960px] flex-col justify-end px-[3.8%] pb-[3.2%] md:flex">
           <IntroBlock />
           <SectorsBlock />
         </div>
-
-        <div className="absolute bottom-[8%] right-[8%] hidden h-px w-[34%] bg-white/10 md:block" />
-        <div className="absolute bottom-[6.6%] right-[6.2%] z-30 hidden font-sans text-[11px] font-black uppercase tracking-[0.44em] text-white/35 md:block md:text-sm">
-          www.owlsurf.com
-        </div>
-        <div className="absolute right-[10%] top-[24%] hidden h-[46%] w-[36%] opacity-30 md:block [background-image:linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:86px_86px]" />
 
         <div className="absolute inset-x-6 top-[15%] z-20 md:hidden">
           <IntroBlock mobile />
@@ -155,17 +139,20 @@ const SkyrocketSlide = () => {
 
 const IntroBlock = ({ mobile = false }: { mobile?: boolean }) => (
   <>
-    <div className={`who-kicker flex items-center gap-4 ${mobile ? "mb-5" : "mb-8"}`} style={{ opacity: 0 }}>
-      <span className={`${mobile ? "w-9" : "w-12"} h-px bg-owl-teal/60`} />
-      <span className="font-sans text-[10px] font-black uppercase tracking-[0.32em] text-owl-teal md:text-xs">01</span>
-      <span className="font-sans text-[10px] font-black uppercase tracking-[0.38em] text-white md:text-xs">
-        Introduction
-      </span>
+    <div className={`who-copy font-body ${mobile ? "h-56" : "h-[28rem] max-w-[780px]"}`} style={{ opacity: 0 }}>
+      <div className={`font-black uppercase leading-[0.82] text-white ${mobile ? "text-5xl" : "text-[clamp(4.8rem,7vw,8rem)]"}`}>
+        WHO
+        <br />
+        WE ARE
+      </div>
+      <div className={`mt-8 font-semibold leading-[1.05] text-white ${mobile ? "max-w-sm text-2xl" : "max-w-[560px] text-[clamp(2.1rem,3vw,3.6rem)]"}`}>
+        A B2B marketing agency built for technical and industrial brands.
+      </div>
+      <div className={`mt-7 max-w-[680px] font-medium leading-[1.42] text-white/70 ${mobile ? "text-sm" : "text-[clamp(1rem,1.12vw,1.28rem)]"}`}>
+        We work across long cycles. Complex products and businesses that expect substance.
+        Our work translates engineering into demand through positioning, content, and digital execution built for how your buyers actually decide.
+      </div>
     </div>
-
-    <div className={`who-rule origin-left bg-owl-orange ${mobile ? "mt-5 h-1 w-16" : "mt-8 h-1.5 w-[96px]"}`} style={{ transform: "scaleX(0)" }} />
-
-    <div className={`who-copy ${mobile ? "mt-8 h-56" : "mt-12 h-[28rem] max-w-[780px]"}`} style={{ opacity: 0 }} />
   </>
 );
 
@@ -182,7 +169,7 @@ const SectorsBlock = ({ mobile = false }: { mobile?: boolean }) => (
       {(mobile ? sectors.slice(0, 4) : sectors).map((sector) => {
         const Icon = sector.icon;
         return (
-          <div key={sector.label} className="who-sector flex min-w-0 items-center gap-4" style={{ opacity: 0 }}>
+          <div key={sector.label} className="who-sector flex min-w-0 items-center gap-4">
             <span className={`${mobile ? "h-8 w-8" : "h-9 w-9"} flex shrink-0 items-center justify-center rounded-md border border-white/45 bg-transparent text-white/85`}>
               <Icon className={mobile ? "h-4 w-4" : "h-4 w-4"} strokeWidth={1.8} />
             </span>
@@ -193,11 +180,6 @@ const SectorsBlock = ({ mobile = false }: { mobile?: boolean }) => (
         );
       })}
     </div>
-    {!mobile && (
-      <div className="mt-5 font-sans text-[11px] font-black uppercase tracking-[0.44em] text-white/35 md:text-sm">
-        Portfolio &amp; Credentials
-      </div>
-    )}
   </>
 );
 

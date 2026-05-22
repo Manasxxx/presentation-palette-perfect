@@ -10,7 +10,7 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
-**Latest pushed work:** Theme switch removal — deck is fixed to the OwlSurf dark visual system with no light/dark toggle.
+**Latest pushed work:** Slide 2 "Who We Are" editorial update — right-side technical line illustration, left-side Palanquin copy, low-left sectors.
 
 ---
 
@@ -145,6 +145,28 @@
 - `npm test` passed after changes.
 - Visual screenshots of the first five slides were captured from `http://localhost:8080/` after the cleanup.
 
+### Session 5 — Slide 2 Who We Are Editorial Build
+
+**What was done:**
+
+**1. Page-level header/footer removed** (`src/components/slides/SkyrocketSlide.tsx`)
+- Removed the old slide-2 top labels: `Owlsurf Digital`, `02 / 05`, and `Built For Industry`.
+- Removed the old footer URL and page-frame border.
+- Removed the `Introduction` kicker, orange divider, and `Portfolio & Credentials` text.
+
+**2. Right-side technical illustration added**
+- Added `src/assets/industrial-engineer-slide-2.png` from the generated technical line illustration.
+- The image is anchored on the right, zoomed to reach the slide edges, shifted toward the right edge, and uses `mix-blend-screen`.
+- Removed experimental circular crop, semicircle overlay, grid pattern, and gradient divider after review.
+
+**3. Left-side copy added**
+- Added `WHO / WE ARE` and B2B agency copy using the secondary/body font (`font-body`, Palanquin).
+- Preserved the slide's dark OwlSurf visual system and Hyperspeed atmospheric background.
+- Kept sectors visible under `Sectors We Serve`, anchored further toward the bottom-left.
+
+**Verification:**
+- `npm run build` passed after changes.
+
 ---
 
 ## Architecture Decisions (permanent)
@@ -158,7 +180,7 @@
 | 3-zone title layout (justify-between) | Eyebrow top, hero center, footnotes bottom — matches PowerPoint slide convention. |
 | Fonts local + Google hybrid | Montserrat from Google (large weight range), Lora+Palanquin local (italic VF not on Google). |
 | Progressive slide mounting | Load the visible slide and neighbors first, but keep loaded slides mounted so WebGL/animation-heavy slides do not restart or freeze. |
-| Slide 2 as editable skeleton | User wants to fill the body copy later, so keep only the reference layout frame, sectors, labels, and background animation. |
+| Slide 2 as editorial Who We Are slide | Uses Palanquin copy, low-left sectors, and right-side technical line illustration. Do not restore removed header/footer, border, grid, semicircle, or divider gradient unless asked. |
 | Fixed dark theme | The deck no longer exposes light/dark switching; OwlSurf dark mode is the single visual system. |
 
 ---
@@ -182,7 +204,7 @@ src/
   pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
-    slides/SkyrocketSlide.tsx — slide 2 editorial skeleton, memoized Hyperspeed config
+    slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config
     SlideReveal.tsx        — intersection observer + anime.js entrance wrapper
     ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav

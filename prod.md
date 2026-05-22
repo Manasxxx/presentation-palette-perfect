@@ -28,6 +28,7 @@
 - No carousels or tabbed UI unless absolutely necessary — every extra interaction is cognitive load.
 - Case studies: full-bleed creative on one side, stats on the other. Nothing else.
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
+- Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
 
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 
@@ -37,6 +38,7 @@ Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Pr
 - **Entry Point:** The application essentially routes entirely through `App.tsx` into `Index.tsx`.
 - **Slide Array Pattern:** `Index.tsx` mounts an array of `SlideComponent`s. These components represent sequential, full-screen vertical sections.
 - **Our Team Slide:** Recently introduced between the "Who Are We?" and "Services" slides. Serves as a dynamic placeholder for team profiles (`OurTeamSlide.tsx`).
+- **Who We Are Slide:** `SkyrocketSlide.tsx` is now the main slide-2 editorial statement. It uses Palanquin text, bottom-left sector tags, and a right-aligned technical line illustration asset.
 - **Scroll Hijacking:** Native CSS scroll behaviors (`scroll-snap-type: y mandatory`, `scroll-snap-align: start`) are used heavily on `.slide` elements to emulate a traditional "PowerPoint-like" or "Deck-like" feel on the web.
 - **Case Study Sub-Stack:** Slides 6 through 12 form a continuous block of interactive case studies. Navigation UI auto-hides during inactivity while inside this indices range to enhance immersive viewing.
 
