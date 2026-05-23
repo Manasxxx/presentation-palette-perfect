@@ -1,73 +1,84 @@
-# Welcome to your Lovable project
+# OwlSurf Digital Portfolio & Credentials
 
-## Project info
+A scroll-snapping portfolio deck for OwlSurf Digital. The project behaves like a PowerPoint presentation in the browser: one full-screen idea per slide, bold visuals, minimal reading, and motion used only to support the pitch.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## What This Includes
 
-## How can I edit this code?
+- Intro/title slide with OwlSurf branding and animated ambient visuals.
+- `Who We Are` editorial slide for technical and industrial B2B markets.
+- `Our Team` slide with six horizontal profile cards and a teal radar background.
+- Services, clients, case studies, and contact slides.
+- Lazy-loaded slide registry so heavy visual sections do not all load at first paint.
+- Fixed OwlSurf dark theme with Montserrat, Palanquin, and Lora typography.
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- Vite
+- React 18
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Anime.js
+- GSAP
+- OGL / WebGL visual effects
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Local Development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The Vite dev server runs on:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```txt
+http://localhost:8080
+```
 
-**Use GitHub Codespaces**
+## Useful Commands
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```sh
+npm run build
+npm test
+npm run lint
+npm run images:convert
+```
 
-## What technologies are used for this project?
+Notes:
 
-This project is built with:
+- `npm run build` currently passes.
+- `npm test` currently passes.
+- `npm run lint` currently reports existing visual-component typing debt in older WebGL/animation components.
+- `npm run images:convert` requires `sharp` to be installed as a dev dependency.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Project Structure
 
-## How can I deploy this project?
+```txt
+src/
+  pages/Index.tsx                  Slide registry, lazy mounting, scroll navigation
+  components/slides/               Full-screen deck slides
+  components/ProfileCard.jsx       React Bits profile card component
+  components/ProfileCard.css       Team-card styling overrides
+  components/Radar.jsx             React Bits radar background
+  components/Radar.css             Radar container styles
+  components/ui/Hyperspeed/        WebGL road background effect
+  index.css                        Global tokens, fonts, and OwlSurf design system
+scripts/
+  convert-images.mjs               PNG to WebP conversion helper
+context.md                         Running implementation log
+prod.md                            Product/design principles
+```
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Design Direction
 
-## Can I connect a custom domain to my Lovable project?
+This is a deck-first product, not a traditional website. Each slide should communicate one dominant message, with visual hierarchy doing most of the work. Avoid long paragraphs, duplicated background effects, and unnecessary interaction. If a slide cannot be understood quickly, simplify it.
 
-Yes, you can!
+## Deployment
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+The repo is connected to GitHub at:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```txt
+Manasxxx/presentation-palette-perfect
+```
+
+The previous Vercel deployment/domain needs reconnecting before production use.
