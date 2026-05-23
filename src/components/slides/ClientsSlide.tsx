@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { animate, createSpring, stagger } from "animejs";
+import { useEffect, useRef } from "react";
+import { animate } from "animejs";
 import { Marquee } from "@/components/ui/marquee";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import cultfitLogo from "@/assets/client-cultfit.png";
@@ -52,57 +52,104 @@ const ClientCard = ({ client }: { client: Client }) => (
 
 const ClientsSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [triggered, setTriggered] = useState(false);
+  const triggered = useRef(false);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    const heading = el.querySelector(".cl-heading") as HTMLElement | null;
+    const cards = el.querySelector(".cl-cards") as HTMLElement | null;
+    if (!heading || !cards) return;
+
+    // Initial hidden state set via JS — so content stays visible if this never runs
+    heading.style.opacity = "0";
+    heading.style.transform = "translateY(40px)";
+    cards.style.opacity = "0";
+    cards.style.transform = "translateY(40px)";
+
+    const reveal = () => {
+      if (triggered.current) return;
+      triggered.current = true;
+      animate(heading, {
+        opacity: 1,
+        translateY: 0,
+        duration: 800,
+        ease: "out(3)",
+      });
+      animate(cards, {
+        opacity: 1,
+        translateY: 0,
+        duration: 800,
+        delay: 200,
+        ease: "out(3)",
+      });
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !triggered) {
-          setTriggered(true);
-
-          animate(el.querySelector(".cl-heading")!, {
-            opacity: [0, 1],
-            translateY: [60, 0],
-            duration: 700,
-            ease: "cubicBezier(0.22, 1, 0.36, 1)",
-          });
-
-          animate(el.querySelector(".cl-cards")!, {
-            opacity: [0, 1],
-            translateY: [40, 0],
-            duration: 800,
-            delay: 150,
-            ease: createSpring({ stiffness: 100, damping: 12 }),
-          });
-        }
+        if (entry.isIntersecting) reveal();
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [triggered]);
+
+    // Fallback: if observer hasn't fired within 600ms, reveal anyway
+    const fallback = window.setTimeout(reveal, 600);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   return (
-    <section ref={sectionRef} className="slide py-10 md:py-20 px-4 md:px-6 overflow-hidden relative">
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
-        <PrismaticBurst colors={['#4bc2c2', '#14b8a6', '#0f766e', '#134e4a', '#0a2322']} />
+    <section
+      ref={sectionRef}
+      className="slide font-sans"
+    >
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <PrismaticBurst
+          colors={["#4bc2c2", "#14b8a6", "#0f766e", "#134e4a", "#0a2322"]}
+          speed={0.18}
+        />
       </div>
 
-      <div className="max-w-5xl mx-auto w-full relative z-10">
-        <h2 className="cl-heading text-2xl md:text-6xl font-black tracking-tight mb-6 md:mb-12 text-center" style={{ opacity: 0 }}>
-          <span className="text-foreground">MAJOR </span>
-          <span className="text-gradient-green">CLIENTS</span>
-        </h2>
+      {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
+      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-24 pb-10 md:px-12 md:pt-24 md:pb-12">
+        <header className="cl-heading text-left self-start">
+          <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
+            WHO WE WORK WITH
+          </span>
+          <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
+            <span className="font-sans not-italic">MAJOR </span>
+            <span className="font-sans not-italic text-gradient-green inline-block pr-2">CLIENTS</span>
+          </h2>
+        </header>
 
-        <div className="cl-cards relative flex flex-col gap-4 md:gap-6 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]" style={{ opacity: 0 }}>
-          <Marquee pauseOnHover className="[--duration:18s] md:[--duration:22s] [--gap:1rem] md:[--gap:1.5rem]">
+        <div
+          className="cl-cards relative my-auto flex w-full flex-col gap-4 md:gap-6"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)",
+          }}
+        >
+          <Marquee
+            repeat={4}
+            pauseOnHover
+            className="[--duration:30s] [--gap:1rem] md:[--gap:1.5rem]"
+          >
             {firstRow.map((client) => (
               <ClientCard key={client.name} client={client} />
             ))}
           </Marquee>
-          <Marquee reverse pauseOnHover className="[--duration:18s] md:[--duration:22s] [--gap:1rem] md:[--gap:1.5rem]">
+          <Marquee
+            repeat={4}
+            reverse
+            pauseOnHover
+            className="[--duration:34s] [--gap:1rem] md:[--gap:1.5rem]"
+          >
             {secondRow.map((client) => (
               <ClientCard key={client.name} client={client} />
             ))}

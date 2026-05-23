@@ -151,7 +151,7 @@ const IntroBlock = ({ mobile = false }: { mobile?: boolean }) => (
         <span className={`${mobile ? "w-8" : "w-12"} who-rule h-px origin-left bg-owl-teal/80`} />
         B2B demand for complex markets
       </div>
-      <div className={`font-sans font-black uppercase leading-[0.78] text-white drop-shadow-[0_0_34px_rgba(75,194,194,0.16)] ${mobile ? "text-[3.4rem]" : "text-[clamp(5.3rem,7.6vw,8.8rem)]"}`}>
+      <div className={`font-sans font-black uppercase leading-[0.95] text-white drop-shadow-[0_0_34px_rgba(75,194,194,0.16)] ${mobile ? "text-[3.4rem]" : "text-[clamp(3.4rem,5.9vw,6.6rem)]"}`}>
         <span className="who-word block whitespace-nowrap">
           WHO <span className="text-gradient-green">WE</span>
         </span>

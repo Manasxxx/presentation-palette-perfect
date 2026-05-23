@@ -86,9 +86,15 @@ const OurTeamSlide = () => {
             </div>
 
             <div className="relative z-10 flex h-full w-full max-w-[1720px] flex-col">
-                <header>
-                    <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.82] tracking-normal text-white">
-                        OUR TEAM
+                <header className="text-left self-start">
+                    <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
+                        THE PEOPLE
+                    </span>
+                    <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
+                        <span className="font-sans not-italic">OUR </span>
+                        <span className="font-sans not-italic text-gradient-green inline-block pr-2">
+                            TEAM
+                        </span>
                     </h2>
                 </header>
 
