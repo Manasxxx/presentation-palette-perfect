@@ -29,6 +29,7 @@
 - Case studies: full-bleed creative on one side, stats on the other. Nothing else.
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
+- Our Team uses six horizontal profile cards in a 3x2 grid over a teal radar field. Do not bring back the deleted ball-animation slide as a team/about substitute.
 
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 
@@ -37,10 +38,11 @@ The codebase is structured as a **Single-Page Application (SPA)** using **Vite +
 Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Presentation** architecture.
 - **Entry Point:** The application essentially routes entirely through `App.tsx` into `Index.tsx`.
 - **Slide Array Pattern:** `Index.tsx` mounts an array of `SlideComponent`s. These components represent sequential, full-screen vertical sections.
-- **Our Team Slide:** Recently introduced between the "Who Are We?" and "Services" slides. Serves as a dynamic placeholder for team profiles (`OurTeamSlide.tsx`).
+- **Our Team Slide:** Shows six profile-card team members (`OurTeamSlide.tsx`) between the main editorial statement and Services, with React Bits `ProfileCard` cards and a subtle React Bits `Radar` background.
 - **Who We Are Slide:** `SkyrocketSlide.tsx` is now the main slide-2 editorial statement. It uses Palanquin text, bottom-left sector tags, and a right-aligned technical line illustration asset.
+- **Removed About Animation:** The old separate third `WhoAreWeSlide` and `Ballpit` animation were removed to keep the deck lighter and avoid redundant "Who We Are" messaging.
 - **Scroll Hijacking:** Native CSS scroll behaviors (`scroll-snap-type: y mandatory`, `scroll-snap-align: start`) are used heavily on `.slide` elements to emulate a traditional "PowerPoint-like" or "Deck-like" feel on the web.
-- **Case Study Sub-Stack:** Slides 6 through 12 form a continuous block of interactive case studies. Navigation UI auto-hides during inactivity while inside this indices range to enhance immersive viewing.
+- **Case Study Sub-Stack:** Slides 5 through 11 form a continuous block of interactive case studies. Navigation UI auto-hides during inactivity while inside this indices range to enhance immersive viewing.
 
 ## 2. Code Principles
 

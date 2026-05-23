@@ -5,7 +5,6 @@ import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
-const WhoAreWeSlide = lazy(() => import("@/components/slides/WhoAreWeSlide"));
 const OurTeamSlide = lazy(() => import("@/components/slides/OurTeamSlide"));
 const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
 const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
@@ -21,7 +20,6 @@ const ContactSlide = lazy(() => import("@/components/slides/ContactSlide"));
 const slides: ComponentType[] = [
   TitleSlide,
   SkyrocketSlide,
-  WhoAreWeSlide,
   OurTeamSlide,
   ServicesSlide,
   ClientsSlide,
@@ -50,9 +48,9 @@ const Index = () => {
 
   /**
    * Tracks whether the current slide index is within the "Case Study" block.
-   * Slide 6 to 12 represent the interactive case study gallery.
+   * Slide 5 to 11 represent the interactive case study gallery.
    */
-  const isCaseStudySlide = currentSlide >= 6 && currentSlide <= 12;
+  const isCaseStudySlide = currentSlide >= 5 && currentSlide <= 11;
 
   useEffect(() => {
     setMountedSlides((previous) => {
@@ -162,7 +160,7 @@ const Index = () => {
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>
               {index === 0 ? (
-                <TitleSlide onViewCaseStudies={() => navigateToSlide(6)} />
+                <TitleSlide onViewCaseStudies={() => navigateToSlide(5)} />
               ) : (
                 <SlideComponent />
               )}

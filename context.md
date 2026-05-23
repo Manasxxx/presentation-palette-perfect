@@ -10,7 +10,7 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
-**Latest pushed work:** Slide 2 "Who We Are" editorial update — right-side technical line illustration, left-side Palanquin copy, low-left sectors.
+**Latest pushed work:** Slide 2 "Who We Are" editorial update, old ball-animation slide removal, and Our Team rebuild with six horizontal profile cards over a teal radar background.
 
 ---
 
@@ -96,15 +96,14 @@
 - Slide-transition timeouts are tracked and cleared on unmount.
 - Hook dependency warnings for `getPrev` / `getNext` were addressed by memoizing them.
 
-**6. Scroll and pointer cleanup** (`TitleSlide.tsx`, `WhoAreWeSlide.tsx`, `ServicesSlide.tsx`)
+**6. Scroll and pointer cleanup** (`TitleSlide.tsx`, `ServicesSlide.tsx`)
 - Title parallax now listens to the actual deck scroll container, not `window`.
-- WhoAreWe parallax code was pointed at the deck scroll container too, although it currently exits early because `.wa-parallax-bg` is not present in the markup.
 - Disabled LightRays mouse-follow on Title and Services because both usages are ambient and `pointer-events-none`; this avoids global mousemove tracking for decoration-only effects.
 
 **Verification:**
 - `npm run build` passed after changes.
 - `npm test` passed after changes.
-- `npm run lint` still fails due to pre-existing strict typing issues in visual components (`LightRays`, `Ballpit`, `Hyperspeed`, `PrismaticBurst`, `SplitText`, `globe`, `tailwind.config.ts`).
+- `npm run lint` still fails due to pre-existing strict typing issues in visual components (`LightRays`, `Hyperspeed`, `PrismaticBurst`, `SplitText`, `globe`, `tailwind.config.ts`).
 - Pushed commit `cf84d71` to `origin/main`.
 
 ### Session 3 — Slide 2 Reference Layout Iteration
@@ -167,6 +166,42 @@
 **Verification:**
 - `npm run build` passed after changes.
 
+### Session 6 — Team Slide Rebuild + Old Animation Removal
+
+**What was done:**
+
+**1. Slide 2 refined into final "Who We Are" copy**
+- Headline now reads `WHO WE / ARE?`, with `WE` in teal and the question mark kept with `ARE`.
+- Body copy now reads: `We translate technical depth into market momentum.`
+- `technical depth` and `market momentum.` use matching Lora italic styling with larger hand-drawn teal highlights behind black text.
+- Sectors were kept short and readable: Chemicals, Pharma, Energy, Infrastructure, Education.
+- Sector icons were enlarged while labels were reverted to their concise original names after review.
+
+**2. Old third "Who We Are" slide removed**
+- Removed `WhoAreWeSlide` from the slide registry in `src/pages/Index.tsx`.
+- Deleted `src/components/slides/WhoAreWeSlide.tsx`.
+- Deleted the unused `src/components/ui/Ballpit/Ballpit.tsx` animation path.
+- Updated navigation/case-study indices after the removal: case studies now run from slides 5 through 11 and Contact is slide 12.
+
+**3. Our Team slide rebuilt**
+- Added React Bits `ProfileCard` component files (`src/components/ProfileCard.jsx`, `src/components/ProfileCard.css`).
+- Added React Bits `Radar` component files (`src/components/Radar.jsx`, `src/components/Radar.css`) using the existing `ogl` dependency.
+- Rebuilt `OurTeamSlide.tsx` as a six-person grid: Harshit, Sakshi, Manas, Sanskriti, Pankaj, Vishnu.
+- Current roles: Strategy & Growth, Client Partnerships, Digital Enablement, Creative Direction, Technology & Delivery, Creative Architect.
+- Cards are horizontal, teal-tinted, and arranged three over three. Hover rainbow treatment is disabled; the idle/initial profile-card movement remains.
+- Vishnu temporarily reuses Pankaj's avatar because no separate Vishnu avatar asset exists yet.
+
+**4. Efficiency notes**
+- Removing the old Ballpit path avoids carrying the extra ball animation code in the deck.
+- `vendor-3d` is still the largest production chunk because the deck still uses WebGL effects (`Hyperspeed`, `Radar`, `ogl`, `cobe`, `postprocessing`).
+- `Radar` is currently desktop-grade visual work behind the team cards. If mobile performance becomes a problem, gate it with `useIsMobile()`.
+
+**Verification:**
+- `npm run build` passed with 1771 transformed modules and the expected `vendor-3d` large chunk warning (~678KB minified / ~208KB gzip).
+- `npm test` passed (1 test).
+- `npm run lint` still fails only on existing visual-component typing debt in `LightRays`, `Hyperspeed`, `PrismaticBurst`, `SplitText`, `globe`, and `tailwind.config.ts`.
+- Trace check confirms no remaining `WhoAreWeSlide` or `Ballpit` references in `src/`.
+
 ---
 
 ## Architecture Decisions (permanent)
@@ -181,6 +216,8 @@
 | Fonts local + Google hybrid | Montserrat from Google (large weight range), Lora+Palanquin local (italic VF not on Google). |
 | Progressive slide mounting | Load the visible slide and neighbors first, but keep loaded slides mounted so WebGL/animation-heavy slides do not restart or freeze. |
 | Slide 2 as editorial Who We Are slide | Uses Palanquin copy, low-left sectors, and right-side technical line illustration. Do not restore removed header/footer, border, grid, semicircle, or divider gradient unless asked. |
+| No separate ball-animation Who We Are slide | The old third slide and Ballpit animation were intentionally removed to reduce visual clutter and code weight. |
+| Our Team as six horizontal cards | Team profiles use React Bits ProfileCard styling with local avatar assets and a teal Radar background. Preserve the 3x2 information density unless a new layout direction is given. |
 | Fixed dark theme | The deck no longer exposes light/dark switching; OwlSurf dark mode is the single visual system. |
 
 ---
@@ -190,9 +227,9 @@
 - [ ] Vercel deployment broken — needs reconnect or redeploy.
 - [ ] PNGs in `src/assets` not yet converted to WebP — run `npm run images:convert` after `npm i -D sharp`.
 - [ ] `logo-main.jpg` used for owl logo — should be converted to WebP or replaced with SVG/PNG with transparency.
-- [ ] Bundle `vendor-3d` still appears as a large chunk (~694KB minified) when 3D slides load — consider splitting `ogl`, `cobe`, and `postprocessing` by feature or moving 3D code behind deeper dynamic imports.
+- [ ] Bundle `vendor-3d` still appears as a large chunk (~678KB minified) when 3D slides load — consider splitting `ogl`, `cobe`, and `postprocessing` by feature, or gate/deeper-lazy-load 3D code.
 - [ ] Mobile layout for title slide not verified after redesign.
-- [ ] `OurTeamSlide.tsx` still placeholder — needs real team content.
+- [ ] Our Team uses Pankaj's avatar for Vishnu until a dedicated Vishnu avatar is supplied.
 - [ ] `npm run lint` fails on existing visual-component typing debt (`any`, `@ts-nocheck`, hook warnings, Tailwind `require()`).
 
 ---
@@ -205,6 +242,9 @@ src/
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
     slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config
+    slides/OurTeamSlide.tsx — six horizontal team profile cards over Radar background
+    ProfileCard.jsx/css    — React Bits profile card, locally styled for team slide
+    Radar.jsx/css          — React Bits WebGL radar background using ogl
     SlideReveal.tsx        — intersection observer + anime.js entrance wrapper
     ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav

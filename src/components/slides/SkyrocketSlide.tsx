@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Factory, FlaskConical, GraduationCap, Pill, Warehouse, Zap } from "lucide-react";
+import { FlaskConical, GraduationCap, Pill, Warehouse, Zap } from "lucide-react";
 import { animate, createSpring, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
 import industrialEngineerImage from "@/assets/industrial-engineer-slide-2.png";
 
 const sectors = [
   { label: "Chemicals", icon: FlaskConical },
-  { label: "Manufacturing", icon: Factory },
   { label: "Pharma", icon: Pill },
   { label: "Energy", icon: Zap },
   { label: "Infrastructure", icon: Warehouse },
@@ -88,6 +87,14 @@ const SkyrocketSlide = () => {
             ease: "out(3)",
           });
 
+          animate(el.querySelectorAll(".who-word"), {
+            opacity: [0, 1],
+            translateX: [-28, 0],
+            delay: stagger(90, { start: 420 }),
+            duration: 900,
+            ease: "out(4)",
+          });
+
           animate(el.querySelectorAll(".who-sector"), {
             translateY: [18, 0],
             delay: stagger(80, { start: 700 }),
@@ -139,41 +146,85 @@ const SkyrocketSlide = () => {
 
 const IntroBlock = ({ mobile = false }: { mobile?: boolean }) => (
   <>
-    <div className={`who-copy font-body ${mobile ? "h-56" : "h-[28rem] max-w-[780px]"}`} style={{ opacity: 0 }}>
-      <div className={`font-black uppercase leading-[0.82] text-white ${mobile ? "text-5xl" : "text-[clamp(4.8rem,7vw,8rem)]"}`}>
-        WHO
-        <br />
-        WE ARE
+    <div className={`who-copy flex flex-col ${mobile ? "h-[31rem]" : "h-[31rem] max-w-[960px] pb-7"}`} style={{ opacity: 0 }}>
+      <div className={`who-kicker mb-8 flex items-center gap-3 font-sans font-black uppercase text-owl-teal ${mobile ? "text-[10px] tracking-[0.2em]" : "text-xs tracking-[0.28em]"}`}>
+        <span className={`${mobile ? "w-8" : "w-12"} who-rule h-px origin-left bg-owl-teal/80`} />
+        B2B demand for complex markets
       </div>
-      <div className={`mt-8 font-semibold leading-[1.05] text-white ${mobile ? "max-w-sm text-2xl" : "max-w-[560px] text-[clamp(2.1rem,3vw,3.6rem)]"}`}>
-        A B2B marketing agency built for technical and industrial brands.
+      <div className={`font-sans font-black uppercase leading-[0.78] text-white drop-shadow-[0_0_34px_rgba(75,194,194,0.16)] ${mobile ? "text-[3.4rem]" : "text-[clamp(5.3rem,7.6vw,8.8rem)]"}`}>
+        <span className="who-word block whitespace-nowrap">
+          WHO <span className="text-gradient-green">WE</span>
+        </span>
+        <span className="who-word block">ARE?</span>
       </div>
-      <div className={`mt-7 max-w-[680px] font-medium leading-[1.42] text-white/70 ${mobile ? "text-sm" : "text-[clamp(1rem,1.12vw,1.28rem)]"}`}>
-        We work across long cycles. Complex products and businesses that expect substance.
-        Our work translates engineering into demand through positioning, content, and digital execution built for how your buyers actually decide.
+      <div className={`mt-auto max-w-[860px] font-body font-semibold leading-[1.28] text-white ${mobile ? "text-2xl" : "mb-[3.1rem] text-[clamp(2.2rem,2.86vw,3.4rem)]"}`}>
+        We translate{" "}
+        <HighlightPhrase>technical depth</HighlightPhrase>{" "}
+        into{" "}
+        <HighlightPhrase tilt="right">market momentum.</HighlightPhrase>
       </div>
     </div>
   </>
 );
 
+const HighlightPhrase = ({
+  children,
+  tilt = "left",
+}: {
+  children: string;
+  tilt?: "left" | "right";
+}) => (
+  <span className="relative inline-block whitespace-nowrap px-[0.6em] py-[0.1em] font-serif italic font-semibold text-[#061112]">
+    <svg
+      className={`absolute -inset-x-[0.5em] -bottom-[0.36em] -top-[0.24em] -z-10 h-[2.18em] w-[calc(100%+1em)] ${
+        tilt === "left" ? "-rotate-1" : "rotate-1"
+      }`}
+      viewBox="0 0 240 64"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M9 34 C33 20 71 16 116 19 C158 22 199 15 230 25 C218 44 173 48 125 45 C80 42 36 51 9 34 Z"
+        fill="rgba(75,194,194,0.96)"
+      />
+      <path
+        d="M14 39 C52 27 94 31 135 26 C176 22 208 26 232 35"
+        fill="none"
+        stroke="rgba(125,216,216,0.76)"
+        strokeLinecap="round"
+        strokeWidth="10"
+      />
+      <path
+        d="M18 30 C55 18 94 22 138 20 C180 18 209 20 228 28"
+        fill="none"
+        stroke="rgba(45,158,158,0.62)"
+        strokeLinecap="round"
+        strokeWidth="7"
+      />
+    </svg>
+    <span className="relative z-10">{children}</span>
+  </span>
+);
+
 const SectorsBlock = ({ mobile = false }: { mobile?: boolean }) => (
   <>
-    <div className={`${mobile ? "mb-4" : "mb-4"} h-px w-full bg-white/10`} />
-    <div className={`${mobile ? "mb-4" : "mb-5"} flex items-center gap-3`}>
+    <div className={`${mobile ? "mb-4" : "mb-5"} h-px w-full bg-white/10`} />
+    <div className={`${mobile ? "mb-4" : "mb-6"} flex items-center gap-3`}>
       <span className={`${mobile ? "w-8" : "w-10"} h-px bg-owl-teal/70`} />
       <span className={`font-sans font-black text-owl-teal ${mobile ? "text-[9px] tracking-[0.18em]" : "text-[10px] tracking-[0.22em] md:text-xs"}`}>
         Sectors We Serve
       </span>
     </div>
-    <div className={`grid ${mobile ? "grid-cols-2 gap-3" : "grid-cols-3 gap-x-8 gap-y-3"}`}>
-      {(mobile ? sectors.slice(0, 4) : sectors).map((sector) => {
+    <div className={`grid ${mobile ? "grid-cols-1 gap-3" : "grid-cols-3 gap-x-10 gap-y-5"}`}>
+      {(mobile ? sectors : sectors).map((sector) => {
         const Icon = sector.icon;
         return (
           <div key={sector.label} className="who-sector flex min-w-0 items-center gap-4">
-            <span className={`${mobile ? "h-8 w-8" : "h-9 w-9"} flex shrink-0 items-center justify-center rounded-md border border-white/45 bg-transparent text-white/85`}>
-              <Icon className={mobile ? "h-4 w-4" : "h-4 w-4"} strokeWidth={1.8} />
+            <span className={`${mobile ? "h-10 w-10" : "h-12 w-12"} flex shrink-0 items-center justify-center rounded-md border border-white/45 bg-transparent text-white/90`}>
+              <Icon className={mobile ? "h-5 w-5" : "h-[1.35rem] w-[1.35rem]"} strokeWidth={1.8} />
             </span>
-            <span className={`font-sans font-black text-white ${mobile ? "text-sm" : "text-[clamp(0.78rem,0.88vw,1rem)]"}`}>
+            <span className={`font-sans font-black leading-tight text-white ${mobile ? "text-sm" : "text-[clamp(0.92rem,1vw,1.12rem)]"}`}>
               {sector.label}
             </span>
           </div>

@@ -10,12 +10,12 @@ const navItems = [
   { label: 'Services', slideIndex: 3 },
   { label: 'Clients', slideIndex: 4 },
   { label: 'Case Study', slideIndex: 5 },
-  { label: 'Contact', slideIndex: 11 },
+  { label: 'Contact', slideIndex: 12 },
 ];
 
 const slideToNavIndex = (slideIndex: number): number => {
   if (slideIndex <= 5) return slideIndex;
-  if (slideIndex <= 10) return 5;
+  if (slideIndex <= 11) return 5;
   return 6;
 };
 
