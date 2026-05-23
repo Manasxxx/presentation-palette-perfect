@@ -197,6 +197,36 @@
 - `npm test` passes.
 - Preview tool cannot reach slide 4 via programmatic scroll (lazy-load + scroll-snap limitation), so all visual verification happens in the browser. User confirmed live rendering at multiple checkpoints.
 
+### Session 9 — Contact Slide Redesign, Clients LogoLoop, Performance Pass
+
+**What was done:**
+
+**1. Contact slide rebuilt as a chic deck closer** (`src/components/slides/ContactSlide.tsx`)
+- Replaced the old centered logo + three glass-card contact layout with a quieter editorial closer.
+- Current headline: `LET'S MAKE / COMPLEX / obvious.` with `obvious.` in Lora italic teal.
+- Removed extra deck-label text after review: no header, no `Portfolio & Credentials`, no `Demand systems for serious markets`, no `Close` explainer block.
+- Right side now uses only the OwlSurf circular logo/ripple mark. Important implementation note: the absolute centering wrapper (`ct-mark`) is separate from the animated scale wrapper (`ct-mark-inner`) so Anime.js does not overwrite Tailwind's centering transform.
+- Logo/ripple mark is intentionally shifted a little upward (`top-[45%]`) after review.
+- Contact links remain Email, Call, Web in a minimal bottom row.
+
+**2. Clients slide moved from Marquee to React Bits LogoLoop** (`src/components/slides/ClientsSlide.tsx`, `src/components/ui/LogoLoop/`)
+- Added React Bits `LogoLoop.jsx` and `LogoLoop.css`.
+- Replaced the previous custom `Marquee` rows with two `LogoLoop` rows using the existing client logo images.
+- Rows move in opposite directions, pause on hover, use a calmer speed, and apply a true CSS mask fade at the left/right edges.
+- Hover scale was reduced to `1.08` to avoid a jumpy feel.
+- `LogoLoop` was extended with an IntersectionObserver so its requestAnimationFrame loop pauses when the row is offscreen.
+
+**3. Deck-wide performance pass** (`src/pages/Index.tsx`, `LightRays.tsx`, `PrismaticBurst.tsx`, `Hyperspeed.tsx`)
+- Changed slide mounting from "current + neighbors and keep mounted forever" to active-slide-only mounting. Placeholder sections still preserve scroll height and scroll-snap behavior.
+- This prevents old WebGL canvases, profile-card listeners, LogoLoop RAFs, and timers from piling up after the user scrolls through the deck.
+- Capped ambient WebGL DPR to `1.25` for `LightRays`, `PrismaticBurst`, and `Hyperspeed`. This cuts Retina fragment workload substantially while keeping background effects visually acceptable.
+- Runtime check after navigating to Clients showed only the Clients content active, with old profile cards unmounted and canvas count reduced.
+
+**Verification:**
+- `npm run build` passes.
+- Live runtime checks confirmed Clients `LogoLoop` rows mount and offscreen-heavy content is cleaned up after navigation.
+- Tradeoff: active-slide-only mounting is lighter, but very fast scroll jumps can reveal a short lazy-loading beat. If needed later, add route/chunk preloading without mounting visual effects.
+
 ### Session 7 — Services Rebuild, Clients Redesign, Heading Unification
 
 **What was done:**
@@ -279,18 +309,20 @@
 | GSAP for PillNav only | Complex interdependent timelines. Anime.js handles everything else. |
 | 3-zone title layout (justify-between) | Eyebrow top, hero center, footnotes bottom — matches PowerPoint slide convention. |
 | Fonts local + Google hybrid | Montserrat from Google (large weight range), Lora+Palanquin local (italic VF not on Google). |
-| Progressive slide mounting | Load the visible slide and neighbors first, but keep loaded slides mounted so WebGL/animation-heavy slides do not restart or freeze. |
+| Active-slide-only mounting | Only the current slide is mounted; placeholder sections preserve scroll height. This prevents offscreen WebGL canvases, LogoLoop RAFs, profile-card listeners, and timers from accumulating as the deck is viewed. |
 | Slide 2 as editorial Who We Are slide | Uses Palanquin copy, low-left sectors, and right-side technical line illustration. Do not restore removed header/footer, border, grid, semicircle, or divider gradient unless asked. |
 | No separate ball-animation Who We Are slide | The old third slide and Ballpit animation were intentionally removed to reduce visual clutter and code weight. |
 | Our Team as six horizontal cards | Team profiles use React Bits ProfileCard styling with local avatar assets and a teal Radar background. Preserve the 3x2 information density unless a new layout direction is given. |
 | Fixed dark theme | The deck no longer exposes light/dark switching; OwlSurf dark mode is the single visual system. |
 | Unified upper-deck heading format | Slides 2–5 share one heading recipe: eyebrow + `clamp(3.4rem,5.9vw,6.6rem)` Montserrat black, white first word + teal-gradient second word, left-aligned via a `w-full h-full` wrapper that defeats `.slide`'s `items-center justify-center`. |
 | Services as B2B icon grid | Slide 4 uses 8 icon cards (4×2) with simplified service names and B2B-angled descriptions (long sales cycles, complex buying committees, technical evaluators). No tabs. |
-| Marquee uses `translate3d` keyframes | GPU compositor path is required to avoid jitter on the Clients carousel. Inner divs also need `will-change: transform`. Don't drop below `repeat={4}` or the loop breaks. |
+| Clients use React Bits LogoLoop | Slide 5 uses two `LogoLoop` rows with real CSS mask fading, calmer speeds, pause-on-hover, and offscreen RAF pausing. Avoid reverting to the old Marquee unless LogoLoop proves incompatible. |
 | Bare-span footgun | `span:not([class])` in `index.css` forces Palanquin italic onto any class-less `<span>`. Always add `font-sans not-italic` (or equivalent) on bare spans inside h1/h2 to keep them in Montserrat. |
 | Services as 5-pillar tabbed CardSwap | Slide 4 uses left-side pillar tabs + right-side CardSwap stack. Five pillars (Content & Creative, Reach & Activation, Search & Listening, Data & Tech, AI & Automation), 5 sub-services each. Card headings teal, monster-styled. `key={activeKey}` on CardSwap forces remount per tab so gsap timeline doesn't desync. |
 | CardSwap stack readability | Cards designed so the icon + title row fits in the top `verticalDistance` (52px) — keep small icon (`h-8`) and small monster heading (`text-base font-black`) pinned to the top edge. That makes all stacked headings peek visibly in a staircase. |
 | AI & Automation as a top-level pillar | Treated as a peer to Content, Reach, Search, and Data — not a sub-skill. Mention AEO, Marketing Copilots, AI Personalization explicitly because B2B buyers now expect them. |
+| Ambient WebGL DPR cap | LightRays, PrismaticBurst, and Hyperspeed cap DPR at `1.25` to reduce heat/lag on Retina displays. These are ambient backgrounds, so do not raise back to full devicePixelRatio unless visual quality truly requires it. |
+| Contact logo animation layering | Keep `ct-mark` for absolute positioning and animate only `ct-mark-inner`; animating the positioned wrapper overwrites centering transforms and misaligns the logo/ripples. |
 
 ---
 
@@ -321,6 +353,7 @@ src/
     ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav
     LightRays.tsx          — WebGL light rays background effect
+    ui/LogoLoop/           — React Bits clients carousel with offscreen RAF pause
     ui/Hyperspeed/         — WebGL road effect; cleanup fixed for resize + rAF
     ui/globe.tsx           — cobe globe
   index.css                — all CSS tokens, OwlSurf design system vars

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect, useRef, type ComponentType } from "react";
+import { lazy, Suspense, useMemo, useState, useEffect, useRef, type ComponentType } from "react";
 import TitleSlide from "@/components/slides/TitleSlide";
 
 import SlideReveal from "@/components/SlideReveal";
@@ -33,13 +33,12 @@ const slides: ComponentType[] = [
   ContactSlide,
 ];
 
-const SLIDE_MOUNT_RADIUS = 1;
+const SLIDE_MOUNT_RADIUS = 0;
 
 const SlideFallback = () => <section className="slide" aria-hidden="true" />;
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [mountedSlides, setMountedSlides] = useState(() => new Set([0, 1]));
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Controls the visibility of overlapping UI like PillNav
@@ -52,16 +51,14 @@ const Index = () => {
    */
   const isCaseStudySlide = currentSlide >= 5 && currentSlide <= 11;
 
-  useEffect(() => {
-    setMountedSlides((previous) => {
-      const next = new Set(previous);
-      const start = Math.max(0, currentSlide - SLIDE_MOUNT_RADIUS);
-      const end = Math.min(slides.length - 1, currentSlide + SLIDE_MOUNT_RADIUS);
-      for (let index = start; index <= end; index += 1) {
-        next.add(index);
-      }
-      return next.size === previous.size ? previous : next;
-    });
+  const mountedSlides = useMemo(() => {
+    const next = new Set<number>();
+    const start = Math.max(0, currentSlide - SLIDE_MOUNT_RADIUS);
+    const end = Math.min(slides.length - 1, currentSlide + SLIDE_MOUNT_RADIUS);
+    for (let index = start; index <= end; index += 1) {
+      next.add(index);
+    }
+    return next;
   }, [currentSlide]);
 
   /**

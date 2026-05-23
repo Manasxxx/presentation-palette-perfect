@@ -99,7 +99,7 @@ const LightRays = ({
       await new Promise(resolve => setTimeout(resolve, 10));
       if (!containerRef.current) return;
 
-      const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 2), alpha: true, premultipliedAlpha: false });
+      const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 1.25), alpha: true, premultipliedAlpha: false });
       rendererRef.current = renderer;
       const gl = renderer.gl;
       gl.clearColor(0, 0, 0, 0);
@@ -220,7 +220,7 @@ void main() {
 
       const updatePlacement = () => {
         if (!containerRef.current || !renderer) return;
-        renderer.dpr = Math.min(window.devicePixelRatio, 2);
+        renderer.dpr = Math.min(window.devicePixelRatio, 1.25);
         const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
         renderer.setSize(wCSS, hCSS);
         const dpr = renderer.dpr;

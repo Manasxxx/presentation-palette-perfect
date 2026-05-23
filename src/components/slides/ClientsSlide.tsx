@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { animate } from "animejs";
-import { Marquee } from "@/components/ui/marquee";
+import LogoLoop from "@/components/ui/LogoLoop/LogoLoop";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import cultfitLogo from "@/assets/client-cultfit.png";
 import vntLogo from "@/assets/client-vnt.png";
@@ -15,38 +15,39 @@ import extraLogo from "@/assets/client-extra.png";
 
 type Client = {
   name: string;
-  logo?: string;
+  src: string;
+  alt: string;
 };
 
 const allClients: Client[] = [
-  { name: "VNT", logo: vntLogo },
-  { name: "GirlUp", logo: girlupLogo },
-  { name: "Cliques", logo: cliquesLogo },
-  { name: "IIM Lucknow", logo: iimlLogo },
-  { name: "AVI Global Plast", logo: aviLogo },
-  { name: "The Baxsaa Co.", logo: baxsaaLogo },
-  { name: "Check This Property", logo: ctpLogo },
-  { name: "Cult.fit", logo: cultfitLogo },
-  { name: "Welham", logo: welhamLogo },
-  { name: "Client", logo: extraLogo },
+  { name: "VNT", src: vntLogo, alt: "VNT" },
+  { name: "GirlUp", src: girlupLogo, alt: "GirlUp" },
+  { name: "Cliques", src: cliquesLogo, alt: "Cliques" },
+  { name: "IIM Lucknow", src: iimlLogo, alt: "IIM Lucknow" },
+  { name: "AVI Global Plast", src: aviLogo, alt: "AVI Global Plast" },
+  { name: "The Baxsaa Co.", src: baxsaaLogo, alt: "The Baxsaa Co." },
+  { name: "Check This Property", src: ctpLogo, alt: "Check This Property" },
+  { name: "Cult.fit", src: cultfitLogo, alt: "Cult.fit" },
+  { name: "Welham", src: welhamLogo, alt: "Welham" },
+  { name: "Client", src: extraLogo, alt: "Client" },
 ];
 
 const firstRow = allClients.slice(0, Math.ceil(allClients.length / 2));
 const secondRow = allClients.slice(Math.ceil(allClients.length / 2));
 
-const ClientCard = ({ client }: { client: Client }) => (
-  <div className="flex flex-row items-center justify-center px-8 py-5 md:px-12 md:py-8 rounded-2xl border border-border/30 bg-card/50 backdrop-blur-sm min-w-[170px] md:min-w-[240px] h-[85px] md:h-[120px]">
-    {client.logo ? (
-      <img
-        src={client.logo}
-        alt={client.name}
-        className="h-14 md:h-24 w-auto object-contain max-w-[150px] md:max-w-[220px]"
-      />
-    ) : (
-      <span className="text-sm md:text-lg font-semibold text-foreground whitespace-nowrap">
-        {client.name}
-      </span>
-    )}
+const renderClientLogo = (client: Client, key: React.Key) => (
+  <div
+    key={key}
+    className="flex h-[96px] w-[210px] items-center justify-center rounded-lg border border-white/12 bg-[#0b1217]/72 px-8 backdrop-blur-sm transition duration-300 hover:border-primary/60 hover:bg-primary/10 md:h-[128px] md:w-[280px]"
+  >
+    <img
+      src={client.src}
+      alt={client.alt}
+      className="max-h-[70px] max-w-[165px] object-contain md:max-h-[98px] md:max-w-[230px]"
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+    />
   </div>
 );
 
@@ -126,34 +127,33 @@ const ClientsSlide = () => {
           </h2>
         </header>
 
-        <div
-          className="cl-cards relative my-auto flex w-full flex-col gap-4 md:gap-6"
-          style={{
-            maskImage:
-              "linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%)",
-          }}
-        >
-          <Marquee
-            repeat={4}
-            pauseOnHover
-            className="[--duration:30s] [--gap:1rem] md:[--gap:1.5rem]"
-          >
-            {firstRow.map((client) => (
-              <ClientCard key={client.name} client={client} />
-            ))}
-          </Marquee>
-          <Marquee
-            repeat={4}
-            reverse
-            pauseOnHover
-            className="[--duration:34s] [--gap:1rem] md:[--gap:1.5rem]"
-          >
-            {secondRow.map((client) => (
-              <ClientCard key={client.name} client={client} />
-            ))}
-          </Marquee>
+        <div className="cl-cards relative my-auto flex w-full flex-col gap-4 md:gap-6">
+          <LogoLoop
+            logos={firstRow}
+            speed={46}
+            direction="left"
+            logoHeight={96}
+            gap={22}
+            hoverSpeed={0}
+            scaleOnHover
+            fadeOut
+            fadeOutColor="#090d12"
+            renderItem={renderClientLogo}
+            ariaLabel="Major clients row one"
+          />
+          <LogoLoop
+            logos={secondRow}
+            speed={40}
+            direction="right"
+            logoHeight={96}
+            gap={22}
+            hoverSpeed={0}
+            scaleOnHover
+            fadeOut
+            fadeOutColor="#090d12"
+            renderItem={renderClientLogo}
+            ariaLabel="Major clients row two"
+          />
         </div>
       </div>
     </section>

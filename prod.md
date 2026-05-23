@@ -19,6 +19,9 @@
 - JS bundle target: under 800KB gzipped. Current: app chunk 165KB + vendors parallel-loaded ✓ (code-split via `vite.config.ts` manualChunks).
 - Images: all deliverable assets must be WebP. PNGs allowed only as originals in `/src/assets` during dev. Run `npm run images:convert` (requires `npm i -D sharp`) to batch-convert to WebP.
 - Heavy effects (3D, particle systems, blur) are **gated on desktop only** via `useIsMobile()`. Never on mobile.
+- Mount only the active slide. Placeholder sections preserve scroll height, but offscreen slides must not keep WebGL canvases, RAF loops, timers, or pointer listeners alive.
+- Ambient WebGL backgrounds should cap device pixel ratio at `1.25` unless a specific foreground detail requires more. On Retina displays this is a major heat/lag control.
+- Any custom animation loop (`requestAnimationFrame`, interval, GSAP timeline, WebGL renderer) must pause or unmount when offscreen. Visibility gating is a product requirement, not a polish task.
 - Lazy-load all case study images via Vite's `?url` + lazy `<img loading="lazy" />`.
 - Code-split vendors: GSAP, Anime.js, cobe/ogl, UI libs — each in its own chunk (see `vite.config.ts`).
 
@@ -31,7 +34,8 @@
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
 - Our Team uses six horizontal profile cards in a 3x2 grid over a teal radar field. Do not bring back the deleted ball-animation slide as a team/about substitute.
 - Services slide (slide 4) is a left-pillars / right-CardSwap layout, NOT a flat icon grid. Five pillars: Content & Creative, Reach & Activation, Search & Listening, Data & Tech, AI & Automation. Each pillar holds 5 sub-services shown as stacked CardSwap cards. Card headings are teal; bodies stay layman-friendly while keeping industry terms (ABM, SEO, HubSpot/Marketo, AEO, Marketing Copilots).
-- Clients slide (slide 5) uses a top-left monster heading + two-row scrolling marquee with `mask-image` edge fade. Marquee keyframes MUST use `translate3d` and inner divs MUST have `will-change: transform` to stay smooth.
+- Clients slide (slide 5) uses a top-left monster heading + two-row React Bits `LogoLoop` carousel. Keep true CSS mask edge fading, calm speeds, pause-on-hover, and offscreen RAF pausing.
+- Contact slide is a chic closer: left-side `LET'S MAKE / COMPLEX / obvious.` headline, minimal contact links, and a right-side OwlSurf logo/ripple mark only. Do not reintroduce headers, credentials labels, rotated copy, vertical dividers, or explanatory close text unless explicitly requested.
 - Unified heading recipe across slides 2–5: eyebrow (10px tracking-[0.3em] teal) + `clamp(3.4rem,5.9vw,6.6rem)` Montserrat black h2, white first word + teal-gradient second word, left-aligned via a `w-full h-full` wrapper that defeats `.slide`'s `items-center justify-center`. Always set `font-sans not-italic` on bare spans inside the h2 to avoid the `span:not([class])` Palanquin/italic footgun.
 
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
@@ -57,6 +61,9 @@ Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Pr
 ### Performance and Separation of Logic
 - **Decoupled Animations:** Complex enter/exit animations are decoupled from standard rendering logic. Component `SlideReveal.tsx` acts as an Intersection Observer wrapper that delegates sequence animations to libraries rather than polluting component state loops.
 - **Mobile vs Desktop Branching:** Computationally intensive effects (like the 3D transforms inside `ParallaxCardSlider.tsx`) are gated behind custom hooks (`useIsMobile`). Mobile relies predominantly on hardware-accelerated CSS transforms (`translateX`) and native touch swiping, whereas Desktop gets heavy JS-controlled `requestAnimationFrame` tilt updates.
+- **Active Slide Lifecycle:** `Index.tsx` should keep only the active slide mounted. This is now the primary protection against cumulative lag as the user scrolls through WebGL-heavy slides.
+- **Animation Ownership:** If a component owns a RAF loop, WebGL renderer, interval, or pointer listener, it must clean it up on unmount and ideally pause it with IntersectionObserver when merely offscreen.
+- **Contact Logo Centering:** The contact-slide logo/ripple group uses a positioning wrapper plus a separate animated inner wrapper. Do not animate transforms on the positioned wrapper, or the logo will lose center alignment.
 
 ## 3. Design and Aesthetic Principles
 

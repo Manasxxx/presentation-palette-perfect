@@ -1,159 +1,152 @@
-import { useEffect, useRef, useState } from "react";
-import { Phone, Globe, Mail } from "lucide-react";
-import { animate, stagger, createSpring } from "animejs";
-import logo from "@/assets/logo-icon.png";
-import { LiquidGlassCard } from "react-liquid-glass-card";
-import LightRays from "@/components/LightRays";
+import { useEffect, useRef } from "react";
+import { ArrowUpRight, Globe, Mail, Phone } from "lucide-react";
+import { animate, stagger } from "animejs";
+import logo from "@/assets/logo-main.jpg";
+
+const contactLinks = [
+  {
+    label: "Email",
+    value: "growth@owlsurf.com",
+    href: "mailto:growth@owlsurf.com",
+    icon: Mail,
+  },
+  {
+    label: "Call",
+    value: "+91 9520 367546",
+    href: "tel:+919520367546",
+    icon: Phone,
+  },
+  {
+    label: "Web",
+    value: "owlsurf.com",
+    href: "https://www.owlsurf.com",
+    icon: Globe,
+  },
+];
 
 const ContactSlide = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [triggered, setTriggered] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const triggered = useRef(false);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+
+    const reveal = () => {
+      if (triggered.current) return;
+      triggered.current = true;
+
+      animate(el.querySelectorAll(".ct-reveal"), {
+        opacity: [0, 1],
+        translateY: [24, 0],
+        duration: 850,
+        delay: stagger(110),
+        ease: "out(3)",
+      });
+
+      animate(el.querySelector(".ct-mark"), {
+        opacity: [0, 1],
+        duration: 800,
+        delay: 220,
+        ease: "out(3)",
+      });
+
+      animate(el.querySelector(".ct-mark-inner"), {
+        opacity: [0, 1],
+        scale: [0.92, 1],
+        duration: 1100,
+        delay: 220,
+        ease: "out(4)",
+      });
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !triggered) {
-          setTriggered(true);
-
-          // Logo spin-in
-          animate(el.querySelector(".ct-logo")!, {
-            opacity: [0, 1],
-            scale: [0, 1],
-            rotate: [-180, 0],
-            duration: 1000,
-            ease: createSpring({ stiffness: 100, damping: 12 }),
-          });
-
-          // Heading
-          animate(el.querySelector(".ct-heading")!, {
-            opacity: [0, 1],
-            translateY: [60, 0],
-            duration: 800,
-            delay: 200,
-            ease: "out(3)",
-          });
-
-          // Subtitle
-          animate(el.querySelector(".ct-subtitle")!, {
-            opacity: [0, 1],
-            translateX: [-50, 0],
-            duration: 600,
-            delay: 300,
-            ease: "out(3)",
-          });
-
-          // Contact cards
-          animate(el.querySelectorAll(".contact-card"), {
-            translateY: [60, 0],
-            opacity: [0, 1],
-            scale: [0.8, 1],
-            delay: stagger(120),
-            ease: createSpring({ stiffness: 200, damping: 15 }),
-          });
-
-          // Footer
-          animate(el.querySelector(".ct-footer")!, {
-            opacity: [0, 1],
-            scaleX: [0, 1],
-            duration: 800,
-            delay: 600,
-            ease: "out(3)",
-          });
-        }
+        if (entry.isIntersecting) reveal();
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
+
     observer.observe(el);
-    return () => observer.disconnect();
-  }, [triggered]);
+    const fallback = window.setTimeout(reveal, 700);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   return (
-    <section ref={sectionRef} className="slide hexagon-pattern overflow-visible">
-      <div className="absolute inset-0 bg-background" />
-      <LightRays
-        raysColor="#4bc2c2"
-        raysOrigin="top-center"
-        raysSpeed={0.8}
-        lightSpread={0.5}
-        rayLength={3}
-        fadeDistance={1}
-        saturation={0.8}
-        mouseInfluence={0.1}
-        className="opacity-50 pointer-events-none"
-      />
+    <section ref={sectionRef} className="slide overflow-hidden bg-background font-sans">
+      <div className="absolute inset-0 bg-[#07090d]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_42%,rgba(75,194,194,0.18),transparent_29%),linear-gradient(115deg,rgba(255,255,255,0.045),transparent_34%,rgba(75,194,194,0.055)_72%,transparent)]" />
+      <div className="absolute inset-x-8 top-8 h-px bg-white/12 md:inset-x-12" />
+      <div className="absolute inset-x-8 bottom-8 h-px bg-white/12 md:inset-x-12" />
+      <div className="absolute bottom-8 top-8 left-8 w-px bg-white/12 md:left-12" />
+      <div className="absolute bottom-8 top-8 right-8 w-px bg-white/12 md:right-12" />
 
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl">
-        <div className="ct-logo mb-8" style={{ opacity: 0 }}>
-          <div className="w-20 h-20 md:w-36 md:h-36 rounded-full bg-primary/20 p-2 animate-pulse-glow overflow-visible">
-            <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-contain" />
+      <div className="relative z-10 grid h-full w-full max-w-[1720px] grid-cols-1 px-8 py-8 md:grid-cols-[minmax(0,1fr)_minmax(360px,0.58fr)] md:px-12">
+        <div className="flex min-h-0 flex-col justify-center px-0 py-10 md:py-12 lg:px-8">
+          <main className="max-w-[980px]">
+            <p className="ct-reveal mb-7 max-w-[700px] font-body text-lg font-medium leading-tight text-white/58 opacity-0 md:mb-9 md:text-2xl">
+              For industrial, technical, and B2B brands ready to be understood faster.
+            </p>
+
+            <h2 className="ct-reveal font-sans text-[clamp(3rem,7.45vw,8.2rem)] font-black uppercase leading-[0.86] tracking-normal text-white opacity-0">
+              <span className="block font-sans not-italic">LET'S MAKE</span>
+              <span className="block font-sans not-italic">COMPLEX</span>
+              <span className="block font-serif italic normal-case leading-[0.92] tracking-normal text-primary">
+                obvious.
+              </span>
+            </h2>
+          </main>
+
+          <div className="ct-reveal mt-12 grid gap-3 opacity-0 md:grid-cols-3">
+            {contactLinks.map((item) => {
+              const Icon = item.icon;
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="group flex min-h-[74px] items-center justify-between gap-4 border-t border-white/18 py-4 transition duration-300 hover:border-primary"
+                >
+                  <span className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/14 text-primary transition duration-300 group-hover:border-primary/80 group-hover:bg-primary/10">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-sans text-[10px] font-bold uppercase tracking-[0.26em] text-white/36">
+                        {item.label}
+                      </span>
+                      <span className="mt-1 block break-words font-body text-base font-semibold leading-tight text-white md:text-lg lg:text-xl">
+                        {item.value}
+                      </span>
+                    </span>
+                  </span>
+                  <ArrowUpRight className="h-5 w-5 flex-none text-white/32 transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
+                </a>
+              );
+            })}
           </div>
         </div>
 
-        <h2 className="ct-heading text-2xl md:text-5xl font-black tracking-tight mb-2 md:mb-4" style={{ opacity: 0 }}>
-          <span className="text-foreground">REACH OUT </span>
-          <span className="text-gradient-green">WHERE</span>
-        </h2>
-
-        <p className="ct-subtitle text-base md:text-2xl font-bold tracking-wider text-secondary mb-6 md:mb-10" style={{ opacity: 0 }}>
-          TECH MEETS DESIGN
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 w-full max-w-2xl">
-          <a
-            href="tel:+919520367546"
-            className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-            style={{ opacity: 0 }}
-          >
-            <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Phone className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                </div>
-                <span className="text-sm font-medium text-foreground">+91 9520 367546</span>
+        <aside className="relative hidden min-h-0 md:block">
+          <div className="ct-mark absolute left-1/2 top-[45%] aspect-square w-[min(78%,470px)] -translate-x-1/2 -translate-y-1/2 opacity-0">
+            <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full border border-white/12 opacity-0">
+              <div className="absolute inset-7 rounded-full border border-primary/25" />
+              <div className="absolute inset-16 rounded-full bg-primary/[0.045] blur-sm" />
+              <div className="relative flex h-[62%] w-[62%] items-center justify-center rounded-full border border-primary/35 bg-black/45 p-3 shadow-[0_0_90px_rgba(75,194,194,0.18)]">
+                <img
+                  src={logo}
+                  alt="OwlSurf Digital"
+                  className="h-full w-full rounded-full object-cover"
+                />
               </div>
-            </LiquidGlassCard>
-          </a>
-
-          <a
-            href="https://www.owlsurf.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-            style={{ opacity: 0 }}
-          >
-            <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Globe className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                </div>
-                <span className="text-sm font-medium text-foreground">www.owlsurf.com</span>
-              </div>
-            </LiquidGlassCard>
-          </a>
-
-          <a
-            href="mailto:growth@owlsurf.com"
-            className="contact-card transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-            style={{ opacity: 0 }}
-          >
-            <LiquidGlassCard padding="1.5rem" borderRadius="1rem" blur={10} brightness={1.1} backgroundColor="rgba(255, 255, 255, 0.06)">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Mail className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                </div>
-                <span className="text-sm font-medium text-foreground">growth@owlsurf.com</span>
-              </div>
-            </LiquidGlassCard>
-          </a>
-        </div>
-
-        <div className="ct-footer mt-6 md:mt-12 flex items-center gap-4" style={{ opacity: 0, transform: "scaleX(0)" }}>
-          <div className="h-px w-12 bg-border" />
-          <span className="text-xs tracking-widest text-muted-foreground">© OWLSURF DIGITAL</span>
-          <div className="h-px w-12 bg-border" />
-        </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   );
