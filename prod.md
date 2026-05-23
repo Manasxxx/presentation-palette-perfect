@@ -30,6 +30,9 @@
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
 - Our Team uses six horizontal profile cards in a 3x2 grid over a teal radar field. Do not bring back the deleted ball-animation slide as a team/about substitute.
+- Services slide (slide 4) is a left-pillars / right-CardSwap layout, NOT a flat icon grid. Five pillars: Content & Creative, Reach & Activation, Search & Listening, Data & Tech, AI & Automation. Each pillar holds 5 sub-services shown as stacked CardSwap cards. Card headings are teal; bodies stay layman-friendly while keeping industry terms (ABM, SEO, HubSpot/Marketo, AEO, Marketing Copilots).
+- Clients slide (slide 5) uses a top-left monster heading + two-row scrolling marquee with `mask-image` edge fade. Marquee keyframes MUST use `translate3d` and inner divs MUST have `will-change: transform` to stay smooth.
+- Unified heading recipe across slides 2–5: eyebrow (10px tracking-[0.3em] teal) + `clamp(3.4rem,5.9vw,6.6rem)` Montserrat black h2, white first word + teal-gradient second word, left-aligned via a `w-full h-full` wrapper that defeats `.slide`'s `items-center justify-center`. Always set `font-sans not-italic` on bare spans inside the h2 to avoid the `span:not([class])` Palanquin/italic footgun.
 
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 
