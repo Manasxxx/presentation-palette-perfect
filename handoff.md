@@ -19,11 +19,11 @@ If a session looks close to running out of context or hitting limits, refresh `h
 
 ## Current Goal
 
-Session 11 focused on a full deck UX audit + copy rewrite + dead-code cleanup.
+Session 12 (current) ran a UI design review (placement + visual quality) on top of the Session 11 copy + structure work. Findings parked as a phased plan.
 
-The work was driven by an IxDF UX audit (see `ux-audit-report.pdf` + `ux-audit-report.html` at repo root) that scored the upper deck 48/85 (D, 56%). The audit flagged stale nav labels, agency-speak boilerplate across all 7 case studies, accessibility gaps, and large amounts of orphan code.
+Session 11 was the IxDF UX audit + full deck copy rewrite + 16-file dead-code purge. Session 12 layered a `ui-design-review` skill pass on top — that audit scored the upper deck 69/100 (C+/B-). Findings were saved as a parked plan rather than executed, because the user wants to pace the work.
 
-This session addressed the copy pass and dead-code cleanup. Accessibility, mobile WebGL gating, motion control, and slide-mount resilience (P0 / P1 from the audit) are still pending.
+Accessibility, mobile WebGL gating, motion control, slide-mount resilience (P0/P1 from Session 11), and the parked UI placement plan (Session 12) are all still pending.
 
 ## Current State
 
@@ -41,6 +41,29 @@ The dev server was running during this session.
 - **Slide 5 Clients** — Heading `OUR CLIENTS` (was `MAJOR CLIENTS`). Placeholder `Client` logo + `client-extra.png` import removed.
 - **Slides 6–12 Case studies** — All seven headings dropped the `Success` boast suffix; the colour-gradient second word is now a sub-brand piece (e.g. `Mitsui Chemicals`, `Cult.fit`, `The Baxsaa Co.`, `Check This Property`, `Girl Up`, `VNT Mobility`, `Raychem RPG`). Every subtitle rewritten in `Who they are. What we did.` pattern (e.g. `Specialty chemicals giant. We ran their digital across APAC.`). Baxsaa SEO card heading is now `SEO clean-up` and the metric prose is tightened.
 - **Slide 13 Contact** — Untouched. Signature line `LET'S MAKE / COMPLEX / obvious.` stays.
+
+### Cover + Contact taglines (Session 12 refinements)
+
+After Session 11, the user further refined the cover slide and contact closer (commit `1c2b908`):
+- Cover wordmark sub-line: `Digital` → `B2B Marketing for complex markets` (smaller font weight so it sits under OWLSURF as a supporting line rather than a competing one).
+- Cover Col 1: `B2B MARKETING / For the people who sell complex things` → `WHAT WE DO / B2B marketing for technical brands`.
+- Cover Col 2 unchanged (`MADE FOR / Long cycles. Complex products. Buyers who expect substance.`).
+- Contact main heading unchanged (`LET'S MAKE / COMPLEX / obvious.` is the signature line — do not touch).
+- Contact intro tagline: `For industrial, technical, and B2B brands ready to be understood faster.` → `For B2B brands ready to skip the noise.`
+
+The same commit removed `ux-audit-report.html` + `.pdf` from the product tree (they were committed in Session 11's PR `791cf83` by accident — working artefacts for the deck owner, not source) and added `ux-audit-report.*` + `*.scratch.*` to `.gitignore` so future audits / scratch files cannot leak into the product tree.
+
+### UI design review (Session 12) — plan parked, NOT shipped
+
+Ran the `ui-design-review` skill against the upper deck on 2026-05-25. Score 69/100 (C+/B-). Plan saved to `ui-design-plan.scratch.md` (gitignored via `*.scratch.*`) with three phases:
+
+- **Phase 1** — eight ~3-hour single-line quick wins (LogoLoop fade color, contact bg, contact frame removal, card height trim, card stripe dedup, wordmark sub-line re-weight, secondary line contrast bump, logo card border).
+- **Phase 2** — composition pass (Slide 1 background slimming, Slide 2 inner-panel removal, Slide 4 CardSwap mobile scale, Slide 5 logo anchor, Slide 13 h2 scale decision).
+- **Phase 3** — mobile rebuild (Slide 3 OurTeam lanyard → static portrait, Slide 2 fixed height → flex, Slide 13 mobile logo aside).
+
+The plan is gitignored and lives only on the user's machine. **Do not commit it to the repo.** When picking it up, work phase by phase and verify in the browser between phases.
+
+A SessionEnd hook in `.claude/settings.local.json` (gitignored — only on the user's machine) prints a one-line reminder at session exit if the plan file still exists. It auto-skips once the plan is consumed.
 
 ### PillNav — current state
 
@@ -69,9 +92,9 @@ Removed 16 orphan files in this session:
 
 `@gsap/react` becomes unused after `SplitText.tsx` was removed; same caveat applies.
 
-## Files Touched This Session
+## Files Touched (Sessions 11 + 12)
 
-Copy rewrites:
+Session 11 copy rewrites (commit `791cf83`):
 - `src/components/PillNav.tsx`
 - `src/components/slides/TitleSlide.tsx`
 - `src/components/slides/SkyrocketSlide.tsx`
@@ -86,16 +109,22 @@ Copy rewrites:
 - `src/components/slides/VNTCaseStudy.tsx`
 - `src/components/slides/RaychemRPGCaseStudy.tsx`
 
-Audit deliverable (root):
-- `ux-audit-report.html`
-- `ux-audit-report.pdf`
+Session 11 deletes: 16 orphan files (see list above).
 
-Doc updates:
+Session 12 cover/contact refinements (commit `1c2b908`):
+- `src/components/slides/TitleSlide.tsx`
+- `src/components/slides/ContactSlide.tsx`
+- `.gitignore` (added `ux-audit-report.*` + `*.scratch.*`)
+- Deleted: `ux-audit-report.html`, `ux-audit-report.pdf`
+
+Session 12 outside-repo work (NOT committed, lives on user's machine only):
+- `ui-design-plan.scratch.md` (parked plan, gitignored)
+- `.claude/settings.local.json` SessionEnd hook
+- `~/.claude/projects/-Users-manassrivastava/memory/project_owlsurf_ui_design_plan.md` (memory note)
+
+Doc updates (this commit):
 - `handoff.md`
 - `context.md`
-- `prod.md`
-
-Deletes: 16 orphan files (see list above).
 
 ## Verified / Evidence
 
@@ -105,7 +134,7 @@ Deletes: 16 orphan files (see list above).
 
 ## Known Issues / Next Things To Do
 
-Highest-priority follow-up is the audit's P0 batch (not addressed this session):
+Highest-priority follow-ups, in two stacks: the UX audit P0 batch (Session 11, still pending) and the UI design plan (Session 12, parked but ready).
 
 1. **Accessibility** — replace `role="menubar"` / `role="menuitem"` in `PillNav` with plain `<nav><ul>`; add `role="tab"` / `role="tablist"` / `aria-selected` to the Services pillar tabs; add `aria-expanded` and Escape/focus-trap to the mobile menu; fix inactive-roster contrast (`text-white/18` fails WCAG AA).
 2. **Mobile WebGL gating** — `Hyperspeed`, `LightRays`, `PrismaticBurst`, and `Globe` should be gated behind `useIsMobile()` per `prod.md` line 22 (which the deck currently self-violates).
@@ -114,6 +143,10 @@ Highest-priority follow-up is the audit's P0 batch (not addressed this session):
 5. **Lovable default OG image** still in `index.html` — replace with an OwlSurf-branded social preview.
 6. **`<main>` nested inside `<section>` slide** in `ContactSlide.tsx` is a landmark mistake; fix at the same time as the a11y pass.
 7. **Mobile layout** — `OurTeamSlide` stacks roster + 620px lanyard at `<lg`, overflowing the viewport. `SkyrocketSlide` mobile IntroBlock uses a fixed `h-[31rem]` height that risks landscape overflow.
+
+### Session 12 — UI design plan (parked)
+
+See `ui-design-plan.scratch.md` (local only). Three phases, ~3 hrs / 4 hrs / 1 day respectively. Pick up by phase, not piecemeal. Phase 1 is the lowest-risk batch of eight single-line edits.
 
 Other open project items carried over from earlier sessions:
 - Vercel deployment is still broken and needs reconnect / redeploy.

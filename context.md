@@ -10,11 +10,36 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 11 completed a full IxDF UX audit of the upper deck, a copy rewrite across all 13 slides, a nav-label fix, and a dead-code purge (16 orphan files deleted). The Our Team architecture (single lanyard + roster) and global idle nav from Session 10 are unchanged.
+**Latest working state:** Session 12 refined the cover wordmark sub-line + cover Col 1 + contact intro tagline, pulled the audit deliverables back out of the product repo (they had leaked into Session 11's PR), and ran a `ui-design-review` pass. The UI design findings were saved as a parked plan at `ui-design-plan.scratch.md` (gitignored) plus a `SessionEnd` hook in `.claude/settings.local.json` (also outside the repo) that reminds at session-end while the plan file exists. Sessions 10 + 11 architecture and copy are otherwise unchanged.
 
 ---
 
 ## Session Log
+
+### Session 12 — Cover/contact polish, audit-file cleanup, UI design review (parked)
+
+**What was done:**
+
+**1. Cover + contact copy refinements** (`src/components/slides/TitleSlide.tsx`, `src/components/slides/ContactSlide.tsx` — commit `1c2b908`)
+- Cover wordmark sub-line: `Digital` → `B2B Marketing for complex markets`. Font size dropped from `clamp(1.25, 3.5vw, 3rem)` to `clamp(0.9, 1.6vw, 1.5rem)`, tracking bumped to `0.22em`, opacity moved to `text-white/75` so the longer phrase sits as a supporting line rather than competing with the OWLSURF wordmark.
+- Cover Col 1: `B2B MARKETING / For the people who sell complex things` → `WHAT WE DO / B2B marketing for technical brands`.
+- Cover Col 2 + Contact main heading kept as signature lines. Contact intro tagline: `For industrial, technical, and B2B brands ready to be understood faster.` → `For B2B brands ready to skip the noise.`
+
+**2. Audit deliverable cleanup** (commit `1c2b908`)
+- Session 11's commit `791cf83` accidentally bundled `ux-audit-report.html` and `ux-audit-report.pdf` into the product repo. These are working artefacts for the deck owner, not source, and should never have shipped. Removed from the tree.
+- Added `ux-audit-report.*` and `*.scratch.*` to `.gitignore` so the same class of leak cannot happen again — any future `*.scratch.*` files are local-only by default.
+- The two PDFs/HTML still exist in git history at commit `791cf83`. A force-push to scrub history was not done; if the user wants that later, it requires explicit go-ahead.
+
+**3. UI design review** (parked, no source changes)
+- Ran the `ui-design-review` skill against the upper deck (slides 1–5 + Contact) on 2026-05-25. Scored 69/100 (C+/B-).
+- Top three issues: Slide 1 background over-stim (4 layers, self-violates `prod.md` "one full-bleed per slide" rule), CardSwap mobile overflow (`scale(1.3)` on 520×270 cards pushes past 375 px viewports), empty bottom whitespace on CardSwap cards after the Session 11 footer-band removal.
+- Saved findings to `ui-design-plan.scratch.md` at repo root (gitignored via `*.scratch.*`). Three phases: Phase 1 = 8 single-line quick wins (~3 hrs), Phase 2 = composition pass (~4 hrs), Phase 3 = mobile rebuild (~1 day).
+- The user explicitly wants to pace this work. To enforce a reminder at session-end, added a `SessionEnd` hook to `.claude/settings.local.json` (already gitignored via the `.claude/` parent) that prints a one-line reminder while the plan file exists. The hook auto-skips once the plan file is deleted.
+- A project memory note was also added at `~/.claude/projects/-Users-manassrivastava/memory/project_owlsurf_ui_design_plan.md` so future sessions know to ask about the plan toward the end of a wrap-up.
+
+**Verification:**
+- `npm run build` passes after cover + contact edits.
+- No tests added or removed in this session.
 
 ### Session 11 — UX audit, full copy rewrite, dead-code purge
 
