@@ -52,10 +52,34 @@ const PillNav = ({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    const movingItems = [
+      logoRef.current,
+      ...Array.from(container.querySelectorAll('.pill-list > li')),
+      hamburgerRef.current,
+    ].filter(Boolean) as HTMLElement[];
+
+    gsap.killTweensOf([container, ...movingItems]);
+
     if (visible) {
-      gsap.to(container, { autoAlpha: 1, y: 0, duration: 0.4, ease });
+      gsap.to(container, { autoAlpha: 1, y: 0, pointerEvents: 'auto', duration: 0.28, ease });
+      gsap.to(movingItems, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.34,
+        stagger: 0.035,
+        ease,
+        overwrite: 'auto',
+      });
     } else {
-      gsap.to(container, { autoAlpha: 0, y: -20, duration: 0.3, ease });
+      gsap.to(movingItems, {
+        autoAlpha: 0,
+        y: -18,
+        duration: 0.24,
+        stagger: 0.025,
+        ease,
+        overwrite: 'auto',
+      });
+      gsap.to(container, { autoAlpha: 0, y: -24, pointerEvents: 'none', duration: 0.32, delay: 0.05, ease });
     }
   }, [visible]);
 
@@ -278,10 +302,10 @@ const PillNav = ({
 
       <div className="mobile-menu-popover mobile-only" ref={mobileMenuRef} style={cssVars}>
         <ul className="mobile-menu-list">
-          {navItems.map((item) => (
+          {navItems.map((item, i) => (
             <li key={item.label}>
               <button
-                className={`mobile-menu-link${activeNavIndex === navItems.indexOf(item) ? ' is-active' : ''}`}
+                className={`mobile-menu-link${activeNavIndex === i ? ' is-active' : ''}`}
                 onClick={() => {
                   toggleMobileMenu();
                   onNavigate(item.slideIndex);

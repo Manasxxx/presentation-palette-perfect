@@ -34,6 +34,7 @@ const slides: ComponentType[] = [
 ];
 
 const SLIDE_MOUNT_RADIUS = 0;
+const NAV_IDLE_HIDE_DELAY = 1600;
 
 const SlideFallback = () => <section className="slide" aria-hidden="true" />;
 
@@ -41,15 +42,8 @@ const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Controls the visibility of overlapping UI like PillNav
-  const [uiHidden, setUiHidden] = useState(false);
-  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /**
-   * Tracks whether the current slide index is within the "Case Study" block.
-   * Slide 5 to 11 represent the interactive case study gallery.
-   */
-  const isCaseStudySlide = currentSlide >= 5 && currentSlide <= 11;
+  const [navActive, setNavActive] = useState(true);
+  const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const mountedSlides = useMemo(() => {
     const next = new Set<number>();
@@ -62,39 +56,39 @@ const Index = () => {
   }, [currentSlide]);
 
   /**
-   * Auto-hides UI elements during case studies after 2 seconds of inactivity
-   * to provide a distraction-free, immersive viewing experience.
+   * Keeps the header navigation available while the user is moving through the
+   * deck, then clears it once they pause to view the current slide.
    */
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const resetIdleTimer = () => {
-      if (!isCaseStudySlide) return;
-      setUiHidden(false);
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      idleTimerRef.current = setTimeout(() => setUiHidden(true), 2000);
+    const showNavWhileActive = () => {
+      setNavActive(true);
+      if (navIdleTimerRef.current) clearTimeout(navIdleTimerRef.current);
+      navIdleTimerRef.current = setTimeout(() => {
+        setNavActive(false);
+      }, NAV_IDLE_HIDE_DELAY);
     };
 
-    if (isCaseStudySlide) {
-      // Start the timer immediately when entering a case study slide
-      idleTimerRef.current = setTimeout(() => setUiHidden(true), 2000);
-
-      container.addEventListener("mousemove", resetIdleTimer);
-      container.addEventListener("touchstart", resetIdleTimer);
-      container.addEventListener("scroll", resetIdleTimer);
-    } else {
-      setUiHidden(false);
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-    }
+    showNavWhileActive();
+    container.addEventListener("mousemove", showNavWhileActive);
+    container.addEventListener("wheel", showNavWhileActive, { passive: true });
+    container.addEventListener("touchstart", showNavWhileActive, { passive: true });
+    container.addEventListener("touchmove", showNavWhileActive, { passive: true });
+    container.addEventListener("scroll", showNavWhileActive, { passive: true });
+    window.addEventListener("keydown", showNavWhileActive);
 
     return () => {
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-      container.removeEventListener("mousemove", resetIdleTimer);
-      container.removeEventListener("touchstart", resetIdleTimer);
-      container.removeEventListener("scroll", resetIdleTimer);
+      if (navIdleTimerRef.current) clearTimeout(navIdleTimerRef.current);
+      container.removeEventListener("mousemove", showNavWhileActive);
+      container.removeEventListener("wheel", showNavWhileActive);
+      container.removeEventListener("touchstart", showNavWhileActive);
+      container.removeEventListener("touchmove", showNavWhileActive);
+      container.removeEventListener("scroll", showNavWhileActive);
+      window.removeEventListener("keydown", showNavWhileActive);
     };
-  }, [isCaseStudySlide]);
+  }, []);
 
   /**
    * Tracks the user's vertical scroll position across the full-height sections
@@ -137,8 +131,6 @@ const Index = () => {
     });
   };
 
-  const shouldHideNav = currentSlide === 1 || (isCaseStudySlide && uiHidden);
-
   return (
     <div
       ref={containerRef}
@@ -148,7 +140,7 @@ const Index = () => {
     >
 
       <PillNav
-        visible={currentSlide > 0 && currentSlide < slides.length - 1 && !shouldHideNav}
+        visible={navActive}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />

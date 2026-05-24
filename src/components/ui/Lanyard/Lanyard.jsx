@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useRef, useState } from 'react';
 import { Canvas, extend, useFrame } from '@react-three/fiber';
-import { useGLTF, useTexture } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
 import cardGLB from '@/assets/lanyard/card.glb';
-import lanyard from '@/assets/lanyard/lanyard.png';
 import owlSurfLogo from '@/assets/logo-main.jpg';
+import owlIcon from '@/assets/owl-icon.png';
 import './Lanyard.css';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
@@ -80,10 +80,9 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
   const rot = new THREE.Vector3();
   const dir = new THREE.Vector3();
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
-  const { nodes, materials } = useGLTF(cardGLB);
-  const fallbackBandTexture = useTexture(lanyard);
+  const { nodes } = useGLTF(cardGLB);
   const [bandTexture, setBandTexture] = useState(null);
-  const [cardTexture, setCardTexture] = useState(null);
+  const [badgeTexture, setBadgeTexture] = useState(null);
   const [curve] = useState(
     () => new THREE.CatmullRomCurve3([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()])
   );
@@ -109,74 +108,72 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
   useEffect(() => {
     let cancelled = false;
     let generatedBand;
-    let generatedCard;
+    let generatedBadge;
 
     const buildTextures = async () => {
       const [logoImage, avatarImage] = await Promise.all([
-        loadImage(owlSurfLogo),
-        person?.avatar ? loadImage(person.avatar) : loadImage(owlSurfLogo),
+        loadImage(owlIcon),
+        loadImage(person?.avatar || owlSurfLogo),
       ]);
 
       if (cancelled) return;
 
       const bandCanvas = document.createElement('canvas');
-      bandCanvas.width = 1024;
-      bandCanvas.height = 250;
+      bandCanvas.width = 2048;
+      bandCanvas.height = 512;
       const bandCtx = bandCanvas.getContext('2d');
-      const bandGradient = bandCtx.createLinearGradient(0, 0, bandCanvas.width, 0);
-      bandGradient.addColorStop(0, '#071012');
-      bandGradient.addColorStop(0.5, '#4bc2c2');
-      bandGradient.addColorStop(1, '#071012');
-      bandCtx.fillStyle = bandGradient;
-      bandCtx.fillRect(0, 0, bandCanvas.width, bandCanvas.height);
-      bandCtx.fillStyle = 'rgba(0, 0, 0, 0.22)';
-      bandCtx.fillRect(0, 88, bandCanvas.width, 74);
-      bandCtx.font = '900 44px Montserrat, Arial, sans-serif';
-      bandCtx.textAlign = 'center';
-      bandCtx.textBaseline = 'middle';
-      bandCtx.fillStyle = '#061112';
+      bandCtx.imageSmoothingEnabled = true;
+      bandCtx.imageSmoothingQuality = 'high';
 
-      for (let x = 68; x < bandCanvas.width + 160; x += 210) {
-        drawRoundImage(bandCtx, logoImage, x - 42, 41, 84);
-        bandCtx.fillText('OWLSURF', x + 92, 126);
+      bandCtx.fillStyle = '#030506';
+      bandCtx.fillRect(0, 0, bandCanvas.width, bandCanvas.height);
+
+      for (let x = 256; x < bandCanvas.width + 640; x += 640) {
+        drawRoundImage(bandCtx, logoImage, x - 160, 96, 320);
       }
 
       generatedBand = new THREE.CanvasTexture(bandCanvas);
       generatedBand.wrapS = THREE.RepeatWrapping;
       generatedBand.wrapT = THREE.RepeatWrapping;
       generatedBand.colorSpace = THREE.SRGBColorSpace;
+      generatedBand.anisotropy = 8;
+      generatedBand.minFilter = THREE.LinearMipmapLinearFilter;
+      generatedBand.magFilter = THREE.LinearFilter;
       setBandTexture(generatedBand);
 
-      const cardCanvas = document.createElement('canvas');
-      cardCanvas.width = 720;
-      cardCanvas.height = 1010;
-      const ctx = cardCanvas.getContext('2d');
-      ctx.fillStyle = '#07090d';
-      ctx.fillRect(0, 0, 720, 1010);
+      const badgeCanvas = document.createElement('canvas');
+      badgeCanvas.width = 1024;
+      badgeCanvas.height = 1024;
+      const ctx = badgeCanvas.getContext('2d');
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.clearRect(0, 0, 1024, 1024);
+      const avatarGlow = ctx.createRadialGradient(512, 520, 40, 512, 520, 420);
+      avatarGlow.addColorStop(0, 'rgba(75, 194, 194, 0.3)');
+      avatarGlow.addColorStop(1, 'rgba(75, 194, 194, 0)');
+      ctx.fillStyle = avatarGlow;
+      ctx.fillRect(0, 0, 1024, 1024);
+      ctx.drawImage(avatarImage, 80, 68, 864, 864);
 
-      const avatarSize = 560;
-      const avatarX = 80;
-      const avatarY = 245;
-      ctx.drawImage(avatarImage, avatarX, avatarY, avatarSize, avatarSize);
-
-      generatedCard = new THREE.CanvasTexture(cardCanvas);
-      generatedCard.flipY = false;
-      generatedCard.colorSpace = THREE.SRGBColorSpace;
-      generatedCard.anisotropy = 8;
-      setCardTexture(generatedCard);
+      generatedBadge = new THREE.CanvasTexture(badgeCanvas);
+      generatedBadge.colorSpace = THREE.SRGBColorSpace;
+      generatedBadge.anisotropy = 8;
+      generatedBadge.minFilter = THREE.LinearMipmapLinearFilter;
+      generatedBadge.magFilter = THREE.LinearFilter;
+      setBadgeTexture(generatedBadge);
     };
 
     buildTextures().catch(() => {
       if (!cancelled) {
         setBandTexture(null);
-        setCardTexture(null);
+        setBadgeTexture(null);
       }
     });
 
     return () => {
       cancelled = true;
       generatedBand?.dispose();
-      generatedCard?.dispose();
+      generatedBadge?.dispose();
     };
   }, [person?.avatar, person?.name, person?.title]);
 
@@ -208,10 +205,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
   });
 
   curve.curveType = 'chordal';
-  fallbackBandTexture.wrapS = fallbackBandTexture.wrapT = THREE.RepeatWrapping;
-  const activeBandTexture = bandTexture || fallbackBandTexture;
-  const activeCardTexture = cardTexture || null;
-
   return (
     <>
       <group position={[0, 4, 0]}>
@@ -242,46 +235,55 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
             }}
           >
             <mesh geometry={nodes.card.geometry}>
-              {activeCardTexture ? (
-                <meshPhysicalMaterial
-                  color="#ffffff"
-                  map={activeCardTexture}
-                  map-anisotropy={8}
-                  clearcoat={0}
-                  roughness={0.9}
-                  metalness={0.08}
-                  transparent={false}
-                />
-              ) : (
-                <meshPhysicalMaterial
-                  color="#07090d"
-                  clearcoat={0}
-                  roughness={0.9}
-                  metalness={0.08}
-                  transparent={false}
-                />
-              )}
+              <meshBasicMaterial
+                color="#082023"
+              />
             </mesh>
-            <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
-            <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
+            {badgeTexture && (
+              <mesh position={[0, 0.57, 0.016]}>
+                <planeGeometry args={[0.72, 0.72]} />
+                <meshBasicMaterial
+                  color="#ffffff"
+                  map={badgeTexture}
+                  transparent
+                  alphaTest={0.05}
+                  depthTest={false}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+            )}
+            <mesh geometry={nodes.clip.geometry}>
+              <meshPhysicalMaterial color="#4bc2c2" roughness={0.34} metalness={0.72} clearcoat={0.35} />
+            </mesh>
+            <mesh geometry={nodes.clamp.geometry}>
+              <meshPhysicalMaterial color="#4bc2c2" roughness={0.34} metalness={0.72} clearcoat={0.35} />
+            </mesh>
           </group>
         </RigidBody>
       </group>
       <mesh ref={band}>
         <meshLineGeometry />
-        <meshLineMaterial
-          color="white"
-          depthTest={false}
-          resolution={isMobile ? [1000, 2000] : [1000, 1000]}
-          useMap
-          map={activeBandTexture}
-          repeat={[-4, 1]}
-          lineWidth={1}
-        />
+        {bandTexture ? (
+          <meshLineMaterial
+            color="#ffffff"
+            depthTest={false}
+            resolution={isMobile ? [1000, 2000] : [1000, 1000]}
+            useMap
+            map={bandTexture}
+            repeat={[-0.9, 1]}
+            lineWidth={1.38}
+          />
+        ) : (
+          <meshLineMaterial
+            color="#030506"
+            depthTest={false}
+            resolution={isMobile ? [1000, 2000] : [1000, 1000]}
+            lineWidth={1.38}
+          />
+        )}
       </mesh>
     </>
   );
 }
 
 useGLTF.preload(cardGLB);
-useTexture.preload(lanyard);

@@ -10,11 +10,43 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
-**Latest pushed work:** Slide 2 "Who We Are" editorial update, old ball-animation slide removal, and Our Team rebuild with six horizontal profile cards over a teal radar background.
+**Latest working state:** Our Team is now a simplified left roster plus one live React Bits lanyard on the right. The active employee changes every 5 seconds, inactive rows are muted, the lanyard badge avatar follows the active employee, and the global header nav appears only while the user is actively moving through the deck.
 
 ---
 
 ## Session Log
+
+### Session 10 — Our Team Single Lanyard + Global Idle Nav
+
+**What was done:**
+
+**1. Our Team slide rebuilt around one live lanyard** (`src/components/slides/OurTeamSlide.tsx`, `src/components/ui/Lanyard/`)
+- Replaced the old six-card/Radar presentation with a compact left roster and one right-side React Bits lanyard.
+- The roster auto-advances every 5 seconds; clicking a row makes that employee active immediately.
+- Inactive employees are deliberately muted/desaturated, while the active row keeps full color and the progress rule.
+- The lanyard component remains mounted while the active person changes, so the physics/WebGL scene is not remounted on each shuffle.
+
+**2. Badge and strap tuning**
+- The lanyard uses the provided OwlSurf `owl-icon.png` on a black branded strap.
+- The badge avatar is rendered as its own high-resolution front-facing plane, avoiding the broken GLB-card UV placement that previously misplaced faces.
+- The badge body uses a flat dark material to remove the single sparkle/glint seen during review.
+- Lanyard hardware is OwlSurf teal and the strap is intentionally thick enough to read as a band.
+
+**3. Global navigation behavior** (`src/pages/Index.tsx`, `src/components/PillNav.tsx`)
+- The header nav is no longer tied only to the case-study range.
+- It becomes visible during mouse, wheel, touch, scroll, or keyboard activity, then hides after 1600ms of inactivity.
+- Logo, nav items, and mobile hamburger animate upward as they hide, and stagger back down when activity resumes.
+
+**4. Stale/inefficiency cleanup**
+- Removed an unused `materials` destructure from `Lanyard.jsx`.
+- Replaced a mobile-menu `navItems.indexOf(item)` lookup with the map index in `PillNav.tsx`.
+- Moved shared lanyard dependencies (`three`, React Three Fiber, Drei, Rapier, MeshLine) into a separate `vendor-lanyard` manual chunk so the lazy `OurTeamSlide` chunk does not carry the entire 3D/physics stack alone, and the older `vendor-3d` chunk does not load Rapier for unrelated effects.
+- Updated `handoff.md`, `context.md`, and `prod.md` so they no longer describe the old six-card/Radar team slide as the current architecture.
+
+**Verification:**
+- `npm run build` passes.
+- `npm test` passes.
+- Visual screenshot capture was intentionally not used in this pass because the user asked not to screenshot.
 
 ### Session 1 — Setup + Design System + Title Slide Redesign
 
@@ -312,7 +344,7 @@
 | Active-slide-only mounting | Only the current slide is mounted; placeholder sections preserve scroll height. This prevents offscreen WebGL canvases, LogoLoop RAFs, profile-card listeners, and timers from accumulating as the deck is viewed. |
 | Slide 2 as editorial Who We Are slide | Uses Palanquin copy, low-left sectors, and right-side technical line illustration. Do not restore removed header/footer, border, grid, semicircle, or divider gradient unless asked. |
 | No separate ball-animation Who We Are slide | The old third slide and Ballpit animation were intentionally removed to reduce visual clutter and code weight. |
-| Our Team as six horizontal cards | Team profiles use React Bits ProfileCard styling with local avatar assets and a teal Radar background. Preserve the 3x2 information density unless a new layout direction is given. |
+| Our Team as one lanyard plus roster | Keep one React Bits lanyard mounted on the right and drive it from the left roster. Do not return to six simultaneous WebGL lanyards; that path was heavy and fragile. |
 | Fixed dark theme | The deck no longer exposes light/dark switching; OwlSurf dark mode is the single visual system. |
 | Unified upper-deck heading format | Slides 2–5 share one heading recipe: eyebrow + `clamp(3.4rem,5.9vw,6.6rem)` Montserrat black, white first word + teal-gradient second word, left-aligned via a `w-full h-full` wrapper that defeats `.slide`'s `items-center justify-center`. |
 | Services as B2B icon grid | Slide 4 uses 8 icon cards (4×2) with simplified service names and B2B-angled descriptions (long sales cycles, complex buying committees, technical evaluators). No tabs. |
@@ -334,6 +366,7 @@
 - [ ] Bundle `vendor-3d` still appears as a large chunk (~678KB minified) when 3D slides load — consider splitting `ogl`, `cobe`, and `postprocessing` by feature, or gate/deeper-lazy-load 3D code.
 - [ ] Mobile layout for title slide not verified after redesign.
 - [ ] Our Team uses Pankaj's avatar for Vishnu until a dedicated Vishnu avatar is supplied.
+- [ ] The lanyard/strap/logo layout should still be judged by manual browser review; screenshot capture was intentionally skipped at the user's request.
 - [ ] `npm run lint` fails on existing visual-component typing debt (`any`, `@ts-nocheck`, hook warnings, Tailwind `require()`).
 
 ---
@@ -346,9 +379,10 @@ src/
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
     slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config
-    slides/OurTeamSlide.tsx — six horizontal team profile cards over Radar background
-    ProfileCard.jsx/css    — React Bits profile card, locally styled for team slide
-    Radar.jsx/css          — React Bits WebGL radar background using ogl
+    slides/OurTeamSlide.tsx — left roster selector + single active team lanyard
+    ui/Lanyard/            — React Bits lanyard, OwlSurf strap, active badge avatar
+    ProfileCard.jsx/css    — older React Bits profile card files, not the current team-slide path
+    Radar.jsx/css          — older WebGL radar files, not the current team-slide path
     SlideReveal.tsx        — intersection observer + anime.js entrance wrapper
     ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav

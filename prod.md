@@ -23,7 +23,7 @@
 - Ambient WebGL backgrounds should cap device pixel ratio at `1.25` unless a specific foreground detail requires more. On Retina displays this is a major heat/lag control.
 - Any custom animation loop (`requestAnimationFrame`, interval, GSAP timeline, WebGL renderer) must pause or unmount when offscreen. Visibility gating is a product requirement, not a polish task.
 - Lazy-load all case study images via Vite's `?url` + lazy `<img loading="lazy" />`.
-- Code-split vendors: GSAP, Anime.js, cobe/ogl, UI libs — each in its own chunk (see `vite.config.ts`).
+- Code-split vendors: GSAP, Anime.js, older ambient 3D libraries, lanyard-specific 3D/physics libraries, and UI libs — each in its own chunk (see `vite.config.ts`).
 
 ### Slide Design Rules
 - One full-bleed background or effect per slide. Never two competing backgrounds.
@@ -32,7 +32,7 @@
 - Case studies: full-bleed creative on one side, stats on the other. Nothing else.
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
-- Our Team uses six horizontal profile cards in a 3x2 grid over a teal radar field. Do not bring back the deleted ball-animation slide as a team/about substitute.
+- Our Team uses a simplified left roster plus one live React Bits lanyard on the right. Only one WebGL lanyard should be mounted at a time; inactive employees stay visually muted, the active employee is fully colorified, and the roster/avatar auto-advance every 5 seconds.
 - Services slide (slide 4) is a left-pillars / right-CardSwap layout, NOT a flat icon grid. Five pillars: Content & Creative, Reach & Activation, Search & Listening, Data & Tech, AI & Automation. Each pillar holds 5 sub-services shown as stacked CardSwap cards. Card headings are teal; bodies stay layman-friendly while keeping industry terms (ABM, SEO, HubSpot/Marketo, AEO, Marketing Copilots).
 - Clients slide (slide 5) uses a top-left monster heading + two-row React Bits `LogoLoop` carousel. Keep true CSS mask edge fading, calm speeds, pause-on-hover, and offscreen RAF pausing.
 - Contact slide is a chic closer: left-side `LET'S MAKE / COMPLEX / obvious.` headline, minimal contact links, and a right-side OwlSurf logo/ripple mark only. Do not reintroduce headers, credentials labels, rotated copy, vertical dividers, or explanatory close text unless explicitly requested.
@@ -45,11 +45,12 @@ The codebase is structured as a **Single-Page Application (SPA)** using **Vite +
 Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Presentation** architecture.
 - **Entry Point:** The application essentially routes entirely through `App.tsx` into `Index.tsx`.
 - **Slide Array Pattern:** `Index.tsx` mounts an array of `SlideComponent`s. These components represent sequential, full-screen vertical sections.
-- **Our Team Slide:** Shows six profile-card team members (`OurTeamSlide.tsx`) between the main editorial statement and Services, with React Bits `ProfileCard` cards and a subtle React Bits `Radar` background.
+- **Our Team Slide:** Shows a compact roster selector (`OurTeamSlide.tsx`) between the main editorial statement and Services, with one React Bits lanyard badge on the right. The lanyard uses the user-provided OwlSurf owl mark on a black strap and swaps the badge avatar to the active employee.
 - **Who We Are Slide:** `SkyrocketSlide.tsx` is now the main slide-2 editorial statement. It uses Palanquin text, bottom-left sector tags, and a right-aligned technical line illustration asset.
 - **Removed About Animation:** The old separate third `WhoAreWeSlide` and `Ballpit` animation were removed to keep the deck lighter and avoid redundant "Who We Are" messaging.
 - **Scroll Hijacking:** Native CSS scroll behaviors (`scroll-snap-type: y mandatory`, `scroll-snap-align: start`) are used heavily on `.slide` elements to emulate a traditional "PowerPoint-like" or "Deck-like" feel on the web.
-- **Case Study Sub-Stack:** Slides 5 through 11 form a continuous block of interactive case studies. Navigation UI auto-hides during inactivity while inside this indices range to enhance immersive viewing.
+- **Header Navigation:** `PillNav` is global but activity-driven. It appears while the user is moving through the deck and hides after a short idle delay so each slide can be viewed cleanly.
+- **Case Study Sub-Stack:** Slides 5 through 11 form a continuous block of interactive case studies.
 
 ## 2. Code Principles
 

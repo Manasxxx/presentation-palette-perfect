@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => ({
           "vendor-gsap": ["gsap", "@gsap/react"],
           "vendor-anime": ["animejs"],
           "vendor-3d": ["ogl", "cobe", "postprocessing"],
+          "vendor-lanyard": ["three", "@react-three/fiber", "@react-three/drei", "@react-three/rapier", "meshline"],
           "vendor-ui": ["@radix-ui/react-slot", "@radix-ui/react-toast", "@radix-ui/react-tooltip", "lucide-react", "react-liquid-glass-card"],
         },
       },
