@@ -29,6 +29,14 @@ npm install
 npm run dev
 ```
 
+Before starting a new coding session in this repo, read:
+
+- `handoff.md`
+- `context.md`
+- `prod.md`
+
+Before any push, update `handoff.md` so it reflects the latest state.
+
 The Vite dev server runs on:
 
 ```txt
