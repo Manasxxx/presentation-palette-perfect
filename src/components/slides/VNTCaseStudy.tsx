@@ -87,11 +87,11 @@ const VNTCaseStudy = () => {
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center" style={{ opacity: 0, color: "hsl(0 0% 15%)" }}>
-          VNT{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${vntGreen}), hsl(${vntTeal}))` }}>Success</span>
+          VNT{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${vntGreen}), hsl(${vntTeal}))` }}>Mobility</span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(0 0% 40%)", marginBottom: isMobile ? '0.75rem' : '1.5rem', marginTop: isMobile ? '0.25rem' : '0.75rem' }}>
-          Amplified VNT's EV charging network presence through impactful visual storytelling and strategic digital campaigns across India.
+          EV charging across India. We put them on the map. Literally.
         </p>
 
         {isMobile ? (

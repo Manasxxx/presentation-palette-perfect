@@ -90,11 +90,11 @@ const CTPCaseStudy = () => {
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center" style={{ opacity: 0, color: "hsl(0 0% 15%)", marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          Check This Property{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${ctpGreen}), hsl(${ctpTeal}))` }}>Success</span>
+          Check This{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${ctpGreen}), hsl(${ctpTeal}))` }}>Property</span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(0 0% 40%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-          Elevated property awareness through targeted content marketing and strategic social campaigns across Australia.
+          Australian property tech. Made the search easy. Aussies found them.
         </p>
 
         {isMobile ? (

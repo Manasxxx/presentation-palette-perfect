@@ -46,44 +46,44 @@ type Category = {
 const categories: Category[] = [
   {
     key: "content",
-    label: "Content & Creative",
+    label: "Brand & Story",
     icon: PenTool,
     services: [
       {
         icon: Target,
         title: "Brand Storytelling",
         description:
-          "Crafting your narrative so the right people remember you in the right moments.",
+          "Narrative your buyers remember at the moment they decide.",
       },
       {
         icon: Film,
         title: "Video Production",
         description:
-          "Product demos, explainers, and brand films that turn complex tech into clear stories.",
+          "Product demos, explainers, brand films. Complex tech, clear stories.",
       },
       {
         icon: PenTool,
         title: "Design Systems",
         description:
-          "Logos, decks, brochures, and trade show creative that stay consistent and on-brand.",
+          "Logos, decks, brochures, trade-show booths. Consistent. Yours.",
       },
       {
         icon: FileText,
         title: "Whitepapers & Research",
         description:
-          "Long-form content that establishes you as the expert in your space.",
+          "Long-form research that earns you the expert seat.",
       },
       {
         icon: Sparkles,
         title: "Thought Leadership",
         description:
-          "Executive bylines, opinion pieces, and conference talks that build authority.",
+          "Bylines, op-eds, conference talks. Earned authority.",
       },
     ],
   },
   {
     key: "reach",
-    label: "Reach & Activation",
+    label: "Demand Gen",
     icon: Megaphone,
     services: [
       {
@@ -96,124 +96,124 @@ const categories: Category[] = [
         icon: Target,
         title: "Account-Based Marketing (ABM)",
         description:
-          "Hyper-targeted campaigns aimed at your top-priority accounts.",
+          "Targeted plays for your top accounts. Sales-aligned.",
       },
       {
         icon: Users,
         title: "Creator & Influencer Network",
         description:
-          "Working with industry voices and KOLs your buyers already trust.",
+          "Voices your buyers already follow. We make the intro.",
       },
       {
         icon: Megaphone,
         title: "PR & Media Relations",
         description:
-          "Trade publications, analyst briefings, and earned coverage in your sector.",
+          "Trade press, analyst briefings, earned coverage. Coverage that closes deals.",
       },
       {
         icon: Building2,
         title: "Events & Trade Shows",
         description:
-          "Booth design, lead capture, and follow-up that turns attendees into pipeline.",
+          "Booth, lead capture, follow-up. Attendees become pipeline.",
       },
     ],
   },
   {
     key: "discovery",
-    label: "Search & Listening",
+    label: "Discovery",
     icon: Search,
     services: [
       {
         icon: Search,
         title: "SEO",
         description:
-          "Showing up on Google when buyers are actively evaluating their options.",
+          "Found on Google when buyers are deciding.",
       },
       {
         icon: MessageSquare,
         title: "Social Listening",
         description:
-          "Tracking what's said about you, your competitors, and your category, in real time.",
+          "What's said about you, your competitors, your category. Live.",
       },
       {
         icon: ShieldCheck,
         title: "Reputation Management",
         description:
-          "Protecting and shaping how your brand shows up online and in industry conversations.",
+          "How your brand shows up online. Shaped and defended.",
       },
       {
         icon: Activity,
         title: "Competitive Intelligence",
         description:
-          "Knowing what competitors are launching, hiring, pricing, and pitching.",
+          "What competitors launch, hire, price, pitch. You hear early.",
       },
       {
         icon: Mic,
         title: "Community Management",
         description:
-          "Active, on-brand presence on the channels where your buyers actually gather.",
+          "Where your buyers gather, we show up daily.",
       },
     ],
   },
   {
     key: "engineering",
-    label: "Data & Tech",
+    label: "Marketing Stack",
     icon: Database,
     services: [
       {
         icon: Workflow,
         title: "Marketing Automation",
         description:
-          "HubSpot, Marketo, and Pardot stacks that send the right message at the right time.",
+          "HubSpot, Marketo, Pardot. Right message, right minute.",
       },
       {
         icon: Database,
         title: "CRM Integration",
         description:
-          "Connecting Salesforce, HubSpot, or any CRM so sales and marketing share one view.",
+          "Salesforce, HubSpot, any CRM. Sales and marketing on one screen.",
       },
       {
         icon: BarChart2,
         title: "Analytics & Attribution",
         description:
-          "Knowing which campaigns actually drove pipeline, not just clicks and impressions.",
+          "Which campaign actually built pipeline. The signal beneath the clicks.",
       },
       {
         icon: Cpu,
         title: "Lead Scoring",
         description:
-          "Telling sales which leads to call first based on real buying signals.",
+          "Sales calls hot leads first. Real signals, not gut.",
       },
       {
         icon: Globe,
         title: "Custom Microsites",
         description:
-          "Purpose-built landing pages and microsites for campaigns or ABM accounts.",
+          "Landing pages and microsites, built per campaign or account.",
       },
     ],
   },
   {
     key: "ai",
-    label: "AI & Automation",
+    label: "AI & Autopilot",
     icon: BrainCircuit,
     services: [
       {
         icon: Wand2,
         title: "AI Content Engine",
         description:
-          "AI-assisted drafting at scale across blogs, emails, and social posts.",
+          "AI drafts at scale. Blogs, emails, social. Humans approve.",
       },
       {
         icon: Bot,
         title: "Marketing Copilots",
         description:
-          "Custom AI assistants for sales, support, and marketing teams.",
+          "AI assistants built for your sales, support, marketing.",
       },
       {
         icon: Sparkles,
         title: "AI Personalization",
         description:
-          "Dynamic content and offers that adapt to each visitor's intent signals.",
+          "Each visitor sees what fits their intent.",
       },
       {
         icon: Lightbulb,
@@ -225,7 +225,7 @@ const categories: Category[] = [
         icon: Zap,
         title: "Workflow Automation",
         description:
-          "Letting AI handle research, lead qualification, and routine reporting.",
+          "AI handles research, qualification, reporting. Humans handle judgement.",
       },
     ],
   },
@@ -407,10 +407,6 @@ const ServicesSlide = () => {
                         </p>
                       </div>
 
-                      <div className="flex items-center justify-between border-t border-white/10 px-5 py-2.5 text-[10px] tracking-[0.25em] text-primary font-medium uppercase">
-                        <span>{activeCategory.label}</span>
-                        <span className="text-white/40">B2B / Industrial</span>
-                      </div>
                     </div>
                   </Card>
                 );

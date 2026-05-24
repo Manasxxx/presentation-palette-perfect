@@ -186,7 +186,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <div className="ts-eyebrow flex items-center gap-3" style={{ opacity: 0 }}>
           <span className="block w-8 h-px bg-owl-teal" />
           <span className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-owl-teal font-sans">
-            Portfolio &amp; Credentials
+            Credentials
           </span>
         </div>
 
@@ -238,12 +238,12 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 B2B Marketing
               </div>
               <div className="text-sm md:text-base font-body font-semibold text-white leading-snug">
-                For technical &amp; industrial brands
+                For the people who sell complex things
               </div>
             </div>
             <div className="ts-info-col" style={{ opacity: 0 }}>
               <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
-                Built For
+                Made For
               </div>
               <div className="text-sm md:text-base font-body text-white/75 leading-snug">
                 Long cycles. Complex products. Buyers who expect substance.
@@ -267,7 +267,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                   boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
                 }}
               >
-                <span className="relative z-10">Jump to Creatives</span>
+                <span className="relative z-10">See case studies →</span>
                 <span
                   className="absolute inset-0 z-0"
                   style={{

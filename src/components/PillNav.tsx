@@ -4,12 +4,12 @@ import '@/styles/PillNav.css';
 import logoImg from '@/assets/logo-main.jpg';
 
 const navItems = [
-  { label: 'Intro', slideIndex: 0 },
-  { label: 'Why Us', slideIndex: 1 },
-  { label: 'About', slideIndex: 2 },
+  { label: 'Cover', slideIndex: 0 },
+  { label: 'Who We Are', slideIndex: 1 },
+  { label: 'Team', slideIndex: 2 },
   { label: 'Services', slideIndex: 3 },
   { label: 'Clients', slideIndex: 4 },
-  { label: 'Case Study', slideIndex: 5 },
+  { label: 'Case Studies', slideIndex: 5 },
   { label: 'Contact', slideIndex: 12 },
 ];
 

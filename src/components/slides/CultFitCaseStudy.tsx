@@ -88,11 +88,11 @@ const CultFitCaseStudy = () => {
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          Cult Fit{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${cultPink}), hsl(${cultYellow}))` }}>Success</span>
+          Cult{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${cultPink}), hsl(${cultYellow}))` }}>.fit</span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(0 0% 65%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-          Drove membership growth and brand awareness through performance marketing and engaging social content.
+          Fitness platform. Memberships up. Brand sharper.
         </p>
 
         {isMobile ? (

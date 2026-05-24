@@ -11,7 +11,6 @@ import iimlLogo from "@/assets/client-iiml.png";
 import baxsaaLogo from "@/assets/client-baxsaa.png";
 import ctpLogo from "@/assets/client-ctp.png";
 import welhamLogo from "@/assets/client-welham2.png";
-import extraLogo from "@/assets/client-extra.png";
 
 type Client = {
   name: string;
@@ -29,7 +28,6 @@ const allClients: Client[] = [
   { name: "Check This Property", src: ctpLogo, alt: "Check This Property" },
   { name: "Cult.fit", src: cultfitLogo, alt: "Cult.fit" },
   { name: "Welham", src: welhamLogo, alt: "Welham" },
-  { name: "Client", src: extraLogo, alt: "Client" },
 ];
 
 const firstRow = allClients.slice(0, Math.ceil(allClients.length / 2));
@@ -122,7 +120,7 @@ const ClientsSlide = () => {
             WHO WE WORK WITH
           </span>
           <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
-            <span className="font-sans not-italic">MAJOR </span>
+            <span className="font-sans not-italic">OUR </span>
             <span className="font-sans not-italic text-gradient-green inline-block pr-2">CLIENTS</span>
           </h2>
         </header>

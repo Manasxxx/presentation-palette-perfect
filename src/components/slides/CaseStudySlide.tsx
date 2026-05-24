@@ -133,14 +133,14 @@ const CaseStudySlide = () => {
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          Mitsui Chemicals{" "}
+          Mitsui{" "}
           <span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${mitsuiCyan}), hsl(193 80% 65%))` }}>
-            Success
+            Chemicals
           </span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(210 30% 75%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-          Boosted brand visibility, engagement, and qualified leads through strategic digital marketing.
+          Specialty chemicals giant. We ran their digital across APAC.
         </p>
 
         <div className={`cs-slider flex justify-center ${isMobile ? 'flex-1 items-center' : 'mb-14'}`} style={{ opacity: 0 }}>

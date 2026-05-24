@@ -9,12 +9,46 @@
 
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
-**Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui.
-**Latest working state:** Our Team is now a simplified left roster plus one live React Bits lanyard on the right. The active employee changes every 5 seconds, inactive rows are muted, the lanyard badge avatar follows the active employee, and the global header nav appears only while the user is actively moving through the deck.
+**Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
+**Latest working state:** Session 11 completed a full IxDF UX audit of the upper deck, a copy rewrite across all 13 slides, a nav-label fix, and a dead-code purge (16 orphan files deleted). The Our Team architecture (single lanyard + roster) and global idle nav from Session 10 are unchanged.
 
 ---
 
 ## Session Log
+
+### Session 11 — UX audit, full copy rewrite, dead-code purge
+
+**What was done:**
+
+**1. IxDF UX audit of upper deck** (`ux-audit-report.html`, `ux-audit-report.pdf` at repo root)
+- Holistic audit using IxDF's 7 Factors + 5 Usability Characteristics + 5 Interaction Dimensions.
+- Scored 48/85 (D, 56%) overall, with Accessibility at 1/5 (critical) and Findable / Usable / Words / Time / Physical-Space all at 2/5.
+- Produced P0–P3 issue list and three concrete redesign proposals (nav truth pass, motion-control + reduced-motion hook, slide-mount resilience).
+- The audit also flagged a GitHub PAT exposed in the `.git/config` remote URL — flagged in `handoff.md` for rotation.
+
+**2. Nav label rewrite** (`src/components/PillNav.tsx`)
+- `Intro / Why Us / About / Services / Clients / Case Study / Contact` was lying about the deck — `Why Us` pointed at the Who We Are slide, `About` pointed at Our Team, etc.
+- Updated to `Cover / Who We Are / Team / Services / Clients / Case Studies / Contact` so each label matches the slide it scrolls to.
+
+**3. Full deck copy rewrite (3-voice mix, never rude)**
+- The audit found every case-study subtitle followed the same agency-speak template (`Boosted/Drove/Amplified [thing] through strategic [tactic]`). All seven were rewritten to a `Who they are. What we did.` pattern in plain English.
+- The repeating `[PILLAR] • B2B / Industrial` footer band on the Services CardSwap cards was removed (25 identical strings were noise).
+- 25 service-card descriptions tightened; em-dashes and "Strategic / Amplified / Elevated / Powerful / Vibrant" removed; "MAJOR CLIENTS" → "OUR CLIENTS"; `Cult Fit Success` etc. → `Cult.fit` etc. with the gradient highlight now applied to a sub-brand fragment.
+- Team designations were lower-cased on the second word for a more human feel: Harshit `Strategy & growth`, Sakshi `Client lead`, Manas `Digital strategy`, Sanskriti `Creative direction`, Pankaj `Build & ship`, Vishnu `Brand & identity`.
+- Services pillars were renamed to recognisable B2B buyer language: `Brand & Story` / `Demand Gen` / `Discovery` / `Marketing Stack` / `AI & Autopilot` (was `Content & Creative / Reach & Activation / Search & Listening / Data & Tech / AI & Automation`).
+- Title slide: eyebrow shortened from `Portfolio & Credentials` to `Credentials`; Col 1 body rewritten to `For the people who sell complex things`; Col 2 label `Built For` → `Made For`; CTA `Jump to Creatives` → `See case studies →`.
+- Slide 2 Who We Are: kicker disambiguated to `B2B marketing for complex markets`; H2 declarative (`WHO WE / ARE.` instead of `WHO WE / ARE?`); body kept the signature `We translate technical depth into market momentum.` and added a smaller secondary line below: `For the marketing teams selling what engineers built.`; sectors eyebrow `Sectors We Serve` → `Where we work`.
+
+**4. Dead-code purge** (16 files deleted)
+- Slides: `TeamSlide.tsx` (orphan, never registered in `Index.tsx`).
+- Components: `ProfileCard.jsx` + `.css`, `Radar.jsx` + `.css` (old team-slide implementation, replaced by the lanyard).
+- UI primitives: `ui/SplitText.tsx`, `ui/marquee.tsx` (replaced by `LogoLoop`), `ui/toast.tsx`, `ui/tooltip.tsx` (all never imported).
+- Assets: `client-extra.png` (placeholder), `client-dehn.png`, `client-kuraray.png`, `client-mitsui.png`, `logo-icon.png`, `Raychemcasestudy 1.webp`, `Raychemcasestudy 2.webp` (never imported anywhere in `src/`).
+- `vite.config.ts` `manualChunks` still names `@radix-ui/react-slot/toast/tooltip` and `@gsap/react` under `vendor-ui` / `vendor-gsap`. These packages are no longer imported anywhere in `src/` after the deletes and are candidates for a future `npm uninstall` pass, but the dependency removal was intentionally not done in this session to keep the change set focused.
+
+**Verification:**
+- `npm run build` passes after the copy edits and after the orphan-file deletes.
+- `npm test` / `npm run lint` were not re-run; the pre-existing visual-component lint debt is unchanged.
 
 ### Session 10 — Our Team Single Lanyard + Global Idle Nav
 

@@ -88,11 +88,11 @@ const GirlUpCaseStudy = () => {
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          Girl Up{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${girlUpTeal}), hsl(${girlUpPurple}))` }}>Success</span>
+          Girl{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${girlUpTeal}), hsl(${girlUpPurple}))` }}>Up</span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(168 30% 75%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-          Amplified youth-led advocacy through vibrant social media content and community-driven engagement strategies.
+          UN Foundation youth movement. Louder where it mattered.
         </p>
 
         {isMobile ? (

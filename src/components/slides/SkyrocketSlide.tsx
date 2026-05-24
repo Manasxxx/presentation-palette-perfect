@@ -149,19 +149,24 @@ const IntroBlock = ({ mobile = false }: { mobile?: boolean }) => (
     <div className={`who-copy flex flex-col ${mobile ? "h-[31rem]" : "h-[31rem] max-w-[960px] pb-7"}`} style={{ opacity: 0 }}>
       <div className={`who-kicker mb-8 flex items-center gap-3 font-sans font-black uppercase text-owl-teal ${mobile ? "text-[10px] tracking-[0.2em]" : "text-xs tracking-[0.28em]"}`}>
         <span className={`${mobile ? "w-8" : "w-12"} who-rule h-px origin-left bg-owl-teal/80`} />
-        B2B demand for complex markets
+        B2B marketing for complex markets
       </div>
       <div className={`font-sans font-black uppercase leading-[0.95] text-white drop-shadow-[0_0_34px_rgba(75,194,194,0.16)] ${mobile ? "text-[3.4rem]" : "text-[clamp(3.4rem,5.9vw,6.6rem)]"}`}>
         <span className="who-word block whitespace-nowrap">
           WHO <span className="text-gradient-green">WE</span>
         </span>
-        <span className="who-word block">ARE?</span>
+        <span className="who-word block">ARE.</span>
       </div>
-      <div className={`mt-auto max-w-[860px] font-body font-semibold leading-[1.28] text-white ${mobile ? "text-2xl" : "mb-[3.1rem] text-[clamp(2.2rem,2.86vw,3.4rem)]"}`}>
-        We translate{" "}
-        <HighlightPhrase>technical depth</HighlightPhrase>{" "}
-        into{" "}
-        <HighlightPhrase tilt="right">market momentum.</HighlightPhrase>
+      <div className={`mt-auto max-w-[860px] ${mobile ? "" : "mb-[3.1rem]"}`}>
+        <div className={`font-body font-semibold leading-[1.28] text-white ${mobile ? "text-2xl" : "text-[clamp(2.2rem,2.86vw,3.4rem)]"}`}>
+          We translate{" "}
+          <HighlightPhrase>technical depth</HighlightPhrase>{" "}
+          into{" "}
+          <HighlightPhrase tilt="right">market momentum.</HighlightPhrase>
+        </div>
+        <div className={`mt-3 md:mt-5 font-body text-white/55 leading-snug ${mobile ? "text-sm" : "text-[clamp(1rem,1.18vw,1.4rem)]"}`}>
+          For the marketing teams selling what engineers built.
+        </div>
       </div>
     </div>
   </>
@@ -213,7 +218,7 @@ const SectorsBlock = ({ mobile = false }: { mobile?: boolean }) => (
     <div className={`${mobile ? "mb-4" : "mb-6"} flex items-center gap-3`}>
       <span className={`${mobile ? "w-8" : "w-10"} h-px bg-owl-teal/70`} />
       <span className={`font-sans font-black text-owl-teal ${mobile ? "text-[9px] tracking-[0.18em]" : "text-[10px] tracking-[0.22em] md:text-xs"}`}>
-        Sectors We Serve
+        Where we work
       </span>
     </div>
     <div className={`grid ${mobile ? "grid-cols-1 gap-3" : "grid-cols-3 gap-x-10 gap-y-5"}`}>

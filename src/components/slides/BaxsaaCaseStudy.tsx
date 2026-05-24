@@ -97,11 +97,11 @@ const BaxsaaCaseStudy = () => {
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center" style={{ opacity: 0, color: "hsl(0 0% 15%)", marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          The Baxsaa Co.{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(0 55% 45%))` }}>Success</span>
+          The Baxsaa{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(0 55% 45%))` }}>Co.</span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(0 0% 40%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-          Grew followers and reach through targeted social campaigns aligned with the marketing funnel.
+          D2C beauty. Grew the audience. Sharpened the funnel.
         </p>
 
         {isMobile ? (
@@ -139,9 +139,9 @@ const BaxsaaCaseStudy = () => {
           <div className="cs-seo max-w-2xl mx-auto" style={{ opacity: 0 }}>
             <LiquidGlassCard padding="1.5rem 2rem" borderRadius="1rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.25)">
               <div className="text-center">
-                <p className="text-lg md:text-xl font-semibold mb-2" style={{ color: "hsl(0 0% 15%)" }}>SEO Transformation</p>
+                <p className="text-lg md:text-xl font-semibold mb-2" style={{ color: "hsl(0 0% 15%)" }}>SEO clean-up</p>
                 <p className="text-sm md:text-base" style={{ color: "hsl(0 0% 40%)" }}>
-                  Reduced website errors from <span style={{ color: `hsl(${baxsaaMaroon})` }} className="font-bold">3000+</span> to <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">0</span> and improved page load time by <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">34%</span>
+                  <span style={{ color: `hsl(${baxsaaMaroon})` }} className="font-bold">3,000+</span> errors → <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">zero</span>. Page load down <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">34%</span>.
                 </p>
               </div>
             </LiquidGlassCard>

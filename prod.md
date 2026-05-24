@@ -25,6 +25,15 @@
 - Lazy-load all case study images via Vite's `?url` + lazy `<img loading="lazy" />`.
 - Code-split vendors: GSAP, Anime.js, older ambient 3D libraries, lanyard-specific 3D/physics libraries, and UI libs — each in its own chunk (see `vite.config.ts`).
 
+### Copy Discipline
+
+- No agency-speak template on case studies. The pattern is **`Who they are. What we did.`** — never `Boosted / Drove / Amplified / Elevated [thing] through strategic [tactic]`. The seven case-study subtitles were rewritten to this pattern in Session 11.
+- Banned words across the deck: **strategic, amplified, elevated, boosted, drove, impactful, vibrant, compelling, powerful, Success** (as a heading suffix). These signal nothing and pattern-match to every other agency deck.
+- Never rude — confidence without spite. Lines that knock other agencies or imply the client was broken before us are not on-brand.
+- No em dashes. Use commas or periods. Mobile readability + matches the deck's terse rhythm.
+- Service-card descriptions stay plainspoken, one sentence, never two clauses joined by "and that".
+- Pillar labels use **B2B-buyer language**, not agency-internal jargon (e.g. "Demand Gen" not "Reach & Activation").
+
 ### Slide Design Rules
 - One full-bleed background or effect per slide. Never two competing backgrounds.
 - Stats and numbers: weight 900, `clamp` sizing, teal color. Units always smaller weight.
@@ -33,7 +42,7 @@
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
 - Our Team uses a simplified left roster plus one live React Bits lanyard on the right. Only one WebGL lanyard should be mounted at a time; inactive employees stay visually muted, the active employee is fully colorified, and the roster/avatar auto-advance every 5 seconds.
-- Services slide (slide 4) is a left-pillars / right-CardSwap layout, NOT a flat icon grid. Five pillars: Content & Creative, Reach & Activation, Search & Listening, Data & Tech, AI & Automation. Each pillar holds 5 sub-services shown as stacked CardSwap cards. Card headings are teal; bodies stay layman-friendly while keeping industry terms (ABM, SEO, HubSpot/Marketo, AEO, Marketing Copilots).
+- Services slide (slide 4) is a left-pillars / right-CardSwap layout, NOT a flat icon grid. Five pillars use B2B buyer language: Brand & Story, Demand Gen, Discovery, Marketing Stack, AI & Autopilot. Each pillar holds 5 sub-services shown as stacked CardSwap cards. Card headings are teal; bodies stay layman-friendly while keeping industry terms (ABM, SEO, HubSpot/Marketo, AEO, Marketing Copilots). The per-card `[PILLAR] • B2B / Industrial` footer band was removed in Session 11 — do not reintroduce it; the active pillar label on the left tab is already the cue.
 - Clients slide (slide 5) uses a top-left monster heading + two-row React Bits `LogoLoop` carousel. Keep true CSS mask edge fading, calm speeds, pause-on-hover, and offscreen RAF pausing.
 - Contact slide is a chic closer: left-side `LET'S MAKE / COMPLEX / obvious.` headline, minimal contact links, and a right-side OwlSurf logo/ripple mark only. Do not reintroduce headers, credentials labels, rotated copy, vertical dividers, or explanatory close text unless explicitly requested.
 - Unified heading recipe across slides 2–5: eyebrow (10px tracking-[0.3em] teal) + `clamp(3.4rem,5.9vw,6.6rem)` Montserrat black h2, white first word + teal-gradient second word, left-aligned via a `w-full h-full` wrapper that defeats `.slide`'s `items-center justify-center`. Always set `font-sans not-italic` on bare spans inside the h2 to avoid the `span:not([class])` Palanquin/italic footgun.

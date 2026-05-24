@@ -75,11 +75,11 @@ const RaychemRPGCaseStudy = () => {
             <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
                 <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-                    Raychem RPG{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${raychemRed}), hsl(${raychemBlue}))` }}>Success</span>
+                    Raychem{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${raychemRed}), hsl(${raychemBlue}))` }}>RPG</span>
                 </h2>
 
                 <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(210 20% 70%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-                    Elevated Raychem RPG's digital presence through compelling visual campaigns and targeted strategies for their industrial electrical solutions.
+                    Heat-traced cables, industrial electrical. Now buyers find them.
                 </p>
 
                 <div className={`cs-slider flex justify-center ${isMobile ? 'flex-1 items-center' : 'mb-14'}`} style={{ opacity: 0 }}>

@@ -9,32 +9,32 @@ import sanskritiAvatar from '@/assets/sanskriti-avatar.png';
 const teamMembers = [
     {
         name: 'Harshit',
-        title: 'Strategy & Growth',
+        title: 'Strategy & growth',
         avatar: harshitAvatar,
     },
     {
         name: 'Sakshi',
-        title: 'Client Partnerships',
+        title: 'Client lead',
         avatar: sakshiAvatar,
     },
     {
         name: 'Manas',
-        title: 'Digital Enablement',
+        title: 'Digital strategy',
         avatar: manasAvatar,
     },
     {
         name: 'Sanskriti',
-        title: 'Creative Direction',
+        title: 'Creative direction',
         avatar: sanskritiAvatar,
     },
     {
         name: 'Pankaj',
-        title: 'Technology & Delivery',
+        title: 'Build & ship',
         avatar: pankajAvatar,
     },
     {
         name: 'Vishnu',
-        title: 'Creative Architect',
+        title: 'Brand & identity',
         avatar: pankajAvatar,
     },
 ];
