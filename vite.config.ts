@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => ({
   assetsInclude: ["**/*.glb"],
   server: {
     host: "0.0.0.0",
-    port: 8080,
+    port: 3000,
     hmr: {
       overlay: false,
     },
