@@ -200,10 +200,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               </span>
             </h1>
             <p
-              className="ts-wordmark-line font-body font-medium uppercase text-white/85 tracking-[0.18em] mt-1 md:mt-2"
-              style={{ opacity: 0, fontSize: "clamp(1.25rem, 3.5vw, 3rem)" }}
+              className="ts-wordmark-line font-body font-medium uppercase text-white/75 tracking-[0.22em] mt-2 md:mt-3"
+              style={{ opacity: 0, fontSize: "clamp(0.9rem, 1.6vw, 1.5rem)" }}
             >
-              Digital
+              B2B Marketing for complex markets
             </p>
           </div>
 
@@ -235,10 +235,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           <div className="grid grid-cols-2 gap-8 md:gap-16 max-w-2xl">
             <div className="ts-info-col" style={{ opacity: 0 }}>
               <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
-                B2B Marketing
+                What We Do
               </div>
               <div className="text-sm md:text-base font-body font-semibold text-white leading-snug">
-                For the people who sell complex things
+                B2B marketing for technical brands
               </div>
             </div>
             <div className="ts-info-col" style={{ opacity: 0 }}>

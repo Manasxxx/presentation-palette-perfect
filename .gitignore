@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Working artefacts (audits, scratch) — never ship in the product repo
+ux-audit-report.*
+*.scratch.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

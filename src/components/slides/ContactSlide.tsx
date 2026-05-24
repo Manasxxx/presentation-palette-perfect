@@ -89,7 +89,7 @@ const ContactSlide = () => {
         <div className="flex min-h-0 flex-col justify-center px-0 py-10 md:py-12 lg:px-8">
           <main className="max-w-[980px]">
             <p className="ct-reveal mb-7 max-w-[700px] font-body text-lg font-medium leading-tight text-white/58 opacity-0 md:mb-9 md:text-2xl">
-              For industrial, technical, and B2B brands ready to be understood faster.
+              For B2B brands ready to skip the noise.
             </p>
 
             <h2 className="ct-reveal font-sans text-[clamp(3rem,7.45vw,8.2rem)] font-black uppercase leading-[0.86] tracking-normal text-white opacity-0">
