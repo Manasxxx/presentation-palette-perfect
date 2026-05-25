@@ -44,9 +44,17 @@ const CultFitCaseStudy = () => {
           });
 
           animate(el.querySelector(".cs-heading")!, {
-            opacity: [0, 1], translateY: [80, 0],
-            duration: 800,
-            ease: createSpring({ stiffness: 100, damping: 15 }),
+            opacity: [0, 1], translateY: [80, 0], scale: [0.94, 1],
+            duration: 900,
+            ease: createSpring({ stiffness: 95, damping: 12 }),
+          });
+
+          animate(el.querySelector(".cs-title-accent")!, {
+            translateX: [-26, 0],
+            filter: ["blur(10px)", "blur(0px)"],
+            duration: 900,
+            delay: 160,
+            ease: "out(4)",
           });
 
           animate(el.querySelector(".cs-subtitle")!, {
@@ -56,21 +64,50 @@ const CultFitCaseStudy = () => {
 
           if (!isMobile) {
             animate(el.querySelectorAll(".cs-image"), {
-              opacity: [0, 1], translateY: [50, 0], scale: [0.9, 1],
+              opacity: [0, 1], translateY: [60, -12, 0], scale: [0.82, 1.05, 1], rotate: [-5, 1, 0],
               delay: stagger(100, { start: 300 }),
-              ease: createSpring({ stiffness: 100, damping: 15 }),
+              duration: 1200, ease: "out(4)",
             });
           } else {
             animate(el.querySelector(".cs-slider")!, {
-              opacity: [0, 1], scale: [0.9, 1],
-              duration: 800, ease: "out(3)",
+              opacity: [0, 1], scale: [0.78, 1.04, 1], translateX: [120, -12, 0], rotate: [5, -1, 0],
+              duration: 1250, ease: "out(4)",
             });
           }
+
+          animate(el.querySelector(".cs-scan-line")!, {
+            scaleX: [0, 1, 0],
+            transformOrigin: ["0% 50%", "0% 50%", "100% 50%"],
+            opacity: [0, 0.9, 0],
+            duration: 1600,
+            delay: 520,
+            ease: "inOut(3)",
+          });
+
+          animate(el.querySelector(".cs-glow-orbit")!, {
+            opacity: [0, 0.66, 0.18],
+            scale: [0.72, 1.08, 1],
+            rotate: [0, 12],
+            duration: 1500,
+            delay: 420,
+            ease: "out(3)",
+          });
 
           animate(el.querySelectorAll(".cs-stat"), {
             opacity: [0, 1], translateY: [50, 0], scale: [0.9, 1],
             delay: stagger(100, { start: 300 }),
             ease: createSpring({ stiffness: 100, damping: 15 }),
+          });
+          animate(el.querySelectorAll(".cs-stat-icon"), {
+            scale: [0.6, 1.28, 1],
+            filter: [
+              `drop-shadow(0 0 0 hsl(${cultPink} / 0))`,
+              `drop-shadow(0 0 12px hsl(${cultPink} / 0.48))`,
+              `drop-shadow(0 0 0 hsl(${cultPink} / 0))`,
+            ],
+            delay: stagger(90, { start: 520 }),
+            duration: 850,
+            ease: "out(4)",
           });
         }
       },
@@ -84,11 +121,23 @@ const CultFitCaseStudy = () => {
     <section ref={sectionRef} className="slide pt-16 pb-6 md:py-10 px-4 md:px-6 overflow-hidden relative flex flex-col">
       <div className="bg-wipe absolute inset-0 z-0" style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(145deg, hsl(260 20% 8%), hsl(340 30% 12%), hsl(${cultPink} / 0.25), hsl(${cultYellow} / 0.08))` }} />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(145deg, hsl(260 20% 8%), hsl(340 30% 12%), hsl(${cultPink} / 0.25), hsl(${cultYellow} / 0.08))` }} />
+      <div
+        className="cs-scan-line pointer-events-none absolute left-0 top-[52%] z-[1] h-px w-full"
+        style={{ opacity: 0, transform: "scaleX(0)", background: `linear-gradient(90deg, transparent, hsl(${cultPink}), hsl(${cultYellow}), transparent)` }}
+      />
+      <div
+        className="cs-glow-orbit pointer-events-none absolute right-[14%] top-[18%] z-[1] h-[48%] w-[36%] rounded-full"
+        style={{
+          opacity: 0,
+          border: `1px solid hsl(${cultPink} / 0.22)`,
+          boxShadow: `0 0 90px -34px hsl(${cultPink} / 0.85), inset 0 0 80px -54px hsl(${cultYellow} / 0.7)`,
+        }}
+      />
 
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center text-white" style={{ opacity: 0, marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          Cult{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${cultPink}), hsl(${cultYellow}))` }}>.fit</span>
+          Cult{" "}<span className="cs-title-accent bg-clip-text text-transparent inline-block" style={{ backgroundImage: `linear-gradient(135deg, hsl(${cultPink}), hsl(${cultYellow}))` }}>.fit</span>
         </h2>
 
         <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(0 0% 65%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
@@ -116,7 +165,7 @@ const CultFitCaseStudy = () => {
               <div key={stat.label} className="cs-stat" style={{ opacity: 0 }}>
                 <LiquidGlassCard padding={isMobile ? "0.4rem 0.75rem" : "0.5rem 1rem"} borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.08)">
                   <div className="flex items-center gap-2">
-                    <Icon className={`${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} style={{ color: `hsl(${cultPink})` }} />
+                    <Icon className={`cs-stat-icon ${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} style={{ color: `hsl(${cultPink})` }} />
                     <span className={`${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-bold text-white`}>{stat.value}</span>
                     <span className={`${isMobile ? 'text-[9px]' : 'text-[10px] md:text-xs'} font-medium uppercase tracking-wider`} style={{ color: "hsl(0 0% 75%)" }}>{stat.label}</span>
                   </div>

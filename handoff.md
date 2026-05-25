@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 14 (current) is preparing a push for the Our Team lanyard band rendering and repo handoff workflow update. The lanyard strap now keeps the OwlSurf mark upright and improves sharpness with a 4x generated texture, higher foreground Canvas DPR, antialiasing, sharper texture filters, larger logo draw size, and React Bits-style `repeat={[-4, 1]}`. The repo workflow now says `handoff.md` is updated only before a push, not at ordinary session end.
+Session 15 (current) is preparing a push for the case-study Anime.js motion system and next-session motion plan. All seven case-study slides now share a stronger visible motion language: heading spring, accent-word blur-to-sharp slide, creative/slider overshoot, brand scan-line sweep, glow orbit, and stat icon pulse where stats exist. The next session should extend this Anime.js language to the remaining non-case-study slides (Cover, Who We Are, Our Team, Services, Clients, Contact) through shared helpers where practical.
+
+Session 14 pushed the Our Team lanyard band rendering and repo handoff workflow update. The lanyard strap keeps the OwlSurf mark upright and improves sharpness with a 4x generated texture, higher foreground Canvas DPR, antialiasing, sharper texture filters, larger logo draw size, and React Bits-style `repeat={[-4, 1]}`. The repo workflow now says `handoff.md` is updated only before a push, not at ordinary session end.
 
 Session 13 began the case-study redesign pass. Two of seven case studies are now on the new recipe: Mitsui on a **split** layout (copy + stats column ~38–42% wide, parallax slider in the remaining space with intentional right-edge bleed) and Baxsaa on a **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-CS slider scaling. The remaining five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) are still on the pre-Session-13 layout.
 
@@ -26,7 +28,18 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The dev server was running during this session. `npm run build` was run before push because the repo push gate requires it. Browser visual verification was limited by local Chrome opening on the profile picker; the user remains the source of final visual approval.
+The dev server was running during this session. `npm run build` was run before push because the repo push gate requires it. Browser visual approval remains with the user.
+
+### Case-study Anime.js motion system (Session 15)
+
+- **Mitsui** (`src/components/slides/CaseStudySlide.tsx`) — stronger visible motion: heading spring, `Chemicals` blur-to-sharp slide, slider overshoot, cyan scan line, glow orbit, stat icon pulse.
+- **Baxsaa** (`src/components/slides/BaxsaaCaseStudy.tsx`) — same motion language adapted to maroon/cream vertical layout.
+- **CultFit** (`src/components/slides/CultFitCaseStudy.tsx`) — same motion language adapted to pink/yellow vertical layout.
+- **GirlUp** (`src/components/slides/GirlUpCaseStudy.tsx`) — same motion language adapted to teal/purple vertical layout.
+- **CTP** (`src/components/slides/CTPCaseStudy.tsx`) — same motion language adapted to green/teal light layout.
+- **VNT** (`src/components/slides/VNTCaseStudy.tsx`) — same motion language adapted to green/teal image layout.
+- **Raychem RPG** (`src/components/slides/RaychemRPGCaseStudy.tsx`) — same motion language adapted to red/blue slider layout.
+- **Next session plan** — extend this Anime.js treatment to non-case-study slides: Cover, Who We Are, Our Team, Services, Clients, and Contact. Prefer shared helpers and add/reuse a `prefers-reduced-motion` gate before making the whole deck more kinetic.
 
 ### Our Team lanyard + handoff workflow (Session 14)
 
@@ -120,6 +133,20 @@ Lanyard + workflow push:
 - `context.md` — Session 14 log added
 - `prod.md` — lanyard sharpness and foreground DPR guidance added
 
+## Files Touched (Session 15)
+
+Case-study Anime.js motion:
+- `src/components/slides/CaseStudySlide.tsx`
+- `src/components/slides/BaxsaaCaseStudy.tsx`
+- `src/components/slides/CultFitCaseStudy.tsx`
+- `src/components/slides/GirlUpCaseStudy.tsx`
+- `src/components/slides/CTPCaseStudy.tsx`
+- `src/components/slides/VNTCaseStudy.tsx`
+- `src/components/slides/RaychemRPGCaseStudy.tsx`
+- `context.md` — Session 15 log and next-session plan
+- `handoff.md` — push-gate state refreshed for this push
+- `prod.md` — deck-wide Anime.js motion guidance added
+
 Outside-repo work in this session (NOT committed):
 - `~/.claude/projects/-Users-manassrivastava/memory/feedback_no_build_screenshot_verify.md` — new feedback memory: skip build / screenshot / verify probes unless explicitly asked. Indexed in `MEMORY.md`.
 
@@ -161,6 +188,7 @@ Doc updates (this commit):
 
 - `npm run build` passes after copy edits and after orphan-file deletes.
 - `npm run build` passes before the Session 14 lanyard/workflow push.
+- `npm run build` passes before the Session 15 case-study motion push.
 - `npm test` / `npm run lint` were not re-run in this session after the deletes; the project's pre-existing lint debt in `LightRays.tsx`, `Hyperspeed.tsx`, `PrismaticBurst.tsx`, and `tailwind.config.ts` is still expected to fail lint.
 - Visual screenshot capture was intentionally skipped per the original handoff policy (the user prefers to judge browser output manually).
 

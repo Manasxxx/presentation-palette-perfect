@@ -39,6 +39,7 @@
 - One full-bleed background or effect per slide. Never two competing backgrounds.
 - Stats and numbers: weight 900, `clamp` sizing, teal color. Units always smaller weight.
 - No carousels or tabbed UI unless absolutely necessary — every extra interaction is cognitive load.
+- Anime.js is the deck's primary entrance-motion layer. Case studies now share a visible brand-motion recipe: heading spring, accent-word blur-to-sharp slide, creative/slider overshoot, scan-line sweep, glow orbit, and stat icon pulse. Next pass should extend this language to the non-case-study slides through shared helpers where possible.
 - Case studies use one of two layouts and reuse the same heading recipe (see below), swapping deck teal for a per-case-study brand color:
   - **Split** (e.g. Mitsui): copy column (`shrink-0`, ~38–42% width) on one side with eyebrow + monster h2 + Palanquin tagline + vertical stat list. Creative column is a `ParallaxCardSlider` sized via the new `cardWidth` prop. The slider is `min-w-0` + `justify-start` so its right edge is allowed to bleed past the section bound and clip at the section's `overflow-hidden`. No surrounding decoration.
   - **Polished vertical** (e.g. Baxsaa): centered eyebrow + heading + tagline top, creative grid or `ParallaxCardSlider` middle, brand-tinted stat pills row, optional eyebrow-style callout card (e.g. Baxsaa's SEO clean-up) at bottom. Pills use a translucent fill + 1px brand-color hairline border instead of `LiquidGlassCard` so the brand palette reads cleanly on light or dark gradients.

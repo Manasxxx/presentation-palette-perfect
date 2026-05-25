@@ -46,9 +46,17 @@ const BaxsaaCaseStudy = () => {
           });
 
           animate(el.querySelectorAll(".cs-heading"), {
-            opacity: [0, 1], translateY: [60, 0],
+            opacity: [0, 1], translateY: [70, 0], scale: [0.94, 1],
             delay: stagger(80),
-            duration: 900, ease: "out(3)",
+            duration: 900, ease: createSpring({ stiffness: 95, damping: 12 }),
+          });
+
+          animate(el.querySelector(".cs-title-accent")!, {
+            translateX: [-26, 0],
+            filter: ["blur(10px)", "blur(0px)"],
+            duration: 900,
+            delay: 160,
+            ease: "out(4)",
           });
 
           animate(el.querySelector(".cs-subtitle")!, {
@@ -58,21 +66,50 @@ const BaxsaaCaseStudy = () => {
 
           if (!isMobile) {
             animate(el.querySelectorAll(".cs-image"), {
-              opacity: [0, 1], translateY: [40, 0], scale: [0.94, 1],
+              opacity: [0, 1], translateY: [58, -10, 0], scale: [0.84, 1.04, 1], rotate: [-4, 1, 0],
               delay: stagger(120, { start: 400 }),
-              duration: 800, ease: "out(3)",
+              duration: 1200, ease: "out(4)",
             });
           } else {
             animate(el.querySelector(".cs-slider")!, {
-              opacity: [0, 1], scale: [0.92, 1],
-              duration: 900, delay: 350, ease: "out(3)",
+              opacity: [0, 1], scale: [0.78, 1.04, 1], translateX: [120, -12, 0], rotate: [5, -1, 0],
+              duration: 1250, delay: 350, ease: "out(4)",
             });
           }
+
+          animate(el.querySelector(".cs-scan-line")!, {
+            scaleX: [0, 1, 0],
+            transformOrigin: ["0% 50%", "0% 50%", "100% 50%"],
+            opacity: [0, 0.75, 0],
+            duration: 1600,
+            delay: 520,
+            ease: "inOut(3)",
+          });
+
+          animate(el.querySelector(".cs-glow-orbit")!, {
+            opacity: [0, 0.52, 0.14],
+            scale: [0.72, 1.08, 1],
+            rotate: [0, 12],
+            duration: 1500,
+            delay: 420,
+            ease: "out(3)",
+          });
 
           animate(el.querySelectorAll(".cs-stat"), {
             opacity: [0, 1], translateY: [30, 0],
             delay: stagger(80, { start: 600 }),
             ease: createSpring({ stiffness: 110, damping: 16 }),
+          });
+          animate(el.querySelectorAll(".cs-stat-icon"), {
+            scale: [0.6, 1.28, 1],
+            filter: [
+              `drop-shadow(0 0 0 hsl(${baxsaaMaroon} / 0))`,
+              `drop-shadow(0 0 12px hsl(${baxsaaMaroon} / 0.42))`,
+              `drop-shadow(0 0 0 hsl(${baxsaaMaroon} / 0))`,
+            ],
+            delay: stagger(90, { start: 720 }),
+            duration: 850,
+            ease: "out(4)",
           });
 
           const seoCard = el.querySelector(".cs-seo");
@@ -97,6 +134,18 @@ const BaxsaaCaseStudy = () => {
         style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${baxsaaCream}), hsl(36 25% 88%), hsl(${baxsaaMaroon} / 0.15))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${baxsaaCream}), hsl(36 25% 88%), hsl(${baxsaaMaroon} / 0.15))` }} />
+      <div
+        className="cs-scan-line pointer-events-none absolute left-0 top-[52%] z-[1] h-px w-full"
+        style={{ opacity: 0, transform: "scaleX(0)", background: `linear-gradient(90deg, transparent, hsl(${baxsaaMaroon}), transparent)` }}
+      />
+      <div
+        className="cs-glow-orbit pointer-events-none absolute right-[18%] top-[20%] z-[1] h-[44%] w-[34%] rounded-full"
+        style={{
+          opacity: 0,
+          border: `1px solid hsl(${baxsaaMaroon} / 0.18)`,
+          boxShadow: `0 0 80px -36px hsl(${baxsaaMaroon} / 0.7), inset 0 0 70px -54px hsl(${baxsaaMaroon} / 0.65)`,
+        }}
+      />
 
       <div className="relative z-10 flex h-full w-full flex-col px-6 pt-20 pb-8 md:px-12 md:pt-20 md:pb-12 gap-6 md:gap-8">
 
@@ -114,7 +163,7 @@ const BaxsaaCaseStudy = () => {
           >
             <span className="font-sans not-italic">The Baxsaa </span>
             <span
-              className="font-sans not-italic bg-clip-text text-transparent inline-block pr-2"
+              className="cs-title-accent font-sans not-italic bg-clip-text text-transparent inline-block pr-2"
               style={{ backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(${baxsaaMaroonLight}))` }}
             >
               Co.
@@ -168,7 +217,7 @@ const BaxsaaCaseStudy = () => {
                   WebkitBackdropFilter: "blur(8px)",
                 }}
               >
-                <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" style={{ color: `hsl(${baxsaaMaroon})` }} />
+                <Icon className="cs-stat-icon w-3.5 h-3.5 md:w-4 md:h-4" style={{ color: `hsl(${baxsaaMaroon})` }} />
                 <span className="font-sans text-sm md:text-base font-black tracking-tight" style={{ color: `hsl(${baxsaaInk})` }}>
                   {stat.value}
                 </span>

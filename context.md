@@ -10,11 +10,33 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 14 adjusted the Our Team lanyard band rendering and repo handoff policy. The lanyard strap now uses a higher-resolution generated texture, higher canvas DPR, antialiasing, sharper texture filtering, a larger upright OwlSurf mark, and React Bits-style texture repeat. `handoff.md` is now push-gated only: update it before pushes, not at ordinary session end. Session 13's case-study redesign is still partially complete: Mitsui is on the **split** layout, Baxsaa is on the **polished vertical** layout, and the remaining five case studies are still pending.
+**Latest working state:** Session 15 added a shared Anime.js motion language across all seven case-study slides. The case-study block now has visibly stronger entrance motion: heading spring, gradient/accent word blur-to-sharp slide, creative/slider overshoot, brand scan-line sweep, soft glow orbit, and stat icon pulse where stats exist. The next planned motion pass is to extend this same Anime.js language to the non-case-study slides (Cover, Who We Are, Our Team, Services, Clients, Contact) while respecting `prefers-reduced-motion` and the deck's performance rules.
 
 ---
 
 ## Session Log
+
+### Session 15 — Case-study Anime.js motion system
+
+**What was done:**
+
+**1. Shared case-study motion language applied** (`src/components/slides/*CaseStudy*.tsx`)
+- Applied the Mitsui motion treatment across all seven case-study slides: Mitsui, Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG.
+- Each case study now uses a stronger heading spring, accent-word slide-in with blur-to-sharp, creative/slider overshoot, brand-color scan line, soft glow orbit, and stat icon pulse where stat rows exist.
+- Kept layouts and copy intact. This pass was motion-only, not a redesign pass.
+
+**2. Next-session plan captured**
+- Next session should extend the same Anime.js motion language to the remaining non-case-study slides: Cover, Who We Are, Our Team, Services, Clients, and Contact.
+- The next pass should centralize repeated motion helpers where practical instead of copying bespoke animation blocks into every slide.
+- Add or reuse a `prefers-reduced-motion` gate before broadening the motion system deck-wide.
+
+**Rationale:**
+- The first Mitsui motion pass was too subtle, so the treatment was made visibly stronger and then propagated across the case-study section for consistency.
+- Keeping the case-study motion consistent now makes it easier to build a unified whole-deck motion system in the next session.
+
+**Verification:**
+- `npm run build` passed before push.
+- The live dev server was running at `http://localhost:8080/` with Vite HMR updates.
 
 ### Session 14 — Lanyard band sharpness + push-gated handoff
 

@@ -77,9 +77,17 @@ const CaseStudySlide = () => {
           });
 
           animate(el.querySelectorAll(".cs-heading"), {
-            opacity: [0, 1], translateY: [60, 0],
+            opacity: [0, 1], translateY: [70, 0], scale: [0.94, 1],
             delay: stagger(80),
-            duration: 900, ease: "out(3)",
+            duration: 900, ease: createSpring({ stiffness: 95, damping: 12 }),
+          });
+
+          animate(el.querySelector(".cs-title-accent")!, {
+            translateX: [-26, 0],
+            filter: ["blur(10px)", "blur(0px)"],
+            duration: 900,
+            delay: 160,
+            ease: "out(4)",
           });
 
           animate(el.querySelector(".cs-subtitle")!, {
@@ -88,8 +96,26 @@ const CaseStudySlide = () => {
           });
 
           animate(el.querySelector(".cs-slider")!, {
-            opacity: [0, 1], scale: [0.92, 1],
-            duration: 900, delay: 300, ease: "out(3)",
+            opacity: [0, 1], scale: [0.78, 1.04, 1], translateX: [180, -18, 0], rotate: [6, -1, 0],
+            duration: 1350, delay: 360, ease: "out(4)",
+          });
+
+          animate(el.querySelector(".cs-scan-line")!, {
+            scaleX: [0, 1, 0],
+            transformOrigin: ["0% 50%", "0% 50%", "100% 50%"],
+            opacity: [0, 0.9, 0],
+            duration: 1600,
+            delay: 520,
+            ease: "inOut(3)",
+          });
+
+          animate(el.querySelector(".cs-glow-orbit")!, {
+            opacity: [0, 0.72, 0.18],
+            scale: [0.72, 1.08, 1],
+            rotate: [0, 12],
+            duration: 1500,
+            delay: 420,
+            ease: "out(3)",
           });
         }
       },
@@ -111,6 +137,17 @@ const CaseStudySlide = () => {
             delay: stagger(110, { start: 300 }),
             ease: createSpring({ stiffness: 110, damping: 16 }),
           });
+          animate(el.querySelectorAll(".cs-stat-icon"), {
+            scale: [0.6, 1.28, 1],
+            boxShadow: [
+              `0 0 0 0 hsl(${mitsuiCyan} / 0)`,
+              `0 0 34px 4px hsl(${mitsuiCyan} / 0.42)`,
+              `0 0 0 0 hsl(${mitsuiCyan} / 0)`,
+            ],
+            delay: stagger(90, { start: 520 }),
+            duration: 850,
+            ease: "out(4)",
+          });
         }
       },
       { threshold: 0.3 }
@@ -126,6 +163,18 @@ const CaseStudySlide = () => {
         style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
+      <div
+        className="cs-scan-line pointer-events-none absolute left-0 top-[53%] z-[1] h-px w-full"
+        style={{ opacity: 0, transform: "scaleX(0)", background: `linear-gradient(90deg, transparent, hsl(${mitsuiCyan}), transparent)` }}
+      />
+      <div
+        className="cs-glow-orbit pointer-events-none absolute right-[4%] top-[18%] z-[1] h-[58%] w-[44%] rounded-full"
+        style={{
+          opacity: 0,
+          border: `1px solid hsl(${mitsuiCyan} / 0.22)`,
+          boxShadow: `0 0 90px -32px hsl(${mitsuiCyan} / 0.9), inset 0 0 80px -52px hsl(${mitsuiCyan} / 0.8)`,
+        }}
+      />
 
       <div className="relative z-10 flex h-full w-full flex-col md:flex-row items-stretch gap-8 md:gap-10 px-6 pt-20 pb-8 md:px-12 md:pt-24 md:pb-14">
         {/* LEFT — copy + stats (top-aligned, leaving room below for extra copy) */}
@@ -140,7 +189,7 @@ const CaseStudySlide = () => {
             <h2 className="cs-heading font-sans text-[clamp(2.8rem,4.7vw,5.4rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2" style={{ opacity: 0 }}>
               <span className="font-sans not-italic block">Mitsui</span>
               <span
-                className="font-sans not-italic bg-clip-text text-transparent inline-block pr-2"
+                className="cs-title-accent font-sans not-italic bg-clip-text text-transparent inline-block pr-2"
                 style={{ backgroundImage: `linear-gradient(135deg, hsl(${mitsuiCyan}), hsl(193 80% 65%))` }}
               >
                 Chemicals
@@ -160,7 +209,7 @@ const CaseStudySlide = () => {
               return (
                 <li key={stat.label} className="cs-stat flex items-center gap-4" style={{ opacity: 0 }}>
                   <span
-                    className="flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full shrink-0"
+                    className="cs-stat-icon flex h-9 w-9 md:h-10 md:w-10 items-center justify-center rounded-full shrink-0"
                     style={{ backgroundColor: `hsl(${mitsuiCyan} / 0.14)`, border: `1px solid hsl(${mitsuiCyan} / 0.3)` }}
                   >
                     <Icon className="h-4 w-4 md:h-[18px] md:w-[18px]" style={{ color: `hsl(${mitsuiCyan})` }} />
