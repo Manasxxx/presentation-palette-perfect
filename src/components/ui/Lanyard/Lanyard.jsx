@@ -22,6 +22,11 @@ const loadImage = (src) =>
     image.src = src;
   });
 
+const BAND_TEXTURE_SCALE = 4;
+const BAND_TEXTURE_WIDTH = 2048 * BAND_TEXTURE_SCALE;
+const BAND_TEXTURE_HEIGHT = 512 * BAND_TEXTURE_SCALE;
+const BAND_LOGO_SIZE = 392;
+
 const drawRoundImage = (ctx, image, x, y, size) => {
   ctx.save();
   ctx.beginPath();
@@ -52,8 +57,8 @@ export default function Lanyard({
     <div className={`lanyard-wrapper ${className}`}>
       <Canvas
         camera={{ position, fov }}
-        dpr={[0.75, isMobile ? 0.9 : 1]}
-        gl={{ alpha: transparent, antialias: false, powerPreference: 'high-performance' }}
+        dpr={[1, isMobile ? 1.25 : 2]}
+        gl={{ alpha: transparent, antialias: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={2.2} />
@@ -119,8 +124,8 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
       if (cancelled) return;
 
       const bandCanvas = document.createElement('canvas');
-      bandCanvas.width = 2048;
-      bandCanvas.height = 512;
+      bandCanvas.width = BAND_TEXTURE_WIDTH;
+      bandCanvas.height = BAND_TEXTURE_HEIGHT;
       const bandCtx = bandCanvas.getContext('2d');
       bandCtx.imageSmoothingEnabled = true;
       bandCtx.imageSmoothingQuality = 'high';
@@ -128,8 +133,14 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
       bandCtx.fillStyle = '#030506';
       bandCtx.fillRect(0, 0, bandCanvas.width, bandCanvas.height);
 
-      for (let x = 256; x < bandCanvas.width + 640; x += 640) {
-        drawRoundImage(bandCtx, logoImage, x - 160, 96, 320);
+      for (let x = 256 * BAND_TEXTURE_SCALE; x < bandCanvas.width + 640 * BAND_TEXTURE_SCALE; x += 640 * BAND_TEXTURE_SCALE) {
+        drawRoundImage(
+          bandCtx,
+          logoImage,
+          x - (BAND_LOGO_SIZE / 2) * BAND_TEXTURE_SCALE,
+          ((512 - BAND_LOGO_SIZE) / 2) * BAND_TEXTURE_SCALE,
+          BAND_LOGO_SIZE * BAND_TEXTURE_SCALE
+        );
       }
 
       generatedBand = new THREE.CanvasTexture(bandCanvas);
@@ -137,8 +148,9 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
       generatedBand.wrapT = THREE.RepeatWrapping;
       generatedBand.colorSpace = THREE.SRGBColorSpace;
       generatedBand.anisotropy = 8;
-      generatedBand.minFilter = THREE.LinearMipmapLinearFilter;
-      generatedBand.magFilter = THREE.LinearFilter;
+      generatedBand.generateMipmaps = false;
+      generatedBand.minFilter = THREE.LinearFilter;
+      generatedBand.magFilter = THREE.NearestFilter;
       setBandTexture(generatedBand);
 
       const badgeCanvas = document.createElement('canvas');
@@ -270,7 +282,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
             resolution={isMobile ? [1000, 2000] : [1000, 1000]}
             useMap
             map={bandTexture}
-            repeat={[-0.9, 1]}
+            repeat={[-4, 1]}
             lineWidth={1.38}
           />
         ) : (

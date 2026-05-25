@@ -2,24 +2,22 @@
 
 ## Session Rule
 
-This repo has a mandatory continuity workflow.
+This repo has a push-gated continuity workflow.
 
 Every new coding session should read these files first:
 - `handoff.md`
 - `context.md`
 - `prod.md`
 
-`handoff.md` must be updated:
-- before any push
-- before ending or clearing a session
-- whenever the approach changes in a meaningful way
-- whenever debugging reveals an important root cause
+`handoff.md` must be updated only before a push.
 
-If a session looks close to running out of context or hitting limits, refresh `handoff.md` before stopping.
+Do not update `handoff.md` at session end, during context clearing, or during ordinary debugging unless a push is about to happen.
 
 ## Current Goal
 
-Session 13 (current) began the case-study redesign pass. Two of seven case studies are now on the new recipe: Mitsui on a **split** layout (copy + stats column ~38–42% wide, parallax slider in the remaining space with intentional right-edge bleed) and Baxsaa on a **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-CS slider scaling. The remaining five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) are still on the pre-Session-13 layout.
+Session 14 (current) is preparing a push for the Our Team lanyard band rendering and repo handoff workflow update. The lanyard strap now keeps the OwlSurf mark upright and improves sharpness with a 4x generated texture, higher foreground Canvas DPR, antialiasing, sharper texture filters, larger logo draw size, and React Bits-style `repeat={[-4, 1]}`. The repo workflow now says `handoff.md` is updated only before a push, not at ordinary session end.
+
+Session 13 began the case-study redesign pass. Two of seven case studies are now on the new recipe: Mitsui on a **split** layout (copy + stats column ~38–42% wide, parallax slider in the remaining space with intentional right-edge bleed) and Baxsaa on a **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-CS slider scaling. The remaining five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) are still on the pre-Session-13 layout.
 
 Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-design-plan.scratch.md` are all preserved untouched. The Session 11 P0 batch (a11y, mobile WebGL gating, prefers-reduced-motion hook, slide-mount resilience) and the Session 12 parked UI placement plan are all still pending — case-study redesign is taking priority this session because the deck owner is iterating live with prospects.
 
@@ -28,7 +26,13 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The dev server was running during this session. Per a new project rule (saved to personal memory in this session) the user reviews changes themselves in the browser — `npm run build`, screenshot capture, and other "verify it works" probes were intentionally skipped to avoid burning context.
+The dev server was running during this session. `npm run build` was run before push because the repo push gate requires it. Browser visual verification was limited by local Chrome opening on the profile picker; the user remains the source of final visual approval.
+
+### Our Team lanyard + handoff workflow (Session 14)
+
+- **Lanyard band** (`src/components/ui/Lanyard/Lanyard.jsx`) — updated. Generated band texture is now 8192x2048 via a 4x scale, the band logo draw is larger while staying upright, Canvas DPR is raised for this foreground hero object, antialiasing is enabled, mipmap blur is disabled on the generated texture, and MeshLine repeat is now `[-4, 1]`.
+- **Workflow docs** (`AGENTS.md`, `handoff.md`) — updated. `handoff.md` is now push-gated only: update before push, not at normal session end, context clearing, or ordinary debugging.
+- **Project docs** (`context.md`, `prod.md`) — updated for the lanyard render change, the foreground WebGL DPR exception, and the push-gated handoff rule.
 
 ### Case-study redesign progress (Session 13)
 
@@ -107,6 +111,15 @@ Case-study redesign pass:
 - `context.md` — Session 13 entry, new architecture rows, TODO for remaining 5 case studies
 - `handoff.md` — this file
 
+## Files Touched (Session 14)
+
+Lanyard + workflow push:
+- `src/components/ui/Lanyard/Lanyard.jsx` — sharper upright strap mark and higher-quality foreground canvas render
+- `AGENTS.md` — handoff update rule narrowed to push only
+- `handoff.md` — push-gate state refreshed for this push
+- `context.md` — Session 14 log added
+- `prod.md` — lanyard sharpness and foreground DPR guidance added
+
 Outside-repo work in this session (NOT committed):
 - `~/.claude/projects/-Users-manassrivastava/memory/feedback_no_build_screenshot_verify.md` — new feedback memory: skip build / screenshot / verify probes unless explicitly asked. Indexed in `MEMORY.md`.
 
@@ -147,6 +160,7 @@ Doc updates (this commit):
 ## Verified / Evidence
 
 - `npm run build` passes after copy edits and after orphan-file deletes.
+- `npm run build` passes before the Session 14 lanyard/workflow push.
 - `npm test` / `npm run lint` were not re-run in this session after the deletes; the project's pre-existing lint debt in `LightRays.tsx`, `Hyperspeed.tsx`, `PrismaticBurst.tsx`, and `tailwind.config.ts` is still expected to fail lint.
 - Visual screenshot capture was intentionally skipped per the original handoff policy (the user prefers to judge browser output manually).
 

@@ -1,6 +1,6 @@
 # Agent Workflow Rules
 
-This repository uses a mandatory handoff workflow.
+This repository uses a push-gated handoff workflow.
 
 ## Required startup reads
 
@@ -14,7 +14,7 @@ If one of these files is missing, note that clearly in the session and continue 
 
 ## Handoff rule
 
-`handoff.md` is a living session handoff file.
+`handoff.md` is a push handoff file.
 
 It must include:
 - current goal
@@ -26,15 +26,9 @@ It must include:
 
 ## When to update `handoff.md`
 
-Update `handoff.md` in each of these cases:
+Update `handoff.md` only before a push.
 
-1. Before any push
-2. Before ending a session
-3. Before clearing context or starting a fresh session
-4. When a major approach changes
-5. When debugging reveals a meaningful root cause
-
-If a session appears close to running out of context or hitting usage limits, refresh `handoff.md` before stopping.
+Do not update `handoff.md` at session end, during context clearing, or during ordinary debugging unless a push is about to happen.
 
 ## Push gate
 

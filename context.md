@@ -10,11 +10,35 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 13 began the case-study redesign pass. Two of seven case studies are now on the new templates: Mitsui on the **split** layout (copy + stats on the left, parallax slider on the right with intentional right-edge bleed), Baxsaa on the **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-case-study scale tuning (default unchanged, backward compatible with the five untouched case studies). The Session 12 cover/contact polish and the parked `ui-design-plan.scratch.md` are still in place.
+**Latest working state:** Session 14 adjusted the Our Team lanyard band rendering and repo handoff policy. The lanyard strap now uses a higher-resolution generated texture, higher canvas DPR, antialiasing, sharper texture filtering, a larger upright OwlSurf mark, and React Bits-style texture repeat. `handoff.md` is now push-gated only: update it before pushes, not at ordinary session end. Session 13's case-study redesign is still partially complete: Mitsui is on the **split** layout, Baxsaa is on the **polished vertical** layout, and the remaining five case studies are still pending.
 
 ---
 
 ## Session Log
+
+### Session 14 — Lanyard band sharpness + push-gated handoff
+
+**What was done:**
+
+**1. Our Team lanyard band rendering sharpened** (`src/components/ui/Lanyard/Lanyard.jsx`)
+- Kept the OwlSurf band mark upright in the generated canvas texture.
+- Increased the generated band texture from 2048x512 to 8192x2048 via `BAND_TEXTURE_SCALE = 4`.
+- Increased the drawn mark size from 320 to 392 logical pixels before scaling, so more source detail survives on the narrow MeshLine strap.
+- Switched the Canvas DPR from `[0.75, 1]` desktop max to `[1, 2]`, with mobile capped at `1.25`, and enabled antialiasing. This is intentionally allowed here because the lanyard is a foreground hero object rather than an ambient background.
+- Disabled mipmap generation on the generated strap texture and used `LinearFilter` / `NearestFilter` to avoid extra softening on the repeated strap mark.
+- Set the MeshLine texture repeat to `[-4, 1]`, matching the React Bits lanyard pattern more closely than the previous `[-0.9, 1]`.
+
+**2. Handoff workflow narrowed to push only** (`AGENTS.md`, `handoff.md`)
+- Updated the repo workflow language so `handoff.md` is a push handoff file, not a session-end diary.
+- New rule: update `handoff.md` only before a push. Do not update it at session end, during context clearing, or during ordinary debugging unless a push is about to happen.
+
+**Rationale:**
+- The user flagged that the OwlSurf mark on the strap was blurred and that prior fixes were not visually grounded enough. The actual render path was a generated canvas texture mapped through MeshLine, so the durable fix was to improve texture resolution, render DPI, texture filtering, and repeat behavior rather than distorting the logo artwork itself.
+- The user also explicitly changed the repo workflow: handoff updates should not happen every session, only when preparing to push.
+
+**Verification:**
+- `npm run build` run before this push.
+- Visual browser verification was limited by local Chrome opening on the profile picker during the session; final visual approval remains with the user in the live browser.
 
 ### Session 13 — Case-study redesign (Mitsui split, Baxsaa polished vertical)
 
