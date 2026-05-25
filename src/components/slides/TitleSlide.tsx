@@ -37,10 +37,19 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
     animate(el.querySelectorAll(".ts-wordmark-line"), {
       opacity: [0, 1],
-      translateY: [24, 0],
-      duration: 900,
+      translateY: [34, 0],
+      scale: [0.94, 1],
+      duration: 950,
       delay: (_, i) => 150 + i * 120,
-      ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
+      ease: createSpring({ stiffness: 95, damping: 12 }),
+    });
+
+    animate(el.querySelector(".ts-title-accent")!, {
+      translateX: [-30, 0],
+      filter: ["blur(12px)", "blur(0px)"],
+      duration: 950,
+      delay: 260,
+      ease: "out(4)",
     });
 
     animate(el.querySelector(".ts-logo-outer")!, {
@@ -78,10 +87,11 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     if (btn) {
       animate(btn, {
         opacity: [0, 1],
-        translateY: [10, 0],
-        duration: 700,
+        translateY: [18, 0],
+        scale: [0.88, 1.04, 1],
+        duration: 950,
         delay: 1000,
-        ease: "out(3)",
+        ease: "out(4)",
       });
     }
 
@@ -196,7 +206,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             <h1 className="font-sans font-black leading-[0.9] tracking-tight uppercase text-white text-[clamp(3.5rem,10vw,7rem)]">
               <span className="ts-wordmark-line block" style={{ opacity: 0 }}>
                 <span className="font-sans">OWL</span>
-                <span className="font-sans text-owl-teal">SURF</span>
+                <span className="ts-title-accent font-sans text-owl-teal inline-block">SURF</span>
               </span>
             </h1>
             <p

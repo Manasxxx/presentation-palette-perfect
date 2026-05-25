@@ -90,17 +90,37 @@ const SkyrocketSlide = () => {
           animate(el.querySelectorAll(".who-word"), {
             opacity: [0, 1],
             translateX: [-28, 0],
+            scale: [0.94, 1],
             delay: stagger(90, { start: 420 }),
             duration: 900,
+            ease: createSpring({ stiffness: 95, damping: 12 }),
+          });
+
+          animate(el.querySelector(".who-title-accent")!, {
+            translateX: [-24, 0],
+            filter: ["blur(10px)", "blur(0px)"],
+            duration: 900,
+            delay: 560,
+            ease: "out(4)",
+          });
+
+          animate(el.querySelector(".who-illustration")!, {
+            opacity: [0, 0.9],
+            translateX: [80, 0],
+            scale: [1.62, 1.72],
+            duration: 1200,
+            delay: 520,
             ease: "out(4)",
           });
 
           animate(el.querySelectorAll(".who-sector"), {
             translateY: [18, 0],
+            scale: [0.88, 1],
             delay: stagger(80, { start: 700 }),
             duration: 700,
             ease: createSpring({ stiffness: 120, damping: 15 }),
           });
+
         }
       },
       { threshold: 0.35 }
@@ -116,13 +136,12 @@ const SkyrocketSlide = () => {
         <Hyperspeed effectOptions={hyperspeedOptions} />
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_63%_50%,rgba(75,194,194,0.18),transparent_34%),linear-gradient(90deg,hsl(214_30%_6%/0.98),hsl(214_30%_6%/0.92)_48%,hsl(182_70%_18%/0.38))]" />
-
       <div className="relative z-10 h-full w-full max-w-[1720px] overflow-hidden bg-[#090d12]/92 shadow-2xl">
         <div className="absolute inset-y-0 right-0 z-10 hidden w-[58%] overflow-hidden md:block">
           <img
             src={industrialEngineerImage}
             alt=""
-            className="h-full w-full origin-right translate-x-[23%] scale-[1.72] object-contain object-right opacity-90 mix-blend-screen"
+            className="who-illustration h-full w-full origin-right translate-x-[23%] scale-[1.72] object-contain object-right opacity-90 mix-blend-screen"
             loading="lazy"
           />
         </div>
@@ -153,7 +172,7 @@ const IntroBlock = ({ mobile = false }: { mobile?: boolean }) => (
       </div>
       <div className={`font-sans font-black uppercase leading-[0.95] text-white drop-shadow-[0_0_34px_rgba(75,194,194,0.16)] ${mobile ? "text-[3.4rem]" : "text-[clamp(3.4rem,5.9vw,6.6rem)]"}`}>
         <span className="who-word block whitespace-nowrap">
-          WHO <span className="text-gradient-green">WE</span>
+          WHO <span className="who-title-accent inline-block text-gradient-green">WE</span>
         </span>
         <span className="who-word block">ARE.</span>
       </div>

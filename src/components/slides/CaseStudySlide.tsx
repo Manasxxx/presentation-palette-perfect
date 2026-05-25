@@ -100,23 +100,6 @@ const CaseStudySlide = () => {
             duration: 1350, delay: 360, ease: "out(4)",
           });
 
-          animate(el.querySelector(".cs-scan-line")!, {
-            scaleX: [0, 1, 0],
-            transformOrigin: ["0% 50%", "0% 50%", "100% 50%"],
-            opacity: [0, 0.9, 0],
-            duration: 1600,
-            delay: 520,
-            ease: "inOut(3)",
-          });
-
-          animate(el.querySelector(".cs-glow-orbit")!, {
-            opacity: [0, 0.72, 0.18],
-            scale: [0.72, 1.08, 1],
-            rotate: [0, 12],
-            duration: 1500,
-            delay: 420,
-            ease: "out(3)",
-          });
         }
       },
       { threshold: 0.3 }
@@ -163,19 +146,6 @@ const CaseStudySlide = () => {
         style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
-      <div
-        className="cs-scan-line pointer-events-none absolute left-0 top-[53%] z-[1] h-px w-full"
-        style={{ opacity: 0, transform: "scaleX(0)", background: `linear-gradient(90deg, transparent, hsl(${mitsuiCyan}), transparent)` }}
-      />
-      <div
-        className="cs-glow-orbit pointer-events-none absolute right-[4%] top-[18%] z-[1] h-[58%] w-[44%] rounded-full"
-        style={{
-          opacity: 0,
-          border: `1px solid hsl(${mitsuiCyan} / 0.22)`,
-          boxShadow: `0 0 90px -32px hsl(${mitsuiCyan} / 0.9), inset 0 0 80px -52px hsl(${mitsuiCyan} / 0.8)`,
-        }}
-      />
-
       <div className="relative z-10 flex h-full w-full flex-col md:flex-row items-stretch gap-8 md:gap-10 px-6 pt-20 pb-8 md:px-12 md:pt-24 md:pb-14">
         {/* LEFT — copy + stats (top-aligned, leaving room below for extra copy) */}
         <div className="flex flex-col gap-6 md:gap-7 md:w-[42%] lg:w-[38%] shrink-0">

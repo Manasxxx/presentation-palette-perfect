@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 15 (current) is preparing a push for the case-study Anime.js motion system and next-session motion plan. All seven case-study slides now share a stronger visible motion language: heading spring, accent-word blur-to-sharp slide, creative/slider overshoot, brand scan-line sweep, glow orbit, and stat icon pulse where stats exist. The next session should extend this Anime.js language to the remaining non-case-study slides (Cover, Who We Are, Our Team, Services, Clients, Contact) through shared helpers where practical.
+Session 16 (current) is preparing a push for the deck-wide Anime.js motion cleanup and OwlSurf teal scale update. The non-case-study slides now use stronger content-bound Anime.js motion: heading spring, accent-word blur-to-sharp motion, lanyard/card/logo overshoot, and link/icon pulses where useful. The broad scan-line sweep and circular glow-orbit blob have been removed from all slides, including all seven case studies.
+
+Session 15 pushed the case-study Anime.js motion system. All seven case-study slides keep heading spring, accent-word blur-to-sharp slide, creative/slider overshoot, and stat icon pulse where stats exist. The scan-line sweep and glow orbit from that first pass were removed in Session 16 after visual feedback.
 
 Session 14 pushed the Our Team lanyard band rendering and repo handoff workflow update. The lanyard strap keeps the OwlSurf mark upright and improves sharpness with a 4x generated texture, higher foreground Canvas DPR, antialiasing, sharper texture filters, larger logo draw size, and React Bits-style `repeat={[-4, 1]}`. The repo workflow now says `handoff.md` is updated only before a push, not at ordinary session end.
 
@@ -30,16 +32,13 @@ The app is a Vite + React presentation-style SPA running on the fixed dev port:
 
 The dev server was running during this session. `npm run build` was run before push because the repo push gate requires it. Browser visual approval remains with the user.
 
-### Case-study Anime.js motion system (Session 15)
+### Deck-wide Anime.js motion cleanup + OwlSurf teal scale (Session 16)
 
-- **Mitsui** (`src/components/slides/CaseStudySlide.tsx`) — stronger visible motion: heading spring, `Chemicals` blur-to-sharp slide, slider overshoot, cyan scan line, glow orbit, stat icon pulse.
-- **Baxsaa** (`src/components/slides/BaxsaaCaseStudy.tsx`) — same motion language adapted to maroon/cream vertical layout.
-- **CultFit** (`src/components/slides/CultFitCaseStudy.tsx`) — same motion language adapted to pink/yellow vertical layout.
-- **GirlUp** (`src/components/slides/GirlUpCaseStudy.tsx`) — same motion language adapted to teal/purple vertical layout.
-- **CTP** (`src/components/slides/CTPCaseStudy.tsx`) — same motion language adapted to green/teal light layout.
-- **VNT** (`src/components/slides/VNTCaseStudy.tsx`) — same motion language adapted to green/teal image layout.
-- **Raychem RPG** (`src/components/slides/RaychemRPGCaseStudy.tsx`) — same motion language adapted to red/blue slider layout.
-- **Next session plan** — extend this Anime.js treatment to non-case-study slides: Cover, Who We Are, Our Team, Services, Clients, and Contact. Prefer shared helpers and add/reuse a `prefers-reduced-motion` gate before making the whole deck more kinetic.
+- **Non-case-study slides** (`TitleSlide`, `SkyrocketSlide`, `OurTeamSlide`, `ServicesSlide`, `ClientsSlide`, `ContactSlide`) — stronger Anime.js entrances added: heading spring, accent-word blur-to-sharp motion, creative/lanyard/card/logo overshoot, and icon pulses where useful.
+- **Case-study slides** — retained the useful case-study motion pieces, but removed every `.cs-scan-line` and `.cs-glow-orbit` animation/element.
+- **No line/blob rule** — `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches.
+- **OwlSurf design system** (`src/index.css`, `tailwind.config.ts`) — added the supplied teal scale from `50` to `700`, kept `#4BC2C2` as the primary teal, and remapped teal light/dark aliases to the new scale.
+- **Next session plan** — add/reuse a `prefers-reduced-motion` gate before broadening motion further or extracting shared helpers.
 
 ### Our Team lanyard + handoff workflow (Session 14)
 
@@ -147,6 +146,28 @@ Case-study Anime.js motion:
 - `handoff.md` — push-gate state refreshed for this push
 - `prod.md` — deck-wide Anime.js motion guidance added
 
+## Files Touched (Session 16)
+
+Deck-wide motion cleanup + OwlSurf design tokens:
+- `src/components/slides/TitleSlide.tsx`
+- `src/components/slides/SkyrocketSlide.tsx`
+- `src/components/slides/OurTeamSlide.tsx`
+- `src/components/slides/ServicesSlide.tsx`
+- `src/components/slides/ClientsSlide.tsx`
+- `src/components/slides/ContactSlide.tsx`
+- `src/components/slides/CaseStudySlide.tsx`
+- `src/components/slides/BaxsaaCaseStudy.tsx`
+- `src/components/slides/CultFitCaseStudy.tsx`
+- `src/components/slides/GirlUpCaseStudy.tsx`
+- `src/components/slides/CTPCaseStudy.tsx`
+- `src/components/slides/VNTCaseStudy.tsx`
+- `src/components/slides/RaychemRPGCaseStudy.tsx`
+- `src/index.css`
+- `tailwind.config.ts`
+- `context.md`
+- `handoff.md`
+- `prod.md`
+
 Outside-repo work in this session (NOT committed):
 - `~/.claude/projects/-Users-manassrivastava/memory/feedback_no_build_screenshot_verify.md` — new feedback memory: skip build / screenshot / verify probes unless explicitly asked. Indexed in `MEMORY.md`.
 
@@ -189,6 +210,8 @@ Doc updates (this commit):
 - `npm run build` passes after copy edits and after orphan-file deletes.
 - `npm run build` passes before the Session 14 lanyard/workflow push.
 - `npm run build` passes before the Session 15 case-study motion push.
+- `npm run build` passes before the Session 16 deck-wide motion cleanup push.
+- `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches after Session 16 cleanup.
 - `npm test` / `npm run lint` were not re-run in this session after the deletes; the project's pre-existing lint debt in `LightRays.tsx`, `Hyperspeed.tsx`, `PrismaticBurst.tsx`, and `tailwind.config.ts` is still expected to fail lint.
 - Visual screenshot capture was intentionally skipped per the original handoff policy (the user prefers to judge browser output manually).
 

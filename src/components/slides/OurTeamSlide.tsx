@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { animate, createSpring, stagger } from 'animejs';
 import Lanyard from '@/components/ui/Lanyard/Lanyard';
 import harshitAvatar from '@/assets/harshit-avatar.png';
 import manasAvatar from '@/assets/manas-avatar.png';
@@ -43,6 +44,8 @@ const lanyardFallOffsets = [-0.72, 0.38, -0.18, 0.82, -0.48, 0.58];
 const AUTO_ADVANCE_MS = 5000;
 
 const OurTeamSlide = () => {
+    const sectionRef = useRef<HTMLElement>(null);
+    const triggered = useRef(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const activeMember = teamMembers[activeIndex];
 
@@ -54,19 +57,76 @@ const OurTeamSlide = () => {
         return () => window.clearTimeout(nextTimer);
     }, [activeIndex]);
 
+    useEffect(() => {
+        const el = sectionRef.current;
+        if (!el) return;
+
+        const reveal = () => {
+            if (triggered.current) return;
+            triggered.current = true;
+
+            animate(el.querySelectorAll('.team-heading'), {
+                opacity: [0, 1],
+                translateY: [70, 0],
+                scale: [0.94, 1],
+                delay: stagger(80),
+                duration: 900,
+                ease: createSpring({ stiffness: 95, damping: 12 }),
+            });
+
+            animate(el.querySelector('.team-title-accent')!, {
+                translateX: [-26, 0],
+                filter: ['blur(10px)', 'blur(0px)'],
+                duration: 900,
+                delay: 160,
+                ease: 'out(4)',
+            });
+
+            animate(el.querySelectorAll('.team-roster-row'), {
+                translateX: [-38, 0],
+                delay: stagger(80, { start: 320 }),
+                duration: 750,
+                ease: 'out(4)',
+            });
+
+            animate(el.querySelector('.team-lanyard-stage')!, {
+                opacity: [0, 1],
+                scale: [0.82, 1.04, 1],
+                translateX: [120, -14, 0],
+                rotate: [5, -1, 0],
+                duration: 1300,
+                delay: 360,
+                ease: 'out(4)',
+            });
+
+        };
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) reveal();
+            },
+            { threshold: 0.25 }
+        );
+        observer.observe(el);
+        const fallback = window.setTimeout(reveal, 700);
+        return () => {
+            observer.disconnect();
+            window.clearTimeout(fallback);
+        };
+    }, []);
+
     return (
-        <section className="slide relative min-h-screen w-full overflow-hidden bg-background px-5 pb-5 pt-16 font-sans md:px-8 md:pb-7 md:pt-16">
+        <section ref={sectionRef} className="slide relative min-h-screen w-full overflow-hidden bg-background px-5 pb-5 pt-16 font-sans md:px-8 md:pb-7 md:pt-16">
             <div className="absolute inset-0 z-0 pointer-events-none opacity-40 hexagon-pattern" />
             <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_76%_34%,rgba(75,194,194,0.2),transparent_30%),radial-gradient(circle_at_18%_78%,rgba(2,184,252,0.12),transparent_28%),linear-gradient(180deg,rgba(9,13,18,0.9),rgba(7,9,13,0.98))]" />
-
             <div className="relative z-10 flex h-full w-full max-w-[1720px] flex-col">
                 <header className="text-left self-start shrink-0">
-                    <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
+                    <span className="team-heading text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block" style={{ opacity: 0 }}>
                         THE PEOPLE
                     </span>
-                    <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
+                    <h2 className="team-heading font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2" style={{ opacity: 0 }}>
                         <span className="font-sans not-italic">OUR </span>
-                        <span className="font-sans not-italic text-gradient-green inline-block pr-2">
+                        <span className="team-title-accent font-sans not-italic text-gradient-green inline-block pr-2">
                             TEAM
                         </span>
                     </h2>
@@ -92,7 +152,7 @@ const OurTeamSlide = () => {
                                         key={member.name}
                                         type="button"
                                         onClick={() => setActiveIndex(index)}
-                                        className={`group relative grid w-full grid-cols-[2.8rem_1fr] items-baseline gap-4 border-b py-3.5 text-left transition-all duration-300 ${
+                                        className={`team-roster-row group relative grid w-full grid-cols-[2.8rem_1fr] items-baseline gap-4 border-b py-3.5 text-left transition-all duration-300 ${
                                             isActive
                                                 ? 'border-primary/72 text-white opacity-100'
                                                 : 'border-white/8 text-white/18 opacity-45 saturate-0 hover:border-white/18 hover:text-white/34 hover:opacity-70'
@@ -125,7 +185,7 @@ const OurTeamSlide = () => {
                         </div>
                     </div>
 
-                    <div className="relative z-10 flex min-h-[620px] items-center justify-center overflow-visible">
+                    <div className="team-lanyard-stage relative z-10 flex min-h-[620px] items-center justify-center overflow-visible" style={{ opacity: 0 }}>
                         <div className="absolute right-4 top-1/2 h-[58%] w-[72%] -translate-y-1/2 rounded-full bg-primary/14 blur-[70px]" />
                         <div className="relative h-[680px] w-full max-w-[720px] overflow-visible">
                             <Lanyard

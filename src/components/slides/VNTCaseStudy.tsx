@@ -82,23 +82,6 @@ const VNTCaseStudy = () => {
             });
           }
 
-          animate(el.querySelector(".cs-scan-line")!, {
-            scaleX: [0, 1, 0],
-            transformOrigin: ["0% 50%", "0% 50%", "100% 50%"],
-            opacity: [0, 0.82, 0],
-            duration: 1600,
-            delay: 520,
-            ease: "inOut(3)",
-          });
-
-          animate(el.querySelector(".cs-glow-orbit")!, {
-            opacity: [0, 0.52, 0.14],
-            scale: [0.72, 1.08, 1],
-            rotate: [0, 12],
-            duration: 1500,
-            delay: 420,
-            ease: "out(3)",
-          });
         }
       },
       { threshold: 0.3 }
@@ -114,19 +97,6 @@ const VNTCaseStudy = () => {
         style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(145deg, hsl(120 25% 75%), hsl(140 30% 68%), hsl(${vntGreen} / 0.5))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(145deg, hsl(120 25% 75%), hsl(140 30% 68%), hsl(${vntGreen} / 0.5))` }} />
-      <div
-        className="cs-scan-line pointer-events-none absolute left-0 top-[52%] z-[1] h-px w-full"
-        style={{ opacity: 0, transform: "scaleX(0)", background: `linear-gradient(90deg, transparent, hsl(${vntGreen}), hsl(${vntTeal}), transparent)` }}
-      />
-      <div
-        className="cs-glow-orbit pointer-events-none absolute right-[14%] top-[18%] z-[1] h-[48%] w-[36%] rounded-full"
-        style={{
-          opacity: 0,
-          border: `1px solid hsl(${vntGreen} / 0.2)`,
-          boxShadow: `0 0 90px -34px hsl(${vntGreen} / 0.7), inset 0 0 80px -54px hsl(${vntTeal} / 0.65)`,
-        }}
-      />
-
       <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
 
         <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center" style={{ opacity: 0, color: "hsl(0 0% 15%)" }}>

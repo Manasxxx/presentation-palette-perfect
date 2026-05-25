@@ -10,11 +10,36 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 15 added a shared Anime.js motion language across all seven case-study slides. The case-study block now has visibly stronger entrance motion: heading spring, gradient/accent word blur-to-sharp slide, creative/slider overshoot, brand scan-line sweep, soft glow orbit, and stat icon pulse where stats exist. The next planned motion pass is to extend this same Anime.js language to the non-case-study slides (Cover, Who We Are, Our Team, Services, Clients, Contact) while respecting `prefers-reduced-motion` and the deck's performance rules.
+**Latest working state:** Session 16 extended the Anime.js entrance language to the non-case-study slides and removed the broad scan-line / circular glow-orbit treatment from the deck. The current motion language is heading spring, accent-word blur-to-sharp slide, creative/slider/lanyard overshoot, and stat/icon pulse where useful. The OwlSurf design tokens now include the supplied teal scale (`50` through `700`) in CSS variables and Tailwind.
 
 ---
 
 ## Session Log
+
+### Session 16 — Deck-wide motion cleanup + OwlSurf teal scale
+
+**What was done:**
+
+**1. Anime.js extended beyond case studies** (`src/components/slides/TitleSlide.tsx`, `SkyrocketSlide.tsx`, `OurTeamSlide.tsx`, `ServicesSlide.tsx`, `ClientsSlide.tsx`, `ContactSlide.tsx`)
+- Added stronger entrance motion to the cover, Who We Are, Our Team, Services, Clients, and Contact slides.
+- Reused the case-study feel where it worked: heading spring, accent-word blur-to-sharp motion, card/lanyard/logo overshoot, and icon pulses.
+- Removed the scan-line sweep and circular glow-orbit blob from every slide after visual feedback that those elements were not wanted.
+
+**2. Case-study motion refined** (`src/components/slides/*CaseStudy*.tsx`)
+- Kept heading, accent-word, creative/slider, and stat/icon motion.
+- Removed the `.cs-scan-line` and `.cs-glow-orbit` animation blocks and JSX elements from all seven case-study slides.
+
+**3. OwlSurf teal scale added** (`src/index.css`, `tailwind.config.ts`)
+- Added the supplied teal scale: `#BAFDFD`, `#61F5F5`, `#4BC2C2`, `#43AFAF`, `#2C7A7A`, `#1F5C5C`, `#072222`, `#031414`.
+- Kept `#4BC2C2` as the primary OwlSurf teal and mapped light/dark aliases to the new scale.
+
+**Rationale:**
+- The deck needed more visible Anime.js motion, but the broad line sweep and round glow blob were reading as extra decoration. The motion is now attached to content rather than floating above it.
+- The design system needed to match the provided OwlSurf palette instead of only carrying a three-color teal set.
+
+**Verification:**
+- `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches.
+- `npm run build` passed before push.
 
 ### Session 15 — Case-study Anime.js motion system
 
@@ -22,7 +47,7 @@
 
 **1. Shared case-study motion language applied** (`src/components/slides/*CaseStudy*.tsx`)
 - Applied the Mitsui motion treatment across all seven case-study slides: Mitsui, Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG.
-- Each case study now uses a stronger heading spring, accent-word slide-in with blur-to-sharp, creative/slider overshoot, brand-color scan line, soft glow orbit, and stat icon pulse where stat rows exist.
+- Each case study now uses a stronger heading spring, accent-word slide-in with blur-to-sharp, creative/slider overshoot, and stat icon pulse where stat rows exist. The earlier brand-color scan line and soft glow orbit were removed in Session 16.
 - Kept layouts and copy intact. This pass was motion-only, not a redesign pass.
 
 **2. Next-session plan captured**

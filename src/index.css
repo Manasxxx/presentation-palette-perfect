@@ -39,7 +39,7 @@
 
 @layer base {
   :root {
-    /* OwlSurf Brand Colors - Void Black #0b0f14, Green #4bc2c2, White #ffffff */
+    /* OwlSurf Brand Colors - Void Black #0b0f14, Teal scale, White #ffffff */
     --background: 214 30% 6%;
     --foreground: 0 0% 100%;
 
@@ -49,7 +49,7 @@
     --popover: 0 0% 8%;
     --popover-foreground: 0 0% 100%;
 
-    /* OwlSurf Green #4bc2c2 - Primary Brand Color */
+    /* OwlSurf Teal 200 #4bc2c2 - Primary Brand Color */
     --primary: 180 45% 53%;
     --primary-foreground: 0 0% 0%;
 
@@ -60,7 +60,7 @@
     --muted: 214 20% 15%;
     --muted-foreground: 214 10% 65%;
 
-    /* OwlSurf Green accent for UI elements */
+    /* OwlSurf Teal accent for UI elements */
     --accent: 180 45% 53%;
     --accent-foreground: 0 0% 0%;
 
@@ -76,9 +76,17 @@
     /* OwlSurf Design System Tokens */
     --owl-black: #000000;
     --owl-white: #FFFFFF;
-    --owl-teal: #4BC2C2;
-    --owl-teal-light: #7DD8D8;
-    --owl-teal-dark: #2E9E9E;
+    --owl-teal-50: #BAFDFD;
+    --owl-teal-100: #61F5F5;
+    --owl-teal-200: #4BC2C2;
+    --owl-teal-300: #43AFAF;
+    --owl-teal-400: #2C7A7A;
+    --owl-teal-500: #1F5C5C;
+    --owl-teal-600: #072222;
+    --owl-teal-700: #031414;
+    --owl-teal: var(--owl-teal-200);
+    --owl-teal-light: var(--owl-teal-100);
+    --owl-teal-dark: var(--owl-teal-400);
     --owl-charcoal: #333333;
     --owl-gray-100: #F5F5F5;
     --owl-gray-200: #E0E0E0;
@@ -135,7 +143,7 @@
     --tracking-widest:  0.15em;
 
     /* Gradients (limited use) */
-    --gradient-green: linear-gradient(135deg, #4BC2C2, #2E9E9E);
+    --gradient-green: linear-gradient(135deg, #61F5F5, #4BC2C2, #2C7A7A);
     --gradient-dark: linear-gradient(180deg, #000000, #111111);
     --gradient-card: linear-gradient(145deg, #111111, #0a0a0a);
 

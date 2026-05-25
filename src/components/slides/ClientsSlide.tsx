@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { animate } from "animejs";
+import { animate, createSpring } from "animejs";
 import LogoLoop from "@/components/ui/LogoLoop/LogoLoop";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import cultfitLogo from "@/assets/client-cultfit.png";
@@ -72,15 +72,24 @@ const ClientsSlide = () => {
       animate(heading, {
         opacity: 1,
         translateY: 0,
-        duration: 800,
-        ease: "out(3)",
+        scale: [0.94, 1],
+        duration: 900,
+        ease: createSpring({ stiffness: 95, damping: 12 }),
+      });
+      animate(el.querySelector(".cl-title-accent")!, {
+        translateX: [-26, 0],
+        filter: ["blur(10px)", "blur(0px)"],
+        duration: 900,
+        delay: 120,
+        ease: "out(4)",
       });
       animate(cards, {
         opacity: 1,
-        translateY: 0,
-        duration: 800,
+        translateY: [60, -10, 0],
+        scale: [0.92, 1.03, 1],
+        duration: 1100,
         delay: 200,
-        ease: "out(3)",
+        ease: "out(4)",
       });
     };
 
@@ -112,7 +121,6 @@ const ClientsSlide = () => {
           speed={0.18}
         />
       </div>
-
       {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-24 pb-10 md:px-12 md:pt-24 md:pb-12">
         <header className="cl-heading text-left self-start">
@@ -121,7 +129,7 @@ const ClientsSlide = () => {
           </span>
           <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
             <span className="font-sans not-italic">OUR </span>
-            <span className="font-sans not-italic text-gradient-green inline-block pr-2">CLIENTS</span>
+            <span className="cl-title-accent font-sans not-italic text-gradient-green inline-block pr-2">CLIENTS</span>
           </h2>
         </header>
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, stagger } from "animejs";
+import { animate, createSpring, stagger } from "animejs";
 import {
   Target,
   Film,
@@ -257,8 +257,16 @@ const ServicesSlide = () => {
       animate(header, {
         opacity: 1,
         translateY: 0,
-        duration: 700,
-        ease: "out(3)",
+        scale: [0.94, 1],
+        duration: 900,
+        ease: createSpring({ stiffness: 95, damping: 12 }),
+      });
+      animate(el.querySelector(".sv-title-accent")!, {
+        translateX: [-26, 0],
+        filter: ["blur(10px)", "blur(0px)"],
+        duration: 900,
+        delay: 120,
+        ease: "out(4)",
       });
       animate(tabs, {
         opacity: 1,
@@ -273,6 +281,15 @@ const ServicesSlide = () => {
         delay: stagger(70, { start: 250 }),
         duration: 500,
         ease: "out(3)",
+      });
+      animate(el.querySelector(".sv-card-stage")!, {
+        opacity: [0, 1],
+        scale: [0.82, 1.04, 1],
+        translateX: [120, -14, 0],
+        rotate: [4, -1, 0],
+        duration: 1250,
+        delay: 360,
+        ease: "out(4)",
       });
     };
 
@@ -303,7 +320,6 @@ const ServicesSlide = () => {
         followMouse={false}
         className="opacity-40 pointer-events-none"
       />
-
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-20 pb-8 md:px-12 md:pt-20 md:pb-10">
         <header className="sv-header text-left self-start">
           <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
@@ -311,7 +327,7 @@ const ServicesSlide = () => {
           </span>
           <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
             <span className="font-sans not-italic">OUR </span>
-            <span className="font-sans not-italic text-gradient-green inline-block pr-2">
+            <span className="sv-title-accent font-sans not-italic text-gradient-green inline-block pr-2">
               SERVICES
             </span>
           </h2>
@@ -370,7 +386,7 @@ const ServicesSlide = () => {
           </div>
 
           {/* Right: CardSwap stack — 5 cards per category, simpler content */}
-          <div className="relative col-span-12 h-[460px] md:col-span-8 md:h-[460px]">
+          <div className="sv-card-stage relative col-span-12 h-[460px] md:col-span-8 md:h-[460px]" style={{ opacity: 0 }}>
             <CardSwap
               key={activeKey}
               width={520}

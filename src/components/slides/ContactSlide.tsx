@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, Globe, Mail, Phone } from "lucide-react";
-import { animate, stagger } from "animejs";
+import { animate, createSpring, stagger } from "animejs";
 import logo from "@/assets/logo-main.jpg";
 
 const contactLinks = [
@@ -39,9 +39,18 @@ const ContactSlide = () => {
       animate(el.querySelectorAll(".ct-reveal"), {
         opacity: [0, 1],
         translateY: [24, 0],
+        scale: [0.96, 1],
         duration: 850,
         delay: stagger(110),
-        ease: "out(3)",
+        ease: createSpring({ stiffness: 100, damping: 14 }),
+      });
+
+      animate(el.querySelector(".ct-title-accent")!, {
+        translateX: [-26, 0],
+        filter: ["blur(10px)", "blur(0px)"],
+        duration: 900,
+        delay: 250,
+        ease: "out(4)",
       });
 
       animate(el.querySelector(".ct-mark"), {
@@ -53,11 +62,25 @@ const ContactSlide = () => {
 
       animate(el.querySelector(".ct-mark-inner"), {
         opacity: [0, 1],
-        scale: [0.92, 1],
-        duration: 1100,
+        scale: [0.78, 1.08, 1],
+        rotate: [8, -1, 0],
+        duration: 1350,
         delay: 220,
         ease: "out(4)",
       });
+
+      animate(el.querySelectorAll(".ct-link-icon"), {
+        scale: [0.6, 1.26, 1],
+        filter: [
+          "drop-shadow(0 0 0 hsl(180 45% 53% / 0))",
+          "drop-shadow(0 0 12px hsl(180 45% 53% / 0.48))",
+          "drop-shadow(0 0 0 hsl(180 45% 53% / 0))",
+        ],
+        delay: stagger(90, { start: 760 }),
+        duration: 850,
+        ease: "out(4)",
+      });
+
     };
 
     const observer = new IntersectionObserver(
@@ -84,7 +107,6 @@ const ContactSlide = () => {
       <div className="absolute inset-x-8 bottom-8 h-px bg-white/12 md:inset-x-12" />
       <div className="absolute bottom-8 top-8 left-8 w-px bg-white/12 md:left-12" />
       <div className="absolute bottom-8 top-8 right-8 w-px bg-white/12 md:right-12" />
-
       <div className="relative z-10 grid h-full w-full max-w-[1720px] grid-cols-1 px-8 py-8 md:grid-cols-[minmax(0,1fr)_minmax(360px,0.58fr)] md:px-12">
         <div className="flex min-h-0 flex-col justify-center px-0 py-10 md:py-12 lg:px-8">
           <main className="max-w-[980px]">
@@ -95,7 +117,7 @@ const ContactSlide = () => {
             <h2 className="ct-reveal font-sans text-[clamp(3rem,7.45vw,8.2rem)] font-black uppercase leading-[0.86] tracking-normal text-white opacity-0">
               <span className="block font-sans not-italic">LET'S MAKE</span>
               <span className="block font-sans not-italic">COMPLEX</span>
-              <span className="block font-serif italic normal-case leading-[0.92] tracking-normal text-primary">
+              <span className="ct-title-accent block font-serif italic normal-case leading-[0.92] tracking-normal text-primary">
                 obvious.
               </span>
             </h2>
@@ -113,7 +135,7 @@ const ContactSlide = () => {
                   className="group flex min-h-[74px] items-center justify-between gap-4 border-t border-white/18 py-4 transition duration-300 hover:border-primary"
                 >
                   <span className="flex min-w-0 items-center gap-3">
-                    <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/14 text-primary transition duration-300 group-hover:border-primary/80 group-hover:bg-primary/10">
+                    <span className="ct-link-icon flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/14 text-primary transition duration-300 group-hover:border-primary/80 group-hover:bg-primary/10">
                       <Icon className="h-4 w-4" />
                     </span>
                     <span className="min-w-0">
