@@ -38,7 +38,9 @@
 - One full-bleed background or effect per slide. Never two competing backgrounds.
 - Stats and numbers: weight 900, `clamp` sizing, teal color. Units always smaller weight.
 - No carousels or tabbed UI unless absolutely necessary — every extra interaction is cognitive load.
-- Case studies: full-bleed creative on one side, stats on the other. Nothing else.
+- Case studies use one of two layouts and reuse the same heading recipe (see below), swapping deck teal for a per-case-study brand color:
+  - **Split** (e.g. Mitsui): copy column (`shrink-0`, ~38–42% width) on one side with eyebrow + monster h2 + Palanquin tagline + vertical stat list. Creative column is a `ParallaxCardSlider` sized via the new `cardWidth` prop. The slider is `min-w-0` + `justify-start` so its right edge is allowed to bleed past the section bound and clip at the section's `overflow-hidden`. No surrounding decoration.
+  - **Polished vertical** (e.g. Baxsaa): centered eyebrow + heading + tagline top, creative grid or `ParallaxCardSlider` middle, brand-tinted stat pills row, optional eyebrow-style callout card (e.g. Baxsaa's SEO clean-up) at bottom. Pills use a translucent fill + 1px brand-color hairline border instead of `LiquidGlassCard` so the brand palette reads cleanly on light or dark gradients.
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element.
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.
 - Our Team uses a simplified left roster plus one live React Bits lanyard on the right. Only one WebGL lanyard should be mounted at a time; inactive employees stay visually muted, the active employee is fully colorified, and the roster/avatar auto-advance every 5 seconds.
@@ -46,6 +48,7 @@
 - Clients slide (slide 5) uses a top-left monster heading + two-row React Bits `LogoLoop` carousel. Keep true CSS mask edge fading, calm speeds, pause-on-hover, and offscreen RAF pausing.
 - Contact slide is a chic closer: left-side `LET'S MAKE / COMPLEX / obvious.` headline, minimal contact links, and a right-side OwlSurf logo/ripple mark only. Do not reintroduce headers, credentials labels, rotated copy, vertical dividers, or explanatory close text unless explicitly requested.
 - Unified heading recipe across slides 2–5: eyebrow (10px tracking-[0.3em] teal) + `clamp(3.4rem,5.9vw,6.6rem)` Montserrat black h2, white first word + teal-gradient second word, left-aligned via a `w-full h-full` wrapper that defeats `.slide`'s `items-center justify-center`. Always set `font-sans not-italic` on bare spans inside the h2 to avoid the `span:not([class])` Palanquin/italic footgun.
+- Case studies share the same recipe family but with three differences: (1) the h2 clamp drops to `clamp(2.6rem,4.6vw,5.2rem)` (split) or `clamp(2.6rem,4.6vw,5.2rem)` (vertical) so the brand name fits a half-column or stays centered cleanly, (2) the eyebrow + gradient color is the case study's own brand color (Mitsui cyan, Baxsaa maroon, etc.) instead of OwlSurf teal, (3) the first word/text color flips per background: white ink on dark gradient backgrounds (Mitsui), dark ink (`hsl(0 0% 15%)`) on light gradient backgrounds (Baxsaa). Subtitle stays Palanquin (`font-body`) at base/lg size.
 
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 

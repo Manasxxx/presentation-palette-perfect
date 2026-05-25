@@ -3,7 +3,6 @@ import { animate, stagger, createSpring } from "animejs";
 import { Eye, Users, Share2, Smartphone, Zap } from "lucide-react";
 import baxsaaCreative1 from "@/assets/baxsaa-creative-1.png";
 import baxsaaCreative2 from "@/assets/baxsaa-creative-2.webp";
-import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 
@@ -16,7 +15,10 @@ const stats = [
 ];
 
 const baxsaaMaroon = "0 68% 33%";
+const baxsaaMaroonLight = "0 55% 45%";
 const baxsaaCream = "36 33% 93%";
+const baxsaaInk = "0 0% 15%";
+const baxsaaInkMuted = "0 0% 38%";
 
 const sliderImages = [
   { image: baxsaaCreative1, alt: "Baxsaa Co. creative 1" },
@@ -43,42 +45,41 @@ const BaxsaaCaseStudy = () => {
             ease: "cubicBezier(0.22, 1, 0.36, 1)",
           });
 
-          animate(el.querySelector(".cs-heading")!, {
-            opacity: [0, 1], translateY: [80, 0],
-            duration: 800,
-            ease: createSpring({ stiffness: 100, damping: 15 }),
+          animate(el.querySelectorAll(".cs-heading"), {
+            opacity: [0, 1], translateY: [60, 0],
+            delay: stagger(80),
+            duration: 900, ease: "out(3)",
           });
 
           animate(el.querySelector(".cs-subtitle")!, {
             opacity: [0, 1], translateY: [30, 0],
-            duration: 600, delay: 200, ease: "out(3)",
+            duration: 600, delay: 280, ease: "out(3)",
           });
 
           if (!isMobile) {
             animate(el.querySelectorAll(".cs-image"), {
-              opacity: [0, 1], translateX: [-50, 0], rotate: [-5, 0],
-              delay: stagger(100, { start: 300 }),
-              ease: createSpring({ stiffness: 100, damping: 15 }),
+              opacity: [0, 1], translateY: [40, 0], scale: [0.94, 1],
+              delay: stagger(120, { start: 400 }),
+              duration: 800, ease: "out(3)",
             });
           } else {
             animate(el.querySelector(".cs-slider")!, {
-              opacity: [0, 1], scale: [0.9, 1],
-              duration: 800, ease: "out(3)",
+              opacity: [0, 1], scale: [0.92, 1],
+              duration: 900, delay: 350, ease: "out(3)",
             });
           }
 
           animate(el.querySelectorAll(".cs-stat"), {
-            opacity: [0, 1], translateX: [-50, 0], rotate: [-5, 0],
-            delay: stagger(100, { start: 300 }),
-            ease: createSpring({ stiffness: 100, damping: 15 }),
+            opacity: [0, 1], translateY: [30, 0],
+            delay: stagger(80, { start: 600 }),
+            ease: createSpring({ stiffness: 110, damping: 16 }),
           });
 
-          // SEO card
           const seoCard = el.querySelector(".cs-seo");
           if (seoCard) {
             animate(seoCard, {
-              opacity: [0, 1], translateY: [40, 0], scale: [0.9, 1],
-              duration: 700, delay: 500, ease: "out(3)",
+              opacity: [0, 1], translateY: [40, 0],
+              duration: 700, delay: 800, ease: "out(3)",
             });
           }
         }
@@ -90,61 +91,121 @@ const BaxsaaCaseStudy = () => {
   }, [triggered, isMobile]);
 
   return (
-    <section ref={sectionRef} className="slide pt-16 pb-6 md:py-10 px-4 md:px-6 overflow-hidden relative flex flex-col">
-      <div className="bg-wipe absolute inset-0 z-0" style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${baxsaaCream}), hsl(36 25% 88%), hsl(${baxsaaMaroon} / 0.15))` }} />
+    <section ref={sectionRef} className="slide overflow-hidden relative">
+      <div
+        className="bg-wipe absolute inset-0 z-0"
+        style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${baxsaaCream}), hsl(36 25% 88%), hsl(${baxsaaMaroon} / 0.15))` }}
+      />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${baxsaaCream}), hsl(36 25% 88%), hsl(${baxsaaMaroon} / 0.15))` }} />
 
-      <div className={`max-w-6xl mx-auto w-full relative z-10 ${isMobile ? 'flex flex-col flex-1' : ''}`}>
+      <div className="relative z-10 flex h-full w-full flex-col px-6 pt-20 pb-8 md:px-12 md:pt-20 md:pb-12 gap-6 md:gap-8">
 
-        <h2 className="cs-heading text-2xl md:text-5xl font-black tracking-tight text-center" style={{ opacity: 0, color: "hsl(0 0% 15%)", marginBottom: isMobile ? '0.25rem' : '0.75rem' }}>
-          The Baxsaa{" "}<span className="bg-clip-text text-transparent" style={{ backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(0 55% 45%))` }}>Co.</span>
-        </h2>
+        {/* HEADER */}
+        <header className="text-center max-w-5xl mx-auto w-full">
+          <span
+            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 block uppercase"
+            style={{ opacity: 0, color: `hsl(${baxsaaMaroon})` }}
+          >
+            Case study 02
+          </span>
+          <h2
+            className="cs-heading font-sans text-[clamp(2.6rem,4.6vw,5.2rem)] font-black uppercase leading-[0.95] tracking-normal text-center pb-1"
+            style={{ opacity: 0, color: `hsl(${baxsaaInk})` }}
+          >
+            <span className="font-sans not-italic">The Baxsaa </span>
+            <span
+              className="font-sans not-italic bg-clip-text text-transparent inline-block pr-2"
+              style={{ backgroundImage: `linear-gradient(135deg, hsl(${baxsaaMaroon}), hsl(${baxsaaMaroonLight}))` }}
+            >
+              Co.
+            </span>
+          </h2>
+          <p
+            className="cs-subtitle mt-3 md:mt-4 font-body leading-snug text-base md:text-lg max-w-xl mx-auto"
+            style={{ opacity: 0, color: `hsl(${baxsaaInkMuted})` }}
+          >
+            D2C beauty. Grew the audience. Sharpened the funnel.
+          </p>
+        </header>
 
-        <p className="cs-subtitle text-center max-w-2xl mx-auto text-sm md:text-base" style={{ opacity: 0, color: "hsl(0 0% 40%)", marginBottom: isMobile ? '0.75rem' : '1.5rem' }}>
-          D2C beauty. Grew the audience. Sharpened the funnel.
-        </p>
-
+        {/* CREATIVES */}
         {isMobile ? (
           <div className="cs-slider flex justify-center flex-1 items-center" style={{ opacity: 0 }}>
             <ParallaxCardSlider slides={sliderImages} accentColor={baxsaaMaroon} />
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:gap-6 mb-5 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto w-full">
             {[baxsaaCreative1, baxsaaCreative2].map((src, i) => (
-              <div key={i} className="cs-image aspect-square rounded-2xl overflow-hidden" style={{ opacity: 0 }}>
-                <img src={src} alt={`Baxsaa Co. creative ${i + 1}`} loading="lazy" className="w-full h-full object-cover rounded-2xl" />
+              <div
+                key={i}
+                className="cs-image aspect-square rounded-2xl overflow-hidden shadow-[0_18px_48px_-24px_rgba(120,30,30,0.45)] ring-1"
+                style={{ opacity: 0, ['--tw-ring-color' as never]: `hsl(${baxsaaMaroon} / 0.18)` } as React.CSSProperties}
+              >
+                <img
+                  src={src}
+                  alt={`Baxsaa Co. creative ${i + 1}`}
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>
         )}
 
-        <div className={`flex flex-wrap gap-3 ${isMobile ? 'mt-auto pt-4 justify-start gap-1.5' : 'justify-center mb-8'}`}>
+        {/* STATS */}
+        <div className="flex flex-wrap justify-center gap-2.5 md:gap-3">
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="cs-stat" style={{ opacity: 0 }}>
-                <LiquidGlassCard padding={isMobile ? "0.4rem 0.75rem" : "0.5rem 1rem"} borderRadius="9999px" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.3)">
-                  <div className="flex items-center gap-2">
-                    <Icon className={`${isMobile ? 'w-3 h-3' : 'w-3.5 h-3.5'}`} style={{ color: `hsl(${baxsaaMaroon})` }} />
-                    <span className={`${isMobile ? 'text-xs' : 'text-sm md:text-base'} font-bold`} style={{ color: "hsl(0 0% 15%)" }}>{stat.value}</span>
-                    <span className={`${isMobile ? 'text-[9px]' : 'text-[10px] md:text-xs'} font-medium uppercase tracking-wider`} style={{ color: "hsl(0 0% 35%)" }}>{stat.label}</span>
-                  </div>
-                </LiquidGlassCard>
+              <div
+                key={stat.label}
+                className="cs-stat flex items-center gap-2.5 rounded-full px-4 py-2 md:px-5 md:py-2.5"
+                style={{
+                  opacity: 0,
+                  backgroundColor: "rgba(255, 255, 255, 0.55)",
+                  border: `1px solid hsl(${baxsaaMaroon} / 0.18)`,
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                }}
+              >
+                <Icon className="w-3.5 h-3.5 md:w-4 md:h-4" style={{ color: `hsl(${baxsaaMaroon})` }} />
+                <span className="font-sans text-sm md:text-base font-black tracking-tight" style={{ color: `hsl(${baxsaaInk})` }}>
+                  {stat.value}
+                </span>
+                <span className="font-body text-[10px] md:text-[11px] uppercase tracking-[0.18em] font-medium" style={{ color: `hsl(${baxsaaInkMuted})` }}>
+                  {stat.label}
+                </span>
               </div>
             );
           })}
         </div>
 
+        {/* SEO CARD */}
         {!isMobile && (
-          <div className="cs-seo max-w-2xl mx-auto" style={{ opacity: 0 }}>
-            <LiquidGlassCard padding="1.5rem 2rem" borderRadius="1rem" blur={12} brightness={1.15} backgroundColor="rgba(255, 255, 255, 0.25)">
-              <div className="text-center">
-                <p className="text-lg md:text-xl font-semibold mb-2" style={{ color: "hsl(0 0% 15%)" }}>SEO clean-up</p>
-                <p className="text-sm md:text-base" style={{ color: "hsl(0 0% 40%)" }}>
-                  <span style={{ color: `hsl(${baxsaaMaroon})` }} className="font-bold">3,000+</span> errors → <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">zero</span>. Page load down <span style={{ color: "hsl(145 60% 40%)" }} className="font-bold">34%</span>.
-                </p>
-              </div>
-            </LiquidGlassCard>
+          <div
+            className="cs-seo max-w-2xl mx-auto w-full rounded-2xl px-8 py-5 text-center"
+            style={{
+              opacity: 0,
+              backgroundColor: "rgba(255, 255, 255, 0.45)",
+              border: `1px solid hsl(${baxsaaMaroon} / 0.2)`,
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+            }}
+          >
+            <span
+              className="text-[10px] md:text-xs tracking-[0.3em] font-medium block uppercase mb-2"
+              style={{ color: `hsl(${baxsaaMaroon})` }}
+            >
+              SEO clean-up
+            </span>
+            <p className="font-body text-base md:text-lg leading-snug" style={{ color: `hsl(${baxsaaInkMuted})` }}>
+              <span className="font-sans font-black" style={{ color: `hsl(${baxsaaMaroon})` }}>3,000+</span>
+              {" errors → "}
+              <span className="font-sans font-black" style={{ color: "hsl(145 60% 35%)" }}>zero</span>
+              {". Page load down "}
+              <span className="font-sans font-black" style={{ color: "hsl(145 60% 35%)" }}>34%</span>
+              {"."}
+            </p>
           </div>
         )}
       </div>

@@ -10,11 +10,12 @@ interface SlideData {
 interface ParallaxCardSliderProps {
   slides: SlideData[];
   accentColor?: string;
+  cardWidth?: string;
 }
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCardSliderProps) => {
+const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = "min(32vw, 340px)" }: ParallaxCardSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
@@ -127,7 +128,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   }, [goNext, goPrev]);
 
   const getSlideStyle = (index: number): React.CSSProperties => {
-    const slideWidth = "min(32vw, 340px)";
+    const slideWidth = cardWidth;
 
     if (index === currentIndex) {
       return {
@@ -209,7 +210,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
     <div
       ref={containerRef}
       className="relative flex items-center justify-center select-none"
-      style={{ width: "calc(3 * min(32vw, 340px))", height: "calc(min(32vw, 340px) * 1.3)" }}
+      style={{ width: `calc(3 * ${cardWidth})`, height: `calc(${cardWidth} * 1.3)` }}
     >
       <button
         onClick={goPrev}
@@ -228,7 +229,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
                 key={i}
                 className="col-start-1 row-start-1"
                 style={{
-                  width: "min(32vw, 340px)",
+                  width: cardWidth,
                   aspectRatio: "1 / 1",
                   perspective: "800px",
                   transition: "transform 800ms ease",

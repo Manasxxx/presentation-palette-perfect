@@ -19,18 +19,23 @@ If a session looks close to running out of context or hitting limits, refresh `h
 
 ## Current Goal
 
-Session 12 (current) ran a UI design review (placement + visual quality) on top of the Session 11 copy + structure work. Findings parked as a phased plan.
+Session 13 (current) began the case-study redesign pass. Two of seven case studies are now on the new recipe: Mitsui on a **split** layout (copy + stats column ~38–42% wide, parallax slider in the remaining space with intentional right-edge bleed) and Baxsaa on a **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-CS slider scaling. The remaining five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) are still on the pre-Session-13 layout.
 
-Session 11 was the IxDF UX audit + full deck copy rewrite + 16-file dead-code purge. Session 12 layered a `ui-design-review` skill pass on top — that audit scored the upper deck 69/100 (C+/B-). Findings were saved as a parked plan rather than executed, because the user wants to pace the work.
-
-Accessibility, mobile WebGL gating, motion control, slide-mount resilience (P0/P1 from Session 11), and the parked UI placement plan (Session 12) are all still pending.
+Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-design-plan.scratch.md` are all preserved untouched. The Session 11 P0 batch (a11y, mobile WebGL gating, prefers-reduced-motion hook, slide-mount resilience) and the Session 12 parked UI placement plan are all still pending — case-study redesign is taking priority this session because the deck owner is iterating live with prospects.
 
 ## Current State
 
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The dev server was running during this session.
+The dev server was running during this session. Per a new project rule (saved to personal memory in this session) the user reviews changes themselves in the browser — `npm run build`, screenshot capture, and other "verify it works" probes were intentionally skipped to avoid burning context.
+
+### Case-study redesign progress (Session 13)
+
+- **Mitsui** (`src/components/slides/CaseStudySlide.tsx`) — done. Split layout: copy column on the left at `shrink-0 md:w-[42%] lg:w-[38%]`, parallax slider on the right at `flex-1 min-w-0 justify-start self-center`. Slider `cardWidth="min(24vw, 320px)"`. The slider's right edge is allowed to bleed past the section bound (clipped by `overflow-hidden` on `.slide`) — this is intentional after live iteration with the user. Eyebrow `Case study 01` in Mitsui cyan, h2 `Mitsui` (white) stacked over `Chemicals` (cyan gradient), Palanquin tagline, vertical stat list with icon circles.
+- **Baxsaa** (`src/components/slides/BaxsaaCaseStudy.tsx`) — done. Polished vertical layout: centered eyebrow `Case study 02` (maroon) + Montserrat black h2 (`The Baxsaa` ink + `Co.` maroon gradient) + Palanquin tagline, 2-image grid with maroon shadow/ring, custom translucent stat pills replacing `LiquidGlassCard`, SEO callout card with the eyebrow recipe and `font-black` highlight numbers.
+- **Slider prop** (`src/components/ParallaxCardSlider.tsx`) — done. Added `cardWidth?: string` default `"min(32vw, 340px)"`. Backward compatible: the five untouched case studies render identically because they don't pass the prop.
+- **CultFit, GirlUp, CTP, VNT, RaychemRPG** — not started. Pending per-CS decision (split vs vertical) and a port to the new recipe.
 
 ### Deck text — current state per slide
 
@@ -92,6 +97,19 @@ Removed 16 orphan files in this session:
 
 `@gsap/react` becomes unused after `SplitText.tsx` was removed; same caveat applies.
 
+## Files Touched (Session 13)
+
+Case-study redesign pass:
+- `src/components/ParallaxCardSlider.tsx` — added `cardWidth` prop
+- `src/components/slides/CaseStudySlide.tsx` — Mitsui split layout
+- `src/components/slides/BaxsaaCaseStudy.tsx` — Baxsaa polished vertical layout
+- `prod.md` — case-study rule rewritten to allow two layouts; heading-recipe note extended for case studies
+- `context.md` — Session 13 entry, new architecture rows, TODO for remaining 5 case studies
+- `handoff.md` — this file
+
+Outside-repo work in this session (NOT committed):
+- `~/.claude/projects/-Users-manassrivastava/memory/feedback_no_build_screenshot_verify.md` — new feedback memory: skip build / screenshot / verify probes unless explicitly asked. Indexed in `MEMORY.md`.
+
 ## Files Touched (Sessions 11 + 12)
 
 Session 11 copy rewrites (commit `791cf83`):
@@ -143,6 +161,11 @@ Highest-priority follow-ups, in two stacks: the UX audit P0 batch (Session 11, s
 5. **Lovable default OG image** still in `index.html` — replace with an OwlSurf-branded social preview.
 6. **`<main>` nested inside `<section>` slide** in `ContactSlide.tsx` is a landmark mistake; fix at the same time as the a11y pass.
 7. **Mobile layout** — `OurTeamSlide` stacks roster + 620px lanyard at `<lg`, overflowing the viewport. `SkyrocketSlide` mobile IntroBlock uses a fixed `h-[31rem]` height that risks landscape overflow.
+
+### Session 13 — case-study redesign carry-over
+
+- Five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) still need to be ported to either the split (Mitsui) or polished vertical (Baxsaa) template. Decide per case study based on whether the existing content has an extra element (callout, side-by-side composition, secondary stat block) that a 50/50 split can't host cleanly.
+- The Mitsui slider right-edge bleed only works because the section has `overflow-hidden`. If a future change removes that, retest Mitsui at common laptop widths (1280, 1440) — the bleed will visually leak into the next slide.
 
 ### Session 12 — UI design plan (parked)
 

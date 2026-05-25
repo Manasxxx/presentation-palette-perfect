@@ -10,11 +10,47 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 12 refined the cover wordmark sub-line + cover Col 1 + contact intro tagline, pulled the audit deliverables back out of the product repo (they had leaked into Session 11's PR), and ran a `ui-design-review` pass. The UI design findings were saved as a parked plan at `ui-design-plan.scratch.md` (gitignored) plus a `SessionEnd` hook in `.claude/settings.local.json` (also outside the repo) that reminds at session-end while the plan file exists. Sessions 10 + 11 architecture and copy are otherwise unchanged.
+**Latest working state:** Session 13 began the case-study redesign pass. Two of seven case studies are now on the new templates: Mitsui on the **split** layout (copy + stats on the left, parallax slider on the right with intentional right-edge bleed), Baxsaa on the **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-case-study scale tuning (default unchanged, backward compatible with the five untouched case studies). The Session 12 cover/contact polish and the parked `ui-design-plan.scratch.md` are still in place.
 
 ---
 
 ## Session Log
+
+### Session 13 — Case-study redesign (Mitsui split, Baxsaa polished vertical)
+
+**What was done:**
+
+**1. `ParallaxCardSlider` extended with `cardWidth` prop** (`src/components/ParallaxCardSlider.tsx`)
+- Added optional `cardWidth?: string` prop, default `"min(32vw, 340px)"` (unchanged behavior for the five untouched case studies).
+- Replaced all internal literals (`getSlideStyle` width, desktop container width + height, per-slide card width) with the prop so every dimension scales coherently.
+
+**2. Mitsui case study rebuilt as split layout** (`src/components/slides/CaseStudySlide.tsx`)
+- Previous layout: vertical centered stack (heading, slider, horizontal pill row).
+- New layout: `flex md:flex-row` with copy column DOM-first / slider DOM-second. Copy column is `shrink-0 md:w-[42%] lg:w-[38%]` so the slider's intrinsic width can't squeeze it. Slider column is `flex-1 min-w-0 self-center justify-start` so the slider anchors to the left edge of its column and lets its right edge bleed past the section bound, which is clipped by the section's `overflow-hidden`. This was a deliberate decision after iteration — the user wanted the parallax stack to read big and accepted right-edge clipping.
+- Heading recipe applied: eyebrow `Case study 01` in Mitsui cyan (`193 100% 42%`) + `clamp(2.8rem,4.7vw,5.4rem) font-black uppercase` h2 with `Mitsui` (white) stacked above `Chemicals` (cyan gradient). Tagline below in `font-body` (Palanquin), `text-white/70`.
+- Stat list switched from horizontal pill row to a vertical icon-circle + big-number + small-label list. Stats animate with staggered translateX slide-in.
+- `cardWidth={isMobile ? undefined : "min(24vw, 320px)"}` on desktop — roughly +30% over the original default, which is what made the right-edge bleed happen.
+
+**3. Baxsaa case study polished in place — vertical layout** (`src/components/slides/BaxsaaCaseStudy.tsx`)
+- Kept the vertical centered architecture (heading top → 2-image grid → stat pills → SEO callout) but rebuilt every element to match the new case-study recipe.
+- Heading: eyebrow `Case study 02` (maroon) + `clamp(2.6rem,4.6vw,5.2rem)` Montserrat black uppercase h2 with `The Baxsaa` (ink) + `Co.` (maroon gradient). Tagline in Palanquin at ink-muted color. Both lines centered.
+- 2-image grid: bumped to `gap-6`, added a soft maroon drop shadow + 1px maroon-tinted ring. Removed the explicit `mb-5` since the parent now uses `gap-6 md:gap-8`.
+- Stat pills: dropped `LiquidGlassCard` entirely, replaced with custom translucent pills (`backdropFilter: blur(8px)` + 1px maroon hairline border). Tighter padding, `font-black tracking-tight` value + 0.18em-tracked Palanquin label.
+- SEO callout: dropped `LiquidGlassCard`, matched the new pill aesthetic. Promoted "SEO clean-up" to the eyebrow recipe (10px / 0.3em / maroon) and bolded the inline stat highlights with `font-black` instead of `font-bold`.
+- Animation cleanup: `el.querySelectorAll(".cs-heading")` (eyebrow + h2) with stagger 80ms — the previous code only animated the first `.cs-heading` match, so when both eyebrow and h2 carried that class on the first pass of the Mitsui rewrite, the h2 stayed at opacity 0 (caught and fixed).
+
+**4. prod.md case-study rule updated to allow both layouts**
+- The original line was "Case studies: full-bleed creative on one side, stats on the other. Nothing else." which was prescriptive of the split layout.
+- Now documents both layouts as valid choices and explains when each fits (split for image-rich cases, polished vertical when there's an additional element like the Baxsaa SEO callout to land).
+- Added a sibling note to the unified heading recipe explaining how case studies adapt it (smaller clamp, per-case-study brand color, ink color flips per background).
+
+**Rationale:**
+- The user asked for Mitsui as a pilot and chose direction #1 (split) of three options. After Mitsui shipped successfully ("looks great"), they explicitly asked for direction #2 (polished vertical) for Baxsaa instead of templating the same split treatment across all seven. So the deck now intentionally carries two case-study layouts side by side.
+- Mitsui's right-edge bleed was a deliberate trade-off: the parallax slider at +30% scale won't fit cleanly inside a half-column at common laptop widths. The user explicitly OK'd clipping the rightmost peeking card at the section bound rather than shrinking the slider back down.
+
+**Verification:**
+- Per a new project rule saved in personal memory this session, `npm run build`, screenshots, and any other "did it work" probes were intentionally NOT run. The user provides visual feedback themselves and considers automated verification token waste. Mentioned here so future sessions don't reintroduce the verify step.
+- Visual checks (heading visibility regression caught from screenshot #1, slider overflow regression caught from screenshot #3) came directly from user-supplied screenshots.
 
 ### Session 12 — Cover/contact polish, audit-file cleanup, UI design review (parked)
 
@@ -414,11 +450,16 @@
 | AI & Automation as a top-level pillar | Treated as a peer to Content, Reach, Search, and Data — not a sub-skill. Mention AEO, Marketing Copilots, AI Personalization explicitly because B2B buyers now expect them. |
 | Ambient WebGL DPR cap | LightRays, PrismaticBurst, and Hyperspeed cap DPR at `1.25` to reduce heat/lag on Retina displays. These are ambient backgrounds, so do not raise back to full devicePixelRatio unless visual quality truly requires it. |
 | Contact logo animation layering | Keep `ct-mark` for absolute positioning and animate only `ct-mark-inner`; animating the positioned wrapper overwrites centering transforms and misaligns the logo/ripples. |
+| Two case-study layouts coexist | Case studies use either split (Mitsui) or polished vertical (Baxsaa). Both apply the eyebrow + monster h2 + Palanquin tagline recipe, just at a slightly smaller h2 clamp than slides 2–5 and with the brand color in place of teal. Pick per case study based on whether there's an extra element (callout, SEO card, supplementary copy) that breaks the split column cleanly. |
+| `ParallaxCardSlider` `cardWidth` prop | Slider exposes an optional `cardWidth` (default `"min(32vw, 340px)"`). Per-case-study layouts can tune this without forking the slider. Mitsui uses `"min(24vw, 320px)"` on desktop. The slider's parent must be `min-w-0` for the prop to actually shrink/grow inside a flex row. |
+| Case-study slider right-edge bleed | For the Mitsui split layout, the slider sits in a `flex-1 min-w-0 justify-start self-center` wrapper so its right edge can clip past the section bound at common widths. This is deliberate — section `overflow-hidden` clips the bleed and the copy column stays at its `shrink-0` width. Do not add `overflow-hidden` to the slider wrapper or anchor it `justify-center`, both will recenter the slider and reintroduce the column-squeeze regression caught during Session 13. |
+| Case-study stats: no LiquidGlassCard | Baxsaa's pills were rewritten with a simple translucent fill + 1px brand-color hairline + backdrop-blur instead of `LiquidGlassCard`. The card library's pre-baked saturate/brightness fights brand color tints (especially on the Baxsaa cream background). Prefer the custom pill until a clear `LiquidGlassCard` use case returns. Mitsui's vertical stat list uses the same idea: an icon-circle with brand color border + a big-number + small-label layout, no glass card wrapper. |
 
 ---
 
 ## Known Issues / TODOs
 
+- [ ] Five case studies still on the pre-Session-13 layout (`CultFitCaseStudy`, `GirlUpCaseStudy`, `CTPCaseStudy`, `VNTCaseStudy`, `RaychemRPGCaseStudy`). Each needs a split-or-vertical decision and a port to the new recipe. Pace is per-CS, similar to Mitsui/Baxsaa iteration.
 - [ ] Vercel deployment broken — needs reconnect or redeploy.
 - [ ] PNGs in `src/assets` not yet converted to WebP — run `npm run images:convert` after `npm i -D sharp`.
 - [ ] `logo-main.jpg` used for owl logo — should be converted to WebP or replaced with SVG/PNG with transparency.
