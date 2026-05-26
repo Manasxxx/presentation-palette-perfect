@@ -137,7 +137,7 @@ const SkyrocketSlide = () => {
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_63%_50%,rgba(75,194,194,0.18),transparent_34%),linear-gradient(90deg,hsl(214_30%_6%/0.98),hsl(214_30%_6%/0.92)_48%,hsl(182_70%_18%/0.38))]" />
       <div className="relative z-10 h-full w-full max-w-[1720px] overflow-hidden bg-[#090d12]/92 shadow-2xl">
-        <div className="absolute inset-y-0 right-0 z-10 hidden w-[58%] overflow-hidden md:block">
+        <div className="absolute inset-y-0 right-[-8%] z-10 hidden w-[58%] overflow-hidden md:block">
           <img
             src={industrialEngineerImage}
             alt=""

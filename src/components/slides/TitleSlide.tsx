@@ -12,11 +12,11 @@ const Arrow19 = React.forwardRef<Arrow19Element, Arrow19Props>(
 );
 Arrow19.displayName = "Arrow19";
 import { animate, createSpring } from "animejs";
-import logo from "@/assets/logo-main.jpg";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const isMobile = useIsMobile();
@@ -234,7 +234,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               style={{ clipPath: "circle(0% at 50% 50%)" }}
             >
               <LiquidGlassCard borderRadius="50%" padding="6px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
-                <img src={logo} alt="OwlSurf Digital" className="w-full h-full object-cover rounded-full" />
+                <OwlSurfLogo className="h-full w-full rounded-full" />
               </LiquidGlassCard>
             </div>
           </a>

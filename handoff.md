@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 16 (current) is preparing a push for the deck-wide Anime.js motion cleanup and OwlSurf teal scale update. The non-case-study slides now use stronger content-bound Anime.js motion: heading spring, accent-word blur-to-sharp motion, lanyard/card/logo overshoot, and link/icon pulses where useful. The broad scan-line sweep and circular glow-orbit blob have been removed from all slides, including all seven case studies.
+Session 17 (current) is preparing a push for a focused visual asset update. The cover slide now uses a reusable animated SVG `OwlSurfLogo` component in the same right-side circular logo placement, the Who We Are slide's right-side technical illustration is shifted further toward the right edge, and the Raychem RPG case study now uses three refreshed WebP creatives converted from the user's Downloads folder.
+
+Session 16 pushed the deck-wide Anime.js motion cleanup and OwlSurf teal scale update. The non-case-study slides now use stronger content-bound Anime.js motion: heading spring, accent-word blur-to-sharp motion, lanyard/card/logo overshoot, and link/icon pulses where useful. The broad scan-line sweep and circular glow-orbit blob have been removed from all slides, including all seven case studies.
 
 Session 15 pushed the case-study Anime.js motion system. All seven case-study slides keep heading spring, accent-word blur-to-sharp slide, creative/slider overshoot, and stat icon pulse where stats exist. The scan-line sweep and glow orbit from that first pass were removed in Session 16 after visual feedback.
 
@@ -39,6 +41,13 @@ The dev server was running during this session. `npm run build` was run before p
 - **No line/blob rule** — `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches.
 - **OwlSurf design system** (`src/index.css`, `tailwind.config.ts`) — added the supplied teal scale from `50` to `700`, kept `#4BC2C2` as the primary teal, and remapped teal light/dark aliases to the new scale.
 - **Next session plan** — add/reuse a `prefers-reduced-motion` gate before broadening motion further or extracting shared helpers.
+
+### Cover logo, Who We Are image placement, and Raychem creatives (Session 17)
+
+- **Cover (TitleSlide)** — the old `logo-main.jpg` image inside the right-side circular logo treatment was replaced with a new reusable `OwlSurfLogo` SVG component. The existing link, rings, sizing wrapper, glass card, and reveal animation were kept.
+- **Who We Are (SkyrocketSlide)** — the desktop right-side technical illustration panel now sits at `right-[-8%]` so the image hugs the right edge more closely while retaining its scale and existing animation.
+- **Raychem RPG case study** — the three Raychem JPEG creatives from `~/Downloads/Client Projects/Raychem RPG/` were converted to WebP and replaced the existing site assets: `raychem-creative-1.webp`, `raychem-creative-2.webp`, and `Raychemcasestudy 3.webp`. The slide still renders all three through `ParallaxCardSlider`, with clearer alt text.
+- **Verification approach** — browser visual checks were skipped at the user's explicit request. The user will provide visual feedback manually.
 
 ### Our Team lanyard + handoff workflow (Session 14)
 
@@ -112,6 +121,20 @@ Removed 16 orphan files in this session:
 `vite.config.ts` `manualChunks` still lists `@radix-ui/react-slot`, `@radix-ui/react-toast`, and `@radix-ui/react-tooltip` under `vendor-ui`. These dependencies remain installed in `package.json` because nothing in `src/` imports them after the deletes — they are candidates for a future `npm uninstall`, but the dependency-removal pass was not done in this session.
 
 `@gsap/react` becomes unused after `SplitText.tsx` was removed; same caveat applies.
+
+## Files Touched (Session 17)
+
+Focused visual asset update:
+- `src/components/OwlSurfLogo.tsx` — new reusable animated SVG OwlSurf mark
+- `src/components/slides/TitleSlide.tsx` — cover logo content swapped to `OwlSurfLogo`
+- `src/components/slides/SkyrocketSlide.tsx` — right-side illustration panel shifted toward the right edge
+- `src/components/slides/RaychemRPGCaseStudy.tsx` — Raychem slider alt text refreshed while keeping all three converted creatives
+- `src/assets/raychem-creative-1.webp` — replaced with converted Raychem PowerGrid creative from Downloads
+- `src/assets/raychem-creative-2.webp` — replaced with converted Raychem Invisible Infrastructure creative from Downloads
+- `src/assets/Raychemcasestudy 3.webp` — replaced with converted Raychem human/field-engineer creative from Downloads
+- `context.md` — Session 17 log and latest-state summary
+- `prod.md` — cover logo, Slide 2 placement, and Raychem WebP guidance
+- `handoff.md` — push-gate state refreshed for this push
 
 ## Files Touched (Session 13)
 
@@ -211,6 +234,8 @@ Doc updates (this commit):
 - `npm run build` passes before the Session 14 lanyard/workflow push.
 - `npm run build` passes before the Session 15 case-study motion push.
 - `npm run build` passes before the Session 16 deck-wide motion cleanup push.
+- `npm run build` passes before the Session 17 visual asset push.
+- `file src/assets/raychem-creative-1.webp src/assets/raychem-creative-2.webp 'src/assets/Raychemcasestudy 3.webp'` confirms all three Raychem assets are WebP images at 1080x1440.
 - `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches after Session 16 cleanup.
 - `npm test` / `npm run lint` were not re-run in this session after the deletes; the project's pre-existing lint debt in `LightRays.tsx`, `Hyperspeed.tsx`, `PrismaticBurst.tsx`, and `tailwind.config.ts` is still expected to fail lint.
 - Visual screenshot capture was intentionally skipped per the original handoff policy (the user prefers to judge browser output manually).
@@ -249,11 +274,15 @@ Other open project items carried over from earlier sessions:
 
 ## Current Workspace Notes
 
-Intended files for the Session 11 commit:
-- 13 slide / nav source files listed above
+Intended files for the Session 17 commit:
+- `src/components/OwlSurfLogo.tsx`
+- `src/components/slides/TitleSlide.tsx`
+- `src/components/slides/SkyrocketSlide.tsx`
+- `src/components/slides/RaychemRPGCaseStudy.tsx`
+- `src/assets/raychem-creative-1.webp`
+- `src/assets/raychem-creative-2.webp`
+- `src/assets/Raychemcasestudy 3.webp`
 - `handoff.md`, `context.md`, `prod.md`
-- `ux-audit-report.html`, `ux-audit-report.pdf`
-- 16 orphan file deletes
 
 Unrelated untracked items that should remain unstaged unless asked:
 - `.agents/`

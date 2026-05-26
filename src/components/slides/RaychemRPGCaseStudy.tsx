@@ -10,9 +10,9 @@ const raychemRed = "356 86% 52%";
 const raychemBlue = "210 100% 25%";
 
 const sliderImages = [
-    { image: raychemCreative1, alt: "Raychem RPG creative 1" },
-    { image: raychemCreative2, alt: "Raychem RPG creative 2" },
-    { image: raychemCreative3, alt: "Raychem RPG creative 3" },
+    { image: raychemCreative1, alt: "Raychem RPG power grid creative" },
+    { image: raychemCreative2, alt: "Raychem RPG invisible infrastructure creative" },
+    { image: raychemCreative3, alt: "Raychem RPG field engineers at work" },
 ];
 
 const RaychemRPGCaseStudy = () => {

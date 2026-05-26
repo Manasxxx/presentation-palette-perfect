@@ -10,11 +10,42 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 16 extended the Anime.js entrance language to the non-case-study slides and removed the broad scan-line / circular glow-orbit treatment from the deck. The current motion language is heading spring, accent-word blur-to-sharp slide, creative/slider/lanyard overshoot, and stat/icon pulse where useful. The OwlSurf design tokens now include the supplied teal scale (`50` through `700`) in CSS variables and Tailwind.
+**Latest working state:** Session 17 refreshed a small set of visual assets without changing the deck structure: the cover uses a reusable animated SVG `OwlSurfLogo` component in the existing right-side logo slot, the Who We Are right-side illustration is pushed further toward the right edge, and the Raychem RPG case study uses three WebP creatives converted from the user's Downloads folder. Session 16's current motion language remains heading spring, accent-word blur-to-sharp slide, creative/slider/lanyard overshoot, and stat/icon pulse where useful. The OwlSurf design tokens still include the supplied teal scale (`50` through `700`) in CSS variables and Tailwind.
 
 ---
 
 ## Session Log
+
+### Session 17 — Cover logo component, Slide 2 image shift, Raychem WebP refresh
+
+**What was done:**
+
+**1. Cover logo replaced with animated SVG component** (`src/components/OwlSurfLogo.tsx`, `src/components/slides/TitleSlide.tsx`)
+- Added a reusable `OwlSurfLogo` React component based on the user-supplied SVG animation file from Downloads.
+- Swapped the cover slide's `logo-main.jpg` image for `OwlSurfLogo` inside the existing right-side circular logo treatment.
+- Preserved the current placement, external link, ring treatment, glass card wrapper, size classes, and clip-path reveal animation.
+
+**2. Who We Are image shifted right** (`src/components/slides/SkyrocketSlide.tsx`)
+- Moved the desktop right-side image panel from `right-0` to `right-[-8%]`.
+- Kept the image scale, object positioning, opacity, blend mode, and Anime.js entrance unchanged.
+
+**3. Raychem creatives replaced with converted WebP assets** (`src/assets/*.webp`, `src/components/slides/RaychemRPGCaseStudy.tsx`)
+- Converted these three files from `~/Downloads/Client Projects/Raychem RPG/` to WebP and replaced the existing site assets:
+  - `Raychem PowerGrid.jpeg` -> `src/assets/raychem-creative-1.webp`
+  - `Raychem Invisible Infrastructure.jpeg` -> `src/assets/raychem-creative-2.webp`
+  - `Raychem 1 3am India.jpeg` -> `src/assets/Raychemcasestudy 3.webp`
+- Kept the Raychem case study on its existing `ParallaxCardSlider` layout with all three refreshed creatives.
+- Updated the slider alt text to describe each creative more clearly.
+
+**Rationale:**
+- The cover needed to use the supplied OwlSurf mark without disturbing the established first-slide composition.
+- The Who We Are illustration needed to sit more aggressively on the right edge after live visual feedback.
+- Raychem needed the current creative files from Downloads, but source assets in the product tree should remain WebP per `prod.md`.
+
+**Verification:**
+- `file` confirms all three Raychem assets are WebP images at 1080x1440.
+- `npm run build` passed before push.
+- Browser screenshots and browser verification were skipped because the user explicitly prefers to provide visual feedback manually.
 
 ### Session 16 — Deck-wide motion cleanup + OwlSurf teal scale
 
@@ -549,8 +580,10 @@ src/
   pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
-    slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config
+    OwlSurfLogo.tsx        — animated SVG OwlSurf mark used in the cover logo slot
+    slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config, right-edge illustration
     slides/OurTeamSlide.tsx — left roster selector + single active team lanyard
+    slides/RaychemRPGCaseStudy.tsx — Raychem case study with three refreshed WebP creatives
     ui/Lanyard/            — React Bits lanyard, OwlSurf strap, active badge avatar
     ProfileCard.jsx/css    — older React Bits profile card files, not the current team-slide path
     Radar.jsx/css          — older WebGL radar files, not the current team-slide path
