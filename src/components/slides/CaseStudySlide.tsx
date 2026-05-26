@@ -7,6 +7,12 @@ import mitsuiCreative3 from "@/assets/mitsui-creative-3.webp";
 import mitsuiCreative4 from "@/assets/mitsui-creative-4.webp";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  WebPreview,
+  WebPreviewBody,
+  WebPreviewNavigation,
+  WebPreviewUrl,
+} from "@/components/ai-elements/WebPreview";
 
 interface StatDef {
   icon: LucideIcon;
@@ -33,6 +39,111 @@ const sliderImages = [
   { image: mitsuiCreative3, alt: "Mitsui Chemicals creative 3" },
   { image: mitsuiCreative4, alt: "Mitsui Chemicals creative 4" },
 ];
+
+const mitsuiPreviewMarkup = `
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, Arial, sans-serif;
+        color: #07111c;
+        background:
+          radial-gradient(circle at 82% 18%, rgba(10, 183, 235, 0.32), transparent 34%),
+          linear-gradient(135deg, #f7fbff 0%, #dceef9 52%, #bde6f4 100%);
+      }
+      .shell {
+        min-height: 100vh;
+        padding: 18px 22px;
+        display: grid;
+        align-content: space-between;
+        gap: 18px;
+      }
+      .nav, .stats {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #034b7d;
+      }
+      .pill {
+        border: 1px solid rgba(3, 75, 125, 0.18);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #036995;
+        background: rgba(255, 255, 255, 0.64);
+      }
+      h1 {
+        margin: 0;
+        max-width: 390px;
+        font-size: clamp(30px, 7vw, 54px);
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+      }
+      h1 span { color: #009fd4; }
+      p {
+        margin: 12px 0 0;
+        max-width: 330px;
+        font-size: 13px;
+        line-height: 1.35;
+        color: rgba(7, 17, 28, 0.68);
+      }
+      .metric {
+        min-width: 90px;
+        border-top: 1px solid rgba(3, 75, 125, 0.18);
+        padding-top: 10px;
+      }
+      .metric strong {
+        display: block;
+        font-size: 25px;
+        line-height: 1;
+        color: #034b7d;
+      }
+      .metric span {
+        display: block;
+        margin-top: 4px;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(7, 17, 28, 0.48);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="nav">
+        <div class="brand">Mitsui Chemicals</div>
+        <div class="pill">APAC digital</div>
+      </div>
+      <section>
+        <h1>Technical depth, <span>market momentum.</span></h1>
+        <p>Regional campaign system for specialty chemicals buyers, built around useful proof and precise distribution.</p>
+      </section>
+      <div class="stats">
+        <div class="metric"><strong>5.8M</strong><span>Impressions</span></div>
+        <div class="metric"><strong>104K</strong><span>Ad clicks</span></div>
+        <div class="metric"><strong>3X</strong><span>ROI</span></div>
+      </div>
+    </main>
+  </body>
+</html>
+`;
 
 function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; suffix: string; decimals: number; triggered: boolean }) {
   const [display, setDisplay] = useState("0" + suffix);
@@ -196,6 +307,18 @@ const CaseStudySlide = () => {
               );
             })}
           </ul>
+
+          <div className="cs-web-preview hidden md:block">
+            <WebPreview defaultUrl="https://mitsui-chemicals.example/apac">
+              <WebPreviewNavigation>
+                <WebPreviewUrl>mitsui-chemicals.apac/campaign</WebPreviewUrl>
+              </WebPreviewNavigation>
+              <WebPreviewBody
+                className="h-[178px]"
+                srcDoc={mitsuiPreviewMarkup}
+              />
+            </WebPreview>
+          </div>
         </div>
 
         {/* RIGHT — creative (anchored left so right edge clips at section bound) */}

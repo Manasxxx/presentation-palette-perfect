@@ -18,6 +18,13 @@ import LightRays from "@/components/LightRays";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 
+const credibilityBadges = [
+  { label: "Meta", detail: "Verified Agency" },
+  { label: "Google", detail: "Partner Agency" },
+  { label: "LinkedIn", detail: "B2B Ads Partner" },
+  { label: "HubSpot", detail: "Growth Partner" },
+];
+
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const isMobile = useIsMobile();
   const ref = useRef<HTMLElement>(null);
@@ -81,6 +88,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       duration: 800,
       delay: (_, i) => 600 + i * 120,
       ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
+    });
+
+    animate(el.querySelectorAll(".ts-cred-badge"), {
+      opacity: [0, 1],
+      translateY: [12, 0],
+      scale: [0.96, 1],
+      duration: 700,
+      delay: (_, i) => 520 + i * 90,
+      ease: "out(3)",
     });
 
     const btn = el.querySelector(".ts-button");
@@ -242,6 +258,24 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
         {/* BOTTOM: Info columns + button row */}
         <div className="flex flex-col gap-6">
+          <div className="flex max-w-4xl flex-wrap gap-2.5 md:gap-3">
+            {credibilityBadges.map((badge) => (
+              <div
+                key={badge.label}
+                className="ts-cred-badge flex min-h-10 items-center gap-2 rounded-full border border-white/12 bg-white/[0.045] px-3.5 py-2 backdrop-blur-sm"
+                style={{ opacity: 0 }}
+              >
+                <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_14px_rgba(75,194,194,0.75)]" />
+                <span className="font-sans text-[10px] font-black uppercase tracking-[0.18em] text-white">
+                  {badge.label}
+                </span>
+                <span className="font-body text-xs font-semibold text-white/58">
+                  {badge.detail}
+                </span>
+              </div>
+            ))}
+          </div>
+
           <div className="grid grid-cols-2 gap-8 md:gap-16 max-w-2xl">
             <div className="ts-info-col" style={{ opacity: 0 }}>
               <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">

@@ -10,11 +10,46 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 17 refreshed a small set of visual assets without changing the deck structure: the cover uses a reusable animated SVG `OwlSurfLogo` component in the existing right-side logo slot, the Who We Are right-side illustration is pushed further toward the right edge, and the Raychem RPG case study uses three WebP creatives converted from the user's Downloads folder. Session 16's current motion language remains heading spring, accent-word blur-to-sharp slide, creative/slider/lanyard overshoot, and stat/icon pulse where useful. The OwlSurf design tokens still include the supplied teal scale (`50` through `700`) in CSS variables and Tailwind.
+**Latest working state:** Session 18 added small conversion and route-polish details: cover credibility badges, a Mitsui web-preview block, a compact footer on Contact, and a branded 404 page for unknown routes outside the slide matrix. The Clients slide is back on the original two-line `LogoLoop` carousel after a brief shuffle-carousel experiment was rejected. Session 17's visual asset updates remain in place: animated cover logo, right-shifted Who We Are image, and refreshed Raychem WebP creatives.
 
 ---
 
 ## Session Log
+
+### Session 18 — Cover badges, Mitsui web preview, Contact footer, branded 404
+
+**What was done:**
+
+**1. Cover credibility badges** (`src/components/slides/TitleSlide.tsx`)
+- Added four small badges in the lower cover zone: Meta verified agency, Google partner agency, LinkedIn B2B ads partner, and HubSpot growth partner.
+- Badges animate in with Anime.js and preserve the existing 3-zone cover structure.
+
+**2. Mitsui web preview block** (`src/components/ai-elements/WebPreview.tsx`, `src/components/slides/CaseStudySlide.tsx`)
+- Added local AI Elements-style primitives: `WebPreview`, `WebPreviewNavigation`, `WebPreviewUrl`, and `WebPreviewBody`.
+- Mounted a compact preview below Mitsui's stats only.
+- The preview uses inline `srcDoc` markup rather than a live external iframe so it is stable and not affected by embedding restrictions.
+
+**3. Contact footer block** (`src/components/blocks/FlyonFooter.tsx`, `src/components/slides/ContactSlide.tsx`)
+- Added a compact FlyonUI-inspired footer block at the bottom of the Contact slide.
+- Used the supplied FlyonUI logo image URL and existing `lucide-react` social icons.
+- Did not install Tailwind 4 Iconify plugins because this project is Tailwind 3 and the local icon set already covers the social icons.
+
+**4. Branded 404 route page** (`src/pages/NotFound.tsx`)
+- Replaced the default 404 with a branded OwlSurf 404 page inspired by Untitled UI's 404 examples.
+- The existing catch-all route in `App.tsx` already handled unknown paths, so the slide matrix was not touched.
+
+**5. Clients carousel revert**
+- Reverted the one-row/four-block shuffle carousel experiment.
+- Clients remains on the two-line React Bits `LogoLoop` carousel with existing mask fade and offscreen RAF pause behavior.
+
+**Rationale:**
+- The user wanted the new elements added to specific places without changing the deck's core slide order or navigation.
+- Components from referenced libraries were adapted locally to avoid introducing dependency churn into the Tailwind 3 setup.
+- The 404 page belongs to the website route layer, not the presentation slide matrix.
+
+**Verification:**
+- `npm run build` passed before push.
+- Visual/browser verification was skipped per user preference.
 
 ### Session 17 — Cover logo component, Slide 2 image shift, Raychem WebP refresh
 
@@ -577,12 +612,17 @@
 
 ```
 src/
+  App.tsx                  — BrowserRouter shell, root deck route, catch-all 404 route
   pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
+  pages/NotFound.tsx       — branded OwlSurf 404 page for unknown paths
   components/
     slides/TitleSlide.tsx  — cover slide, 3-zone layout
     OwlSurfLogo.tsx        — animated SVG OwlSurf mark used in the cover logo slot
+    ai-elements/WebPreview.tsx — local AI Elements-style web preview primitives
+    blocks/FlyonFooter.tsx — compact FlyonUI-inspired footer block used on Contact
     slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config, right-edge illustration
     slides/OurTeamSlide.tsx — left roster selector + single active team lanyard
+    slides/CaseStudySlide.tsx — Mitsui split case study with stats, slider, and web preview
     slides/RaychemRPGCaseStudy.tsx — Raychem case study with three refreshed WebP creatives
     ui/Lanyard/            — React Bits lanyard, OwlSurf strap, active badge avatar
     ProfileCard.jsx/css    — older React Bits profile card files, not the current team-slide path

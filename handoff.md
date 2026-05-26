@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 17 (current) is preparing a push for a focused visual asset update. The cover slide now uses a reusable animated SVG `OwlSurfLogo` component in the same right-side circular logo placement, the Who We Are slide's right-side technical illustration is shifted further toward the right edge, and the Raychem RPG case study now uses three refreshed WebP creatives converted from the user's Downloads folder.
+Session 18 (current) is preparing a push for interaction and conversion polish across the website/deck. The cover now has four credibility badges (`Meta`, `Google`, `LinkedIn`, `HubSpot`), Mitsui has an AI Elements-style web preview block below the stats, Contact has a compact FlyonUI-inspired footer block at the bottom, and unknown routes now render a branded OwlSurf 404 page outside the slide matrix.
+
+Session 17 pushed a focused visual asset update. The cover slide now uses a reusable animated SVG `OwlSurfLogo` component in the same right-side circular logo placement, the Who We Are slide's right-side technical illustration is shifted further toward the right edge, and the Raychem RPG case study now uses three refreshed WebP creatives converted from the user's Downloads folder.
 
 Session 16 pushed the deck-wide Anime.js motion cleanup and OwlSurf teal scale update. The non-case-study slides now use stronger content-bound Anime.js motion: heading spring, accent-word blur-to-sharp motion, lanyard/card/logo overshoot, and link/icon pulses where useful. The broad scan-line sweep and circular glow-orbit blob have been removed from all slides, including all seven case studies.
 
@@ -48,6 +50,15 @@ The dev server was running during this session. `npm run build` was run before p
 - **Who We Are (SkyrocketSlide)** — the desktop right-side technical illustration panel now sits at `right-[-8%]` so the image hugs the right edge more closely while retaining its scale and existing animation.
 - **Raychem RPG case study** — the three Raychem JPEG creatives from `~/Downloads/Client Projects/Raychem RPG/` were converted to WebP and replaced the existing site assets: `raychem-creative-1.webp`, `raychem-creative-2.webp`, and `Raychemcasestudy 3.webp`. The slide still renders all three through `ParallaxCardSlider`, with clearer alt text.
 - **Verification approach** — browser visual checks were skipped at the user's explicit request. The user will provide visual feedback manually.
+
+### Conversion polish, Mitsui preview, footer, and 404 (Session 18)
+
+- **Cover (TitleSlide)** — added four small animated credibility badges in the bottom zone: `Meta / Verified Agency`, `Google / Partner Agency`, `LinkedIn / B2B Ads Partner`, and `HubSpot / Growth Partner`.
+- **Mitsui (CaseStudySlide)** — added a local AI Elements-style `WebPreview` block below the stats, with `WebPreview`, `WebPreviewNavigation`, `WebPreviewUrl`, and `WebPreviewBody` primitives. The preview uses `srcDoc` markup instead of an external iframe URL so it is stable inside the deck.
+- **Contact (ContactSlide)** — added a compact FlyonUI-inspired footer at the bottom of the final slide through `FlyonFooter`. It uses the supplied FlyonUI logo image URL and local `lucide-react` social icons instead of installing Tailwind 4 Iconify plugins into this Tailwind 3 project.
+- **Website 404 (NotFound)** — replaced the default Vite-style 404 with a branded OwlSurf 404 page outside the slide matrix. The catch-all route already existed in `App.tsx`, so no route change was needed.
+- **Clients slide** — the attempted one-row/four-block shuffle carousel was reverted. Clients is back to the existing two-line `LogoLoop` carousel.
+- **Verification approach** — `npm run build` was used for compile verification. Browser visual checks were skipped per user preference.
 
 ### Our Team lanyard + handoff workflow (Session 14)
 
@@ -135,6 +146,19 @@ Focused visual asset update:
 - `context.md` — Session 17 log and latest-state summary
 - `prod.md` — cover logo, Slide 2 placement, and Raychem WebP guidance
 - `handoff.md` — push-gate state refreshed for this push
+
+## Files Touched (Session 18)
+
+Conversion and route polish:
+- `src/components/ai-elements/WebPreview.tsx` — new local AI Elements-style web preview primitives
+- `src/components/blocks/FlyonFooter.tsx` — new compact FlyonUI-inspired footer block
+- `src/components/slides/CaseStudySlide.tsx` — Mitsui web preview added below stats
+- `src/components/slides/ContactSlide.tsx` — footer mounted at bottom of contact slide
+- `src/components/slides/TitleSlide.tsx` — four cover credibility badges added
+- `src/pages/NotFound.tsx` — branded OwlSurf 404 page for unknown routes
+- `handoff.md` — push-gate state refreshed for this push
+- `context.md` — Session 18 log and current-state summary
+- `prod.md` — guidance for cover badges, local preview blocks, footer blocks, and 404 route
 
 ## Files Touched (Session 13)
 
@@ -235,6 +259,7 @@ Doc updates (this commit):
 - `npm run build` passes before the Session 15 case-study motion push.
 - `npm run build` passes before the Session 16 deck-wide motion cleanup push.
 - `npm run build` passes before the Session 17 visual asset push.
+- `npm run build` passes before the Session 18 conversion polish push.
 - `file src/assets/raychem-creative-1.webp src/assets/raychem-creative-2.webp 'src/assets/Raychemcasestudy 3.webp'` confirms all three Raychem assets are WebP images at 1080x1440.
 - `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches after Session 16 cleanup.
 - `npm test` / `npm run lint` were not re-run in this session after the deletes; the project's pre-existing lint debt in `LightRays.tsx`, `Hyperspeed.tsx`, `PrismaticBurst.tsx`, and `tailwind.config.ts` is still expected to fail lint.
@@ -274,14 +299,13 @@ Other open project items carried over from earlier sessions:
 
 ## Current Workspace Notes
 
-Intended files for the Session 17 commit:
-- `src/components/OwlSurfLogo.tsx`
+Intended files for the Session 18 commit:
+- `src/components/ai-elements/WebPreview.tsx`
+- `src/components/blocks/FlyonFooter.tsx`
+- `src/components/slides/CaseStudySlide.tsx`
+- `src/components/slides/ContactSlide.tsx`
 - `src/components/slides/TitleSlide.tsx`
-- `src/components/slides/SkyrocketSlide.tsx`
-- `src/components/slides/RaychemRPGCaseStudy.tsx`
-- `src/assets/raychem-creative-1.webp`
-- `src/assets/raychem-creative-2.webp`
-- `src/assets/Raychemcasestudy 3.webp`
+- `src/pages/NotFound.tsx`
 - `handoff.md`, `context.md`, `prod.md`
 
 Unrelated untracked items that should remain unstaged unless asked:
