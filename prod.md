@@ -38,12 +38,12 @@
 
 ### Slide Design Rules
 - One full-bleed background or effect per slide. Never two competing backgrounds.
-- Stats and numbers: weight 900, `clamp` sizing, teal color. Units always smaller weight.
+- Stats and numbers: weight 900, `clamp` sizing, teal color. Units always smaller weight. For horizontal proof strips, keep each stat cell on a consistent rhythm: tabular numbers, even cell widths, non-adjacent percentage metrics where possible, and readable label pills/backplates.
 - No carousels or tabbed UI unless absolutely necessary — every extra interaction is cognitive load.
 - Anime.js is the deck's primary entrance-motion layer. The deck now uses a visible entrance recipe: heading spring, accent-word blur-to-sharp slide, creative/slider overshoot, and stat/icon pulse where useful. Do not add broad scan-line sweeps or circular glow-orbit blobs unless explicitly requested.
-- The cover can carry compact credibility badges in the bottom information zone. Keep them small, credential-like, and secondary to the wordmark/logo.
+- The cover can carry compact credibility badges in the bottom information zone. Use actual badge image assets where available, keep them secondary to the wordmark/logo, and avoid decorative framing that makes the badge content hard to inspect.
 - Case studies use one of two layouts and reuse the same heading recipe (see below), swapping deck teal for a per-case-study brand color:
-  - **Split** (e.g. Mitsui): copy column (`shrink-0`, ~38–42% width) on one side with eyebrow + monster h2 + Palanquin tagline + vertical stat list. Creative column is a `ParallaxCardSlider` sized via the new `cardWidth` prop. The slider is `min-w-0` + `justify-start` so its right edge is allowed to bleed past the section bound and clip at the section's `overflow-hidden`. No surrounding decoration.
+  - **Split / proof-strip** (e.g. Mitsui): headline and tagline can anchor top-left while a horizontal proof strip sits top-right and the creative carousel occupies the bottom-centered stage. If using an animated slider, keep structural centering transforms on a stable outer wrapper and animate an inner element so Anime.js does not overwrite layout transforms.
   - **Polished vertical** (e.g. Baxsaa): centered eyebrow + heading + tagline top, creative grid or `ParallaxCardSlider` middle, brand-tinted stat pills row, optional eyebrow-style callout card (e.g. Baxsaa's SEO clean-up) at bottom. Pills use a translucent fill + 1px brand-color hairline border instead of `LiquidGlassCard` so the brand palette reads cleanly on light or dark gradients.
 - Animations reveal content, never distract from it. Duration cap: 1200ms max per element, except a deliberate foreground hero reveal can run up to 1350ms when it reads as one object.
 - Slide 2 now follows a split editorial layout: Palanquin copy on the left, sector badges anchored low-left, and a right-edge technical line illustration. Avoid reintroducing page-level header/footer labels, slide borders, decorative grids, or divider gradients there unless explicitly requested.

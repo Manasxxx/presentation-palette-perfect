@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 18 (current) is preparing a push for interaction and conversion polish across the website/deck. The cover now has four credibility badges (`Meta`, `Google`, `LinkedIn`, `HubSpot`), Mitsui has an AI Elements-style web preview block below the stats, Contact has a compact FlyonUI-inspired footer block at the bottom, and unknown routes now render a branded OwlSurf 404 page outside the slide matrix.
+Session 19 (current) is preparing a push for the latest cover and Mitsui iteration. The cover now uses downloaded badge image assets instead of text-only badge pills, the cover CTA uses a local SmoothUI-inspired magnetic button, and the Mitsui case study now uses a top-left heading, top-right Hover-style proof strip, and bottom-centered creative carousel. The temporary Mitsui web-preview block from Session 18 was removed after visual iteration.
+
+Session 18 pushed interaction and conversion polish across the website/deck. The cover gained four credibility badges, Mitsui briefly gained an AI Elements-style web preview block below the stats, Contact gained a compact FlyonUI-inspired footer block at the bottom, and unknown routes now render a branded OwlSurf 404 page outside the slide matrix.
 
 Session 17 pushed a focused visual asset update. The cover slide now uses a reusable animated SVG `OwlSurfLogo` component in the same right-side circular logo placement, the Who We Are slide's right-side technical illustration is shifted further toward the right edge, and the Raychem RPG case study now uses three refreshed WebP creatives converted from the user's Downloads folder.
 
@@ -59,6 +61,15 @@ The dev server was running during this session. `npm run build` was run before p
 - **Website 404 (NotFound)** — replaced the default Vite-style 404 with a branded OwlSurf 404 page outside the slide matrix. The catch-all route already existed in `App.tsx`, so no route change was needed.
 - **Clients slide** — the attempted one-row/four-block shuffle carousel was reverted. Clients is back to the existing two-line `LogoLoop` carousel.
 - **Verification approach** — `npm run build` was used for compile verification. Browser visual checks were skipped per user preference.
+
+### Cover badges, magnetic CTA, and Mitsui proof strip (Session 19)
+
+- **Cover (TitleSlide)** — replaced text-only credibility pills with downloaded badge image assets for Meta Business Partner, Google Partner, LinkedIn Marketing Partner, and HubSpot Partner. The badge group sits bottom-right while the animated OwlSurf logo remains in its original right-side circular logo flow.
+- **Cover CTA** — added `src/components/ui/MagneticButton.tsx`, a local SmoothUI-inspired magnetic button, and mounted it on the cover `See case studies` CTA while preserving the shimmer and click behavior.
+- **Mitsui (CaseStudySlide)** — removed the temporary web-preview element. The slide now has `Mitsui Chemicals` top-left, a top-right horizontal proof strip, and a bottom-centered `ParallaxCardSlider` carousel. Stats are ordered as impressions, ad clicks, engagement increase, ROI, and follower growth, with an up-right trend icon on the engagement metric.
+- **Carousel centering fix** — the bottom-centered slider uses an outer wrapper for structural `left-1/2` / `-translate-x-1/2` positioning and an inner `.cs-slider` element for Anime.js, so the reveal animation no longer overwrites layout centering.
+- **Local plan note** — `ui-design-plan.scratch.md` was updated locally with future Hover.dev testimonials and case-study/social-media visual refresh notes. It remains gitignored and should not be committed.
+- **Verification approach** — `npm run build` passed. Browser visual checks and screenshots were skipped by user preference; visual approval remains with the user.
 
 ### Our Team lanyard + handoff workflow (Session 14)
 
@@ -159,6 +170,20 @@ Conversion and route polish:
 - `handoff.md` — push-gate state refreshed for this push
 - `context.md` — Session 18 log and current-state summary
 - `prod.md` — guidance for cover badges, local preview blocks, footer blocks, and 404 route
+
+## Files Touched (Session 19)
+
+Cover and Mitsui iteration:
+- `src/assets/badge-meta-business-partner.png`
+- `src/assets/badge-google-partner.png`
+- `src/assets/badge-linkedin-marketing-partner.png`
+- `src/assets/badge-hubspot-partner-gold.png`
+- `src/components/ui/MagneticButton.tsx`
+- `src/components/slides/TitleSlide.tsx`
+- `src/components/slides/CaseStudySlide.tsx`
+- `context.md`
+- `prod.md`
+- `handoff.md`
 
 ## Files Touched (Session 13)
 

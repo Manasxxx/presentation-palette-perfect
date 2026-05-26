@@ -17,12 +17,17 @@ import { LiquidGlassCard } from "react-liquid-glass-card";
 import LightRays from "@/components/LightRays";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
+import MagneticButton from "@/components/ui/MagneticButton";
+import metaBusinessPartnerBadge from "@/assets/badge-meta-business-partner.png";
+import googlePartnerBadge from "@/assets/badge-google-partner.png";
+import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-partner.png";
+import hubspotPartnerBadge from "@/assets/badge-hubspot-partner-gold.png";
 
 const credibilityBadges = [
-  { label: "Meta", detail: "Verified Agency" },
-  { label: "Google", detail: "Partner Agency" },
-  { label: "LinkedIn", detail: "B2B Ads Partner" },
-  { label: "HubSpot", detail: "Growth Partner" },
+  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "max-h-[38px] md:max-h-[48px]" },
+  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "max-h-[54px] md:max-h-[66px]" },
+  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "max-h-[58px] md:max-h-[74px]" },
+  { label: "Google Partner", src: googlePartnerBadge, className: "max-h-[58px] md:max-h-[74px]" },
 ];
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
@@ -256,26 +261,26 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           </a>
         </div>
 
-        {/* BOTTOM: Info columns + button row */}
-        <div className="flex flex-col gap-6">
-          <div className="flex max-w-4xl flex-wrap gap-2.5 md:gap-3">
-            {credibilityBadges.map((badge) => (
-              <div
-                key={badge.label}
-                className="ts-cred-badge flex min-h-10 items-center gap-2 rounded-full border border-white/12 bg-white/[0.045] px-3.5 py-2 backdrop-blur-sm"
-                style={{ opacity: 0 }}
-              >
-                <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_14px_rgba(75,194,194,0.75)]" />
-                <span className="font-sans text-[10px] font-black uppercase tracking-[0.18em] text-white">
-                  {badge.label}
-                </span>
-                <span className="font-body text-xs font-semibold text-white/58">
-                  {badge.detail}
-                </span>
-              </div>
-            ))}
-          </div>
+        <div className="absolute bottom-[8.4rem] right-6 grid w-[min(360px,calc(100vw-3rem))] grid-cols-2 items-center gap-x-4 gap-y-2 md:bottom-[8.1rem] md:right-16 md:w-[430px] md:gap-x-5 md:gap-y-3 lg:right-24">
+          {credibilityBadges.map((badge) => (
+            <div
+              key={badge.label}
+              className="ts-cred-badge flex h-[74px] items-center justify-center p-1 md:h-[92px] md:p-2"
+              style={{ opacity: 0 }}
+            >
+              <img
+                src={badge.src}
+                alt={badge.label}
+                className={`block max-w-full object-contain ${badge.className}`}
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          ))}
+        </div>
 
+        {/* BOTTOM: Info columns + button row */}
+        <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-8 md:gap-16 max-w-2xl">
             <div className="ts-info-col" style={{ opacity: 0 }}>
               <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
@@ -301,26 +306,28 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 className="ts-arrow absolute -top-12 -right-8 w-14 h-14 md:w-16 md:h-16 text-primary/70 pointer-events-none"
                 style={{ opacity: 0, transform: "rotate(120deg) scaleX(-1)" }}
               />
-              <button
-                onClick={onViewCaseStudies}
-                className="ts-button px-6 py-2.5 rounded-full text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:scale-105 relative overflow-hidden"
-                style={{
-                  opacity: 0,
-                  background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
-                  color: "white",
-                  boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
-                }}
-              >
-                <span className="relative z-10">See case studies →</span>
-                <span
-                  className="absolute inset-0 z-0"
+              <div className="ts-button" style={{ opacity: 0 }}>
+                <MagneticButton
+                  onClick={onViewCaseStudies}
+                  strength={0.32}
+                  radius={170}
+                  className="relative overflow-hidden rounded-full px-6 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition-shadow duration-300"
                   style={{
-                    background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
-                    backgroundSize: "200% 100%",
-                    animation: "shimmer-cascade 2.5s ease-in-out infinite",
+                    background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
+                    boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
                   }}
-                />
-              </button>
+                >
+                  <span className="relative z-10">See case studies →</span>
+                  <span
+                    className="absolute inset-0 z-0"
+                    style={{
+                      background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
+                      backgroundSize: "200% 100%",
+                      animation: "shimmer-cascade 2.5s ease-in-out infinite",
+                    }}
+                  />
+                </MagneticButton>
+              </div>
             </div>
           )}
         </div>

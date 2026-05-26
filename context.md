@@ -10,11 +10,37 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 18 added small conversion and route-polish details: cover credibility badges, a Mitsui web-preview block, a compact footer on Contact, and a branded 404 page for unknown routes outside the slide matrix. The Clients slide is back on the original two-line `LogoLoop` carousel after a brief shuffle-carousel experiment was rejected. Session 17's visual asset updates remain in place: animated cover logo, right-shifted Who We Are image, and refreshed Raychem WebP creatives.
+**Latest working state:** Session 19 replaced the cover's text credibility pills with downloaded badge image assets, added a local magnetic CTA button, and reworked the Mitsui case study into a top-left heading + top-right proof strip + bottom-centered creative carousel. The temporary Mitsui web-preview block from Session 18 was removed after live visual iteration. The Clients slide remains on the original two-line `LogoLoop` carousel, and Session 17's visual asset updates remain in place.
 
 ---
 
 ## Session Log
+
+### Session 19 — Cover badge assets, magnetic CTA, Mitsui proof-strip layout
+
+**What was done:**
+
+**1. Cover credibility badges** (`src/components/slides/TitleSlide.tsx`, `src/assets/badge-*.png`)
+- Replaced the text-only badge pills with downloaded image badge assets for Meta Business Partner, Google Partner, LinkedIn Marketing Partner, and HubSpot Partner.
+- Moved the badges into a bottom-right two-line arrangement and kept the animated OwlSurf logo in its original right-side circular logo flow.
+
+**2. Cover CTA magnetic button** (`src/components/ui/MagneticButton.tsx`, `src/components/slides/TitleSlide.tsx`)
+- Added a local SmoothUI-inspired magnetic button component.
+- Mounted it on the cover `See case studies` CTA while preserving the existing shimmer and click behavior.
+
+**3. Mitsui case study layout** (`src/components/slides/CaseStudySlide.tsx`)
+- Removed the temporary AI Elements-style web-preview block from the slide.
+- Reworked the slide into a top-left `Mitsui Chemicals` heading, a top-right Hover-style proof strip, and a bottom-centered `ParallaxCardSlider`.
+- Reordered the stats to avoid adjacent percentage metrics: impressions, ad clicks, engagement increase, ROI, follower growth.
+- Added an up-right trend icon to the `99.2%` engagement increase metric and normalized number/label typography.
+- Fixed the carousel centering bug by moving the `-translate-x-1/2` positioning transform to an outer wrapper so Anime.js can animate the inner slider without overriding layout centering.
+
+**4. Local plan note** (`ui-design-plan.scratch.md`, not committed)
+- Added future notes to consider a Hover.dev-inspired testimonials section and to refresh case-study visuals with more current social-media-sourced assets.
+
+**Verification:**
+- `npm run build` passed before push.
+- Browser/screenshot verification was skipped by user preference; visual approval remains with the user.
 
 ### Session 18 — Cover badges, Mitsui web preview, Contact footer, branded 404
 
