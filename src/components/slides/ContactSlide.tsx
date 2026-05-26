@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { ArrowUpRight, Globe, Mail, Phone } from "lucide-react";
 import { animate, createSpring, stagger } from "animejs";
-import logo from "@/assets/logo-main.jpg";
 import FlyonFooter from "@/components/blocks/FlyonFooter";
+import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 
 const contactLinks = [
   {
@@ -161,11 +161,7 @@ const ContactSlide = () => {
               <div className="absolute inset-7 rounded-full border border-primary/25" />
               <div className="absolute inset-16 rounded-full bg-primary/[0.045] blur-sm" />
               <div className="relative flex h-[62%] w-[62%] items-center justify-center rounded-full border border-primary/35 bg-black/45 p-3 shadow-[0_0_90px_rgba(75,194,194,0.18)]">
-                <img
-                  src={logo}
-                  alt="OwlSurf Digital"
-                  className="h-full w-full rounded-full object-cover"
-                />
+                <OwlSurfLogo className="h-full w-full rounded-full" />
               </div>
             </div>
           </div>
