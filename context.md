@@ -5,16 +5,50 @@
 
 ---
 
-## Current State (as of last push)
+## Current State (as of last push + local doc pass)
 
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 19 replaced the cover's text credibility pills with downloaded badge image assets, added a local magnetic CTA button, and reworked the Mitsui case study into a top-left heading + top-right proof strip + bottom-centered creative carousel. The temporary Mitsui web-preview block from Session 18 was removed after live visual iteration. The Clients slide remains on the original two-line `LogoLoop` carousel, and Session 17's visual asset updates remain in place.
+**Latest working state:** Session 19 replaced the cover's text credibility pills with downloaded badge image assets, added a local magnetic CTA button, and reworked the Mitsui case study into a top-left heading + top-right proof strip + bottom-centered creative carousel. Session 20 is documentation-only: it adds VPS/domain migration notes, dependency/runtime docs, Node/env breadcrumbs, and static-server examples without changing app source or visual behavior.
 
 ---
 
 ## Session Log
+
+### Session 20 — VPS/domain migration documentation
+
+**What was done:**
+
+**1. VPS/domain migration guide** (`docs/vps-domain-migration.md`)
+- Documented the production model: `npm run build` creates a static `dist/` folder that can be served by Nginx, Caddy, or another static server.
+- Added VPS prerequisites, DNS checklist, first-deploy steps, update steps, TLS/Certbot command, cache policy, SPA fallback requirement, smoke tests, rollback structure, and maintainer notes.
+- Captured the important React Router hosting rule: unknown app paths should fall back to `/index.html`, not a raw server 404.
+
+**2. Dependency and runtime notes** (`docs/dependencies.md`)
+- Documented npm as the deployment package manager because `package-lock.json` is present.
+- Added Node guidance using `.nvmrc` as the target, currently Node 22.
+- Grouped app, animation/WebGL, build, test, and lint dependencies so a future maintainer can see what matters for migration.
+- Noted that `npm run images:convert` imports `sharp`, but `sharp` is not currently installed.
+- Documented that production serving does not require Node when the built `dist/` directory is served statically.
+
+**3. Deploy config examples** (`deploy/README.md`, `deploy/nginx-site.conf.example`, `deploy/Caddyfile.example`)
+- Added example Nginx and Caddy static-server configs with root pointing at `/var/www/owlsurf/current/dist`.
+- Included cache headers for hashed Vite assets and `index.html`.
+- Included the SPA fallback needed for the branded route-level 404.
+
+**4. Config breadcrumbs** (`.nvmrc`, `.env.example`, `README.md`)
+- Added `.nvmrc` with Node `22`.
+- Added `.env.example` explaining that no environment variables are currently required and warning not to put private secrets in `VITE_` browser variables.
+- Updated README deployment section to point maintainers to the migration docs and deploy examples.
+
+**Rationale:**
+- The user is moving hosting to a VPS and domain and asked for documentation/config support only. The website behavior, slide code, assets, and styling were intentionally not changed.
+- The docs assume static hosting from `dist/`, which is the simplest production shape for this Vite SPA.
+
+**Verification:**
+- `git diff --check` passed.
+- `npm run build` passed before push. Build output still shows the known large `vendor-lanyard` warning and stale Browserslist data notice.
 
 ### Session 19 — Cover badge assets, magnetic CTA, Mitsui proof-strip layout
 
@@ -664,6 +698,9 @@ src/
 tailwind.config.ts         — font families, owl.* colors, keyframes
 vite.config.ts             — port 8080, manualChunks code-splitting
 scripts/convert-images.mjs — PNG→WebP batch converter
+docs/vps-domain-migration.md — VPS/domain migration guide
+docs/dependencies.md      — dependency and runtime notes
+deploy/                   — Nginx and Caddy static hosting examples
 prod.md                    — design principles + product philosophy
 context.md                 — this file
 ```

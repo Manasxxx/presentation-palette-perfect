@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 19 (current) is preparing a push for the latest cover and Mitsui iteration. The cover now uses downloaded badge image assets instead of text-only badge pills, the cover CTA uses a local SmoothUI-inspired magnetic button, and the Mitsui case study now uses a top-left heading, top-right Hover-style proof strip, and bottom-centered creative carousel. The temporary Mitsui web-preview block from Session 18 was removed after visual iteration.
+Session 20 (current) is a documentation-only VPS/domain migration prep. The website code and visual behavior were intentionally left unchanged. Added migration guidance, dependency/runtime notes, environment-variable breadcrumbs, Node version pinning, and example static-server configs so a future maintainer can move the built Vite SPA to a VPS and domain more easily. The user explicitly asked to record this in both `handoff.md` and `context.md`.
+
+Session 19 prepared the latest cover and Mitsui iteration. The cover now uses downloaded badge image assets instead of text-only badge pills, the cover CTA uses a local SmoothUI-inspired magnetic button, and the Mitsui case study now uses a top-left heading, top-right Hover-style proof strip, and bottom-centered creative carousel. The temporary Mitsui web-preview block from Session 18 was removed after visual iteration.
 
 Session 18 pushed interaction and conversion polish across the website/deck. The cover gained four credibility badges, Mitsui briefly gained an AI Elements-style web preview block below the stats, Contact gained a compact FlyonUI-inspired footer block at the bottom, and unknown routes now render a branded OwlSurf 404 page outside the slide matrix.
 
@@ -36,7 +38,16 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The dev server was running during this session. `npm run build` was run before push because the repo push gate requires it. Browser visual approval remains with the user.
+The dev server was not needed for the Session 20 documentation-only migration pass. No app source files were changed, and browser visual approval remains with the user.
+
+### VPS/domain migration docs (Session 20)
+
+- **Migration guide** (`docs/vps-domain-migration.md`) — documents the static Vite production model, DNS checklist, VPS prerequisites, `npm ci` / `npm run build`, Nginx setup, TLS via Certbot, SPA fallback, cache policy, smoke tests, rollback shape, and notes not to serve the Vite dev server publicly.
+- **Dependency/runtime notes** (`docs/dependencies.md`) — documents npm as the deployment package manager, `package-lock.json` as the server lockfile, Node 22 via `.nvmrc`, dependency groups, optional `sharp` requirement for image conversion, static build output, Vite hosting details, and files that should never be exposed from the server root.
+- **Deploy examples** (`deploy/README.md`, `deploy/nginx-site.conf.example`, `deploy/Caddyfile.example`) — provide static hosting examples for Nginx and Caddy with React Router fallback and cache headers.
+- **Config breadcrumbs** (`.nvmrc`, `.env.example`) — pin the documented Node target to 22 and make clear that the app currently has no required environment variables. Future public browser-safe values should use `VITE_`; private secrets must not.
+- **README pointer** (`README.md`) — points maintainers to the migration docs and deploy examples.
+- **Verification approach** — `git diff --check` passed, then `npm run build` passed before push. Build output still shows the known large `vendor-lanyard` warning and stale Browserslist data notice.
 
 ### Deck-wide Anime.js motion cleanup + OwlSurf teal scale (Session 16)
 
@@ -143,6 +154,20 @@ Removed 16 orphan files in this session:
 `vite.config.ts` `manualChunks` still lists `@radix-ui/react-slot`, `@radix-ui/react-toast`, and `@radix-ui/react-tooltip` under `vendor-ui`. These dependencies remain installed in `package.json` because nothing in `src/` imports them after the deletes — they are candidates for a future `npm uninstall`, but the dependency-removal pass was not done in this session.
 
 `@gsap/react` becomes unused after `SplitText.tsx` was removed; same caveat applies.
+
+## Files Touched (Session 20)
+
+VPS/domain migration documentation only:
+- `.nvmrc` — documents Node 22 as the migration build target
+- `.env.example` — documents that no environment variables are currently required and warns against putting secrets in `VITE_` variables
+- `README.md` — links to the migration docs and deploy examples
+- `docs/vps-domain-migration.md` — VPS/domain migration guide for static Vite hosting
+- `docs/dependencies.md` — dependency, runtime, build, and hosting notes
+- `deploy/README.md` — explains the deploy config examples
+- `deploy/nginx-site.conf.example` — Nginx static SPA config example
+- `deploy/Caddyfile.example` — Caddy static SPA config example
+- `context.md` — Session 20 log and file-map updates
+- `handoff.md` — Session 20 handoff update requested by the user
 
 ## Files Touched (Session 17)
 
@@ -279,6 +304,7 @@ Doc updates (this commit):
 
 ## Verified / Evidence
 
+- Session 20 documentation-only pass: `git diff --check` passed, then `npm run build` passed before push. Build output still shows the known large `vendor-lanyard` warning and stale Browserslist data notice.
 - `npm run build` passes after copy edits and after orphan-file deletes.
 - `npm run build` passes before the Session 14 lanyard/workflow push.
 - `npm run build` passes before the Session 15 case-study motion push.
@@ -324,20 +350,22 @@ Other open project items carried over from earlier sessions:
 
 ## Current Workspace Notes
 
-Intended files for the Session 18 commit:
-- `src/components/ai-elements/WebPreview.tsx`
-- `src/components/blocks/FlyonFooter.tsx`
-- `src/components/slides/CaseStudySlide.tsx`
-- `src/components/slides/ContactSlide.tsx`
-- `src/components/slides/TitleSlide.tsx`
-- `src/pages/NotFound.tsx`
-- `handoff.md`, `context.md`, `prod.md`
+Intended files for the Session 20 documentation commit:
+- `.nvmrc`
+- `.env.example`
+- `README.md`
+- `docs/vps-domain-migration.md`
+- `docs/dependencies.md`
+- `deploy/README.md`
+- `deploy/nginx-site.conf.example`
+- `deploy/Caddyfile.example`
+- `handoff.md`
+- `context.md`
 
 Unrelated untracked items that should remain unstaged unless asked:
 - `.agents/`
 - `.claude/`
 - `carousel-b2b-marketing.html`
-- `our-team-slide-screenshot.png`
 - `our-team-slide-single-lanyard.png`
 - `skills-lock.json`
 

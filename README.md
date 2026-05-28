@@ -90,3 +90,9 @@ Manasxxx/presentation-palette-perfect
 ```
 
 The previous Vercel deployment/domain needs reconnecting before production use.
+
+For VPS/domain migration, start with:
+
+- `docs/vps-domain-migration.md`
+- `docs/dependencies.md`
+- `deploy/README.md`

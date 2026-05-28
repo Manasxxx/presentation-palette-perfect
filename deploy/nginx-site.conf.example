@@ -1,0 +1,48 @@
+# Example Nginx config for the OwlSurf Vite SPA.
+# Copy to /etc/nginx/sites-available/owlsurf.conf and replace example.com.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.com www.example.com;
+
+    root /var/www/owlsurf/current/dist;
+    index index.html;
+
+    access_log /var/log/nginx/owlsurf.access.log;
+    error_log /var/log/nginx/owlsurf.error.log;
+
+    # React Router / Vite SPA fallback.
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Hashed Vite assets can be cached aggressively.
+    location /assets/ {
+        try_files $uri =404;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    # Keep the app shell fresh across deploys.
+    location = /index.html {
+        add_header Cache-Control "no-cache";
+    }
+
+    # Public static files from /public.
+    location ~* \.(?:ico|png|jpg|jpeg|webp|svg|gif|woff2?|ttf|otf)$ {
+        try_files $uri =404;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        application/javascript
+        application/json
+        application/xml
+        image/svg+xml;
+}

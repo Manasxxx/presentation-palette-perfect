@@ -1,0 +1,16 @@
+# Example Caddy config for the OwlSurf Vite SPA.
+# Replace example.com and the root path before use.
+
+example.com, www.example.com {
+    root * /var/www/owlsurf/current/dist
+    encode gzip zstd
+
+    @assets path /assets/*
+    header @assets Cache-Control "public, max-age=31536000, immutable"
+
+    @index path /index.html
+    header @index Cache-Control "no-cache"
+
+    try_files {path} {path}/ /index.html
+    file_server
+}
