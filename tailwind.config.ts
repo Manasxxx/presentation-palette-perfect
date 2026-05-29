@@ -126,6 +126,11 @@ export default {
           from: { transform: "translate3d(0, 0, 0)" },
           to: { transform: "translate3d(0, calc(-100% - var(--gap)), 0)" },
         },
+        meteor: {
+          "0%": { transform: "rotate(var(--angle)) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": { transform: "rotate(var(--angle)) translateX(-500px)", opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -135,6 +140,7 @@ export default {
         "scale-in": "scale-in 0.4s ease-out",
         marquee: "marquee var(--duration) infinite linear",
         "marquee-vertical": "marquee-vertical var(--duration) infinite linear",
+        meteor: "meteor 5s linear infinite",
       },
     },
   },

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 8080
+    },
+    {
+      "name": "carousel",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "9090", "/Users/manassrivastava/Desktop/OSD"],
+      "port": 9090
+    }
+  ]
+}

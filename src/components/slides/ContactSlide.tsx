@@ -1,29 +1,8 @@
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, Globe, Mail, Phone } from "lucide-react";
 import { animate, createSpring, stagger } from "animejs";
 import FlyonFooter from "@/components/blocks/FlyonFooter";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
-
-const contactLinks = [
-  {
-    label: "Email",
-    value: "growth@owlsurf.com",
-    href: "mailto:growth@owlsurf.com",
-    icon: Mail,
-  },
-  {
-    label: "Call",
-    value: "+91 9520 367546",
-    href: "tel:+919520367546",
-    icon: Phone,
-  },
-  {
-    label: "Web",
-    value: "owlsurf.com",
-    href: "https://www.owlsurf.com",
-    icon: Globe,
-  },
-];
+import { Meteors } from "@/components/ui/meteors";
 
 const ContactSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -70,18 +49,6 @@ const ContactSlide = () => {
         ease: "out(4)",
       });
 
-      animate(el.querySelectorAll(".ct-link-icon"), {
-        scale: [0.6, 1.26, 1],
-        filter: [
-          "drop-shadow(0 0 0 hsl(180 45% 53% / 0))",
-          "drop-shadow(0 0 12px hsl(180 45% 53% / 0.48))",
-          "drop-shadow(0 0 0 hsl(180 45% 53% / 0))",
-        ],
-        delay: stagger(90, { start: 760 }),
-        duration: 850,
-        ease: "out(4)",
-      });
-
     };
 
     const observer = new IntersectionObserver(
@@ -104,6 +71,15 @@ const ContactSlide = () => {
     <section ref={sectionRef} className="slide overflow-hidden bg-background font-sans">
       <div className="absolute inset-0 bg-[#07090d]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_74%_42%,rgba(75,194,194,0.18),transparent_29%),linear-gradient(115deg,rgba(255,255,255,0.045),transparent_34%,rgba(75,194,194,0.055)_72%,transparent)]" />
+      <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+        <Meteors
+          number={40}
+          angle={45}
+          minDuration={3}
+          maxDuration={7}
+          className="!h-1 !w-1 bg-primary shadow-[0_0_8px_2px_rgba(75,194,194,0.55)]"
+        />
+      </div>
       <div className="absolute inset-x-8 top-8 h-px bg-white/12 md:inset-x-12" />
       <div className="absolute inset-x-8 bottom-8 h-px bg-white/12 md:inset-x-12" />
       <div className="absolute bottom-8 top-8 left-8 w-px bg-white/12 md:left-12" />
@@ -123,36 +99,6 @@ const ContactSlide = () => {
               </span>
             </h2>
           </main>
-
-          <div className="ct-reveal mt-12 grid gap-3 opacity-0 md:grid-cols-3">
-            {contactLinks.map((item) => {
-              const Icon = item.icon;
-              return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target={item.href.startsWith("http") ? "_blank" : undefined}
-                  rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="group flex min-h-[74px] items-center justify-between gap-4 border-t border-white/18 py-4 transition duration-300 hover:border-primary"
-                >
-                  <span className="flex min-w-0 items-center gap-3">
-                    <span className="ct-link-icon flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/14 text-primary transition duration-300 group-hover:border-primary/80 group-hover:bg-primary/10">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="block font-sans text-[10px] font-bold uppercase tracking-[0.26em] text-white/36">
-                        {item.label}
-                      </span>
-                      <span className="mt-1 block break-words font-body text-base font-semibold leading-tight text-white md:text-lg lg:text-xl">
-                        {item.value}
-                      </span>
-                    </span>
-                  </span>
-                  <ArrowUpRight className="h-5 w-5 flex-none text-white/32 transition duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
-                </a>
-              );
-            })}
-          </div>
         </div>
 
         <aside className="relative hidden min-h-0 md:block">
