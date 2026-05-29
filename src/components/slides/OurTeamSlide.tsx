@@ -47,6 +47,7 @@ const OurTeamSlide = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const triggered = useRef(false);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [showLanyard, setShowLanyard] = useState(false);
     const activeMember = teamMembers[activeIndex];
 
     useEffect(() => {
@@ -61,9 +62,15 @@ const OurTeamSlide = () => {
         const el = sectionRef.current;
         if (!el) return;
 
+        let lanyardTimer = 0;
+
         const reveal = () => {
             if (triggered.current) return;
             triggered.current = true;
+
+            // Defer the heavy WebGL/physics lanyard until the scroll-snap settles,
+            // so initializing it doesn't jank the entrance.
+            lanyardTimer = window.setTimeout(() => setShowLanyard(true), 650);
 
             animate(el.querySelectorAll('.team-heading'), {
                 opacity: [0, 1],
@@ -112,6 +119,7 @@ const OurTeamSlide = () => {
         return () => {
             observer.disconnect();
             window.clearTimeout(fallback);
+            window.clearTimeout(lanyardTimer);
         };
     }, []);
 
@@ -152,17 +160,12 @@ const OurTeamSlide = () => {
                                         key={member.name}
                                         type="button"
                                         onClick={() => setActiveIndex(index)}
-                                        className={`team-roster-row group relative grid w-full grid-cols-[2.8rem_1fr] items-baseline gap-4 border-b py-3.5 text-left transition-all duration-300 ${
+                                        className={`team-roster-row group relative flex w-full items-baseline border-b py-3.5 text-left transition-all duration-300 ${
                                             isActive
                                                 ? 'border-primary/72 text-white opacity-100'
                                                 : 'border-white/8 text-white/18 opacity-45 saturate-0 hover:border-white/18 hover:text-white/34 hover:opacity-70'
                                         }`}
                                     >
-                                        <span className={`font-mono text-[0.72rem] font-bold tabular-nums transition-colors ${
-                                            isActive ? 'text-primary' : 'text-white/18 group-hover:text-white/34'
-                                        }`}>
-                                            {String(index + 1).padStart(2, '0')}
-                                        </span>
                                         <span className="min-w-0">
                                             <span className={`block truncate font-sans text-[clamp(1.25rem,1.8vw,2.05rem)] font-black uppercase leading-none tracking-normal transition-colors ${
                                                 isActive ? 'text-white' : 'text-white/24 group-hover:text-white/40'
@@ -188,14 +191,16 @@ const OurTeamSlide = () => {
                     <div className="team-lanyard-stage relative z-10 flex min-h-[620px] items-center justify-center overflow-visible" style={{ opacity: 0 }}>
                         <div className="absolute right-4 top-1/2 h-[58%] w-[72%] -translate-y-1/2 rounded-full bg-primary/14 blur-[70px]" />
                         <div className="relative h-[680px] w-full max-w-[720px] overflow-visible">
-                            <Lanyard
-                                className="single-team-lanyard"
-                                person={activeMember}
-                                position={[0, 0, 22]}
-                                gravity={[0, -38, 0]}
-                                fov={11.5}
-                                startOffset={lanyardFallOffsets[activeIndex]}
-                            />
+                            {showLanyard && (
+                                <Lanyard
+                                    className="single-team-lanyard"
+                                    person={activeMember}
+                                    position={[0, 0, 22]}
+                                    gravity={[0, -38, 0]}
+                                    fov={11.5}
+                                    startOffset={lanyardFallOffsets[activeIndex]}
+                                />
+                            )}
                             <div className="team-lanyard-name absolute inset-x-0 bottom-12 z-10 text-center">
                                 <div className="font-sans text-[clamp(1.4rem,2.35vw,2.55rem)] font-black uppercase leading-none tracking-normal text-white">
                                     {activeMember.name}

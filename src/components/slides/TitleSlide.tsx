@@ -24,10 +24,10 @@ import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-par
 import hubspotPartnerBadge from "@/assets/badge-hubspot-partner-gold.png";
 
 const credibilityBadges = [
-  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "max-h-[38px] md:max-h-[48px]" },
-  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "max-h-[54px] md:max-h-[66px]" },
-  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "max-h-[58px] md:max-h-[74px]" },
-  { label: "Google Partner", src: googlePartnerBadge, className: "max-h-[58px] md:max-h-[74px]" },
+  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "max-h-[30px] md:max-h-[36px]" },
+  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "max-h-[42px] md:max-h-[50px]" },
+  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "max-h-[46px] md:max-h-[56px]" },
+  { label: "Google Partner", src: googlePartnerBadge, className: "max-h-[46px] md:max-h-[56px]" },
 ];
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
@@ -63,6 +63,40 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       delay: 260,
       ease: "out(4)",
     });
+
+    const seam = el.querySelector(".ts-seam");
+    if (seam) {
+      animate(seam, {
+        opacity: [0, 1],
+        scaleY: [0, 1],
+        duration: 900,
+        delay: 240,
+        ease: "out(3)",
+      });
+    }
+
+    const hook = el.querySelector(".ts-hook");
+    if (hook) {
+      animate(hook, {
+        opacity: [0, 1],
+        translateY: [44, 0],
+        duration: 1100,
+        delay: 220,
+        ease: "out(4)",
+      });
+    }
+
+    const hookAccent = el.querySelector(".ts-hook-accent");
+    if (hookAccent) {
+      animate(hookAccent, {
+        opacity: [0, 1],
+        translateX: [-26, 0],
+        filter: ["blur(14px)", "blur(0px)"],
+        duration: 1000,
+        delay: 560,
+        ease: "out(4)",
+      });
+    }
 
     animate(el.querySelector(".ts-logo-outer")!, {
       opacity: [0, 1],
@@ -208,37 +242,56 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <Globe className="opacity-25 !max-w-none !w-full" />
       </div>
 
-      {/* Main content — 3-zone layout: eyebrow top, wordmark center, info bottom */}
+      {/* Main content — editorial cover: brand lockup top, hook hero center, credentials baseline bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-16"
+        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-16 md:py-24"
       >
-        {/* TOP: Eyebrow */}
-        <div className="ts-eyebrow flex items-center gap-3" style={{ opacity: 0 }}>
-          <span className="block w-8 h-px bg-owl-teal" />
-          <span className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-owl-teal font-sans">
-            Credentials
-          </span>
-        </div>
-
-        {/* CENTER: Wordmark + Logo — vertically centered, items-center aligns logo to wordmark midpoint */}
-        <div className="flex flex-row items-center justify-between gap-4 md:gap-8">
-          <div className="flex-1 min-w-0">
-            <h1 className="font-sans font-black leading-[0.9] tracking-tight uppercase text-white text-[clamp(3.5rem,10vw,7rem)]">
-              <span className="ts-wordmark-line block" style={{ opacity: 0 }}>
-                <span className="font-sans">OWL</span>
-                <span className="ts-title-accent font-sans text-owl-teal inline-block">SURF</span>
-              </span>
-            </h1>
-            <p
-              className="ts-wordmark-line font-body font-medium uppercase text-white/75 tracking-[0.22em] mt-2 md:mt-3"
-              style={{ opacity: 0, fontSize: "clamp(0.9rem, 1.6vw, 1.5rem)" }}
-            >
+        {/* TOP: brand lockup (left) + eyebrow/index (right) */}
+        <div className="flex flex-row items-start justify-between gap-6">
+          <div className="ts-wordmark-line min-w-0" style={{ opacity: 0 }}>
+            <span className="block font-sans font-black uppercase leading-none tracking-tight text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
+              <span className="font-sans not-italic">OWL</span>
+              <span className="ts-title-accent font-sans not-italic text-owl-teal inline-block">SURF</span>
+            </span>
+            <span className="block font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)]">
               B2B Marketing for complex markets
-            </p>
+            </span>
           </div>
 
-          {/* Logo right — vertically centered with wordmark block */}
+          <div className="ts-eyebrow flex items-center gap-3 shrink-0 pt-1.5" style={{ opacity: 0 }}>
+            <span className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-owl-teal font-sans">
+              Credentials
+            </span>
+            <span className="hidden sm:block w-8 h-px bg-owl-teal/50" />
+            <span className="hidden sm:block font-sans text-[11px] md:text-xs font-bold tracking-[0.25em] text-white/35">
+              01
+            </span>
+          </div>
+        </div>
+
+        {/* CENTER: hook hero (left) + logo mark (right) */}
+        <div className="flex flex-row items-center justify-between gap-6 md:gap-12">
+          <div className="relative flex-1 min-w-0 pl-5 md:pl-8">
+            <span
+              className="ts-seam absolute left-0 top-1 bottom-1 w-[2px] rounded-full bg-gradient-to-b from-transparent via-owl-teal to-transparent"
+              style={{ opacity: 0, transformOrigin: "top" }}
+            />
+            <h1 className="ts-hook font-sans font-black uppercase leading-[0.95] tracking-tight text-white text-[clamp(2.1rem,5.2vw,4.8rem)]" style={{ opacity: 0 }}>
+              <span className="font-sans not-italic block">We make complex</span>
+              <span className="font-sans not-italic block">
+                products{" "}
+                <span
+                  className="ts-hook-accent font-serif italic lowercase text-owl-teal tracking-tight inline-block"
+                  style={{ opacity: 0 }}
+                >
+                  easy to buy.
+                </span>
+              </span>
+            </h1>
+          </div>
+
+          {/* Logo right — circular glass + animated rings (placement + interaction shell kept) */}
           <a
             href="https://www.owlsurf.com"
             target="_blank"
@@ -251,7 +304,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/30" style={{ opacity: 0, transform: "scale(1.4)" }} />
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/15" style={{ opacity: 0, transform: "scale(1.65)" }} />
             <div
-              className="ts-logo-inner w-28 h-28 sm:w-36 sm:h-36 md:w-52 md:h-52 lg:w-64 lg:h-64 animate-pulse-glow flex items-center justify-center"
+              className="ts-logo-inner w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 animate-pulse-glow flex items-center justify-center"
               style={{ clipPath: "circle(0% at 50% 50%)" }}
             >
               <LiquidGlassCard borderRadius="50%" padding="6px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
@@ -261,47 +314,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           </a>
         </div>
 
-        <div className="absolute bottom-[8.4rem] right-6 grid w-[min(360px,calc(100vw-3rem))] grid-cols-2 items-center gap-x-4 gap-y-2 md:bottom-[8.1rem] md:right-16 md:w-[430px] md:gap-x-5 md:gap-y-3 lg:right-24">
-          {credibilityBadges.map((badge) => (
-            <div
-              key={badge.label}
-              className="ts-cred-badge flex h-[74px] items-center justify-center p-1 md:h-[92px] md:p-2"
-              style={{ opacity: 0 }}
-            >
-              <img
-                src={badge.src}
-                alt={badge.label}
-                className={`block max-w-full object-contain ${badge.className}`}
-                loading="eager"
-                decoding="async"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* BOTTOM: Info columns + button row */}
-        <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-8 md:gap-16 max-w-2xl">
-            <div className="ts-info-col" style={{ opacity: 0 }}>
-              <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
-                What We Do
-              </div>
-              <div className="text-sm md:text-base font-body font-semibold text-white leading-snug">
-                B2B marketing for technical brands
-              </div>
-            </div>
-            <div className="ts-info-col" style={{ opacity: 0 }}>
-              <div className="text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase text-white/40 font-sans mb-1.5">
-                Made For
-              </div>
-              <div className="text-sm md:text-base font-body text-white/75 leading-snug">
-                Long cycles. Complex products. Buyers who expect substance.
-              </div>
-            </div>
-          </div>
-
+        {/* BOTTOM: centered CTA over a centered partner badge strip */}
+        <div className="flex flex-col items-center gap-8 md:gap-10">
           {onViewCaseStudies && (
-            <div className="relative self-start">
+            <div className="relative">
               <Arrow19
                 className="ts-arrow absolute -top-12 -right-8 w-14 h-14 md:w-16 md:h-16 text-primary/70 pointer-events-none"
                 style={{ opacity: 0, transform: "rotate(120deg) scaleX(-1)" }}
@@ -311,7 +327,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                   onClick={onViewCaseStudies}
                   strength={0.32}
                   radius={170}
-                  className="relative overflow-hidden rounded-full px-6 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-white transition-shadow duration-300"
+                  className="relative overflow-hidden rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-white transition-shadow duration-300"
                   style={{
                     background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
                     boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
@@ -330,6 +346,30 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               </div>
             </div>
           )}
+
+          {/* Partner badge strip — secondary credibility, centered */}
+          <div className="flex flex-col items-center gap-3">
+            <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
+              Trusted partner
+            </span>
+            <div className="flex flex-row flex-wrap items-center justify-center gap-x-6 gap-y-2 md:gap-x-9">
+              {credibilityBadges.map((badge) => (
+                <div
+                  key={badge.label}
+                  className="ts-cred-badge flex items-center justify-center"
+                  style={{ opacity: 0 }}
+                >
+                  <img
+                    src={badge.src}
+                    alt={badge.label}
+                    className={`block max-w-full object-contain ${badge.className}`}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

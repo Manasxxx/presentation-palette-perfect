@@ -67,12 +67,17 @@ const CardSwap = ({
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
 
   const tlRef = useRef(null);
-  const intervalRef = useRef();
+  const loopRef = useRef();
   const container = useRef(null);
 
   useEffect(() => {
     const total = refs.length;
     refs.forEach((r, i) => placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount));
+
+    // Keep GSAP's rAF ticker awake: if it has slept after the heavy initial
+    // load, tweens scheduled off a setInterval/setTimeout won't reliably wake
+    // it, leaving the stack frozen until a user interaction kicks rAF alive.
+    gsap.ticker.wake();
 
     const swap = () => {
       if (order.current.length < 2) return;
@@ -132,28 +137,38 @@ const CardSwap = ({
       });
     };
 
+    // Self-scheduling loop driven by GSAP's ticker (not setInterval) so the
+    // whole cycle stays inside rAF and the ticker never goes stale mid-loop.
+    const scheduleNext = () => {
+      loopRef.current = gsap.delayedCall(delay / 1000, () => {
+        swap();
+        scheduleNext();
+      });
+    };
+
     swap();
-    intervalRef.current = window.setInterval(swap, delay);
+    scheduleNext();
 
     if (pauseOnHover) {
       const node = container.current;
       const pause = () => {
         tlRef.current?.pause();
-        clearInterval(intervalRef.current);
+        loopRef.current?.pause();
       };
       const resume = () => {
+        gsap.ticker.wake();
         tlRef.current?.play();
-        intervalRef.current = window.setInterval(swap, delay);
+        loopRef.current?.resume();
       };
       node.addEventListener('mouseenter', pause);
       node.addEventListener('mouseleave', resume);
       return () => {
         node.removeEventListener('mouseenter', pause);
         node.removeEventListener('mouseleave', resume);
-        clearInterval(intervalRef.current);
+        loopRef.current?.kill();
       };
     }
-    return () => clearInterval(intervalRef.current);
+    return () => loopRef.current?.kill();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
 

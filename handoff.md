@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 20 (current) is a documentation-only VPS/domain migration prep. The website code and visual behavior were intentionally left unchanged. Added migration guidance, dependency/runtime notes, environment-variable breadcrumbs, Node version pinning, and example static-server configs so a future maintainer can move the built Vite SPA to a VPS and domain more easily. The user explicitly asked to record this in both `handoff.md` and `context.md`.
+Session 21 (current) redesigned the cover and Who We Are slides, polished the Our Team slide, and fixed the Services CardSwap freeze. The cover (`TitleSlide`) is now hook-led: a hero headline `We make complex products easy to buy.` (accent in cursive teal), a smaller top-left `OWLSURF` lockup, the logo mark top-right, a centered `See case studies` CTA, and a centered partner badge strip; the `What We Do` / `Made For` info columns were removed. Who We Are (`SkyrocketSlide`) was rebuilt as a full-width editorial layout over the kept Hyperspeed running lines: message block (`Hard to explain.` / `Easy to choose.` headline, white upright + cursive teal accents) + `Industries we serve` rail (no numbers) + full-width `What makes us different` differentiator-card row; the right-edge illustration and the italic `HighlightPhrase` component were removed. Our Team (`OurTeamSlide`) dropped the roster index numbers and now defers the lanyard WebGL mount ~650ms after the slide becomes visible to stop scroll-in jank. `CardSwap` now loops on GSAP's ticker (`gsap.delayedCall` + `gsap.ticker.wake()`) instead of `setInterval`, fixing a freeze-until-interaction bug.
+
+### Session 20 — documentation-only VPS/domain migration prep. The website code and visual behavior were intentionally left unchanged. Added migration guidance, dependency/runtime notes, environment-variable breadcrumbs, Node version pinning, and example static-server configs so a future maintainer can move the built Vite SPA to a VPS and domain more easily. The user explicitly asked to record this in both `handoff.md` and `context.md`.
 
 Session 19 prepared the latest cover and Mitsui iteration. The cover now uses downloaded badge image assets instead of text-only badge pills, the cover CTA uses a local SmoothUI-inspired magnetic button, and the Mitsui case study now uses a top-left heading, top-right Hover-style proof strip, and bottom-centered creative carousel. The temporary Mitsui web-preview block from Session 18 was removed after visual iteration.
 
@@ -154,6 +156,15 @@ Removed 16 orphan files in this session:
 `vite.config.ts` `manualChunks` still lists `@radix-ui/react-slot`, `@radix-ui/react-toast`, and `@radix-ui/react-tooltip` under `vendor-ui`. These dependencies remain installed in `package.json` because nothing in `src/` imports them after the deletes — they are candidates for a future `npm uninstall`, but the dependency-removal pass was not done in this session.
 
 `@gsap/react` becomes unused after `SplitText.tsx` was removed; same caveat applies.
+
+## Files Touched (Session 21)
+
+Cover + Who We Are redesign, Our Team polish, CardSwap fix:
+- `src/components/slides/TitleSlide.tsx` — hook-led cover redesign; removed info columns; centered CTA + centered partner badge strip; trimmed badge heights; added hero headline, seam, and brand lockup
+- `src/components/slides/SkyrocketSlide.tsx` — full-width Who We Are redesign over Hyperspeed; `Hard to explain. / Easy to choose.` headline (cursive teal accents); industries rail without numbers; full-width differentiator-card row; removed engineering illustration import and the `HighlightPhrase` component
+- `src/components/slides/OurTeamSlide.tsx` — removed roster index numbers; deferred lanyard mount via `showLanyard` to fix scroll-in jank
+- `src/components/ui/CardSwap/CardSwap.jsx` — swap loop moved from `setInterval` to `gsap.delayedCall` + `gsap.ticker.wake()` to fix the freeze-until-interaction bug
+- `prod.md`, `context.md`, `handoff.md` — Session 21 updates
 
 ## Files Touched (Session 20)
 
@@ -304,6 +315,7 @@ Doc updates (this commit):
 
 ## Verified / Evidence
 
+- Session 21: `npm run build` passed before push. Browser visual approval remains with the user per standing preference. CardSwap fix verified by reasoning about GSAP ticker behavior; the user confirms motion in the live browser.
 - Session 20 documentation-only pass: `git diff --check` passed, then `npm run build` passed before push. Build output still shows the known large `vendor-lanyard` warning and stale Browserslist data notice.
 - `npm run build` passes after copy edits and after orphan-file deletes.
 - `npm run build` passes before the Session 14 lanyard/workflow push.

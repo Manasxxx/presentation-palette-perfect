@@ -10,11 +10,43 @@
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
 **Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 19 replaced the cover's text credibility pills with downloaded badge image assets, added a local magnetic CTA button, and reworked the Mitsui case study into a top-left heading + top-right proof strip + bottom-centered creative carousel. Session 20 is documentation-only: it adds VPS/domain migration notes, dependency/runtime docs, Node/env breadcrumbs, and static-server examples without changing app source or visual behavior.
+**Latest working state:** Session 21 redesigned the cover and Who We Are slides, polished the Our Team slide, and fixed the Services CardSwap freeze. The cover is now hook-led (`We make complex products easy to buy.`) with a centered CTA and centered partner badge strip. Who We Are is a full-width editorial layout over the Hyperspeed lines with the `Hard to explain. / Easy to choose.` headline, an industries rail, and a differentiator-card row. Our Team dropped the roster numbers and now defers the lanyard mount to stop scroll-in jank. CardSwap now loops on GSAP's ticker. (Session 20 was documentation-only: VPS/domain migration notes, dependency/runtime docs, Node/env breadcrumbs, static-server examples.)
 
 ---
 
 ## Session Log
+
+### Session 21 — Cover + Who We Are redesign, Our Team polish, CardSwap freeze fix
+
+**What was done:**
+
+**1. Cover (TitleSlide) redesigned hook-first** (`src/components/slides/TitleSlide.tsx`)
+- Lead element is now an editorial hero headline `We make complex products easy to buy.`, with the accent phrase in a cursive serif (Lora) teal treatment, plus a thin teal seam down the left.
+- The `OWLSURF` wordmark + subline moved to a smaller top-left brand lockup; the eyebrow + `01` index sits top-right; the animated `OwlSurfLogo` circular glass/ring mark stays on the right.
+- Removed the `What We Do` / `Made For` info columns. The `See case studies` CTA is centered in the bottom zone, with the partner badge strip centered beneath it under a `Trusted partner` label. Badge max-heights were trimmed so the strip reads as one neat row.
+- Spacing opened up (`py-16 md:py-24`).
+
+**2. Who We Are (SkyrocketSlide) fully redesigned** (`src/components/slides/SkyrocketSlide.tsx`)
+- Removed the right-edge engineering illustration (`industrial-engineer-slide-2.png` import dropped) and the italic `HighlightPhrase` marker-highlight component.
+- Kept the Hyperspeed running-lines background; lightened the panel fill and raised Hyperspeed opacity (~0.7) so the lines stay visible.
+- New full-width three-block layout: top-left message (eyebrow `Who we are / 02` + headline + short manifesto), top-right `Industries we serve` rail (5 industries with icon + descriptor tag, no leading numbers, hover `↗`), and a full-width `What makes us different` differentiator-card row across the bottom (`One team, end to end` / `Engineering-fluent` / `Outcome-led`).
+- Headline copy `Hard to explain.` / `Easy to choose.`: `Hard to` / `Easy to` are white upright Montserrat; `explain.` / `choose.` use the cursive Lora serif in teal gradient. Manifesto tightened to one short idea.
+
+**3. Our Team (OurTeamSlide) polish** (`src/components/slides/OurTeamSlide.tsx`)
+- Removed the `01`–`06` index numbers next to roster names.
+- Fixed scroll-in lag: the lanyard (WebGL + Rapier physics + large generated band texture) was initializing during the scroll-snap. It is now gated behind a `showLanyard` state and mounted ~650ms after the slide becomes visible, so the heading/roster entrance stays smooth and the lanyard drops in after the slide settles. The stage `min-h` preserves layout height while deferred.
+
+**4. Services CardSwap freeze fix** (`src/components/ui/CardSwap/CardSwap.jsx`)
+- The swap loop ran from `window.setInterval`, outside GSAP's rAF ticker. After the heavy initial load the ticker could be asleep, so swap tweens created from the interval didn't render and the stack sat frozen until a user interaction (hover/click) woke rAF.
+- Replaced the interval with a self-scheduling `gsap.delayedCall` loop and call `gsap.ticker.wake()` on mount, keeping the whole cycle inside the ticker. Pause/resume on hover now pause/resume the delayedCall and re-wake the ticker.
+
+**Rationale:**
+- The user wanted the cover and Who We Are slides to be more memorable and less generic, with copy that sticks (the `Hard to explain. / Easy to choose.` line was specifically approved). The differentiator row is intentionally not a service list because Services has its own slide.
+- The Our Team lag and the CardSwap freeze were both initialization/timing issues around heavy or ticker-driven work on slide entry.
+
+**Verification:**
+- `npm run build` was run before this push (see Verified / Evidence in handoff.md).
+- Browser visual approval remains with the user per the standing preference.
 
 ### Session 20 — VPS/domain migration documentation
 
@@ -676,12 +708,12 @@ src/
   pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
   pages/NotFound.tsx       — branded OwlSurf 404 page for unknown paths
   components/
-    slides/TitleSlide.tsx  — cover slide, 3-zone layout
+    slides/TitleSlide.tsx  — cover slide, hook-led editorial layout (hero headline, top-left lockup, right logo, centered CTA + badge strip)
     OwlSurfLogo.tsx        — animated SVG OwlSurf mark used in the cover logo slot
     ai-elements/WebPreview.tsx — local AI Elements-style web preview primitives
     blocks/FlyonFooter.tsx — compact FlyonUI-inspired footer block used on Contact
-    slides/SkyrocketSlide.tsx — slide 2 Who We Are editorial layout, memoized Hyperspeed config, right-edge illustration
-    slides/OurTeamSlide.tsx — left roster selector + single active team lanyard
+    slides/SkyrocketSlide.tsx — slide 2 Who We Are full-width editorial layout over Hyperspeed; message + industries rail + differentiator row (no illustration)
+    slides/OurTeamSlide.tsx — left roster selector (no numbers) + single active team lanyard, deferred-mounted to avoid scroll-in jank
     slides/CaseStudySlide.tsx — Mitsui split case study with stats, slider, and web preview
     slides/RaychemRPGCaseStudy.tsx — Raychem case study with three refreshed WebP creatives
     ui/Lanyard/            — React Bits lanyard, OwlSurf strap, active badge avatar
