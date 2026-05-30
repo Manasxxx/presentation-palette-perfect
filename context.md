@@ -5,16 +5,53 @@
 
 ---
 
-## Current State (as of last push + local doc pass)
+## Current State (as of Session 22 push prep)
 
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
 **Dev:** `npm run dev` → `localhost:8080` (port hardcoded in `vite.config.ts`).
-**Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui (with most shadcn primitives now removed as dead code).
-**Latest working state:** Session 21 redesigned the cover and Who We Are slides, polished the Our Team slide, and fixed the Services CardSwap freeze. The cover is now hook-led (`We make complex products easy to buy.`) with a centered CTA and centered partner badge strip. Who We Are is a full-width editorial layout over the Hyperspeed lines with the `Hard to explain. / Easy to choose.` headline, an industries rail, and a differentiator-card row. Our Team dropped the roster numbers and now defers the lanyard mount to stop scroll-in jank. CardSwap now loops on GSAP's ticker. (Session 20 was documentation-only: VPS/domain migration notes, dependency/runtime docs, Node/env breadcrumbs, static-server examples.)
+**Stack:** Vite + React 18 + TypeScript + Tailwind 3 + Anime.js + GSAP + shadcn/ui remnants only where still imported.
+**Latest working state:** Session 22 completed the live visual pass across the cover, Services, case studies, Contact footer, and Our Team lanyard. The cover now keeps the centered/top-half globe treatment, uses larger cropped partner badge images, reads `OWLSURF DIGITAL`, and no longer shows the top-right `Credentials / 01` label. Services keeps the left-pillar/right-CardSwap structure, but the first `Brand & Story` vertical cards now split text left and clip-art SVG illustration right. All non-Mitsui case studies now use the shared Mitsui-style `CaseStudyLayout`; Mitsui and Raychem include the additional WebP creatives from Downloads. Our Team uses the left-side cylindrical name roulette and the lanyard badge now shows the person's field/title in place of their name. The stale Slide 2 engineer PNG and old lanyard PNG were removed, unused UI dependencies were uninstalled, lint is clean, and `npm run build` passes with the known lanyard chunk warning.
 
 ---
 
 ## Session Log
+
+### Session 22 — Visual polish, shared case-study layout, asset/dependency cleanup
+
+**What was done:**
+
+**1. Cover partner and globe polish** (`src/components/slides/TitleSlide.tsx`, `src/assets/badge-*.png`)
+- Centered the globe on the title page and shifted/clipped it so only its top half is visible from the bottom zone.
+- Enlarged and aligned the partner badges; the Meta Business Partner and Google Partner source images were cropped tighter so the visible badge content, not white padding, controls the perceived size.
+- Removed the top-right `Credentials / 01` label, changed the brand lockup to `OWLSURF DIGITAL`, and slightly enlarged the OwlSurf logo mark.
+
+**2. Services first vertical illustrations** (`src/components/slides/ServicesSlide.tsx`, `src/assets/service-illustration-*.svg`)
+- Added clip-art SVGs only for the first service vertical (`Brand & Story`).
+- The moving CardSwap cards now use a two-column body: description on the left, illustration on the right, giving the right side most of the bottom-half card space.
+- Other service verticals keep the existing text-only card format.
+
+**3. Case-study layout + creative additions** (`src/components/slides/CaseStudyLayout.tsx`, case-study slides, `src/assets/*extra*.webp`)
+- Added the additional Mitsui and Raychem WebP creatives from the user's Downloads assets folder into their existing slideshows.
+- Added shared `CaseStudyLayout` and applied the Mitsui-style formatting to Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG.
+- Mitsui remains its custom proof-strip + bottom carousel layout; the shared layout keeps consistent heading, proof strip, and bottom carousel behavior for the rest.
+
+**4. Contact footer and Our Team lanyard polish** (`src/components/blocks/FlyonFooter.tsx`, `ContactSlide.tsx`, `OurTeamSlide.tsx`, `src/components/ui/Lanyard/Lanyard.jsx`)
+- Contact footer alignment was tightened so the logo pill, contact links, and copyright line sit on a cleaner shared vertical rhythm.
+- Our Team's left roster is now a smoother cylindrical name roulette. Duplicate name text was removed from below the lanyard.
+- Lanyard badge avatar crops are centered in their circles. The badge now draws the person's field/title horizontally in place of their name.
+
+**5. Cleanup and efficiency pass** (`package.json`, `package-lock.json`, `vite.config.ts`, visual helper files)
+- Removed stale unreferenced assets: `src/assets/industrial-engineer-slide-2.png` and `src/assets/lanyard/lanyard.png`.
+- Removed unused dependencies: `@gsap/react`, `@radix-ui/react-slot`, `@radix-ui/react-toast`, `@radix-ui/react-tooltip`, and `class-variance-authority`.
+- Tightened `vite.config.ts` manual chunks so they no longer name removed packages.
+- Cleaned existing lint blockers in WebGL helper typings and Tailwind config import style so `npm run lint` now passes.
+
+**Verification:**
+- Asset filename scan reports no obvious unused files in `src/assets`.
+- Only one asset over 1 MB remains: the existing lanyard `card.glb`.
+- `npm run lint` passes.
+- `npm run build` passes. Build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` chunk warning.
+- Browser/screenshot verification was skipped per the user's standing preference; visual approval remains with the user in their live browser.
 
 ### Session 21 — Cover + Who We Are redesign, Our Team polish, CardSwap freeze fix
 
@@ -334,11 +371,11 @@
 - Components: `ProfileCard.jsx` + `.css`, `Radar.jsx` + `.css` (old team-slide implementation, replaced by the lanyard).
 - UI primitives: `ui/SplitText.tsx`, `ui/marquee.tsx` (replaced by `LogoLoop`), `ui/toast.tsx`, `ui/tooltip.tsx` (all never imported).
 - Assets: `client-extra.png` (placeholder), `client-dehn.png`, `client-kuraray.png`, `client-mitsui.png`, `logo-icon.png`, `Raychemcasestudy 1.webp`, `Raychemcasestudy 2.webp` (never imported anywhere in `src/`).
-- `vite.config.ts` `manualChunks` still names `@radix-ui/react-slot/toast/tooltip` and `@gsap/react` under `vendor-ui` / `vendor-gsap`. These packages are no longer imported anywhere in `src/` after the deletes and are candidates for a future `npm uninstall` pass, but the dependency removal was intentionally not done in this session to keep the change set focused.
+- Session 22 removed the previously noted unused UI/animation dependencies and tightened `vite.config.ts` manual chunks. `tailwindcss-animate` stays because `tailwind.config.ts` still uses it.
 
 **Verification:**
 - `npm run build` passes after the copy edits and after the orphan-file deletes.
-- `npm test` / `npm run lint` were not re-run; the pre-existing visual-component lint debt is unchanged.
+- At the time, `npm test` / `npm run lint` were not re-run; Session 22 later cleaned the visual-component lint blockers and `npm run lint` now passes.
 
 ### Session 10 — Our Team Single Lanyard + Global Idle Nav
 
@@ -674,12 +711,12 @@
 | Services as B2B icon grid | Slide 4 uses 8 icon cards (4×2) with simplified service names and B2B-angled descriptions (long sales cycles, complex buying committees, technical evaluators). No tabs. |
 | Clients use React Bits LogoLoop | Slide 5 uses two `LogoLoop` rows with real CSS mask fading, calmer speeds, pause-on-hover, and offscreen RAF pausing. Avoid reverting to the old Marquee unless LogoLoop proves incompatible. |
 | Bare-span footgun | `span:not([class])` in `index.css` forces Palanquin italic onto any class-less `<span>`. Always add `font-sans not-italic` (or equivalent) on bare spans inside h1/h2 to keep them in Montserrat. |
-| Services as 5-pillar tabbed CardSwap | Slide 4 uses left-side pillar tabs + right-side CardSwap stack. Five pillars (Content & Creative, Reach & Activation, Search & Listening, Data & Tech, AI & Automation), 5 sub-services each. Card headings teal, monster-styled. `key={activeKey}` on CardSwap forces remount per tab so gsap timeline doesn't desync. |
+| Services as 5-pillar tabbed CardSwap | Slide 4 uses left-side pillar tabs + right-side CardSwap stack. Five pillars (`Brand & Story`, `Demand Gen`, `Discovery`, `Marketing Stack`, `AI & Autopilot`), 5 sub-services each. Card headings teal, monster-styled. `key={activeKey}` on CardSwap forces remount per tab so gsap timeline doesn't desync. The first vertical can use text-left/illustration-right cards; the other verticals remain text-only unless the user asks to extend the illustration format. |
 | CardSwap stack readability | Cards designed so the icon + title row fits in the top `verticalDistance` (52px) — keep small icon (`h-8`) and small monster heading (`text-base font-black`) pinned to the top edge. That makes all stacked headings peek visibly in a staircase. |
 | AI & Automation as a top-level pillar | Treated as a peer to Content, Reach, Search, and Data — not a sub-skill. Mention AEO, Marketing Copilots, AI Personalization explicitly because B2B buyers now expect them. |
 | Ambient WebGL DPR cap | LightRays, PrismaticBurst, and Hyperspeed cap DPR at `1.25` to reduce heat/lag on Retina displays. These are ambient backgrounds, so do not raise back to full devicePixelRatio unless visual quality truly requires it. |
 | Contact logo animation layering | Keep `ct-mark` for absolute positioning and animate only `ct-mark-inner`; animating the positioned wrapper overwrites centering transforms and misaligns the logo/ripples. |
-| Two case-study layouts coexist | Case studies use either split (Mitsui) or polished vertical (Baxsaa). Both apply the eyebrow + monster h2 + Palanquin tagline recipe, just at a slightly smaller h2 clamp than slides 2–5 and with the brand color in place of teal. Pick per case study based on whether there's an extra element (callout, SEO card, supplementary copy) that breaks the split column cleanly. |
+| Case-study shared layout | Mitsui keeps its custom proof-strip + bottom carousel layout. Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG now use `CaseStudyLayout`, a shared Mitsui-style structure with top-left heading, top-right stat strip, and bottom-centered carousel. Keep future per-case-study edits inside the shared layout when possible. |
 | `ParallaxCardSlider` `cardWidth` prop | Slider exposes an optional `cardWidth` (default `"min(32vw, 340px)"`). Per-case-study layouts can tune this without forking the slider. Mitsui uses `"min(24vw, 320px)"` on desktop. The slider's parent must be `min-w-0` for the prop to actually shrink/grow inside a flex row. |
 | Case-study slider right-edge bleed | For the Mitsui split layout, the slider sits in a `flex-1 min-w-0 justify-start self-center` wrapper so its right edge can clip past the section bound at common widths. This is deliberate — section `overflow-hidden` clips the bleed and the copy column stays at its `shrink-0` width. Do not add `overflow-hidden` to the slider wrapper or anchor it `justify-center`, both will recenter the slider and reintroduce the column-squeeze regression caught during Session 13. |
 | Case-study stats: no LiquidGlassCard | Baxsaa's pills were rewritten with a simple translucent fill + 1px brand-color hairline + backdrop-blur instead of `LiquidGlassCard`. The card library's pre-baked saturate/brightness fights brand color tints (especially on the Baxsaa cream background). Prefer the custom pill until a clear `LiquidGlassCard` use case returns. Mitsui's vertical stat list uses the same idea: an icon-circle with brand color border + a big-number + small-label layout, no glass card wrapper. |
@@ -688,15 +725,14 @@
 
 ## Known Issues / TODOs
 
-- [ ] Five case studies still on the pre-Session-13 layout (`CultFitCaseStudy`, `GirlUpCaseStudy`, `CTPCaseStudy`, `VNTCaseStudy`, `RaychemRPGCaseStudy`). Each needs a split-or-vertical decision and a port to the new recipe. Pace is per-CS, similar to Mitsui/Baxsaa iteration.
 - [ ] Vercel deployment broken — needs reconnect or redeploy.
 - [ ] PNGs in `src/assets` not yet converted to WebP — run `npm run images:convert` after `npm i -D sharp`.
 - [ ] `logo-main.jpg` used for owl logo — should be converted to WebP or replaced with SVG/PNG with transparency.
-- [ ] Bundle `vendor-3d` still appears as a large chunk (~678KB minified) when 3D slides load — consider splitting `ogl`, `cobe`, and `postprocessing` by feature, or gate/deeper-lazy-load 3D code.
+- [ ] Bundle `vendor-lanyard` remains very large (~3MB minified / ~1MB gzip) because the interactive lanyard isolates Three/Rapier/Drei/MeshLine in one chunk. Consider deeper lazy loading or a static mobile/team fallback if this becomes a real loading issue.
 - [ ] Mobile layout for title slide not verified after redesign.
 - [ ] Our Team uses Pankaj's avatar for Vishnu until a dedicated Vishnu avatar is supplied.
 - [ ] The lanyard/strap/logo layout should still be judged by manual browser review; screenshot capture was intentionally skipped at the user's request.
-- [ ] `npm run lint` fails on existing visual-component typing debt (`any`, `@ts-nocheck`, hook warnings, Tailwind `require()`).
+- [ ] `npm audit` still reports dependency advisories after the unused-package uninstall (17 total at push prep). Review separately from visual work.
 
 ---
 
@@ -708,17 +744,16 @@ src/
   pages/Index.tsx          — lazy slide registry, progressive mounting, scroll handler, nav
   pages/NotFound.tsx       — branded OwlSurf 404 page for unknown paths
   components/
-    slides/TitleSlide.tsx  — cover slide, hook-led editorial layout (hero headline, top-left lockup, right logo, centered CTA + badge strip)
+    slides/TitleSlide.tsx  — cover slide, hook-led editorial layout, centered clipped globe, OWLSURF DIGITAL lockup, centered CTA + badge strip
     OwlSurfLogo.tsx        — animated SVG OwlSurf mark used in the cover logo slot
     ai-elements/WebPreview.tsx — local AI Elements-style web preview primitives
     blocks/FlyonFooter.tsx — compact FlyonUI-inspired footer block used on Contact
     slides/SkyrocketSlide.tsx — slide 2 Who We Are full-width editorial layout over Hyperspeed; message + industries rail + differentiator row (no illustration)
-    slides/OurTeamSlide.tsx — left roster selector (no numbers) + single active team lanyard, deferred-mounted to avoid scroll-in jank
-    slides/CaseStudySlide.tsx — Mitsui split case study with stats, slider, and web preview
-    slides/RaychemRPGCaseStudy.tsx — Raychem case study with three refreshed WebP creatives
-    ui/Lanyard/            — React Bits lanyard, OwlSurf strap, active badge avatar
-    ProfileCard.jsx/css    — older React Bits profile card files, not the current team-slide path
-    Radar.jsx/css          — older WebGL radar files, not the current team-slide path
+    slides/OurTeamSlide.tsx — cylindrical name roulette + single active team lanyard, deferred-mounted to avoid scroll-in jank
+    slides/CaseStudyLayout.tsx — shared Mitsui-style layout for Baxsaa/CultFit/GirlUp/CTP/VNT/Raychem
+    slides/CaseStudySlide.tsx — Mitsui custom proof-strip case study with expanded WebP carousel
+    slides/RaychemRPGCaseStudy.tsx — Raychem case study with refreshed and additional WebP creatives
+    ui/Lanyard/            — React Bits lanyard, OwlSurf strap, active badge avatar, role/title drawn on badge
     SlideReveal.tsx        — intersection observer + anime.js entrance wrapper
     ParallaxCardSlider.tsx — visible-only auto-advance + tilt animation
     PillNav.tsx            — GSAP-powered top nav

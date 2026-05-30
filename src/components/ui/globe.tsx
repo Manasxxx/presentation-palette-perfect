@@ -41,6 +41,7 @@ function useSpringValue(initial: number, config = { damping: 30, stiffness: 100 
   const current = useRef(initial);
   const target = useRef(initial);
   const velocity = useRef(0);
+  const { damping, stiffness } = config;
 
   const set = useCallback((value: number) => {
     target.current = value;
@@ -50,13 +51,12 @@ function useSpringValue(initial: number, config = { damping: 30, stiffness: 100 
 
   // Simple spring step (called per frame inside globe's onRender)
   const step = useCallback(() => {
-    const { stiffness, damping } = config;
     const dt = 1 / 60; // assumed 60fps
     const force = stiffness * (target.current - current.current);
     velocity.current += force * dt;
     velocity.current *= Math.exp(-damping * dt);
     current.current += velocity.current * dt;
-  }, [config.damping, config.stiffness]);
+  }, [damping, stiffness]);
 
   return { set, get, step };
 }
@@ -68,8 +68,8 @@ export function Globe({
   className?: string;
   config?: COBEOptions;
 }) {
-  let phi = 0;
-  let width = 0;
+  const phiRef = useRef(0);
+  const widthRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pointerInteracting = useRef<number | null>(null);
@@ -78,6 +78,8 @@ export function Globe({
   const [isVisible, setIsVisible] = useState(false);
 
   const spring = useSpringValue(0, { damping: 30, stiffness: 100 });
+  const springRef = useRef(spring);
+  springRef.current = spring;
 
   const updatePointerInteraction = (value: number | null) => {
     pointerInteracting.current = value;
@@ -118,7 +120,7 @@ export function Globe({
 
     const onResize = () => {
       if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth;
+        widthRef.current = canvasRef.current.offsetWidth;
       }
     };
     window.addEventListener("resize", onResize);
@@ -126,14 +128,14 @@ export function Globe({
 
     const globe = createGlobe(canvasRef.current!, {
       ...config,
-      width: width * 2,
-      height: width * 2,
+      width: widthRef.current * 2,
+      height: widthRef.current * 2,
       onRender: (state) => {
-        spring.step();
-        if (!pointerInteracting.current) phi += 0.005;
-        state.phi = phi + spring.get();
-        state.width = width * 2;
-        state.height = width * 2;
+        springRef.current.step();
+        if (!pointerInteracting.current) phiRef.current += 0.005;
+        state.phi = phiRef.current + springRef.current.get();
+        state.width = widthRef.current * 2;
+        state.height = widthRef.current * 2;
       },
     });
     globeRef.current = globe;
@@ -147,8 +149,7 @@ export function Globe({
       globeRef.current = null;
       window.removeEventListener("resize", onResize);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible]);
+  }, [config, isVisible]);
 
   return (
     <div

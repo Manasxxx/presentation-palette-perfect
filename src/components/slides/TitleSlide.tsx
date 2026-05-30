@@ -24,10 +24,10 @@ import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-par
 import hubspotPartnerBadge from "@/assets/badge-hubspot-partner-gold.png";
 
 const credibilityBadges = [
-  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "max-h-[30px] md:max-h-[36px]" },
-  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "max-h-[42px] md:max-h-[50px]" },
-  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "max-h-[46px] md:max-h-[56px]" },
-  { label: "Google Partner", src: googlePartnerBadge, className: "max-h-[46px] md:max-h-[56px]" },
+  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "h-[48px] md:h-[62px]" },
+  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "h-[64px] md:h-[80px]" },
+  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "h-[62px] md:h-[78px]" },
+  { label: "Google Partner", src: googlePartnerBadge, className: "h-[66px] md:h-[84px]" },
 ];
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
@@ -39,13 +39,6 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
-    animate(el.querySelector(".ts-eyebrow")!, {
-      opacity: [0, 1],
-      translateY: [12, 0],
-      duration: 700,
-      ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
-    });
 
     animate(el.querySelectorAll(".ts-wordmark-line"), {
       opacity: [0, 1],
@@ -229,43 +222,35 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         className="opacity-30 pointer-events-none"
       />
 
-      {/* Globe — retained, pushed lower-right as ambient */}
+      {/* Globe — top hemisphere rises from the bottom edge */}
       <div
         className="absolute pointer-events-none"
         style={{
-          bottom: isMobile ? '-30%' : '-40%',
-          left: isMobile ? '-50%' : '-20%',
+          top: '100%',
+          left: '50%',
           width: isMobile ? '200%' : '120%',
           height: '120%',
+          transform: 'translate(-50%, -50%)',
         }}
       >
         <Globe className="opacity-25 !max-w-none !w-full" />
       </div>
 
-      {/* Main content — editorial cover: brand lockup top, hook hero center, credentials baseline bottom */}
+      {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
         ref={contentRef}
         className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-16 md:py-24"
       >
-        {/* TOP: brand lockup (left) + eyebrow/index (right) */}
+        {/* TOP: brand lockup */}
         <div className="flex flex-row items-start justify-between gap-6">
           <div className="ts-wordmark-line min-w-0" style={{ opacity: 0 }}>
             <span className="block font-sans font-black uppercase leading-none tracking-tight text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
               <span className="font-sans not-italic">OWL</span>
               <span className="ts-title-accent font-sans not-italic text-owl-teal inline-block">SURF</span>
+              <span className="font-sans not-italic"> DIGITAL</span>
             </span>
             <span className="block font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)]">
               B2B Marketing for complex markets
-            </span>
-          </div>
-
-          <div className="ts-eyebrow flex items-center gap-3 shrink-0 pt-1.5" style={{ opacity: 0 }}>
-            <span className="text-[11px] md:text-xs font-bold tracking-[0.25em] uppercase text-owl-teal font-sans">
-              Credentials
-            </span>
-            <span className="hidden sm:block w-8 h-px bg-owl-teal/50" />
-            <span className="hidden sm:block font-sans text-[11px] md:text-xs font-bold tracking-[0.25em] text-white/35">
-              01
             </span>
           </div>
         </div>
@@ -304,7 +289,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/30" style={{ opacity: 0, transform: "scale(1.4)" }} />
             <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/15" style={{ opacity: 0, transform: "scale(1.65)" }} />
             <div
-              className="ts-logo-inner w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 animate-pulse-glow flex items-center justify-center"
+              className="ts-logo-inner w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 lg:w-56 lg:h-56 animate-pulse-glow flex items-center justify-center"
               style={{ clipPath: "circle(0% at 50% 50%)" }}
             >
               <LiquidGlassCard borderRadius="50%" padding="6px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
@@ -348,21 +333,21 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           )}
 
           {/* Partner badge strip — secondary credibility, centered */}
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex translate-y-5 flex-col items-center gap-3 md:translate-y-8">
             <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
               Trusted partner
             </span>
-            <div className="flex flex-row flex-wrap items-center justify-center gap-x-6 gap-y-2 md:gap-x-9">
+            <div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-7 gap-y-4 md:flex-nowrap md:gap-x-11">
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex items-center justify-center"
+                  className="ts-cred-badge flex h-[74px] items-center justify-center md:h-[92px]"
                   style={{ opacity: 0 }}
                 >
                   <img
                     src={badge.src}
                     alt={badge.label}
-                    className={`block max-w-full object-contain ${badge.className}`}
+                    className={`block w-auto max-w-none object-contain ${badge.className}`}
                     loading="eager"
                     decoding="async"
                   />

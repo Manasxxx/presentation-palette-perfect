@@ -15,17 +15,19 @@ const socialLinks = [
 
 const FlyonFooter = () => (
   <footer className="w-full font-sans text-white">
-    <div className="max-w-[1720px] py-3 lg:px-8">
-      <div className="flex items-center justify-between gap-4 max-md:flex-col">
-        <img
-          src={logoPill}
-          className="-ml-3 h-20 w-auto"
-          alt="OwlSurf Digital"
-          loading="lazy"
-          decoding="async"
-        />
+    <div className="mx-auto max-w-[1720px] px-0 py-2.5 lg:px-8">
+      <div className="grid items-center gap-4 md:grid-cols-[minmax(170px,0.72fr)_minmax(0,1.7fr)_minmax(110px,0.42fr)]">
+        <div className="flex min-h-12 items-center justify-center md:min-h-14 md:justify-start">
+          <img
+            src={logoPill}
+            className="h-12 w-auto object-contain md:h-14"
+            alt="OwlSurf Digital"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
 
-        <div className="flex flex-nowrap items-center justify-center gap-x-6 gap-y-2 whitespace-nowrap max-md:flex-wrap">
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:gap-x-7">
           {contactItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -34,16 +36,16 @@ const FlyonFooter = () => (
                 href={item.href}
                 target={item.href.startsWith("http") ? "_blank" : undefined}
                 rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="group flex items-center gap-2 text-sm font-medium text-white/72 transition duration-300 hover:text-primary"
+                className="group flex min-w-0 items-center gap-2 text-[13px] font-medium leading-none text-white/72 transition duration-300 hover:text-primary lg:text-sm"
               >
-                <Icon className="h-4 w-4 text-primary" strokeWidth={1.8} />
-                {item.label}
+                <Icon className="h-4 w-4 shrink-0 text-primary" strokeWidth={1.8} />
+                <span className="truncate">{item.label}</span>
               </a>
             );
           })}
         </div>
 
-        <div className="flex h-5 gap-4 text-primary">
+        <div className="flex items-center justify-start gap-4 text-primary md:justify-end">
           {socialLinks.map((item) => {
             const Icon = item.icon;
             return (
@@ -65,10 +67,9 @@ const FlyonFooter = () => (
 
     <div className="h-px w-full bg-white/12" />
 
-    <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-      <div className="text-center text-sm text-white/58">
-        &copy; 2026{" "}
-        <span className="text-primary">OwlSurf Digital</span>. Made with love in India.
+    <div className="mx-auto grid max-w-[1720px] gap-4 px-0 py-2.5 lg:px-8 md:grid-cols-[minmax(170px,0.72fr)_minmax(0,1.7fr)_minmax(110px,0.42fr)]">
+      <div className="text-center text-[13px] leading-none text-white/58 md:col-start-2">
+        &copy; 2026 <span className="text-primary">OwlSurf Digital</span>. Made with love in India.
       </div>
     </div>
   </footer>

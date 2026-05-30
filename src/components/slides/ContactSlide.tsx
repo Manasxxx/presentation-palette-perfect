@@ -113,7 +113,7 @@ const ContactSlide = () => {
           </div>
         </aside>
       </div>
-      <div className="ct-reveal absolute inset-x-8 bottom-6 z-20 opacity-0 md:inset-x-12">
+      <div className="ct-reveal absolute inset-x-8 bottom-8 z-20 opacity-0 md:inset-x-12">
         <FlyonFooter />
       </div>
     </section>

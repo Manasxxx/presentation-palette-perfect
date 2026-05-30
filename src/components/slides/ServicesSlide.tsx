@@ -29,11 +29,17 @@ import {
 } from "lucide-react";
 import LightRays from "@/components/LightRays";
 import CardSwap, { Card } from "@/components/ui/CardSwap/CardSwap";
+import brandStoryIllustration from "@/assets/service-illustration-brand-story.svg";
+import videoIllustration from "@/assets/service-illustration-video.svg";
+import designSystemIllustration from "@/assets/service-illustration-design-system.svg";
+import researchIllustration from "@/assets/service-illustration-research.svg";
+import thoughtLeadershipIllustration from "@/assets/service-illustration-thought-leadership.svg";
 
 type Service = {
   icon: LucideIcon;
   title: string;
   description: string;
+  illustration?: ServiceIllustrationKind;
 };
 
 type Category = {
@@ -41,6 +47,30 @@ type Category = {
   label: string;
   icon: LucideIcon;
   services: Service[];
+};
+
+type ServiceIllustrationKind = "story" | "video" | "system" | "research" | "thought";
+
+const serviceIllustrations: Record<ServiceIllustrationKind, string> = {
+  story: brandStoryIllustration,
+  video: videoIllustration,
+  system: designSystemIllustration,
+  research: researchIllustration,
+  thought: thoughtLeadershipIllustration,
+};
+
+const ServiceClipArt = ({ kind }: { kind: ServiceIllustrationKind }) => {
+  return (
+    <div className="pointer-events-none relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-primary/20 bg-primary/[0.055]">
+      <img
+        src={serviceIllustrations[kind]}
+        alt=""
+        className="h-[92%] w-[92%] object-contain drop-shadow-[0_18px_28px_rgba(75,194,194,0.16)]"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+  );
 };
 
 const categories: Category[] = [
@@ -54,30 +84,35 @@ const categories: Category[] = [
         title: "Brand Storytelling",
         description:
           "Narrative your buyers remember at the moment they decide.",
+        illustration: "story",
       },
       {
         icon: Film,
         title: "Video Production",
         description:
           "Product demos, explainers, brand films. Complex tech, clear stories.",
+        illustration: "video",
       },
       {
         icon: PenTool,
         title: "Design Systems",
         description:
           "Logos, decks, brochures, trade-show booths. Consistent. Yours.",
+        illustration: "system",
       },
       {
         icon: FileText,
         title: "Whitepapers & Research",
         description:
           "Long-form research that earns you the expert seat.",
+        illustration: "research",
       },
       {
         icon: Sparkles,
         title: "Thought Leadership",
         description:
           "Bylines, op-eds, conference talks. Earned authority.",
+        illustration: "thought",
       },
     ],
   },
@@ -400,14 +435,16 @@ const ServicesSlide = () => {
             >
               {activeCategory.services.map((svc) => {
                 const Icon = svc.icon;
+                const hasIllustration =
+                  activeCategory.key === "content" && svc.illustration;
                 return (
                   <Card key={svc.title}>
-                    <div className="relative flex h-full w-full flex-col">
+                    <div className="relative flex h-full w-full flex-col overflow-hidden">
                       {/* Vertical accent stripe on the left edge */}
                       <span className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r bg-primary" />
 
                       {/* Top edge: tight icon + compact monster heading — peeks above when stacked */}
-                      <div className="flex items-center gap-2.5 px-5 pt-2.5">
+                      <div className="relative z-10 flex items-center gap-2.5 px-5 pt-2.5">
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15">
                           <Icon className="h-3.5 w-3.5 text-primary" />
                         </div>
@@ -417,12 +454,24 @@ const ServicesSlide = () => {
                       </div>
 
                       {/* Body content */}
-                      <div className="flex-1 px-5 pt-4">
-                        <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
-                          {svc.description}
-                        </p>
+                      <div className="relative z-10 flex-1">
+                        {hasIllustration ? (
+                          <div className="grid h-full grid-cols-[0.9fr_1.1fr] gap-4 px-5 pb-4 pt-4">
+                            <div className="flex min-w-0 items-start">
+                              <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
+                                {svc.description}
+                              </p>
+                            </div>
+                            <ServiceClipArt kind={hasIllustration} />
+                          </div>
+                        ) : (
+                          <div className="px-5 pt-4">
+                            <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
+                              {svc.description}
+                            </p>
+                          </div>
+                        )}
                       </div>
-
                     </div>
                   </Card>
                 );

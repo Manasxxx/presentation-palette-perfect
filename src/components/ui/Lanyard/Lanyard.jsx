@@ -28,12 +28,27 @@ const BAND_TEXTURE_HEIGHT = 512 * BAND_TEXTURE_SCALE;
 const BAND_LOGO_SIZE = 392;
 
 const drawRoundImage = (ctx, image, x, y, size) => {
+  const sourceSize = Math.min(image.naturalWidth || image.width, image.naturalHeight || image.height);
+  const sourceX = ((image.naturalWidth || image.width) - sourceSize) / 2;
+  const sourceY = ((image.naturalHeight || image.height) - sourceSize) / 2;
+
   ctx.save();
   ctx.beginPath();
   ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
   ctx.clip();
-  ctx.drawImage(image, x, y, size, size);
+  ctx.drawImage(image, sourceX, sourceY, sourceSize, sourceSize, x, y, size, size);
   ctx.restore();
+};
+
+const drawCenteredText = (ctx, text, x, y, maxWidth, fontSize, weight = 800) => {
+  ctx.font = `${weight} ${fontSize}px Montserrat, Arial, sans-serif`;
+  let width = ctx.measureText(text).width;
+  while (width > maxWidth && fontSize > 26) {
+    fontSize -= 2;
+    ctx.font = `${weight} ${fontSize}px Montserrat, Arial, sans-serif`;
+    width = ctx.measureText(text).width;
+  }
+  ctx.fillText(text, x, y);
 };
 
 export default function Lanyard({
@@ -160,12 +175,48 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false, person, startOffs
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
       ctx.clearRect(0, 0, 1024, 1024);
-      const avatarGlow = ctx.createRadialGradient(512, 520, 40, 512, 520, 420);
+
+      const avatarGlow = ctx.createRadialGradient(512, 430, 40, 512, 430, 420);
       avatarGlow.addColorStop(0, 'rgba(75, 194, 194, 0.3)');
       avatarGlow.addColorStop(1, 'rgba(75, 194, 194, 0)');
       ctx.fillStyle = avatarGlow;
       ctx.fillRect(0, 0, 1024, 1024);
-      ctx.drawImage(avatarImage, 80, 68, 864, 864);
+
+      ctx.fillStyle = 'rgba(3, 10, 12, 0.82)';
+      ctx.beginPath();
+      ctx.roundRect(126, 104, 772, 812, 84);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(75, 194, 194, 0.42)';
+      ctx.lineWidth = 10;
+      ctx.stroke();
+
+      const avatarSize = 520;
+      const avatarX = 252;
+      const avatarY = 164;
+      ctx.save();
+      ctx.shadowColor = 'rgba(75, 194, 194, 0.42)';
+      ctx.shadowBlur = 28;
+      ctx.fillStyle = '#061012';
+      ctx.beginPath();
+      ctx.arc(512, avatarY + avatarSize / 2, avatarSize / 2 + 16, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      drawRoundImage(ctx, avatarImage, avatarX, avatarY, avatarSize);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.82)';
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.arc(512, avatarY + avatarSize / 2, avatarSize / 2 + 5, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(75, 194, 194, 0.82)';
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      ctx.arc(512, avatarY + avatarSize / 2, avatarSize / 2 + 22, -0.22 * Math.PI, 1.12 * Math.PI);
+      ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#4bc2c2';
+      drawCenteredText(ctx, (person?.title || 'Digital strategy').toUpperCase(), 512, 780, 650, 58, 900);
 
       generatedBadge = new THREE.CanvasTexture(badgeCanvas);
       generatedBadge.colorSpace = THREE.SRGBColorSpace;

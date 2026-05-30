@@ -5,6 +5,10 @@ import mitsuiCreative1 from "@/assets/mitsui-creative-1.webp";
 import mitsuiCreative2 from "@/assets/mitsui-creative-2.png";
 import mitsuiCreative3 from "@/assets/mitsui-creative-3.webp";
 import mitsuiCreative4 from "@/assets/mitsui-creative-4.webp";
+import mitsuiExtra1 from "@/assets/mitsui-extra-1.webp";
+import mitsuiExtra2 from "@/assets/mitsui-extra-2.webp";
+import mitsuiExtra4 from "@/assets/mitsui-extra-4.webp";
+import mitsuiExtra5 from "@/assets/mitsui-extra-5.webp";
 import ParallaxCardSlider from "@/components/ParallaxCardSlider";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -32,6 +36,10 @@ const sliderImages = [
   { image: mitsuiCreative2, alt: "Mitsui Chemicals creative 2" },
   { image: mitsuiCreative3, alt: "Mitsui Chemicals creative 3" },
   { image: mitsuiCreative4, alt: "Mitsui Chemicals creative 4" },
+  { image: mitsuiExtra1, alt: "Mitsui Chemicals additional creative 1" },
+  { image: mitsuiExtra2, alt: "Mitsui Chemicals additional creative 2" },
+  { image: mitsuiExtra4, alt: "Mitsui Chemicals additional creative 4" },
+  { image: mitsuiExtra5, alt: "Mitsui Chemicals additional creative 5" },
 ];
 
 function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; suffix: string; decimals: number; triggered: boolean }) {

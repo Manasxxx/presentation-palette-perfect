@@ -15,7 +15,7 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 21 (current) redesigned the cover and Who We Are slides, polished the Our Team slide, and fixed the Services CardSwap freeze. The cover (`TitleSlide`) is now hook-led: a hero headline `We make complex products easy to buy.` (accent in cursive teal), a smaller top-left `OWLSURF` lockup, the logo mark top-right, a centered `See case studies` CTA, and a centered partner badge strip; the `What We Do` / `Made For` info columns were removed. Who We Are (`SkyrocketSlide`) was rebuilt as a full-width editorial layout over the kept Hyperspeed running lines: message block (`Hard to explain.` / `Easy to choose.` headline, white upright + cursive teal accents) + `Industries we serve` rail (no numbers) + full-width `What makes us different` differentiator-card row; the right-edge illustration and the italic `HighlightPhrase` component were removed. Our Team (`OurTeamSlide`) dropped the roster index numbers and now defers the lanyard WebGL mount ~650ms after the slide becomes visible to stop scroll-in jank. `CardSwap` now loops on GSAP's ticker (`gsap.delayedCall` + `gsap.ticker.wake()`) instead of `setInterval`, fixing a freeze-until-interaction bug.
+Session 22 (current) completed the live visual pass and cleanup requested before push. The cover (`TitleSlide`) now has the centered clipped globe with only the top half visible, larger/tighter partner badges, `OWLSURF DIGITAL` in the top-left lockup, no top-right `Credentials / 01`, and a slightly larger OwlSurf logo. Services keeps the left-pillar/right-CardSwap format, with clip-art SVG illustrations added only to the first `Brand & Story` vertical in a text-left/illustration-right card split. Case studies now share the Mitsui-style formatting through `CaseStudyLayout` for Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG; Mitsui and Raychem slideshows include the additional WebP creatives from Downloads. Contact footer alignment was tightened. Our Team now has the smoother cylindrical name roulette and the lanyard badge draws the person's field/title instead of the person's name. Cleanup removed two stale assets, removed unused UI/animation dependencies, tightened manual chunks, fixed lint blockers, and verified assets/build/lint before push.
 
 ### Session 20 — documentation-only VPS/domain migration prep. The website code and visual behavior were intentionally left unchanged. Added migration guidance, dependency/runtime notes, environment-variable breadcrumbs, Node version pinning, and example static-server configs so a future maintainer can move the built Vite SPA to a VPS and domain more easily. The user explicitly asked to record this in both `handoff.md` and `context.md`.
 
@@ -31,7 +31,7 @@ Session 15 pushed the case-study Anime.js motion system. All seven case-study sl
 
 Session 14 pushed the Our Team lanyard band rendering and repo handoff workflow update. The lanyard strap keeps the OwlSurf mark upright and improves sharpness with a 4x generated texture, higher foreground Canvas DPR, antialiasing, sharper texture filters, larger logo draw size, and React Bits-style `repeat={[-4, 1]}`. The repo workflow now says `handoff.md` is updated only before a push, not at ordinary session end.
 
-Session 13 began the case-study redesign pass. Two of seven case studies are now on the new recipe: Mitsui on a **split** layout (copy + stats column ~38–42% wide, parallax slider in the remaining space with intentional right-edge bleed) and Baxsaa on a **polished vertical** layout (centered heading recipe, 2-image grid, brand-tinted stat pills, eyebrow-styled SEO callout). `ParallaxCardSlider` now accepts a `cardWidth` prop for per-CS slider scaling. The remaining five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) are still on the pre-Session-13 layout.
+Session 13 began the case-study redesign pass. Session 22 superseded the old carry-over: Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG now use the shared `CaseStudyLayout`, while Mitsui remains the custom proof-strip + bottom carousel slide.
 
 Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-design-plan.scratch.md` are all preserved untouched. The Session 11 P0 batch (a11y, mobile WebGL gating, prefers-reduced-motion hook, slide-mount resilience) and the Session 12 parked UI placement plan are all still pending — case-study redesign is taking priority this session because the deck owner is iterating live with prospects.
 
@@ -40,7 +40,16 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The dev server was not needed for the Session 20 documentation-only migration pass. No app source files were changed, and browser visual approval remains with the user.
+The Session 22 push prep verified code and assets without browser screenshots, per the user's standing preference to judge visual frontend changes manually. `npm run lint` and `npm run build` pass. The build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` warning.
+
+### Session 22 visual polish and cleanup
+
+- **Cover** — globe centered and clipped to the top half only; badges enlarged/aligned with tighter Meta and Google crops; `OWLSURF DIGITAL` restored; top-right `Credentials / 01` removed; logo slightly enlarged.
+- **Services** — first `Brand & Story` vertical now uses card illustrations in the right column of the moving CardSwap cards; other verticals are unchanged text-only cards.
+- **Case studies** — Mitsui and Raychem have additional WebP slideshow creatives; Baxsaa/CultFit/GirlUp/CTP/VNT/Raychem use shared Mitsui-style `CaseStudyLayout`.
+- **Contact** — footer contact row/copyright/logo alignment tightened.
+- **Our Team** — left name roulette smoothed/aligned; duplicate lanyard names removed; lanyard badge avatar crop centered; field/title now replaces the name on the badge.
+- **Cleanup** — removed stale `industrial-engineer-slide-2.png` and `lanyard/lanyard.png`; uninstalled unused `@gsap/react`, Radix slot/toast/tooltip, and `class-variance-authority`; cleaned lint blockers in visual helpers/config.
 
 ### VPS/domain migration docs (Session 20)
 
@@ -153,9 +162,28 @@ Removed 16 orphan files in this session:
 
 `npm run build` passes after these deletes.
 
-`vite.config.ts` `manualChunks` still lists `@radix-ui/react-slot`, `@radix-ui/react-toast`, and `@radix-ui/react-tooltip` under `vendor-ui`. These dependencies remain installed in `package.json` because nothing in `src/` imports them after the deletes — they are candidates for a future `npm uninstall`, but the dependency-removal pass was not done in this session.
+Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
 
-`@gsap/react` becomes unused after `SplitText.tsx` was removed; same caveat applies.
+## Files Touched (Session 22)
+
+Visual/content polish:
+- `src/components/slides/TitleSlide.tsx` — centered clipped globe; larger aligned partner badge strip; `OWLSURF DIGITAL`; removed top-right credentials label; slightly larger logo
+- `src/components/slides/ServicesSlide.tsx` — first service vertical two-column card body with right-side SVG illustrations
+- `src/components/slides/CaseStudyLayout.tsx` — new shared Mitsui-style case-study layout
+- `src/components/slides/BaxsaaCaseStudy.tsx`, `CultFitCaseStudy.tsx`, `GirlUpCaseStudy.tsx`, `CTPCaseStudy.tsx`, `VNTCaseStudy.tsx`, `RaychemRPGCaseStudy.tsx` — moved to shared case-study layout
+- `src/components/slides/CaseStudySlide.tsx`, `src/components/slides/RaychemRPGCaseStudy.tsx` — added Mitsui/Raychem extra WebP slideshow creatives
+- `src/components/blocks/FlyonFooter.tsx`, `src/components/slides/ContactSlide.tsx` — footer alignment cleanup
+- `src/components/slides/OurTeamSlide.tsx`, `src/components/ui/Lanyard/Lanyard.jsx` — smoother name roulette; lanyard avatar centering; role/title drawn on badge instead of name
+
+Assets/dependencies/verification cleanup:
+- `src/assets/badge-meta-business-partner.png`, `src/assets/badge-google-partner.png` — tighter badge crops
+- `src/assets/mitsui-extra-1.webp`, `mitsui-extra-2.webp`, `mitsui-extra-4.webp`, `mitsui-extra-5.webp` — added Mitsui slideshow creatives
+- `src/assets/raychem-extra-1.webp`, `raychem-extra-2.webp`, `raychem-extra-3.webp` — added Raychem slideshow creatives
+- `src/assets/service-illustration-brand-story.svg`, `service-illustration-video.svg`, `service-illustration-design-system.svg`, `service-illustration-research.svg`, `service-illustration-thought-leadership.svg` — added first-service vertical illustrations
+- Deleted stale assets: `src/assets/industrial-engineer-slide-2.png`, `src/assets/lanyard/lanyard.png`
+- `package.json`, `package-lock.json`, `vite.config.ts` — removed unused dependencies and stale manual chunk entries
+- `src/components/LightRays.tsx`, `src/components/ui/Hyperspeed/Hyperspeed.tsx`, `src/components/ui/PrismaticBurst/PrismaticBurst.tsx`, `src/components/ui/globe.tsx`, `src/vite-env.d.ts`, `tailwind.config.ts` — lint/type cleanup
+- `prod.md`, `context.md`, `handoff.md` — push handoff/context updates
 
 ## Files Touched (Session 21)
 
@@ -315,6 +343,7 @@ Doc updates (this commit):
 
 ## Verified / Evidence
 
+- Session 22: asset filename scan reports no obvious unused files in `src/assets`; `find src/assets -type f -size +1000k` shows only the existing lanyard `card.glb` above 1 MB; `npm run lint` passes; `npm run build` passes. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. `npm uninstall` reported 17 dependency advisories still present; audit remediation was not part of this visual push.
 - Session 21: `npm run build` passed before push. Browser visual approval remains with the user per standing preference. CardSwap fix verified by reasoning about GSAP ticker behavior; the user confirms motion in the live browser.
 - Session 20 documentation-only pass: `git diff --check` passed, then `npm run build` passed before push. Build output still shows the known large `vendor-lanyard` warning and stale Browserslist data notice.
 - `npm run build` passes after copy edits and after orphan-file deletes.
@@ -325,7 +354,6 @@ Doc updates (this commit):
 - `npm run build` passes before the Session 18 conversion polish push.
 - `file src/assets/raychem-creative-1.webp src/assets/raychem-creative-2.webp 'src/assets/Raychemcasestudy 3.webp'` confirms all three Raychem assets are WebP images at 1080x1440.
 - `rg -n "scan-line|glow-orbit" src/components/slides` returns no matches after Session 16 cleanup.
-- `npm test` / `npm run lint` were not re-run in this session after the deletes; the project's pre-existing lint debt in `LightRays.tsx`, `Hyperspeed.tsx`, `PrismaticBurst.tsx`, and `tailwind.config.ts` is still expected to fail lint.
 - Visual screenshot capture was intentionally skipped per the original handoff policy (the user prefers to judge browser output manually).
 
 ## Known Issues / Next Things To Do
@@ -340,10 +368,10 @@ Highest-priority follow-ups, in two stacks: the UX audit P0 batch (Session 11, s
 6. **`<main>` nested inside `<section>` slide** in `ContactSlide.tsx` is a landmark mistake; fix at the same time as the a11y pass.
 7. **Mobile layout** — `OurTeamSlide` stacks roster + 620px lanyard at `<lg`, overflowing the viewport. `SkyrocketSlide` mobile IntroBlock uses a fixed `h-[31rem]` height that risks landscape overflow.
 
-### Session 13 — case-study redesign carry-over
+### Case-study layout carry-over
 
-- Five case studies (CultFit, GirlUp, CTP, VNT, RaychemRPG) still need to be ported to either the split (Mitsui) or polished vertical (Baxsaa) template. Decide per case study based on whether the existing content has an extra element (callout, side-by-side composition, secondary stat block) that a 50/50 split can't host cleanly.
-- The Mitsui slider right-edge bleed only works because the section has `overflow-hidden`. If a future change removes that, retest Mitsui at common laptop widths (1280, 1440) — the bleed will visually leak into the next slide.
+- Mitsui remains the custom proof-strip + bottom carousel slide. Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG now share `CaseStudyLayout`. Keep future broad case-study formatting changes in the shared layout when possible.
+- The Mitsui slider right-edge bleed only works because the section has `overflow-hidden`. If a future change removes that, retest Mitsui at common laptop widths (1280, 1440) so the bleed does not leak into the next slide.
 
 ### Session 12 — UI design plan (parked)
 
@@ -353,8 +381,8 @@ Other open project items carried over from earlier sessions:
 - Vercel deployment is still broken and needs reconnect / redeploy.
 - `logo-main.jpg` is still a JPG; should be WebP or SVG.
 - Vishnu still reuses Pankaj's avatar until a dedicated Vishnu avatar is supplied.
-- `vendor-lanyard` remains a very large chunk (~3MB minified / ~1MB gzip); audit noted but did not address in this session.
-- Lint debt in visual components still fails `npm run lint`.
+- `vendor-lanyard` remains a very large chunk (~3MB minified / ~1MB gzip); the chunk is isolated but not reduced in this session.
+- `npm audit` still reports 17 dependency advisories after the unused-package cleanup; review separately from the visual push.
 
 ### Security flag carried from the audit
 
@@ -362,17 +390,12 @@ Other open project items carried over from earlier sessions:
 
 ## Current Workspace Notes
 
-Intended files for the Session 20 documentation commit:
-- `.nvmrc`
-- `.env.example`
-- `README.md`
-- `docs/vps-domain-migration.md`
-- `docs/dependencies.md`
-- `deploy/README.md`
-- `deploy/nginx-site.conf.example`
-- `deploy/Caddyfile.example`
-- `handoff.md`
-- `context.md`
+Intended files for the Session 22 visual polish + cleanup commit:
+- slide/source changes listed under `Files Touched (Session 22)`
+- new Mitsui/Raychem WebP creatives and Services SVG illustrations
+- deleted stale assets: `industrial-engineer-slide-2.png`, `lanyard/lanyard.png`
+- dependency/chunk cleanup in `package.json`, `package-lock.json`, `vite.config.ts`
+- doc updates: `prod.md`, `context.md`, `handoff.md`
 
 Unrelated untracked items that should remain unstaged unless asked:
 - `.agents/`
