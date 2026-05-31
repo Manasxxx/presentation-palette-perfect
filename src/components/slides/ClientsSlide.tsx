@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { animate, createSpring } from "animejs";
 import LogoLoop from "@/components/ui/LogoLoop/LogoLoop";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
+import { useIsMobile } from "@/hooks/use-mobile";
 import cultfitLogo from "@/assets/client-cultfit.png";
 import vntLogo from "@/assets/client-vnt.png";
 import girlupLogo from "@/assets/client-girlup.png";
@@ -52,6 +53,7 @@ const renderClientLogo = (client: Client, key: React.Key) => (
 const ClientsSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggered = useRef(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -115,12 +117,15 @@ const ClientsSlide = () => {
       ref={sectionRef}
       className="slide font-sans"
     >
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-        <PrismaticBurst
-          colors={["#4bc2c2", "#14b8a6", "#0f766e", "#134e4a", "#0a2322"]}
-          speed={0.18}
-        />
-      </div>
+      {/* Heavy WebGL backdrop — desktop only (gated off mobile per prod.md) */}
+      {!isMobile && (
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+          <PrismaticBurst
+            colors={["#4bc2c2", "#14b8a6", "#0f766e", "#134e4a", "#0a2322"]}
+            speed={0.18}
+          />
+        </div>
+      )}
       {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-24 pb-10 md:px-12 md:pt-24 md:pb-12">
         <header className="cl-heading text-left self-start">

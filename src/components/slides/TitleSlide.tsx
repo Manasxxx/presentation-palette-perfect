@@ -208,33 +208,37 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         }}
       />
 
-      {/* Light Rays */}
-      <LightRays
-        raysColor="#4bc2c2"
-        raysOrigin="top-center"
-        raysSpeed={0.6}
-        lightSpread={0.5}
-        rayLength={3}
-        fadeDistance={1}
-        saturation={0.7}
-        followMouse={false}
-        mouseInfluence={0.08}
-        className="opacity-30 pointer-events-none"
-      />
+      {/* Light Rays — desktop only (heavy WebGL gated off mobile per prod.md) */}
+      {!isMobile && (
+        <LightRays
+          raysColor="#4bc2c2"
+          raysOrigin="top-center"
+          raysSpeed={0.6}
+          lightSpread={0.5}
+          rayLength={3}
+          fadeDistance={1}
+          saturation={0.7}
+          followMouse={false}
+          mouseInfluence={0.08}
+          className="opacity-30 pointer-events-none"
+        />
+      )}
 
-      {/* Globe — top hemisphere rises from the bottom edge */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          top: '100%',
-          left: '50%',
-          width: isMobile ? '200%' : '120%',
-          height: '120%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        <Globe className="opacity-25 !max-w-none !w-full" />
-      </div>
+      {/* Globe — top hemisphere rises from the bottom edge (desktop only) */}
+      {!isMobile && (
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            top: '100%',
+            left: '50%',
+            width: '120%',
+            height: '120%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <Globe className="opacity-25 !max-w-none !w-full" />
+        </div>
+      )}
 
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div

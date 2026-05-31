@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { animate, createSpring, stagger } from "animejs";
 import {
   Target,
@@ -29,6 +29,8 @@ import {
 } from "lucide-react";
 import LightRays from "@/components/LightRays";
 import CardSwap, { Card } from "@/components/ui/CardSwap/CardSwap";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import brandStoryIllustration from "@/assets/service-illustration-brand-story.svg";
 import videoIllustration from "@/assets/service-illustration-video.svg";
 import designSystemIllustration from "@/assets/service-illustration-design-system.svg";
@@ -269,10 +271,29 @@ const categories: Category[] = [
 const ServicesSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggered = useRef(false);
+  const isMobile = useIsMobile();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [activeKey, setActiveKey] = useState<string>(categories[0].key);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const activeCategory =
     categories.find((c) => c.key === activeKey) ?? categories[0];
+
+  // Roving-focus keyboard support for the vertical tablist (WAI-ARIA tabs pattern).
+  const handleTabKey = (event: ReactKeyboardEvent, index: number) => {
+    const lastIndex = categories.length - 1;
+    let nextIndex: number | null = null;
+
+    if (event.key === "ArrowDown" || event.key === "ArrowRight") nextIndex = index === lastIndex ? 0 : index + 1;
+    else if (event.key === "ArrowUp" || event.key === "ArrowLeft") nextIndex = index === 0 ? lastIndex : index - 1;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = lastIndex;
+
+    if (nextIndex === null) return;
+    event.preventDefault();
+    setActiveKey(categories[nextIndex].key);
+    tabRefs.current[nextIndex]?.focus();
+  };
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -344,17 +365,20 @@ const ServicesSlide = () => {
 
   return (
     <section ref={sectionRef} className="slide font-sans">
-      <LightRays
-        raysColor="#4bc2c2"
-        raysOrigin="top-center"
-        raysSpeed={0.8}
-        lightSpread={0.5}
-        rayLength={3}
-        fadeDistance={1}
-        saturation={0.8}
-        followMouse={false}
-        className="opacity-40 pointer-events-none"
-      />
+      {/* Heavy WebGL rays — desktop only (gated off mobile per prod.md) */}
+      {!isMobile && (
+        <LightRays
+          raysColor="#4bc2c2"
+          raysOrigin="top-center"
+          raysSpeed={0.8}
+          lightSpread={0.5}
+          rayLength={3}
+          fadeDistance={1}
+          saturation={0.8}
+          followMouse={false}
+          className="opacity-40 pointer-events-none"
+        />
+      )}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-20 pb-8 md:px-12 md:pt-20 md:pb-10">
         <header className="sv-header text-left self-start">
           <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
@@ -370,15 +394,27 @@ const ServicesSlide = () => {
 
         <div className="mt-[3vh] grid w-full grid-cols-12 items-start gap-8 md:gap-10">
           {/* Left: compact category tabs (no descriptions) */}
-          <div className="sv-tabs col-span-12 flex flex-col gap-3 md:col-span-4 md:gap-4">
-            {categories.map((cat) => {
+          <div
+            className="sv-tabs col-span-12 flex flex-col gap-3 md:col-span-4 md:gap-4"
+            role="tablist"
+            aria-label="Service categories"
+            aria-orientation="vertical"
+          >
+            {categories.map((cat, index) => {
               const active = cat.key === activeKey;
               const CatIcon = cat.icon;
               return (
                 <button
                   key={cat.key}
                   type="button"
+                  role="tab"
+                  id={`sv-tab-${cat.key}`}
+                  aria-selected={active}
+                  aria-controls="sv-panel"
+                  tabIndex={active ? 0 : -1}
+                  ref={(el) => { tabRefs.current[index] = el; }}
                   onClick={() => setActiveKey(cat.key)}
+                  onKeyDown={(event) => handleTabKey(event, index)}
                   className={`sv-tab group relative flex items-center justify-between gap-4 text-left rounded-xl border px-5 py-4 transition-all duration-300 ${
                     active
                       ? "border-primary/60 bg-primary/10"
@@ -421,7 +457,13 @@ const ServicesSlide = () => {
           </div>
 
           {/* Right: CardSwap stack — 5 cards per category, simpler content */}
-          <div className="sv-card-stage relative col-span-12 h-[460px] md:col-span-8 md:h-[460px]" style={{ opacity: 0 }}>
+          <div
+            className="sv-card-stage relative col-span-12 h-[460px] md:col-span-8 md:h-[460px]"
+            style={{ opacity: 0 }}
+            role="tabpanel"
+            id="sv-panel"
+            aria-labelledby={`sv-tab-${activeKey}`}
+          >
             <CardSwap
               key={activeKey}
               width={520}
@@ -432,6 +474,7 @@ const ServicesSlide = () => {
               pauseOnHover
               skewAmount={5}
               easing="elastic"
+              reduceMotion={prefersReducedMotion}
             >
               {activeCategory.services.map((svc) => {
                 const Icon = svc.icon;

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, ArrowUpRight, Layers, Cpu, Target, type LucideIcon } from "lucide-react";
 import { animate, createSpring, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Sector = { label: string; tag: string; icon: LucideIcon };
 
@@ -24,6 +25,7 @@ const differentiators: Differentiator[] = [
 const SkyrocketSlide = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [triggered, setTriggered] = useState(false);
+  const isMobile = useIsMobile();
   const hyperspeedOptions = useMemo(
     () => ({
       onSpeedUp: () => { },
@@ -139,10 +141,12 @@ const SkyrocketSlide = () => {
 
   return (
     <section ref={sectionRef} className="slide relative overflow-hidden bg-background p-3 sm:p-5 md:p-7">
-      {/* Background running lines — kept */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-70">
-        <Hyperspeed effectOptions={hyperspeedOptions} />
-      </div>
+      {/* Background running lines — desktop only (heavy WebGL gated off mobile per prod.md) */}
+      {!isMobile && (
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-70">
+          <Hyperspeed effectOptions={hyperspeedOptions} />
+        </div>
+      )}
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-6 py-10 sm:px-10 md:gap-12 md:px-[4.5%] md:py-[4.4%]">

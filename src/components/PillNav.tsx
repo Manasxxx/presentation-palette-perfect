@@ -231,6 +231,25 @@ const PillNav = ({
     }
   };
 
+  // Close the mobile menu on Escape, move focus into it on open, and return
+  // focus to the hamburger on close — keyboard-accessible disclosure.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const hamburger = hamburgerRef.current;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') toggleMobileMenu();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    mobileMenuRef.current
+      ?.querySelector<HTMLButtonElement>('.mobile-menu-link')
+      ?.focus();
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      hamburger?.focus();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobileMenuOpen]);
+
   const activeNavIndex = slideToNavIndex(currentSlide);
 
   const cssVars = {
@@ -254,13 +273,13 @@ const PillNav = ({
         </button>
 
         <div className="pill-nav-items desktop-only" ref={navItemsRef}>
-          <ul className="pill-list" role="menubar">
+          <ul className="pill-list">
             {navItems.map((item, i) => (
-              <li key={item.label} role="none">
+              <li key={item.label}>
                 <button
-                  role="menuitem"
                   className={`pill${activeNavIndex === i ? ' is-active' : ''}`}
                   aria-label={item.label}
+                  aria-current={activeNavIndex === i ? 'page' : undefined}
                   onMouseEnter={() => handleEnter(i)}
                   onMouseLeave={() => handleLeave(i)}
                   onClick={() => onNavigate(item.slideIndex)}
@@ -286,6 +305,8 @@ const PillNav = ({
           className="mobile-menu-button mobile-only"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-nav-menu"
           ref={hamburgerRef}
         >
           <span className="hamburger-line" />
@@ -300,12 +321,13 @@ const PillNav = ({
         }}
       />
 
-      <div className="mobile-menu-popover mobile-only" ref={mobileMenuRef} style={cssVars}>
+      <div className="mobile-menu-popover mobile-only" id="mobile-nav-menu" ref={mobileMenuRef} style={cssVars}>
         <ul className="mobile-menu-list">
           {navItems.map((item, i) => (
             <li key={item.label}>
               <button
                 className={`mobile-menu-link${activeNavIndex === i ? ' is-active' : ''}`}
+                aria-current={activeNavIndex === i ? 'page' : undefined}
                 onClick={() => {
                   toggleMobileMenu();
                   onNavigate(item.slideIndex);

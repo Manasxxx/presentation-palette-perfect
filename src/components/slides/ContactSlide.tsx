@@ -86,7 +86,7 @@ const ContactSlide = () => {
       <div className="absolute bottom-8 top-8 right-8 w-px bg-white/12 md:right-12" />
       <div className="relative z-10 grid h-full w-full max-w-[1720px] grid-cols-1 px-8 pb-36 pt-8 md:grid-cols-[minmax(0,1fr)_minmax(360px,0.58fr)] md:px-12 md:pb-40">
         <div className="flex min-h-0 flex-col justify-center px-0 py-8 md:py-10 lg:px-8">
-          <main className="max-w-[980px]">
+          <div className="max-w-[980px]">
             <p className="ct-reveal mb-7 max-w-[700px] font-body text-lg font-medium leading-tight text-white/58 opacity-0 md:mb-9 md:text-2xl">
               For B2B brands ready to skip the noise.
             </p>
@@ -98,7 +98,7 @@ const ContactSlide = () => {
                 obvious.
               </span>
             </h2>
-          </main>
+          </div>
         </div>
 
         <aside className="relative hidden min-h-0 md:block">

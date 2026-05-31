@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate, createSpring, stagger } from 'animejs';
 import Lanyard from '@/components/ui/Lanyard/Lanyard';
+import { usePrefersReducedMotion } from '@/hooks/use-reduced-motion';
 import harshitAvatar from '@/assets/harshit-avatar.png';
 import manasAvatar from '@/assets/manas-avatar.png';
 import pankajAvatar from '@/assets/pankaj-avatar.png';
@@ -57,15 +58,18 @@ const OurTeamSlide = () => {
     const triggered = useRef(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showLanyard, setShowLanyard] = useState(false);
+    const prefersReducedMotion = usePrefersReducedMotion();
     const activeMember = teamMembers[activeIndex];
 
     useEffect(() => {
+        // Respect reduced-motion: don't auto-rotate the roster, let the user drive it.
+        if (prefersReducedMotion) return;
         const nextTimer = window.setTimeout(() => {
             setActiveIndex((currentIndex) => (currentIndex + 1) % teamMembers.length);
         }, AUTO_ADVANCE_MS);
 
         return () => window.clearTimeout(nextTimer);
-    }, [activeIndex]);
+    }, [activeIndex, prefersReducedMotion]);
 
     useEffect(() => {
         const el = sectionRef.current;
@@ -180,7 +184,7 @@ const OurTeamSlide = () => {
                                         onClick={() => setActiveIndex(index)}
                                         className="team-roulette-item absolute left-0 right-0 top-1/2 z-20 flex h-20 -translate-y-1/2 items-center justify-center transition-[opacity,filter,color,transform] duration-700"
                                         style={{
-                                            opacity: hidden ? 0 : isActive ? 1 : absOffset === 1 ? 0.42 : 0.18,
+                                            opacity: hidden ? 0 : isActive ? 1 : absOffset === 1 ? 0.6 : 0.28,
                                             transform: `translateY(calc(-50% + ${offset * 4.85}rem)) rotateX(${-offset * 18}deg) scale(${isActive ? 1 : absOffset === 1 ? 0.92 : 0.8})`,
                                             filter: isActive ? 'blur(0px)' : absOffset === 1 ? 'blur(0.12px)' : 'blur(0.65px)',
                                             pointerEvents: hidden ? 'none' : 'auto',
@@ -190,7 +194,7 @@ const OurTeamSlide = () => {
                                         <span className="min-w-0 px-6 text-center">
                                             <span
                                                 className={`block truncate font-sans text-[clamp(2.1rem,3.7vw,4.35rem)] font-black uppercase leading-none tracking-normal transition-colors duration-500 ${
-                                                    isActive ? 'text-primary' : 'text-white/22 hover:text-white/42'
+                                                    isActive ? 'text-primary' : 'text-white/65 hover:text-white/90'
                                                 }`}
                                             >
                                                 {member.name}

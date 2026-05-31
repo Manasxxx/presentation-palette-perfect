@@ -3,6 +3,7 @@ import TitleSlide from "@/components/slides/TitleSlide";
 
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
+import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const OurTeamSlide = lazy(() => import("@/components/slides/OurTeamSlide"));
@@ -36,11 +37,18 @@ const slides: ComponentType[] = [
 const SLIDE_MOUNT_RADIUS = 0;
 const NAV_IDLE_HIDE_DELAY = 1600;
 
-const SlideFallback = () => <section className="slide" aria-hidden="true" />;
+// A soft branded skeleton instead of a black void, so the lazy-chunk fetch for
+// the next slide does not flash an empty frame between scroll-snap stops.
+const SlideFallback = () => (
+  <section className="slide bg-background" aria-hidden="true">
+    <div className="h-full w-full bg-[radial-gradient(circle_at_50%_40%,rgba(75,194,194,0.06),transparent_60%)]" />
+  </section>
+);
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -127,7 +135,7 @@ const Index = () => {
 
     container.scrollTo({
       top: index * window.innerHeight,
-      behavior: "smooth",
+      behavior: prefersReducedMotion ? "auto" : "smooth",
     });
   };
 
@@ -135,7 +143,7 @@ const Index = () => {
     <div
       ref={containerRef}
       data-deck-scroll-container
-      className="h-screen w-full overflow-y-auto overflow-x-hidden scroll-smooth bg-background"
+      className={`h-screen w-full overflow-y-auto overflow-x-hidden bg-background${prefersReducedMotion ? "" : " scroll-smooth"}`}
       style={{ scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch" }}
     >
 

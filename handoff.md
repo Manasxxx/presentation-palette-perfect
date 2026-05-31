@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 22 (current) completed the live visual pass and cleanup requested before push. The cover (`TitleSlide`) now has the centered clipped globe with only the top half visible, larger/tighter partner badges, `OWLSURF DIGITAL` in the top-left lockup, no top-right `Credentials / 01`, and a slightly larger OwlSurf logo. Services keeps the left-pillar/right-CardSwap format, with clip-art SVG illustrations added only to the first `Brand & Story` vertical in a text-left/illustration-right card split. Case studies now share the Mitsui-style formatting through `CaseStudyLayout` for Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG; Mitsui and Raychem slideshows include the additional WebP creatives from Downloads. Contact footer alignment was tightened. Our Team now has the smoother cylindrical name roulette and the lanyard badge draws the person's field/title instead of the person's name. Cleanup removed two stale assets, removed unused UI/animation dependencies, tightened manual chunks, fixed lint blockers, and verified assets/build/lint before push.
+Session 23 (current) is an accessibility + performance hardening pass on top of Session 22. It clears most of the long-standing P0 UX-audit backlog: real ARIA semantics in `PillNav` and the Services pillar tabs, a new `prefers-reduced-motion` gate, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22 instead of self-violating it), a roster-contrast fix, the Contact landmark fix, a local OG image, and a soft slide skeleton to remove the black flash between slides. `npm run lint` and `npm run build` both pass clean. Full details under Current State below.
+
+Session 22 completed the live visual pass and cleanup requested before push. The cover (`TitleSlide`) now has the centered clipped globe with only the top half visible, larger/tighter partner badges, `OWLSURF DIGITAL` in the top-left lockup, no top-right `Credentials / 01`, and a slightly larger OwlSurf logo. Services keeps the left-pillar/right-CardSwap format, with clip-art SVG illustrations added only to the first `Brand & Story` vertical in a text-left/illustration-right card split. Case studies now share the Mitsui-style formatting through `CaseStudyLayout` for Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG; Mitsui and Raychem slideshows include the additional WebP creatives from Downloads. Contact footer alignment was tightened. Our Team now has the smoother cylindrical name roulette and the lanyard badge draws the person's field/title instead of the person's name. Cleanup removed two stale assets, removed unused UI/animation dependencies, tightened manual chunks, fixed lint blockers, and verified assets/build/lint before push.
 
 ### Session 20 — documentation-only VPS/domain migration prep. The website code and visual behavior were intentionally left unchanged. Added migration guidance, dependency/runtime notes, environment-variable breadcrumbs, Node version pinning, and example static-server configs so a future maintainer can move the built Vite SPA to a VPS and domain more easily. The user explicitly asked to record this in both `handoff.md` and `context.md`.
 
@@ -41,6 +43,22 @@ The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
 The Session 22 push prep verified code and assets without browser screenshots, per the user's standing preference to judge visual frontend changes manually. `npm run lint` and `npm run build` pass. The build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` warning.
+
+### Session 23 accessibility + performance hardening
+
+This pass clears most of the P0 UX-audit backlog without changing the desktop visual design.
+
+- **Accessibility**
+  - `PillNav` — removed the incorrect `role="menubar"` / `role="none"` / `role="menuitem"` markup (it was lying to assistive tech); the desktop nav is now a plain `nav > ul > li > button`. Active items expose `aria-current="page"`. The hamburger exposes `aria-expanded` + `aria-controls="mobile-nav-menu"`. The mobile menu now closes on Escape, moves focus into the menu on open, and returns focus to the hamburger on close.
+  - `ServicesSlide` — the five pillar buttons are now a real WAI-ARIA tablist: `role="tablist"` / `role="tab"` / `role="tabpanel"`, `aria-selected`, `aria-controls` / `aria-labelledby` wiring, roving `tabIndex`, and ArrowUp/Down/Left/Right + Home/End keyboard navigation.
+  - `OurTeamSlide` — the inactive roster names used `text-white/22`, which failed WCAG AA. Bumped the inactive color to `text-white/65` (hover `/90`) and raised the neighbor row opacity from `0.42` to `0.6` so adjacent names are legible while the depth illusion stays.
+  - `ContactSlide` — the inner `<main>` was nested inside the slide `<section>` (a landmark error and a per-slide `<main>` duplication). Changed to a `<div>`.
+- **Mobile WebGL gating** — `prod.md` line 22 requires heavy effects to be desktop-only, but the deck was self-violating it. Gated behind `useIsMobile()` so they do not mount below 768px: `LightRays` + `Globe` (`TitleSlide`), `Hyperspeed` (`SkyrocketSlide`), `LightRays` (`ServicesSlide`), and `PrismaticBurst` (`ClientsSlide`). Desktop rendering is unchanged.
+- **prefers-reduced-motion** — added `src/hooks/use-reduced-motion.tsx`. Wired into: the deck `scrollTo` in `Index.tsx` (smooth → instant) plus the container `scroll-smooth` class, the `OurTeamSlide` roster auto-advance (pauses), and `CardSwap` (a new `reduceMotion` prop snaps cards into place with ~0s tweens instead of animating, but keeps cycling so back-card content stays reachable). The broad anime.js / GSAP entrance timelines were intentionally left ungated for now — see Known Issues.
+- **Slide-mount black flash** — `Index.tsx` `SlideFallback` was an empty black `section`; it is now a soft branded skeleton (faint teal radial). `SLIDE_MOUNT_RADIUS` was deliberately kept at `0` to respect `prod.md` line 23 ("mount only the active slide"); the skeleton removes the flash without keeping offscreen WebGL alive.
+- **OG image** — `index.html` `og:image` / `twitter:image` no longer point at the Lovable placeholder; they use local `/favicon.png`. This is a square stopgap, not a true 1200×630 social card.
+
+**Verification:** `npm run lint` passes with 0 warnings. `npm run build` passes; only the known `vendor-lanyard` chunk-size warning remains. Browser/visual approval remains with the user per standing preference.
 
 ### Session 22 visual polish and cleanup
 
@@ -163,6 +181,22 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 23)
+
+Accessibility + performance hardening:
+- `src/hooks/use-reduced-motion.tsx` — new `usePrefersReducedMotion` hook
+- `src/pages/Index.tsx` — reduced-motion scroll + conditional `scroll-smooth`; soft branded `SlideFallback` skeleton (mount radius kept at 0)
+- `src/components/PillNav.tsx` — removed fake menubar roles; `aria-current`; hamburger `aria-expanded` / `aria-controls`; mobile menu Escape-close + focus management
+- `src/components/slides/ServicesSlide.tsx` — WAI-ARIA tablist/tab/tabpanel + keyboard nav; mobile gating of `LightRays`; `CardSwap reduceMotion` wiring
+- `src/components/slides/OurTeamSlide.tsx` — roster contrast fix; reduced-motion auto-advance pause
+- `src/components/slides/TitleSlide.tsx` — mobile gating of `LightRays` + `Globe`
+- `src/components/slides/SkyrocketSlide.tsx` — mobile gating of `Hyperspeed`
+- `src/components/slides/ClientsSlide.tsx` — mobile gating of `PrismaticBurst`
+- `src/components/slides/ContactSlide.tsx` — `<main>` → `<div>` landmark fix
+- `src/components/ui/CardSwap/CardSwap.jsx` — new `reduceMotion` prop (instant snap, keeps cycling)
+- `index.html` — OG/Twitter image swapped off the Lovable placeholder to local `/favicon.png`
+- `prod.md`, `context.md`, `handoff.md` — Session 23 updates
 
 ## Files Touched (Session 22)
 
@@ -360,13 +394,15 @@ Doc updates (this commit):
 
 Highest-priority follow-ups, in two stacks: the UX audit P0 batch (Session 11, still pending) and the UI design plan (Session 12, parked but ready).
 
-1. **Accessibility** — replace `role="menubar"` / `role="menuitem"` in `PillNav` with plain `<nav><ul>`; add `role="tab"` / `role="tablist"` / `aria-selected` to the Services pillar tabs; add `aria-expanded` and Escape/focus-trap to the mobile menu; fix inactive-roster contrast (`text-white/18` fails WCAG AA).
-2. **Mobile WebGL gating** — `Hyperspeed`, `LightRays`, `PrismaticBurst`, and `Globe` should be gated behind `useIsMobile()` per `prod.md` line 22 (which the deck currently self-violates).
-3. **`prefers-reduced-motion`** — add a single hook that gates auto-advance (roster 5s, CardSwap 3s), all anime.js / GSAP timelines, and the `scrollTo({ behavior: "smooth" })` in `Index.tsx`.
-4. **Slide mount resilience** — bump `SLIDE_MOUNT_RADIUS` to 1 on desktop and replace the empty `SlideFallback` with a small skeleton so the lazy-chunk fetch does not produce a black flash between slides.
-5. **Lovable default OG image** still in `index.html` — replace with an OwlSurf-branded social preview.
-6. **`<main>` nested inside `<section>` slide** in `ContactSlide.tsx` is a landmark mistake; fix at the same time as the a11y pass.
-7. **Mobile layout** — `OurTeamSlide` stacks roster + 620px lanyard at `<lg`, overflowing the viewport. `SkyrocketSlide` mobile IntroBlock uses a fixed `h-[31rem]` height that risks landscape overflow.
+Most of the P0 UX-audit batch was cleared in Session 23. Remaining and follow-ups:
+
+1. **Accessibility — done in Session 23.** PillNav menubar roles, Services tab semantics + keyboard, mobile-menu Escape/focus, and roster contrast are fixed. Follow-up: re-run an automated a11y audit (axe / Lighthouse) to confirm focus order and the teal-on-dark active-state contrast.
+2. **Mobile WebGL gating — done in Session 23** for `Hyperspeed`, `LightRays`, `PrismaticBurst`, and `Globe`. Gate any new heavy effect the same way.
+3. **`prefers-reduced-motion` — partially done.** The hook gates the deck scroll, the roster auto-advance, and CardSwap. Still open: the broad anime.js / GSAP entrance timelines in every slide are not yet gated. Add the hook (or a shared reveal wrapper) to skip or shorten those entrances under reduced motion.
+4. **Slide mount resilience — partially done.** The black flash is fixed via the skeleton `SlideFallback`. `SLIDE_MOUNT_RADIUS` was deliberately left at `0` to honor `prod.md` line 23 ("mount only the active slide"). If the owner accepts the offscreen-WebGL tradeoff, revisit a desktop-only radius bump with explicit offscreen pause/unmount of canvases.
+5. **OG image — stopgap done.** `index.html` now uses local `/favicon.png`. Replace with a true 1200×630 OwlSurf social card.
+6. **`<main>` landmark — done in Session 23** (`ContactSlide` now uses `<div>`).
+7. **Mobile layout** — still open. `OurTeamSlide` stacks roster + 620px lanyard at `<lg`, overflowing the viewport. `SkyrocketSlide` mobile block uses a fixed height that risks landscape overflow. Best handled in a dedicated mobile/visual pass.
 
 ### Case-study layout carry-over
 

@@ -36,10 +36,21 @@ const CardSwap = ({
   onCardClick,
   skewAmount = 6,
   easing = 'elastic',
+  reduceMotion = false,
   children
 }) => {
-  const config =
-    easing === 'elastic'
+  const config = reduceMotion
+    ? {
+        // Reduced motion: cards still cycle so back-card content stays
+        // reachable, but they snap into place instead of animating.
+        ease: 'none',
+        durDrop: 0.001,
+        durMove: 0.001,
+        durReturn: 0.001,
+        promoteOverlap: 0,
+        returnDelay: 0
+      }
+    : easing === 'elastic'
       ? {
           ease: 'elastic.out(0.6,0.9)',
           durDrop: 2,
@@ -170,7 +181,7 @@ const CardSwap = ({
     }
     return () => loopRef.current?.kill();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
+  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing, reduceMotion]);
 
   const rendered = childArr.map((child, i) =>
     isValidElement(child)

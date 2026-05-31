@@ -5,6 +5,12 @@
 
 ---
 
+## Current State (as of Session 23 push prep)
+
+**Session 23** is an accessibility + performance hardening pass on top of Session 22. It clears most of the P0 UX-audit backlog without touching the desktop visual design: real ARIA semantics in `PillNav` and the Services pillar tabs (with keyboard nav), a new `prefers-reduced-motion` hook wired into the deck scroll + auto-advancers, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22), a roster-contrast fix, the Contact `<main>`→`<div>` landmark fix, a local OG image, and a soft slide skeleton that removes the black flash between slides. `npm run lint` passes with 0 warnings and `npm run build` passes (only the known `vendor-lanyard` chunk warning remains). See the Session 23 log entry below and `handoff.md` for the full breakdown.
+
+---
+
 ## Current State (as of Session 22 push prep)
 
 **Live URL:** Was on Vercel (domain broken — needs reconnect). GitHub: `Manasxxx/presentation-palette-perfect`.
@@ -15,6 +21,37 @@
 ---
 
 ## Session Log
+
+### Session 23 — Accessibility + performance hardening (P0 backlog)
+
+**What was done:**
+
+**1. ARIA semantics + keyboard** (`src/components/PillNav.tsx`, `src/components/slides/ServicesSlide.tsx`)
+- `PillNav` shed the bogus `role="menubar"` / `role="none"` / `role="menuitem"` markup (a menubar role implies app-menu keyboard semantics this nav never had). It is now a plain `nav > ul > li > button`, active items carry `aria-current="page"`, the hamburger exposes `aria-expanded` + `aria-controls`, and the mobile menu closes on Escape, focuses the first item on open, and restores focus to the hamburger on close.
+- The Services pillar buttons became a real WAI-ARIA vertical tablist: `role="tablist"` / `role="tab"` / `role="tabpanel"`, `aria-selected`, `aria-controls` / `aria-labelledby`, roving `tabIndex`, and ArrowUp/Down/Left/Right + Home/End handling that moves selection and focus together.
+
+**2. Contrast + landmarks** (`src/components/slides/OurTeamSlide.tsx`, `src/components/slides/ContactSlide.tsx`)
+- Inactive roster names were `text-white/22` (fails WCAG AA). Raised to `text-white/65` (hover `/90`) and lifted neighbor-row opacity `0.42` → `0.6` so adjacent names read while the carousel depth stays.
+- Contact's inner `<main>` (nested inside the slide `<section>`, and one of 13 per-slide mains) is now a `<div>`.
+
+**3. Mobile WebGL gating** (`TitleSlide`, `SkyrocketSlide`, `ServicesSlide`, `ClientsSlide`)
+- `prod.md` line 22 already required heavy effects to be desktop-only, but the deck mounted them on mobile too. Gated behind `useIsMobile()`: `LightRays` + `Globe` (cover), `Hyperspeed` (Who We Are), `LightRays` (Services), `PrismaticBurst` (Clients). Desktop is unchanged; mobile keeps the static gradient backdrops already in place.
+
+**4. prefers-reduced-motion** (`src/hooks/use-reduced-motion.tsx` + wiring)
+- New `usePrefersReducedMotion` hook. Wired into the `Index.tsx` deck `scrollTo` (smooth → instant) and the container `scroll-smooth` class, the `OurTeamSlide` roster auto-advance (pauses), and `CardSwap` via a new `reduceMotion` prop that snaps cards with ~0s tweens but keeps the cycle running so back-card content stays reachable.
+
+**5. Slide-mount flash + OG image** (`src/pages/Index.tsx`, `index.html`)
+- `SlideFallback` was an empty black `section`; it is now a soft branded skeleton (faint teal radial), removing the black flash while the next lazy chunk loads. `SLIDE_MOUNT_RADIUS` was kept at `0` on purpose to respect `prod.md` line 23.
+- `og:image` / `twitter:image` no longer point at `lovable.dev`; they use local `/favicon.png` (a square stopgap, not a true 1200×630 card).
+
+**Rationale:**
+- These were the long-parked P0 items from the Session 11 IxDF audit. They are objective best-practice fixes (WCAG, reduced motion, the deck's own mobile-perf rule) and were chosen for low visual risk so the established OwlSurf identity and all the `prod.md` "do not reintroduce" rules stay intact.
+- `SLIDE_MOUNT_RADIUS` was intentionally NOT bumped to 1: that conflicts with `prod.md` line 23 and would keep offscreen WebGL canvases alive (the lag the rule exists to prevent). The skeleton fixes the visible symptom without that tradeoff.
+
+**Verification:**
+- `npm run lint` passes with 0 warnings.
+- `npm run build` passes; only the known large `vendor-lanyard` chunk warning remains.
+- Browser/visual approval remains with the user per standing preference.
 
 ### Session 22 — Visual polish, shared case-study layout, asset/dependency cleanup
 
