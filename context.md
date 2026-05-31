@@ -50,9 +50,12 @@
 **Rationale:**
 - The deck owner asked for a phone pass with no desktop change. Phones were the long-open "mobile layout" item in Known Issues. Heavy/absolute widgets (the lanyard, the `CardSwap` stack) cannot just be scaled to fit, so they get purpose-built mobile variants behind `useIsMobile()`; everything else is compaction via `max`/`md:` class pairs. Slides are kept inside one viewport rather than made internally scrollable, to avoid fighting the deck's `scroll-snap-type: y mandatory`.
 
+**6. Removed the scaffolding tool's branding** (`vite.config.ts`, `package.json`, `package-lock.json`, `bun.lock`/`bun.lockb`, `README.md`)
+- Dropped the `lovable-tagger` dev plugin (import + usage in `vite.config.ts`, and the package itself) so the build no longer pulls a builder-branded plugin. Deleted the stale `bun.lock`/`bun.lockb` (the repo uses npm) since they were the last files naming the tool. Reworded the OG-placeholder notes in the docs. Rewrote `README.md` from scratch: the old one described a team slide (`ProfileCard`/`Radar`) that was deleted in Session 11 and claimed lint had typing debt that was cleared in Session 22.
+
 **Verification:**
 - Playwright mobile screenshots at 390×844 and 360×740 confirm no clipping and no horizontal overflow on every slide; a 1440×900 desktop capture of Services and Our Team confirms the desktop `CardSwap` and lanyard render unchanged.
-- `npm run lint` passes with 0 warnings.
+- `npm run lint` passes with 0 warnings; `npm run build` passes (only the known `vendor-lanyard` chunk-size warning).
 
 ### Session 23 — Accessibility + performance hardening (P0 backlog)
 
@@ -74,7 +77,7 @@
 
 **5. Slide-mount flash + OG image** (`src/pages/Index.tsx`, `index.html`)
 - `SlideFallback` was an empty black `section`; it is now a soft branded skeleton (faint teal radial), removing the black flash while the next lazy chunk loads. `SLIDE_MOUNT_RADIUS` was kept at `0` on purpose to respect `prod.md` line 23.
-- `og:image` / `twitter:image` no longer point at `lovable.dev`; they use local `/favicon.png` (a square stopgap, not a true 1200×630 card).
+- `og:image` / `twitter:image` no longer point at an external placeholder; they use local `/favicon.png` (a square stopgap, not a true 1200×630 card).
 
 **Rationale:**
 - These were the long-parked P0 items from the Session 11 IxDF audit. They are objective best-practice fixes (WCAG, reduced motion, the deck's own mobile-perf rule) and were chosen for low visual risk so the established OwlSurf identity and all the `prod.md` "do not reintroduce" rules stay intact.

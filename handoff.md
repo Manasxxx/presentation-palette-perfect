@@ -58,7 +58,7 @@ This pass clears most of the P0 UX-audit backlog without changing the desktop vi
 - **Mobile WebGL gating** — `prod.md` line 22 requires heavy effects to be desktop-only, but the deck was self-violating it. Gated behind `useIsMobile()` so they do not mount below 768px: `LightRays` + `Globe` (`TitleSlide`), `Hyperspeed` (`SkyrocketSlide`), `LightRays` (`ServicesSlide`), and `PrismaticBurst` (`ClientsSlide`). Desktop rendering is unchanged.
 - **prefers-reduced-motion** — added `src/hooks/use-reduced-motion.tsx`. Wired into: the deck `scrollTo` in `Index.tsx` (smooth → instant) plus the container `scroll-smooth` class, the `OurTeamSlide` roster auto-advance (pauses), and `CardSwap` (a new `reduceMotion` prop snaps cards into place with ~0s tweens instead of animating, but keeps cycling so back-card content stays reachable). The broad anime.js / GSAP entrance timelines were intentionally left ungated for now — see Known Issues.
 - **Slide-mount black flash** — `Index.tsx` `SlideFallback` was an empty black `section`; it is now a soft branded skeleton (faint teal radial). `SLIDE_MOUNT_RADIUS` was deliberately kept at `0` to respect `prod.md` line 23 ("mount only the active slide"); the skeleton removes the flash without keeping offscreen WebGL alive.
-- **OG image** — `index.html` `og:image` / `twitter:image` no longer point at the Lovable placeholder; they use local `/favicon.png`. This is a square stopgap, not a true 1200×630 social card.
+- **OG image** — `index.html` `og:image` / `twitter:image` no longer point at an external placeholder; they use local `/favicon.png`. This is a square stopgap, not a true 1200×630 social card.
 
 **Verification:** `npm run lint` passes with 0 warnings. `npm run build` passes; only the known `vendor-lanyard` chunk-size warning remains. Browser/visual approval remains with the user per standing preference.
 
@@ -192,9 +192,16 @@ Mobile-only layout fixes (desktop unchanged, screenshot-verified):
 - `src/components/slides/SkyrocketSlide.tsx` — top-aligned + compacted spacing + smaller headline; differentiator cards become a horizontal swipe row on mobile
 - `src/components/slides/ClientsSlide.tsx` — heading + logo rows centered as a group on mobile (no empty void); smaller mobile heading
 - `scripts/mobile-shots.mjs` — new Playwright mobile/desktop screenshot harness
-- `package.json`, `package-lock.json` — `playwright` added as a devDependency (kept for future visual passes)
+- `package.json`, `package-lock.json` — `playwright` added as a devDependency (kept for future visual passes); `lovable-tagger` removed
 - `.gitignore` — ignore `scripts/_shots/` screenshot output
 - `prod.md`, `context.md`, `handoff.md` — Session 24 updates
+
+Builder/scaffolding de-branding (same session):
+- `vite.config.ts` — removed the `lovable-tagger` dev plugin import + usage (and the now-unused `mode` arg)
+- `package.json`, `package-lock.json` — uninstalled `lovable-tagger`
+- deleted `bun.lock` and `bun.lockb` — stale (repo uses npm); they were the last files carrying the scaffolding-tool name
+- `README.md` — rewritten to accurately describe the current architecture (the old one still referenced the deleted `ProfileCard`/`Radar` team slide and stale lint state)
+- doc mentions of the external OG placeholder reworded in `prod.md` / `context.md` / `handoff.md`
 
 ## Files Touched (Session 23)
 
@@ -209,7 +216,7 @@ Accessibility + performance hardening:
 - `src/components/slides/ClientsSlide.tsx` — mobile gating of `PrismaticBurst`
 - `src/components/slides/ContactSlide.tsx` — `<main>` → `<div>` landmark fix
 - `src/components/ui/CardSwap/CardSwap.jsx` — new `reduceMotion` prop (instant snap, keeps cycling)
-- `index.html` — OG/Twitter image swapped off the Lovable placeholder to local `/favicon.png`
+- `index.html` — OG/Twitter image swapped off an external placeholder to local `/favicon.png`
 - `prod.md`, `context.md`, `handoff.md` — Session 23 updates
 
 ## Files Touched (Session 22)

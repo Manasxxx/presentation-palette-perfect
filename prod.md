@@ -68,7 +68,7 @@
 - **Heavy WebGL is desktop-only and enforced in code.** `Hyperspeed`, `LightRays`, `PrismaticBurst`, and `Globe` are gated behind `useIsMobile()` and must not mount below 768px (this is the concrete enforcement of the line-22 rule above). Mobile keeps the static gradient backdrops. Gate any new heavy effect the same way.
 - **Respect `prefers-reduced-motion`.** Use `usePrefersReducedMotion()` (`src/hooks/use-reduced-motion.tsx`). It already gates the deck `scrollTo` (smooth → instant), the roster auto-advance (pauses), and `CardSwap` (the `reduceMotion` prop snaps cards instantly but keeps cycling so back-card content stays reachable). When adding new auto-advancing or large entrance motion, gate it through this hook. Auto-advancing content should pause or become instant under reduced motion, and must not become unreachable.
 - **No black flash between slides.** `SlideFallback` is a soft branded skeleton, not an empty section. `SLIDE_MOUNT_RADIUS` stays at `0` (see line 23, "mount only the active slide"); fix lazy-load flashes with the skeleton, not by mounting neighbors.
-- **Social/OG image** must be an OwlSurf-branded asset, never the Lovable placeholder. `index.html` currently uses local `/favicon.png` as a stopgap; a true 1200×630 card is preferred.
+- **Social/OG image** must be an OwlSurf-branded asset, never a generic placeholder. `index.html` currently uses local `/favicon.png` as a stopgap; a true 1200×630 card is preferred.
 
 ### Mobile Layout (added Session 24)
 
