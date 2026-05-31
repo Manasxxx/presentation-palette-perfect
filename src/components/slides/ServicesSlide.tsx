@@ -379,12 +379,12 @@ const ServicesSlide = () => {
           className="opacity-40 pointer-events-none"
         />
       )}
-      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-20 pb-8 md:px-12 md:pt-20 md:pb-10">
+      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-16 pb-6 md:px-12 md:pt-20 md:pb-10">
         <header className="sv-header text-left self-start">
           <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
             WHAT WE DO
           </span>
-          <h2 className="font-sans text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
+          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
             <span className="font-sans not-italic">OUR </span>
             <span className="sv-title-accent font-sans not-italic text-gradient-green inline-block pr-2">
               SERVICES
@@ -392,10 +392,10 @@ const ServicesSlide = () => {
           </h2>
         </header>
 
-        <div className="mt-[3vh] grid w-full grid-cols-12 items-start gap-8 md:gap-10">
-          {/* Left: compact category tabs (no descriptions) */}
+        <div className="mt-6 grid w-full grid-cols-12 items-start gap-6 md:mt-[3vh] md:gap-10">
+          {/* Left: compact category tabs (horizontal scroll on mobile, vertical column on desktop) */}
           <div
-            className="sv-tabs col-span-12 flex flex-col gap-3 md:col-span-4 md:gap-4"
+            className="sv-tabs col-span-12 -mx-1 flex flex-row gap-2 overflow-x-auto px-1 pb-1 md:col-span-4 md:mx-0 md:flex-col md:gap-4 md:overflow-visible md:px-0 md:pb-0"
             role="tablist"
             aria-label="Service categories"
             aria-orientation="vertical"
@@ -415,7 +415,7 @@ const ServicesSlide = () => {
                   ref={(el) => { tabRefs.current[index] = el; }}
                   onClick={() => setActiveKey(cat.key)}
                   onKeyDown={(event) => handleTabKey(event, index)}
-                  className={`sv-tab group relative flex items-center justify-between gap-4 text-left rounded-xl border px-5 py-4 transition-all duration-300 ${
+                  className={`sv-tab group relative flex shrink-0 items-center justify-between gap-3 text-left rounded-xl border px-4 py-3 transition-all duration-300 md:shrink md:gap-4 md:px-5 md:py-4 ${
                     active
                       ? "border-primary/60 bg-primary/10"
                       : "border-border/40 bg-white/[0.02] hover:border-primary/30 hover:bg-white/[0.05]"
@@ -443,7 +443,7 @@ const ServicesSlide = () => {
                     </span>
                   </div>
                   <span
-                    className={`shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 transition-colors ${
+                    className={`hidden shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 transition-colors md:inline-block ${
                       active
                         ? "bg-primary/25 text-primary"
                         : "bg-white/5 text-muted-foreground"
@@ -458,12 +458,40 @@ const ServicesSlide = () => {
 
           {/* Right: CardSwap stack — 5 cards per category, simpler content */}
           <div
-            className="sv-card-stage relative col-span-12 h-[460px] md:col-span-8 md:h-[460px]"
+            className="sv-card-stage relative col-span-12 h-auto md:col-span-8 md:h-[460px]"
             style={{ opacity: 0 }}
             role="tabpanel"
             id="sv-panel"
             aria-labelledby={`sv-tab-${activeKey}`}
           >
+            {isMobile ? (
+              /* Mobile: the 3D CardSwap stack overflows the viewport, so render the
+                 active category's services as a plain readable list instead. */
+              <ul className="flex flex-col gap-2">
+                {activeCategory.services.map((svc) => {
+                  const Icon = svc.icon;
+                  return (
+                    <li
+                      key={svc.title}
+                      className="relative flex items-start gap-3 overflow-hidden rounded-xl border border-border/40 bg-white/[0.025] px-4 py-2.5"
+                    >
+                      <span className="absolute left-0 top-2.5 bottom-2.5 w-[3px] rounded-r bg-primary" />
+                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15">
+                        <Icon className="h-4 w-4 text-primary" />
+                      </span>
+                      <span className="flex min-w-0 flex-col">
+                        <span className="font-sans text-[0.92rem] font-black uppercase leading-tight tracking-tight text-primary">
+                          {svc.title}
+                        </span>
+                        <span className="mt-0.5 font-body text-[0.82rem] leading-snug text-white/70">
+                          {svc.description}
+                        </span>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
             <CardSwap
               key={activeKey}
               width={520}
@@ -520,6 +548,7 @@ const ServicesSlide = () => {
                 );
               })}
             </CardSwap>
+            )}
           </div>
         </div>
       </div>

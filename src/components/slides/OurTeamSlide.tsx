@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { animate, createSpring, stagger } from 'animejs';
 import Lanyard from '@/components/ui/Lanyard/Lanyard';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { usePrefersReducedMotion } from '@/hooks/use-reduced-motion';
 import harshitAvatar from '@/assets/harshit-avatar.png';
 import manasAvatar from '@/assets/manas-avatar.png';
@@ -59,6 +60,7 @@ const OurTeamSlide = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [showLanyard, setShowLanyard] = useState(false);
     const prefersReducedMotion = usePrefersReducedMotion();
+    const isMobile = useIsMobile();
     const activeMember = teamMembers[activeIndex];
 
     useEffect(() => {
@@ -164,7 +166,7 @@ const OurTeamSlide = () => {
                             </span>
                         </div>
 
-                        <div className="relative h-[390px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.22)] [perspective:1050px]">
+                        <div className="relative h-[286px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.22)] [perspective:1050px] md:h-[390px]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-gradient-to-b from-background via-background/78 to-transparent" />
                             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-24 bg-gradient-to-t from-background via-background/78 to-transparent" />
                             <div className="pointer-events-none absolute left-6 right-6 top-1/2 z-10 h-[5.1rem] -translate-y-1/2 rounded-2xl border border-primary/35 bg-primary/[0.08] shadow-[0_0_42px_rgba(75,194,194,0.16)]" />
@@ -206,20 +208,43 @@ const OurTeamSlide = () => {
                         </div>
                     </div>
 
-                    <div className="team-lanyard-stage relative z-10 flex min-h-[620px] items-center justify-center overflow-visible" style={{ opacity: 0 }}>
+                    <div className="team-lanyard-stage relative z-10 flex min-h-[270px] items-center justify-center overflow-visible md:min-h-[620px]" style={{ opacity: 0 }}>
                         <div className="absolute right-4 top-1/2 h-[58%] w-[72%] -translate-y-1/2 rounded-full bg-primary/14 blur-[70px]" />
-                        <div className="relative h-[680px] w-full max-w-[720px] overflow-visible">
-                            {showLanyard && (
-                                <Lanyard
-                                    className="single-team-lanyard"
-                                    person={activeMember}
-                                    position={[0, 0, 22]}
-                                    gravity={[0, -38, 0]}
-                                    fov={11.5}
-                                    startOffset={lanyardFallOffsets[activeIndex]}
-                                />
-                            )}
-                        </div>
+                        {isMobile ? (
+                            /* Mobile: the WebGL + physics lanyard is too tall and janky for phones.
+                               Show a static badge card for the active member instead. */
+                            <div className="relative flex w-full max-w-[300px] flex-col items-center rounded-[2rem] border border-white/10 bg-white/[0.035] px-6 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.28)]">
+                                <span className="mb-4 h-px w-10 bg-primary/70" />
+                                <div className="relative h-32 w-32 overflow-hidden rounded-full border border-primary/40 bg-black/40 shadow-[0_0_42px_rgba(75,194,194,0.22)]">
+                                    <img
+                                        src={activeMember.avatar}
+                                        alt={activeMember.name}
+                                        className="h-full w-full object-cover object-center"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                </div>
+                                <span className="mt-5 font-sans text-2xl font-black uppercase tracking-tight text-white">
+                                    {activeMember.name}
+                                </span>
+                                <span className="mt-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1 font-body text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                                    {activeMember.title}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="relative h-[680px] w-full max-w-[720px] overflow-visible">
+                                {showLanyard && (
+                                    <Lanyard
+                                        className="single-team-lanyard"
+                                        person={activeMember}
+                                        position={[0, 0, 22]}
+                                        gravity={[0, -38, 0]}
+                                        fov={11.5}
+                                        startOffset={lanyardFallOffsets[activeIndex]}
+                                    />
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

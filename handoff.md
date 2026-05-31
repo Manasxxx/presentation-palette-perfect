@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 23 (current) is an accessibility + performance hardening pass on top of Session 22. It clears most of the long-standing P0 UX-audit backlog: real ARIA semantics in `PillNav` and the Services pillar tabs, a new `prefers-reduced-motion` gate, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22 instead of self-violating it), a roster-contrast fix, the Contact landmark fix, a local OG image, and a soft slide skeleton to remove the black flash between slides. `npm run lint` and `npm run build` both pass clean. Full details under Current State below.
+Session 24 (current) is a mobile-only layout pass. It fixes the phone-layout breakage that was the long-open "Mobile layout" item in Known Issues, with no desktop change (verified by desktop + mobile screenshots). Services cards are no longer hidden off-screen on mobile (the 3D `CardSwap` is replaced by a readable list + horizontal pillar chips); Our Team uses a static badge card instead of the clipped WebGL lanyard on mobile; Who We Are is compacted so the headline and differentiators stop clipping; Clients is centered instead of showing an empty void. A Playwright screenshot harness (`scripts/mobile-shots.mjs`) was added, `playwright` kept as a devDependency, and `scripts/_shots/` gitignored. `npm run lint` passes with 0 warnings. Full details under the Session 24 Files Touched list and in `context.md`.
+
+Session 23 is an accessibility + performance hardening pass on top of Session 22. It clears most of the long-standing P0 UX-audit backlog: real ARIA semantics in `PillNav` and the Services pillar tabs, a new `prefers-reduced-motion` gate, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22 instead of self-violating it), a roster-contrast fix, the Contact landmark fix, a local OG image, and a soft slide skeleton to remove the black flash between slides. `npm run lint` and `npm run build` both pass clean. Full details under Current State below.
 
 Session 22 completed the live visual pass and cleanup requested before push. The cover (`TitleSlide`) now has the centered clipped globe with only the top half visible, larger/tighter partner badges, `OWLSURF DIGITAL` in the top-left lockup, no top-right `Credentials / 01`, and a slightly larger OwlSurf logo. Services keeps the left-pillar/right-CardSwap format, with clip-art SVG illustrations added only to the first `Brand & Story` vertical in a text-left/illustration-right card split. Case studies now share the Mitsui-style formatting through `CaseStudyLayout` for Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem RPG; Mitsui and Raychem slideshows include the additional WebP creatives from Downloads. Contact footer alignment was tightened. Our Team now has the smoother cylindrical name roulette and the lanyard badge draws the person's field/title instead of the person's name. Cleanup removed two stale assets, removed unused UI/animation dependencies, tightened manual chunks, fixed lint blockers, and verified assets/build/lint before push.
 
@@ -181,6 +183,18 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 24)
+
+Mobile-only layout fixes (desktop unchanged, screenshot-verified):
+- `src/components/slides/ServicesSlide.tsx` — mobile renders a readable service list instead of the off-screen `CardSwap`; pillars become a horizontal-scroll chip row; compacted heading/paddings; count badge hidden on mobile
+- `src/components/slides/OurTeamSlide.tsx` — static badge card (avatar + name + title) on mobile via `useIsMobile()`; lanyard desktop-only; roster height 286px on mobile
+- `src/components/slides/SkyrocketSlide.tsx` — top-aligned + compacted spacing + smaller headline; differentiator cards become a horizontal swipe row on mobile
+- `src/components/slides/ClientsSlide.tsx` — heading + logo rows centered as a group on mobile (no empty void); smaller mobile heading
+- `scripts/mobile-shots.mjs` — new Playwright mobile/desktop screenshot harness
+- `package.json`, `package-lock.json` — `playwright` added as a devDependency (kept for future visual passes)
+- `.gitignore` — ignore `scripts/_shots/` screenshot output
+- `prod.md`, `context.md`, `handoff.md` — Session 24 updates
 
 ## Files Touched (Session 23)
 
@@ -402,7 +416,7 @@ Most of the P0 UX-audit batch was cleared in Session 23. Remaining and follow-up
 4. **Slide mount resilience — partially done.** The black flash is fixed via the skeleton `SlideFallback`. `SLIDE_MOUNT_RADIUS` was deliberately left at `0` to honor `prod.md` line 23 ("mount only the active slide"). If the owner accepts the offscreen-WebGL tradeoff, revisit a desktop-only radius bump with explicit offscreen pause/unmount of canvases.
 5. **OG image — stopgap done.** `index.html` now uses local `/favicon.png`. Replace with a true 1200×630 OwlSurf social card.
 6. **`<main>` landmark — done in Session 23** (`ContactSlide` now uses `<div>`).
-7. **Mobile layout** — still open. `OurTeamSlide` stacks roster + 620px lanyard at `<lg`, overflowing the viewport. `SkyrocketSlide` mobile block uses a fixed height that risks landscape overflow. Best handled in a dedicated mobile/visual pass.
+7. **Mobile layout — done in Session 24.** Services (cards were off-screen), Our Team (clipped lanyard → static badge card), Who We Are (clipped headline/differentiators), and Clients (empty void) are fixed mobile-only; desktop unchanged and screenshot-verified. Follow-up: case-study creative carousels bleed off the bottom edge on phones by design (`overflow-hidden`); revisit only if the owner wants them fully contained. Landscape phone was not exhaustively tuned (deck is portrait-first).
 
 ### Case-study layout carry-over
 

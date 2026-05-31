@@ -70,6 +70,14 @@
 - **No black flash between slides.** `SlideFallback` is a soft branded skeleton, not an empty section. `SLIDE_MOUNT_RADIUS` stays at `0` (see line 23, "mount only the active slide"); fix lazy-load flashes with the skeleton, not by mounting neighbors.
 - **Social/OG image** must be an OwlSurf-branded asset, never the Lovable placeholder. `index.html` currently uses local `/favicon.png` as a stopgap; a true 1200×630 card is preferred.
 
+### Mobile Layout (added Session 24)
+
+- **Every slide must fit one mobile viewport.** No content clipped at the top or bottom edge on phones. Mobile changes are gated with default/`max`-width Tailwind classes plus `md:` tokens that restore the desktop values verbatim, or with `useIsMobile()` branches. Desktop must stay byte-for-byte identical when editing mobile — verify with a desktop screenshot, not just a phone one.
+- **Heavy/oversized widgets get compact mobile variants, they are not just shrunk.** The Our Team WebGL lanyard (≈680px, foreground-hero exception on desktop) is replaced on mobile by a static badge card (avatar + name + field/title) via `useIsMobile()`; the lanyard mounts on desktop only. The Services 3D `CardSwap` stack overflows phones, so mobile renders the active category's five services as a plain readable list instead, and the left pillar column becomes a horizontal-scroll chip row. Do not try to make `CardSwap` or the lanyard "fit" on mobile by scaling — use the mobile variant.
+- **Long content rows become horizontal swipe rows on mobile**, not tall vertical stacks (e.g. the Who We Are differentiator cards: `flex overflow-x-auto` on mobile, `sm:grid sm:grid-cols-3` from 640px up). This keeps the slide inside one viewport without an internal vertical scroll that would fight the deck's scroll-snap.
+- **Keep slides inside the scroll-snap height.** Do not make a single mobile slide taller than the viewport to "solve" overflow; that breaks `scroll-snap-type: y mandatory`. Compact spacing/type and swap widgets instead.
+- **Mobile verification harness:** `scripts/mobile-shots.mjs` (Playwright, kept as a devDependency) screenshots every slide at a phone viewport against the running dev server. `SHOT_TAG`, `SHOT_W`/`SHOT_H`, `SHOT_ONLY` (comma slide indices), and `SHOT_DESKTOP=1` env vars control it. Output under `scripts/_shots/` is gitignored. Use it before declaring mobile work done.
+
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 
 ## 1. Architectural Overview

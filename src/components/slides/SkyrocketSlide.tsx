@@ -149,9 +149,9 @@ const SkyrocketSlide = () => {
       )}
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-6 py-10 sm:px-10 md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-5 px-6 py-5 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
-        <div className="grid gap-10 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
+        <div className="grid gap-5 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
           <div className="md:col-span-7">
             <div className="who-kicker flex items-center gap-3 font-sans font-black uppercase text-owl-teal text-[10px] tracking-[0.24em] md:text-xs md:tracking-[0.3em]" style={{ opacity: 0 }}>
@@ -160,7 +160,7 @@ const SkyrocketSlide = () => {
               <span className="ml-1 font-sans text-white/30">/ 02</span>
             </div>
 
-            <h2 className="mt-7 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[clamp(2.7rem,5.6vw,5.4rem)] md:mt-9">
+            <h2 className="mt-4 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[2rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
               <span className="who-word block">
                 <span className="font-sans not-italic">Hard to </span>
                 <span className="font-serif italic text-gradient-green">explain.</span>
@@ -171,7 +171,7 @@ const SkyrocketSlide = () => {
               </span>
             </h2>
 
-            <p className="who-copy mt-7 max-w-[520px] font-body leading-[1.55] text-white/70 text-[clamp(1rem,1.15vw,1.3rem)] md:mt-9" style={{ opacity: 0 }}>
+            <p className="who-copy mt-3 max-w-[520px] font-body leading-[1.5] text-white/70 text-sm md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
               We sit between deep technical products and the people who buy them. One team, fluent in engineering and growth.
             </p>
           </div>
@@ -191,7 +191,7 @@ const SkyrocketSlide = () => {
                 return (
                   <div
                     key={sector.label}
-                    className="who-sector group flex items-center gap-4 border-b border-white/10 py-3.5 transition-colors duration-300 first:border-t hover:border-owl-teal/40 md:py-4"
+                    className="who-sector group flex items-center gap-4 border-b border-white/10 py-2.5 transition-colors duration-300 first:border-t hover:border-owl-teal/40 md:py-4"
                     style={{ opacity: 0 }}
                   >
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-owl-teal/10 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-11 md:w-11">
@@ -214,20 +214,20 @@ const SkyrocketSlide = () => {
         </div>
 
         {/* BOTTOM — what makes us different (full width) */}
-        <div className="border-t border-white/10 pt-7 md:pt-9">
-          <div className="who-copy mb-5 flex items-center gap-3 md:mb-6" style={{ opacity: 0 }}>
+        <div className="border-t border-white/10 pt-4 md:pt-9">
+          <div className="who-copy mb-3 flex items-center gap-3 md:mb-6" style={{ opacity: 0 }}>
             <span className="who-rule h-px w-10 origin-left bg-owl-teal/70" />
             <span className="font-sans text-[10px] font-black uppercase tracking-[0.22em] text-owl-teal md:text-xs md:tracking-[0.26em]">
               What makes us different
             </span>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3 md:gap-6">
+          <div className="flex gap-3 overflow-x-auto pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 md:gap-6">
             {differentiators.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="who-chip group relative flex items-start gap-4 overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)]"
+                  className="who-chip group relative flex min-w-[78%] shrink-0 items-start gap-4 overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] sm:min-w-0 sm:p-5"
                   style={{ opacity: 0 }}
                 >
                   <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/0 transition-colors duration-300 group-hover:bg-owl-teal" />

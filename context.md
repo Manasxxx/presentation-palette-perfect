@@ -5,6 +5,12 @@
 
 ---
 
+## Current State (as of Session 24 push prep)
+
+**Session 24** is a mobile-only layout pass on top of Session 23. It fixes the slides that clipped or broke on phones, with zero desktop change (verified with both desktop and mobile screenshots). Services no longer hides its cards off-screen on mobile — the 3D `CardSwap` is replaced by a readable service list plus a horizontal-scroll pillar-chip row; Our Team swaps the clipped WebGL lanyard for a static badge card on mobile; Who We Are is compacted so the headline and differentiator cards stop clipping; Clients is balanced instead of showing a large empty void. A Playwright screenshot harness (`scripts/mobile-shots.mjs`) was added and `playwright` kept as a devDependency. `npm run lint` passes with 0 warnings. See the Session 24 log entry below and `handoff.md`.
+
+---
+
 ## Current State (as of Session 23 push prep)
 
 **Session 23** is an accessibility + performance hardening pass on top of Session 22. It clears most of the P0 UX-audit backlog without touching the desktop visual design: real ARIA semantics in `PillNav` and the Services pillar tabs (with keyboard nav), a new `prefers-reduced-motion` hook wired into the deck scroll + auto-advancers, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22), a roster-contrast fix, the Contact `<main>`→`<div>` landmark fix, a local OG image, and a soft slide skeleton that removes the black flash between slides. `npm run lint` passes with 0 warnings and `npm run build` passes (only the known `vendor-lanyard` chunk warning remains). See the Session 23 log entry below and `handoff.md` for the full breakdown.
@@ -21,6 +27,32 @@
 ---
 
 ## Session Log
+
+### Session 24 — Mobile-only layout fixes
+
+**What was done** (all changes mobile-gated; desktop untouched and screenshot-verified):
+
+**1. Services cards visible on mobile** (`src/components/slides/ServicesSlide.tsx`)
+- The desktop 3D `CardSwap` stack is positioned absolutely (`bottom:30%`, scaled) and on phones it sat off-screen below the pillar list — the actual service content was invisible, leaving a blank lower half. On mobile (`useIsMobile()`) the right panel now renders the active category's five services as a plain readable list (icon + teal title + description). The left pillar column switches from a vertical column to a horizontal-scroll chip row (`flex overflow-x-auto` on mobile, `md:flex-col`), with the per-category count badge hidden on mobile to keep chips compact. Heading and paddings compacted so all five service rows fit a 360×740 phone. Desktop keeps the pillars + `CardSwap` exactly as before.
+
+**2. Our Team static badge on mobile** (`src/components/slides/OurTeamSlide.tsx`)
+- The WebGL + Rapier lanyard (≈680px) was clipped on phones — only the strap showed, the badge was below the fold. On mobile the lanyard is no longer mounted; instead a static badge card shows the active member's avatar, name, and field/title. The roster roulette height drops from 390px to 286px on mobile so roster + badge fit. Desktop still mounts the live lanyard.
+
+**3. Who We Are fits one viewport** (`src/components/slides/SkyrocketSlide.tsx`)
+- Content was taller than the phone viewport and vertically centered, so the headline clipped at the top and the differentiator cards clipped at the bottom. Mobile now top-aligns (`justify-start md:justify-center`), uses a smaller headline (`text-[2rem] sm:text-[2.5rem] md:` original clamp), tighter gaps/paddings/industry-row spacing, and turns the three differentiator cards into a horizontal swipe row on mobile (`flex overflow-x-auto`, `sm:grid sm:grid-cols-3`). Nothing clips.
+
+**4. Clients balanced on mobile** (`src/components/slides/ClientsSlide.tsx`)
+- The `my-auto` logo block left a large empty void under the heading. On mobile the heading + logo rows are centered together as a group (`justify-center md:justify-start`, cards `mt-8 md:my-auto`), and the heading uses a smaller mobile size. Desktop layout unchanged.
+
+**5. Mobile verification harness** (`scripts/mobile-shots.mjs`, `playwright` devDependency)
+- Added a Playwright script that screenshots each slide against the running dev server at a configurable viewport (`SHOT_TAG`, `SHOT_W`/`SHOT_H`, `SHOT_ONLY`, `SHOT_DESKTOP`). Output lives under `scripts/_shots/` (gitignored). `playwright` is kept as a devDependency for future mobile/visual passes.
+
+**Rationale:**
+- The deck owner asked for a phone pass with no desktop change. Phones were the long-open "mobile layout" item in Known Issues. Heavy/absolute widgets (the lanyard, the `CardSwap` stack) cannot just be scaled to fit, so they get purpose-built mobile variants behind `useIsMobile()`; everything else is compaction via `max`/`md:` class pairs. Slides are kept inside one viewport rather than made internally scrollable, to avoid fighting the deck's `scroll-snap-type: y mandatory`.
+
+**Verification:**
+- Playwright mobile screenshots at 390×844 and 360×740 confirm no clipping and no horizontal overflow on every slide; a 1440×900 desktop capture of Services and Our Team confirms the desktop `CardSwap` and lanyard render unchanged.
+- `npm run lint` passes with 0 warnings.
 
 ### Session 23 — Accessibility + performance hardening (P0 backlog)
 

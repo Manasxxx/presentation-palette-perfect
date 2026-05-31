@@ -16,6 +16,9 @@ dist-ssr
 ux-audit-report.*
 *.scratch.*
 
+# Mobile/visual screenshot output from scripts/mobile-shots.mjs
+scripts/_shots/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
