@@ -1,0 +1,25 @@
+{
+  "scannedAt": "2026-06-01T00:00:00+05:30",
+  "framework": {
+    "name": "Vite + React",
+    "evidence": ["package.json:28-31", "vite.config.ts:1-16"]
+  },
+  "fontStack": {
+    "families": ["Montserrat", "Lora", "Palanquin"],
+    "evidence": ["src/index.css:1-33", "tailwind.config.ts:17-21"]
+  },
+  "palette": {
+    "system": "OwlSurf dark theme with teal scale and supporting accent colors",
+    "evidence": ["src/index.css:40-163", "tailwind.config.ts:22-95"]
+  },
+  "motion": {
+    "stance": "motion-on",
+    "libraries": ["animejs", "gsap"],
+    "evidence": ["package.json:20-23", "tailwind.config.ts:101-145"]
+  },
+  "spacing": {
+    "system": "4px base spacing tokens plus Tailwind container spacing",
+    "evidence": ["src/index.css:110-114", "tailwind.config.ts:9-15"]
+  },
+  "preserve": ["font stack", "OwlSurf dark palette", "4px spacing scale", "Anime.js/GSAP motion stance", "Vite slide architecture"]
+}

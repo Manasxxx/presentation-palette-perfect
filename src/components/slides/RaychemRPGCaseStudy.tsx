@@ -23,10 +23,17 @@ const RaychemRPGCaseStudy = () => (
     caseNumber="07"
     title="Raychem"
     accentTitle="RPG"
-    subtitle="Heat-traced cables, industrial electrical. Now buyers find them."
+    subtitle="Industrial electrical and heat-tracing systems. We turned infrastructure expertise into clearer digital demand."
+    proofNote="What it proves: industrial-category fluency, sharper creative, and demand language for technical buyers."
+    market="Industrial electrical systems"
+    owlsurfRole="Technical storytelling, demand language, campaign creative"
+    proofPoints={[
+      { label: "Buyer", value: "Industrial, utility, engineering, and procurement teams" },
+      { label: "Shift", value: "From hidden infrastructure to visible operational value" },
+      { label: "Proof", value: "Creative shows applications, field context, and category authority" },
+    ]}
     slides={sliderImages}
     accentColor={raychemRed}
-    secondaryColor={raychemBlue}
     background={`linear-gradient(160deg, hsl(210 30% 10%), hsl(210 50% 15%), hsl(${raychemBlue} / 0.6), hsl(${raychemRed} / 0.15))`}
   />
 );

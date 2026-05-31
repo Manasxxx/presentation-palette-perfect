@@ -134,6 +134,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
       return {
         transform: `perspective(1000px) translate3d(0, 0, 0) rotateY(0deg) scale(1.2)`,
         zIndex: 20,
+        opacity: 1,
         pointerEvents: "auto",
       };
     }
@@ -141,6 +142,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
       return {
         transform: `perspective(1000px) translate3d(calc(${slideWidth} * 1.05), 0, 0) rotateY(-45deg) scale(1)`,
         zIndex: 10,
+        opacity: 0.46,
         pointerEvents: "none",
       };
     }
@@ -148,6 +150,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
       return {
         transform: `perspective(1000px) translate3d(calc(-1 * ${slideWidth} * 1.05), 0, 0) rotateY(45deg) scale(1)`,
         zIndex: 30,
+        opacity: 0.46,
         pointerEvents: "none",
       };
     }
@@ -232,7 +235,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
                   width: cardWidth,
                   aspectRatio: "1 / 1",
                   perspective: "800px",
-                  transition: "transform 800ms ease",
+                  transition: "transform 800ms ease, opacity 800ms ease",
                   ...getSlideStyle(i),
                 }}
                 onMouseMove={isCurrent ? handleMouseMove : undefined}
@@ -258,7 +261,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
                         transform: isCurrent
                           ? `scale(1.05) translate3d(${tilt.bgX.toFixed(2)}%, ${tilt.bgY.toFixed(2)}%, 0)`
                           : "scale(1.05)",
-                        filter: isCurrent ? "brightness(0.85)" : "brightness(0.5)",
+                        filter: isCurrent ? "brightness(0.88)" : "brightness(0.42)",
                         transition: "filter 800ms ease",
                       }}
                     />

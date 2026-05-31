@@ -3,7 +3,6 @@ import cultfitCreative2 from "@/assets/cultfit-creative-2.png";
 import CaseStudyLayout from "@/components/slides/CaseStudyLayout";
 
 const cultPink = "340 82% 52%";
-const cultYellow = "45 100% 51%";
 
 const sliderImages = [
   { image: cultfitCreative1, alt: "Cult Fit creative 1" },
@@ -11,11 +10,11 @@ const sliderImages = [
 ];
 
 const stats = [
-  { value: "4.2M", label: "Impressions" },
-  { value: "850%", label: "Follower growth" },
-  { value: "12.4%", label: "Engagement" },
-  { value: "78K", label: "Link clicks" },
-  { value: "4.5X", label: "ROI" },
+  { value: "4.2M", label: "Audience reach" },
+  { value: "850%", label: "Community lift" },
+  { value: "12.4%", label: "Interaction rate" },
+  { value: "78K", label: "Intent clicks" },
+  { value: "4.5X", label: "Reported ROI" },
 ];
 
 const CultFitCaseStudy = () => (
@@ -23,12 +22,19 @@ const CultFitCaseStudy = () => (
     caseNumber="03"
     title="Cult"
     accentTitle=".fit"
-    subtitle="Fitness platform. Memberships up. Brand sharper."
+    subtitle="Fitness platform. Performance creatives and social proof turned attention into membership intent."
+    proofNote="What it proves: fast-moving campaign creative, measurable audience response, and conversion-minded storytelling."
+    market="Fitness and wellness platform"
+    owlsurfRole="Campaign creative, paid media, performance narrative"
+    proofPoints={[
+      { label: "Buyer", value: "Urban fitness users choosing between apps, gyms, and routines" },
+      { label: "Shift", value: "From attention to membership intent through sharper creative" },
+      { label: "Proof", value: "Reach, link clicks, and ROI read in one strip" },
+    ]}
     slides={sliderImages}
     stats={stats}
     accentColor={cultPink}
-    secondaryColor={cultYellow}
-    background={`linear-gradient(160deg, hsl(260 20% 8%), hsl(340 30% 12%), hsl(${cultPink} / 0.25), hsl(${cultYellow} / 0.08))`}
+    background={`linear-gradient(160deg, hsl(260 20% 8%), hsl(340 30% 12%), hsl(${cultPink} / 0.25), hsl(45 100% 51% / 0.08))`}
   />
 );
 

@@ -5,6 +5,12 @@
 
 ---
 
+## Current State (as of Session 25 push prep)
+
+**Session 25** is a Hallmark-led B2B credentials pass on top of Sessions 23 and 24. It adds a locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and sharpens the deck as a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and technical markets. The cover now reads `When the product is complex, the choice shouldn't be.`, uses a right-side editorial signal graphic instead of a literal proof/info box, and keeps the mobile WebGL gating from Session 23. Case studies now include proof/info panels, larger taglines, right-shifted creative carousels, and more translucent inactive carousel cards. The nav remains compact and centered with short labels. `npm run lint` and `npm run build` pass; only the known Browserslist and `vendor-lanyard` warnings remain.
+
+---
+
 ## Current State (as of Session 24 push prep)
 
 **Session 24** is a mobile-only layout pass on top of Session 23. It fixes the slides that clipped or broke on phones, with zero desktop change (verified with both desktop and mobile screenshots). Services no longer hides its cards off-screen on mobile — the 3D `CardSwap` is replaced by a readable service list plus a horizontal-scroll pillar-chip row; Our Team swaps the clipped WebGL lanyard for a static badge card on mobile; Who We Are is compacted so the headline and differentiator cards stop clipping; Clients is balanced instead of showing a large empty void. A Playwright screenshot harness (`scripts/mobile-shots.mjs`) was added and `playwright` kept as a devDependency. `npm run lint` passes with 0 warnings. See the Session 24 log entry below and `handoff.md`.
@@ -27,6 +33,43 @@
 ---
 
 ## Session Log
+
+### Session 25 — Hallmark B2B credentials pass, cover redesign, case-study proof polish
+
+**What was done:**
+
+**1. Hallmark design system** (`design.md`, `tokens.css`, `.hallmark/`, `src/index.css`)
+- Added a locked Hallmark design system for an editorial, technical OwlSurf credentials deck.
+- Imported the portable tokens into `src/index.css` and kept `overflow-x: clip` on `html` and `body` per Hallmark mobile-safety guidance.
+- Captured Hallmark preflight/log metadata in `.hallmark/`.
+
+**2. Cover redesign** (`src/components/slides/TitleSlide.tsx`, `src/index.css`)
+- Removed the literal `Portfolio proof` information box and the small explanatory top-right cover copy.
+- Added a right-side editorial signal graphic: OwlSurf mark, grid, orbit rings, signal nodes, and a subtle moving scan sweep.
+- Reworked the heading to `When the product is complex, the choice shouldn't be.` with a calmer typographic hierarchy.
+- Preserved the Session 23 mobile WebGL gating: the globe remains desktop-only.
+
+**3. B2B portfolio copy and slide polish** (`TitleSlide`, `SkyrocketSlide`, `ServicesSlide`, `ClientsSlide`, `ContactSlide`)
+- Reframed the deck as a concise portfolio-PDF replacement for B2B buyers in chemical, industrial, and technical sectors.
+- Updated Services into buyer-facing language for brand/story, demand generation, discovery, marketing stack, and AI/autopilot work while preserving the Session 23 tab semantics and Session 24 mobile list fallback.
+- Tightened Clients and Contact copy around proof, sector fit, and long-cycle B2B work.
+
+**4. Case-study proof system** (`CaseStudyLayout.tsx`, all case-study slides, `ParallaxCardSlider.tsx`)
+- Added larger proof/info panels to case-study slides, then aligned those panels vertically with the creative carousel band.
+- Increased case-study tagline text size.
+- Shifted creative carousels farther toward the right edge and made inactive carousel images more translucent so the left proof panel remains readable.
+- Added market, buyer, role, and proof context to each case study while keeping the deck concise.
+
+**5. Navigation polish** (`PillNav.tsx`, `PillNav.css`)
+- Restored a compact centered header after the broken full-width split experiment.
+- Kept shorter labels: `Cover`, `Positioning`, `Team`, `Services`, `Proof`, `Cases`, `Contact`.
+- Preserved the Session 23 plain nav/list/button semantics and mobile-menu accessibility wiring.
+
+**Verification:**
+- `git diff --check` passed during the polish pass.
+- `npm run lint` passed.
+- `npm run build` passed. Build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` chunk warning.
+- Browser/screenshot verification was skipped per the user's standing preference; visual approval remains with the user in their live browser.
 
 ### Session 24 — Mobile-only layout fixes
 

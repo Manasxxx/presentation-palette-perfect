@@ -4,7 +4,6 @@ import ctpCreative3 from "@/assets/ctp-creative-3.png";
 import CaseStudyLayout from "@/components/slides/CaseStudyLayout";
 
 const ctpGreen = "95 48% 41%";
-const ctpTeal = "185 28% 24%";
 
 const sliderImages = [
   { image: ctpCreative1, alt: "Check This Property creative 1" },
@@ -13,11 +12,11 @@ const sliderImages = [
 ];
 
 const stats = [
-  { value: "1.8M", label: "Impressions" },
-  { value: "430%", label: "Follower growth" },
-  { value: "14.2%", label: "Engagement" },
-  { value: "36K", label: "Link clicks" },
-  { value: "3.2X", label: "ROI" },
+  { value: "1.8M", label: "Search reach" },
+  { value: "430%", label: "Audience lift" },
+  { value: "14.2%", label: "Engaged traffic" },
+  { value: "36K", label: "Property clicks" },
+  { value: "3.2X", label: "Reported ROI" },
 ];
 
 const CTPCaseStudy = () => (
@@ -25,11 +24,18 @@ const CTPCaseStudy = () => (
     caseNumber="05"
     title="Check This"
     accentTitle="Property"
-    subtitle="Australian property tech. Made the search easy. Aussies found them."
+    subtitle="Australian property tech. We clarified the product story so searchers could understand and act faster."
+    proofNote="What it proves: category education, search intent, and clearer conversion paths for a technical marketplace."
+    market="Australian property technology"
+    owlsurfRole="Search, category education, conversion journey"
+    proofPoints={[
+      { label: "Buyer", value: "Property searchers comparing options under uncertainty" },
+      { label: "Shift", value: "From product explanation to faster action and trust" },
+      { label: "Proof", value: "Search reach, property clicks, and ROI tied to intent" },
+    ]}
     slides={sliderImages}
     stats={stats}
     accentColor={ctpGreen}
-    secondaryColor={ctpTeal}
     background={`linear-gradient(160deg, hsl(95 30% 92%), hsl(95 20% 88%), hsl(${ctpGreen} / 0.2))`}
     lightMode
   />

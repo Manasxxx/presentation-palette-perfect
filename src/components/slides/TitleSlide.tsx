@@ -14,7 +14,6 @@ Arrow19.displayName = "Arrow19";
 import { animate, createSpring } from "animejs";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
-import LightRays from "@/components/LightRays";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import MagneticButton from "@/components/ui/MagneticButton";
@@ -122,6 +121,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
     });
 
+    animate(el.querySelectorAll(".ts-orbit-node, .ts-signal-line"), {
+      opacity: [0, 1],
+      scale: [0.8, 1],
+      delay: (_, i) => 720 + i * 80,
+      duration: 620,
+      ease: "out(3)",
+    });
+
     animate(el.querySelectorAll(".ts-cred-badge"), {
       opacity: [0, 1],
       translateY: [12, 0],
@@ -198,31 +205,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     <section ref={ref} className="slide hexagon-pattern overflow-hidden">
       <div className="absolute inset-0 bg-background" />
 
-      {/* Subtle glow wash */}
+      {/* Industrial glow wash */}
       <div
-        className="absolute inset-0 opacity-25 animate-gradient-shift pointer-events-none"
+        className="absolute inset-0 opacity-20 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse 80% 60% at 20% 40%, hsl(180 45% 53% / 0.35), transparent), radial-gradient(ellipse 60% 80% at 80% 60%, hsl(180 45% 53% / 0.15), transparent)",
+            "linear-gradient(115deg, hsl(180 45% 53% / 0.18), transparent 28%, hsl(180 45% 53% / 0.08) 66%, transparent)",
           backgroundSize: "200% 200%",
         }}
       />
-
-      {/* Light Rays — desktop only (heavy WebGL gated off mobile per prod.md) */}
-      {!isMobile && (
-        <LightRays
-          raysColor="#4bc2c2"
-          raysOrigin="top-center"
-          raysSpeed={0.6}
-          lightSpread={0.5}
-          rayLength={3}
-          fadeDistance={1}
-          saturation={0.7}
-          followMouse={false}
-          mouseInfluence={0.08}
-          className="opacity-30 pointer-events-none"
-        />
-      )}
 
       {/* Globe — top hemisphere rises from the bottom edge (desktop only) */}
       {!isMobile && (
@@ -243,7 +234,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-16 md:py-24"
+        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-20"
       >
         {/* TOP: brand lockup */}
         <div className="flex flex-row items-start justify-between gap-6">
@@ -254,53 +245,97 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               <span className="font-sans not-italic"> DIGITAL</span>
             </span>
             <span className="block font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)]">
-              B2B Marketing for complex markets
+              Credentials for chemical and industrial markets
             </span>
+          </div>
+          <div className="hidden w-[23vw] max-w-[24rem] border-t border-white/15 md:block" aria-hidden="true">
+            <div className="mt-2 h-px w-1/3 bg-owl-teal/50" />
           </div>
         </div>
 
-        {/* CENTER: hook hero (left) + logo mark (right) */}
-        <div className="flex flex-row items-center justify-between gap-6 md:gap-12">
-          <div className="relative flex-1 min-w-0 pl-5 md:pl-8">
+        {/* CENTER: editorial claim (left) + signal map (right) */}
+        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
+          <div className="relative min-w-0 pl-5 md:pl-8">
             <span
               className="ts-seam absolute left-0 top-1 bottom-1 w-[2px] rounded-full bg-gradient-to-b from-transparent via-owl-teal to-transparent"
               style={{ opacity: 0, transformOrigin: "top" }}
             />
-            <h1 className="ts-hook font-sans font-black uppercase leading-[0.95] tracking-tight text-white text-[clamp(2.1rem,5.2vw,4.8rem)]" style={{ opacity: 0 }}>
-              <span className="font-sans not-italic block">We make complex</span>
-              <span className="font-sans not-italic block">
-                products{" "}
+            <h1 className="ts-hook max-w-[48rem] font-sans font-black tracking-normal text-white [overflow-wrap:anywhere]" style={{ opacity: 0 }}>
+              <span className="block font-sans text-[clamp(1.1rem,1.55vw,1.55rem)] font-semibold uppercase leading-none tracking-[0.16em] text-white/58">
+                When the product is
+              </span>
+              <span className="mt-3 block font-sans text-[clamp(3.1rem,5.65vw,5.8rem)] font-black uppercase leading-[0.9] text-white">
+                complex,
+              </span>
+              <span className="mt-5 block font-body text-[clamp(1.4rem,2.35vw,2.35rem)] font-medium normal-case leading-tight tracking-normal text-white/70">
+                the choice{" "}
                 <span
-                  className="ts-hook-accent font-serif italic lowercase text-owl-teal tracking-tight inline-block"
+                  className="ts-hook-accent font-serif text-[clamp(2.1rem,4vw,4.25rem)] font-semibold italic lowercase leading-none tracking-tight text-owl-teal"
                   style={{ opacity: 0 }}
                 >
-                  easy to buy.
+                  shouldn't be.
                 </span>
               </span>
             </h1>
+            <p className="ts-info-col mt-6 max-w-[42rem] font-body text-sm leading-[1.55] text-white/58 md:text-lg" style={{ opacity: 0 }}>
+              Strategy, content, demand, and digital proof for chemical, industrial, and technical brands that need buyers to understand the value fast.
+            </p>
           </div>
 
-          {/* Logo right — circular glass + animated rings (placement + interaction shell kept) */}
-          <a
-            href="https://www.owlsurf.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Visit owlsurf.com"
-            className="ts-logo-outer relative flex-shrink-0 cursor-pointer transition-transform duration-300 hover:scale-105"
-            style={{ opacity: 0 }}
-          >
-            <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/50" style={{ opacity: 0, transform: "scale(1.18)" }} />
-            <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/30" style={{ opacity: 0, transform: "scale(1.4)" }} />
-            <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/15" style={{ opacity: 0, transform: "scale(1.65)" }} />
+          <aside className="ts-logo-outer relative min-h-[20rem] min-w-0 overflow-hidden md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+            <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
+            <div className="absolute inset-y-12 left-1/2 w-px bg-gradient-to-b from-transparent via-white/16 to-transparent" />
             <div
-              className="ts-logo-inner w-28 h-28 sm:w-36 sm:h-36 md:w-48 md:h-48 lg:w-56 lg:h-56 animate-pulse-glow flex items-center justify-center"
-              style={{ clipPath: "circle(0% at 50% 50%)" }}
-            >
-              <LiquidGlassCard borderRadius="50%" padding="6px" blur={15} brightness={1.15} backgroundColor="rgba(75, 194, 194, 0.08)">
-                <OwlSurfLogo className="h-full w-full rounded-full" />
-              </LiquidGlassCard>
+              className="ts-signal-line absolute left-[13%] top-[20%] h-[62%] w-[62%] rounded-full border border-white/10"
+              style={{ opacity: 0, animation: "ts-orbit-drift 18s linear infinite" }}
+            />
+            <div
+              className="ts-signal-line absolute right-[4%] top-[8%] h-[76%] w-[76%] rounded-full border border-owl-teal/20"
+              style={{ opacity: 0, animation: "ts-orbit-drift 24s linear infinite reverse" }}
+            />
+            <div className="absolute inset-6 border border-white/10" />
+            <div className="absolute inset-14 border border-white/10" />
+            <div
+              className="absolute inset-0 opacity-[0.08]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
+                backgroundSize: "38px 38px",
+                color: "white",
+              }}
+            />
+            <div
+              className="ts-signal-line absolute -left-10 top-1/2 h-28 w-[120%] -translate-y-1/2 rotate-[-8deg] bg-gradient-to-r from-transparent via-owl-teal/18 to-transparent blur-sm"
+              style={{ opacity: 0, animation: "ts-scan-drift 7s ease-in-out infinite" }}
+            />
+
+            <div className="absolute left-1/2 top-1/2 h-[11rem] w-[11rem] -translate-x-1/2 -translate-y-1/2 md:h-[14rem] md:w-[14rem]">
+              <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/35" style={{ opacity: 0, transform: "scale(1.18)" }} />
+              <div className="ts-ring absolute inset-0 rounded-full border border-white/14" style={{ opacity: 0, transform: "scale(1.55)" }} />
+              <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/18" style={{ opacity: 0, transform: "scale(2)" }} />
+              <a
+                href="https://www.owlsurf.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit owlsurf.com"
+                className="relative z-10 flex h-full w-full cursor-pointer items-center justify-center transition-transform duration-300 hover:-translate-y-0.5"
+              >
+                <div
+                  className="ts-logo-inner flex h-full w-full items-center justify-center"
+                  style={{ clipPath: "circle(0% at 50% 50%)" }}
+                >
+                  <LiquidGlassCard borderRadius="50%" padding="7px" blur={15} brightness={1.12} backgroundColor="rgba(75, 194, 194, 0.08)">
+                    <OwlSurfLogo className="h-full w-full rounded-full" />
+                  </LiquidGlassCard>
+                </div>
+              </a>
             </div>
-          </a>
+
+            <span className="ts-orbit-node absolute left-[16%] top-[24%] h-2.5 w-2.5 rounded-full bg-owl-teal shadow-[0_0_24px_rgba(75,194,194,0.8)]" style={{ opacity: 0 }} />
+            <span className="ts-orbit-node absolute right-[18%] top-[18%] h-1.5 w-1.5 rounded-full bg-white/70" style={{ opacity: 0 }} />
+            <span className="ts-orbit-node absolute bottom-[24%] left-[22%] h-1.5 w-1.5 rounded-full bg-white/60" style={{ opacity: 0 }} />
+            <span className="ts-orbit-node absolute bottom-[18%] right-[16%] h-3 w-3 rounded-full border border-owl-teal/70" style={{ opacity: 0 }} />
+          </aside>
         </div>
 
         {/* BOTTOM: centered CTA over a centered partner badge strip */}
@@ -316,13 +351,13 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                   onClick={onViewCaseStudies}
                   strength={0.32}
                   radius={170}
-                  className="relative overflow-hidden rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.2em] text-white transition-shadow duration-300"
+                  className="relative overflow-hidden rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition-shadow duration-300"
                   style={{
                     background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
                     boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
                   }}
                 >
-                  <span className="relative z-10">See case studies →</span>
+                  <span className="relative z-10">Review case studies →</span>
                   <span
                     className="absolute inset-0 z-0"
                     style={{
@@ -339,7 +374,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           {/* Partner badge strip — secondary credibility, centered */}
           <div className="flex translate-y-5 flex-col items-center gap-3 md:translate-y-8">
             <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
-              Trusted partner
+              Platform partners
             </span>
             <div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-7 gap-y-4 md:flex-nowrap md:gap-x-11">
               {credibilityBadges.map((badge) => (

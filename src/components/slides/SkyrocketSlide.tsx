@@ -7,19 +7,19 @@ import { useIsMobile } from "@/hooks/use-mobile";
 type Sector = { label: string; tag: string; icon: LucideIcon };
 
 const sectors: Sector[] = [
-  { label: "Chemicals", tag: "Specialty & process", icon: FlaskConical },
-  { label: "Pharma", tag: "Regulated & clinical", icon: Pill },
-  { label: "Energy", tag: "Power & renewables", icon: Zap },
-  { label: "Infrastructure", tag: "Heavy & industrial", icon: Warehouse },
-  { label: "Education", tag: "Institutions & edtech", icon: GraduationCap },
+  { label: "Chemicals", tag: "Specialty, process, materials", icon: FlaskConical },
+  { label: "Industrial", tag: "Manufacturing, equipment, plants", icon: Warehouse },
+  { label: "Pharma", tag: "Regulated, clinical, B2B", icon: Pill },
+  { label: "Infrastructure", tag: "Power, mobility, built systems", icon: Zap },
+  { label: "Institutions", tag: "Education, foundations, public trust", icon: GraduationCap },
 ];
 
 type Differentiator = { icon: LucideIcon; label: string; desc: string };
 
 const differentiators: Differentiator[] = [
-  { icon: Layers, label: "One team, end to end", desc: "Strategy to ship. No handoffs." },
-  { icon: Cpu, label: "Engineering-fluent", desc: "We speak your product." },
-  { icon: Target, label: "Outcome-led", desc: "Measured on pipeline, not posts." },
+  { icon: Layers, label: "Deck to demand", desc: "Positioning, assets, campaigns, and follow-through." },
+  { icon: Cpu, label: "Technical fluency", desc: "We can read the product before we write the pitch." },
+  { icon: Target, label: "Buyer proof", desc: "Built around sales conversations, not vanity activity." },
 ];
 
 const SkyrocketSlide = () => {
@@ -156,23 +156,22 @@ const SkyrocketSlide = () => {
           <div className="md:col-span-7">
             <div className="who-kicker flex items-center gap-3 font-sans font-black uppercase text-owl-teal text-[10px] tracking-[0.24em] md:text-xs md:tracking-[0.3em]" style={{ opacity: 0 }}>
               <span className="who-rule h-px w-10 origin-left bg-owl-teal/80 md:w-14" />
-              Who we are
+                What we understand
               <span className="ml-1 font-sans text-white/30">/ 02</span>
             </div>
 
             <h2 className="mt-4 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[2rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
               <span className="who-word block">
-                <span className="font-sans not-italic">Hard to </span>
-                <span className="font-serif italic text-gradient-green">explain.</span>
+                <span className="font-sans not-italic">Long sales.</span>
               </span>
               <span className="who-word block">
-                <span className="font-sans not-italic">Easy to </span>
-                <span className="who-title-accent font-serif italic text-gradient-green inline-block pr-2">choose.</span>
+                <span className="font-sans not-italic">Technical </span>
+                <span className="who-title-accent font-serif italic text-owl-teal inline-block pr-2">buyers.</span>
               </span>
             </h2>
 
             <p className="who-copy mt-3 max-w-[520px] font-body leading-[1.5] text-white/70 text-sm md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
-              We sit between deep technical products and the people who buy them. One team, fluent in engineering and growth.
+              We turn dense product truth into market-facing clarity for teams selling into plants, labs, factories, institutions, and procurement rooms.
             </p>
           </div>
 
@@ -181,7 +180,7 @@ const SkyrocketSlide = () => {
             <div className="who-kicker flex items-center gap-3" style={{ opacity: 0 }}>
               <span className="who-rule h-px w-10 origin-left bg-owl-teal/70" />
               <span className="font-sans text-[10px] font-black uppercase tracking-[0.22em] text-owl-teal md:text-xs md:tracking-[0.26em]">
-                Industries we serve
+                Priority sectors
               </span>
             </div>
 
@@ -205,7 +204,7 @@ const SkyrocketSlide = () => {
                         {sector.tag}
                       </span>
                     </span>
-                    <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-white/0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-owl-teal" strokeWidth={2} />
+                    <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-white/0 transition-colors duration-300 group-hover:translate-x-0 group-hover:text-owl-teal" strokeWidth={2} />
                   </div>
                 );
               })}
@@ -218,7 +217,7 @@ const SkyrocketSlide = () => {
           <div className="who-copy mb-3 flex items-center gap-3 md:mb-6" style={{ opacity: 0 }}>
             <span className="who-rule h-px w-10 origin-left bg-owl-teal/70" />
             <span className="font-sans text-[10px] font-black uppercase tracking-[0.22em] text-owl-teal md:text-xs md:tracking-[0.26em]">
-              What makes us different
+              Why this replaces the PDF
             </span>
           </div>
           <div className="flex gap-3 overflow-x-auto pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 md:gap-6">

@@ -34,6 +34,13 @@ const allClients: Client[] = [
 const firstRow = allClients.slice(0, Math.ceil(allClients.length / 2));
 const secondRow = allClients.slice(Math.ceil(allClients.length / 2));
 
+const marketNotes = [
+  "Industrial and manufacturing clients",
+  "Consumer and fitness brands",
+  "Education and institutional work",
+  "India plus international exposure",
+];
+
 const renderClientLogo = (client: Client, key: React.Key) => (
   <div
     key={key}
@@ -130,12 +137,19 @@ const ClientsSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col justify-center px-8 pt-20 pb-10 md:justify-start md:px-12 md:pt-24 md:pb-12">
         <header className="cl-heading text-left self-start">
           <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
-            WHO WE WORK WITH
+            WHO HAS SEEN THE WORK
           </span>
-          <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
-            <span className="font-sans not-italic">OUR </span>
-            <span className="cl-title-accent font-sans not-italic text-gradient-green inline-block pr-2">CLIENTS</span>
+          <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
+            <span className="font-sans not-italic">PROOF </span>
+            <span className="cl-title-accent font-sans not-italic text-primary inline-block pr-2">CLIENTS</span>
           </h2>
+          <div className="mt-4 grid max-w-[58rem] gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {marketNotes.map((note) => (
+              <div key={note} className="border-t border-white/15 pt-2 font-body text-sm leading-snug text-white/55">
+                {note}
+              </div>
+            ))}
+          </div>
         </header>
 
         <div className="cl-cards relative mt-8 flex w-full flex-col gap-4 md:my-auto md:mt-0 md:gap-6">

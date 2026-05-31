@@ -15,6 +15,8 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
+Session 25 (current) is a Hallmark-led B2B credentials pass on top of the already-pushed Session 23 accessibility/performance work and Session 24 mobile layout fixes. It adds a locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and refines the deck into a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and long-cycle technical sectors. The cover now reads `When the product is complex, the choice shouldn't be.`, removes the literal right-side info box, and replaces it with an editorial signal-map graphic around the OwlSurf mark. Services, Who We Are, Clients, Contact, and all case studies were tightened around proof, sector fit, and technical buyer clarity. Case studies now carry proof/info panels aligned with the creative carousel band, larger taglines, right-shifted creative stages, and more translucent inactive carousel images. The nav stays compact, centered, short-labelled, and keeps the Session 23 accessibility wiring.
+
 Session 24 (current) is a mobile-only layout pass. It fixes the phone-layout breakage that was the long-open "Mobile layout" item in Known Issues, with no desktop change (verified by desktop + mobile screenshots). Services cards are no longer hidden off-screen on mobile (the 3D `CardSwap` is replaced by a readable list + horizontal pillar chips); Our Team uses a static badge card instead of the clipped WebGL lanyard on mobile; Who We Are is compacted so the headline and differentiators stop clipping; Clients is centered instead of showing an empty void. A Playwright screenshot harness (`scripts/mobile-shots.mjs`) was added, `playwright` kept as a devDependency, and `scripts/_shots/` gitignored. `npm run lint` passes with 0 warnings. Full details under the Session 24 Files Touched list and in `context.md`.
 
 Session 23 is an accessibility + performance hardening pass on top of Session 22. It clears most of the long-standing P0 UX-audit backlog: real ARIA semantics in `PillNav` and the Services pillar tabs, a new `prefers-reduced-motion` gate, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22 instead of self-violating it), a roster-contrast fix, the Contact landmark fix, a local OG image, and a soft slide skeleton to remove the black flash between slides. `npm run lint` and `npm run build` both pass clean. Full details under Current State below.
@@ -44,7 +46,15 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 22 push prep verified code and assets without browser screenshots, per the user's standing preference to judge visual frontend changes manually. `npm run lint` and `npm run build` pass. The build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` warning.
+The Session 25 push prep verified code without browser screenshots, per the user's standing preference to judge visual frontend changes manually. `npm run lint` and `npm run build` pass. The build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` warning.
+
+### Session 25 Hallmark credentials pass
+
+- **Hallmark system** — added `design.md`, `tokens.css`, `.hallmark/preflight.json`, and `.hallmark/log.json`; `src/index.css` imports the tokens.
+- **Cover** — removed the literal `Portfolio proof` box and small explanatory top-right copy; added an editorial signal-map graphic with grid, orbit rings, nodes, scan sweep, and central OwlSurf mark; headline now reads `When the product is complex, the choice shouldn't be.` with calmer typographic hierarchy.
+- **Copy and positioning** — reframed the deck around chemical, industrial, and technical B2B buyers who need a concise portfolio-PDF replacement.
+- **Case studies** — added proof/info panels, larger taglines, aligned the panels with the creative carousel band, shifted creatives farther right, and increased inactive image translucency.
+- **Navigation** — kept the compact centered header, shortened labels, removed the width animation, and preserved the plain nav/list/button semantics from Session 23.
 
 ### Session 23 accessibility + performance hardening
 
@@ -183,6 +193,38 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 25)
+
+Hallmark and global design:
+- `design.md`
+- `tokens.css`
+- `.hallmark/preflight.json`
+- `.hallmark/log.json`
+- `src/index.css`
+
+Visual/content polish:
+- `src/components/slides/TitleSlide.tsx`
+- `src/components/slides/SkyrocketSlide.tsx`
+- `src/components/slides/ServicesSlide.tsx`
+- `src/components/slides/ClientsSlide.tsx`
+- `src/components/slides/ContactSlide.tsx`
+- `src/components/PillNav.tsx`
+- `src/styles/PillNav.css`
+- `src/components/ParallaxCardSlider.tsx`
+- `src/components/slides/CaseStudyLayout.tsx`
+- `src/components/slides/CaseStudySlide.tsx`
+- `src/components/slides/BaxsaaCaseStudy.tsx`
+- `src/components/slides/CultFitCaseStudy.tsx`
+- `src/components/slides/GirlUpCaseStudy.tsx`
+- `src/components/slides/CTPCaseStudy.tsx`
+- `src/components/slides/VNTCaseStudy.tsx`
+- `src/components/slides/RaychemRPGCaseStudy.tsx`
+
+Docs:
+- `context.md`
+- `prod.md`
+- `handoff.md`
 
 ## Files Touched (Session 24)
 
@@ -398,6 +440,7 @@ Doc updates (this commit):
 
 ## Verified / Evidence
 
+- Session 25: `git diff --check`, `npm run lint`, and `npm run build` pass before push. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. Browser/screenshot verification was skipped per the user's standing preference; visual approval remains with the user.
 - Session 22: asset filename scan reports no obvious unused files in `src/assets`; `find src/assets -type f -size +1000k` shows only the existing lanyard `card.glb` above 1 MB; `npm run lint` passes; `npm run build` passes. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. `npm uninstall` reported 17 dependency advisories still present; audit remediation was not part of this visual push.
 - Session 21: `npm run build` passed before push. Browser visual approval remains with the user per standing preference. CardSwap fix verified by reasoning about GSAP ticker behavior; the user confirms motion in the live browser.
 - Session 20 documentation-only pass: `git diff --check` passed, then `npm run build` passed before push. Build output still shows the known large `vendor-lanyard` warning and stale Browserslist data notice.
@@ -447,11 +490,9 @@ Other open project items carried over from earlier sessions:
 
 ## Current Workspace Notes
 
-Intended files for the Session 22 visual polish + cleanup commit:
-- slide/source changes listed under `Files Touched (Session 22)`
-- new Mitsui/Raychem WebP creatives and Services SVG illustrations
-- deleted stale assets: `industrial-engineer-slide-2.png`, `lanyard/lanyard.png`
-- dependency/chunk cleanup in `package.json`, `package-lock.json`, `vite.config.ts`
+Intended files for the Session 25 Hallmark credentials commit:
+- slide/source changes listed under `Files Touched (Session 25)`
+- Hallmark files: `.hallmark/`, `design.md`, `tokens.css`
 - doc updates: `prod.md`, `context.md`, `handoff.md`
 
 Unrelated untracked items that should remain unstaged unless asked:

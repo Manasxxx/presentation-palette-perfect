@@ -5,11 +5,11 @@ import logoImg from '@/assets/logo-main.jpg';
 
 const navItems = [
   { label: 'Cover', slideIndex: 0 },
-  { label: 'Who We Are', slideIndex: 1 },
+  { label: 'Positioning', slideIndex: 1 },
   { label: 'Team', slideIndex: 2 },
   { label: 'Services', slideIndex: 3 },
-  { label: 'Clients', slideIndex: 4 },
-  { label: 'Case Studies', slideIndex: 5 },
+  { label: 'Proof', slideIndex: 4 },
+  { label: 'Cases', slideIndex: 5 },
   { label: 'Contact', slideIndex: 12 },
 ];
 
@@ -143,8 +143,8 @@ const PillNav = ({
       gsap.to(logo, { scale: 1, duration: 0.6, ease });
     }
     if (navI) {
-      gsap.set(navI, { width: 0, overflow: 'hidden' });
-      gsap.to(navI, { width: 'auto', duration: 0.6, ease });
+      gsap.set(navI, { autoAlpha: 0, y: -8 });
+      gsap.to(navI, { autoAlpha: 1, y: 0, duration: 0.45, ease });
     }
 
     return () => window.removeEventListener('resize', layout);

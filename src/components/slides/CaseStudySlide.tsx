@@ -21,11 +21,11 @@ interface StatDef {
 }
 
 const statDefs: StatDef[] = [
-  { label: "Impressions", num: 5.8, suffix: "M", decimals: 1 },
-  { label: "Ad clicks", num: 104, suffix: "K", decimals: 0 },
-  { label: "Engagement increase", num: 99.2, suffix: "%", decimals: 1, trend: true },
-  { label: "ROI", num: 3, suffix: "X", decimals: 0 },
-  { label: "Follower growth", num: 1000, suffix: "%", decimals: 0 },
+  { label: "APAC impressions", num: 5.8, suffix: "M", decimals: 1 },
+  { label: "Site-bound clicks", num: 104, suffix: "K", decimals: 0 },
+  { label: "Engagement lift", num: 99.2, suffix: "%", decimals: 1, trend: true },
+  { label: "Reported ROI", num: 3, suffix: "X", decimals: 0 },
+  { label: "Follower lift", num: 1000, suffix: "%", decimals: 0 },
 ];
 
 const mitsuiBlue = "210 100% 30%";
@@ -40,6 +40,13 @@ const sliderImages = [
   { image: mitsuiExtra2, alt: "Mitsui Chemicals additional creative 2" },
   { image: mitsuiExtra4, alt: "Mitsui Chemicals additional creative 4" },
   { image: mitsuiExtra5, alt: "Mitsui Chemicals additional creative 5" },
+];
+
+const mitsuiProofPoints = [
+  { label: "Market", value: "Specialty chemicals across APAC" },
+  { label: "Buyer", value: "Regional teams, technical audiences, and channel decision-makers" },
+  { label: "Role", value: "Creative, media, reporting, and demand signals across markets" },
+  { label: "Proof", value: "Reach, clicks, engagement, ROI, and follower lift moved together" },
 ];
 
 function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; suffix: string; decimals: number; triggered: boolean }) {
@@ -108,6 +115,14 @@ const CaseStudySlide = () => {
             duration: 1350, delay: 360, ease: "out(4)",
           });
 
+          animate(el.querySelectorAll(".cs-proof"), {
+            opacity: [0, 1],
+            translateY: [18, 0],
+            delay: stagger(80, { start: 460 }),
+            duration: 680,
+            ease: "out(3)",
+          });
+
         }
       },
       { threshold: 0.3 }
@@ -147,38 +162,57 @@ const CaseStudySlide = () => {
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
       <div className="relative z-10 flex h-full w-full flex-col gap-8 px-6 pt-20 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
-        <header className="text-left md:absolute md:left-12 md:top-24 md:w-[30%] lg:w-[28%]">
+        <header className="text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
             className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 block uppercase"
             style={{ opacity: 0, color: `hsl(${mitsuiCyan})` }}
           >
-            Case study 01
+            Case proof 01
           </span>
-          <h2 className="cs-heading font-sans text-[clamp(2.6rem,4.1vw,4.9rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2" style={{ opacity: 0 }}>
+          <h2 className="cs-heading font-sans text-[clamp(2.6rem,4.1vw,4.9rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]" style={{ opacity: 0 }}>
             <span className="font-sans not-italic block">Mitsui</span>
             <span
-              className="cs-title-accent font-sans not-italic bg-clip-text text-transparent inline-block pr-2"
-              style={{ backgroundImage: `linear-gradient(135deg, hsl(${mitsuiCyan}), hsl(193 80% 65%))` }}
+              className="cs-title-accent font-sans not-italic inline-block pr-2"
+              style={{ color: `hsl(${mitsuiCyan})` }}
             >
               Chemicals
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-3 font-body text-white/70 leading-snug text-base md:text-[1.05rem] max-w-md"
+            className="cs-subtitle mt-3 max-w-[34rem] font-body text-[1.08rem] leading-snug text-white/70 md:text-[1.24rem]"
             style={{ opacity: 0 }}
           >
-            Specialty chemicals giant. We ran their digital across APAC.
+            Specialty chemicals across APAC. We made technical value visible across regions, formats, and paid channels.
           </p>
+          <div
+            className="cs-subtitle mt-5 max-w-[23rem] border-t border-white/18 pt-3 font-body text-[0.95rem] leading-snug text-white/64 md:hidden"
+            style={{ opacity: 0 }}
+          >
+            What it proves: chemical-sector delivery, regional campaign handling, and creative built around product credibility.
+          </div>
         </header>
 
-        <div ref={statsRef} className="cs-stats grid grid-cols-2 gap-x-4 gap-y-3 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-x-4 lg:w-[50%]">
+        <div className="cs-proof max-w-[27rem] overflow-hidden border border-white/18 bg-black/20 md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none lg:w-[30%]" style={{ opacity: 0 }}>
+          {mitsuiProofPoints.map((point) => (
+            <div key={point.label} className="grid grid-cols-[6.7rem_minmax(0,1fr)] border-b border-white/12 p-4 last:border-b-0">
+              <span className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: `hsl(${mitsuiCyan})` }}>
+                {point.label}
+              </span>
+              <span className="font-body text-[0.95rem] leading-snug text-white/68 md:text-base">
+                {point.value}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div ref={statsRef} className="cs-stats grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 lg:w-[50%]">
           {statDefs.map((stat) => (
             <div
               key={stat.label}
-              className="cs-stat flex min-w-0 flex-col items-center border-t border-white/18 pt-3 text-center"
+              className="cs-stat flex min-w-0 flex-col justify-between border border-white/18 bg-black/20 p-3 text-left"
               style={{ opacity: 0 }}
             >
-              <div className="flex h-11 items-center justify-center gap-1.5 font-sans tabular-nums text-[clamp(1.7rem,2.25vw,2.55rem)] font-black leading-none tracking-normal text-white">
+              <div className="flex min-h-11 items-center gap-1.5 font-sans tabular-nums text-[clamp(1.7rem,2.25vw,2.55rem)] font-black leading-none tracking-normal text-white">
                 <span>
                   <AnimatedStatValue num={stat.num} suffix={stat.suffix} decimals={stat.decimals} triggered={statsTriggered} />
                 </span>
@@ -193,10 +227,9 @@ const CaseStudySlide = () => {
                 )}
               </div>
               <div
-                className="mt-2 flex min-h-7 w-full max-w-[10.5rem] items-center justify-center rounded-full border px-2.5 py-1 text-center font-body text-[10px] font-semibold uppercase leading-[1.05] tracking-[0.08em] text-white/92 md:text-[9px] lg:text-[10px]"
+                className="mt-2 flex min-h-7 w-full items-center border-t pt-2 font-body text-[10px] font-semibold uppercase leading-[1.05] tracking-[0.08em] text-white/92 md:text-[9px] lg:text-[10px]"
                 style={{
-                  backgroundColor: `hsl(${mitsuiCyan} / 0.15)`,
-                  borderColor: `hsl(${mitsuiCyan} / 0.3)`,
+                  borderColor: `hsl(${mitsuiCyan} / 0.28)`,
                 }}
               >
                 {stat.label}
@@ -205,13 +238,13 @@ const CaseStudySlide = () => {
           ))}
         </div>
 
-        {/* RIGHT — creative gallery */}
-        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-1/2 md:top-[36%] md:w-[78%] md:-translate-x-1/2">
+        {/* RIGHT: creative gallery */}
+        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:w-[54%] md:-translate-x-1/2">
           <div className="cs-slider flex h-full w-full items-center justify-center" style={{ opacity: 0 }}>
             <ParallaxCardSlider
               slides={sliderImages}
               accentColor={mitsuiCyan}
-              cardWidth={isMobile ? undefined : "min(24vw, 320px)"}
+              cardWidth={isMobile ? undefined : "min(23vw, 310px)"}
             />
           </div>
         </div>

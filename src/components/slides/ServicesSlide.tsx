@@ -78,191 +78,191 @@ const ServiceClipArt = ({ kind }: { kind: ServiceIllustrationKind }) => {
 const categories: Category[] = [
   {
     key: "content",
-    label: "Brand & Story",
+    label: "Technical Story",
     icon: PenTool,
     services: [
       {
         icon: Target,
-        title: "Brand Storytelling",
+        title: "Technical Positioning",
         description:
-          "Narrative your buyers remember at the moment they decide.",
+          "Turn specifications, process, and expertise into a buyer-ready story.",
         illustration: "story",
       },
       {
         icon: Film,
-        title: "Video Production",
+        title: "Explainer Films",
         description:
-          "Product demos, explainers, brand films. Complex tech, clear stories.",
+          "Plant, product, and process films that make complex value visible.",
         illustration: "video",
       },
       {
         icon: PenTool,
-        title: "Design Systems",
+        title: "Sales Collateral",
         description:
-          "Logos, decks, brochures, trade-show booths. Consistent. Yours.",
+          "Decks, brochures, and booth material that sales can actually use.",
         illustration: "system",
       },
       {
         icon: FileText,
-        title: "Whitepapers & Research",
+        title: "Whitepapers",
         description:
-          "Long-form research that earns you the expert seat.",
+          "Research-led documents for buyers who need depth before trust.",
         illustration: "research",
       },
       {
         icon: Sparkles,
-        title: "Thought Leadership",
+        title: "Executive POV",
         description:
-          "Bylines, op-eds, conference talks. Earned authority.",
+          "Bylines, talks, and expert notes that make leadership credible.",
         illustration: "thought",
       },
     ],
   },
   {
     key: "reach",
-    label: "Demand Gen",
+    label: "Demand Capture",
     icon: Megaphone,
     services: [
       {
         icon: TrendingUp,
         title: "Paid Ads",
         description:
-          "Performance marketing across LinkedIn, Google, and programmatic, measured against pipeline.",
+          "LinkedIn, Google, and programmatic campaigns measured against qualified interest.",
       },
       {
         icon: Target,
         title: "Account-Based Marketing (ABM)",
         description:
-          "Targeted plays for your top accounts. Sales-aligned.",
+          "Targeted plays for priority accounts, sales teams, and distributor networks.",
       },
       {
         icon: Users,
         title: "Creator & Influencer Network",
         description:
-          "Voices your buyers already follow. We make the intro.",
+          "Credible voices in the category, used carefully and commercially.",
       },
       {
         icon: Megaphone,
         title: "PR & Media Relations",
         description:
-          "Trade press, analyst briefings, earned coverage. Coverage that closes deals.",
+          "Trade press, analyst notes, and earned coverage that supports sales.",
       },
       {
         icon: Building2,
         title: "Events & Trade Shows",
         description:
-          "Booth, lead capture, follow-up. Attendees become pipeline.",
+          "Booth story, lead capture, and follow-up for exhibitions and trade shows.",
       },
     ],
   },
   {
     key: "discovery",
-    label: "Discovery",
+    label: "Search & Trust",
     icon: Search,
     services: [
       {
         icon: Search,
         title: "SEO",
         description:
-          "Found on Google when buyers are deciding.",
+          "Found when technical buyers search by problem, product, or category.",
       },
       {
         icon: MessageSquare,
         title: "Social Listening",
         description:
-          "What's said about you, your competitors, your category. Live.",
+          "What buyers, competitors, and the category are already saying.",
       },
       {
         icon: ShieldCheck,
         title: "Reputation Management",
         description:
-          "How your brand shows up online. Shaped and defended.",
+          "How your brand appears in search, press, and buyer checks.",
       },
       {
         icon: Activity,
         title: "Competitive Intelligence",
         description:
-          "What competitors launch, hire, price, pitch. You hear early.",
+          "Launches, hiring, pricing, positioning, and category shifts tracked early.",
       },
       {
         icon: Mic,
         title: "Community Management",
         description:
-          "Where your buyers gather, we show up daily.",
+          "A steady presence in the rooms and channels your buyers already use.",
       },
     ],
   },
   {
     key: "engineering",
-    label: "Marketing Stack",
+    label: "Sales Stack",
     icon: Database,
     services: [
       {
         icon: Workflow,
         title: "Marketing Automation",
         description:
-          "HubSpot, Marketo, Pardot. Right message, right minute.",
+          "HubSpot, Marketo, and Pardot flows that match long buying cycles.",
       },
       {
         icon: Database,
         title: "CRM Integration",
         description:
-          "Salesforce, HubSpot, any CRM. Sales and marketing on one screen.",
+          "Salesforce, HubSpot, and CRM hygiene so teams see the same buyer.",
       },
       {
         icon: BarChart2,
         title: "Analytics & Attribution",
         description:
-          "Which campaign actually built pipeline. The signal beneath the clicks.",
+          "Which channels created qualified movement, not just clicks.",
       },
       {
         icon: Cpu,
         title: "Lead Scoring",
         description:
-          "Sales calls hot leads first. Real signals, not gut.",
+          "Prioritization based on buyer signals, fit, and sales readiness.",
       },
       {
         icon: Globe,
         title: "Custom Microsites",
         description:
-          "Landing pages and microsites, built per campaign or account.",
+          "Account pages, campaign pages, and product explainers for serious buyers.",
       },
     ],
   },
   {
     key: "ai",
-    label: "AI & Autopilot",
+    label: "AI Workflow",
     icon: BrainCircuit,
     services: [
       {
         icon: Wand2,
         title: "AI Content Engine",
         description:
-          "AI drafts at scale. Blogs, emails, social. Humans approve.",
+          "Drafting support for blogs, emails, sales notes, and repurposing.",
       },
       {
         icon: Bot,
         title: "Marketing Copilots",
         description:
-          "AI assistants built for your sales, support, marketing.",
+          "Assistants trained around your sales, support, and marketing context.",
       },
       {
         icon: Sparkles,
         title: "AI Personalization",
         description:
-          "Each visitor sees what fits their intent.",
+          "Landing experiences that adapt to account, intent, and stage.",
       },
       {
         icon: Lightbulb,
         title: "Answer Engine Optimization (AEO)",
         description:
-          "Showing up inside ChatGPT, Perplexity, and Google AI Overviews.",
+          "Making your expertise legible to answer engines and search systems.",
       },
       {
         icon: Zap,
         title: "Workflow Automation",
         description:
-          "AI handles research, qualification, reporting. Humans handle judgement.",
+          "Research, qualification, and reporting workflows with human judgment intact.",
       },
     ],
   },
@@ -382,14 +382,17 @@ const ServicesSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-16 pb-6 md:px-12 md:pt-20 md:pb-10">
         <header className="sv-header text-left self-start">
           <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
-            WHAT WE DO
+            WHAT WE BUILD
           </span>
-          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[0.95] tracking-normal text-white text-left pb-2">
-            <span className="font-sans not-italic">OUR </span>
-            <span className="sv-title-accent font-sans not-italic text-gradient-green inline-block pr-2">
-              SERVICES
+          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
+            <span className="font-sans not-italic">BUYER </span>
+            <span className="sv-title-accent font-sans not-italic text-primary inline-block pr-2">
+              SYSTEMS
             </span>
           </h2>
+          <p className="mt-3 max-w-[45rem] font-body text-base leading-snug text-white/58 md:text-lg">
+            The assets and operating layer around a technical sale: explain the product, find the right accounts, and give sales sharper proof.
+          </p>
         </header>
 
         <div className="mt-6 grid w-full grid-cols-12 items-start gap-6 md:mt-[3vh] md:gap-10">

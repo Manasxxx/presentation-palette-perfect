@@ -3,7 +3,6 @@ import girlupCreative2 from "@/assets/girlup-creative-2.png";
 import CaseStudyLayout from "@/components/slides/CaseStudyLayout";
 
 const girlUpTeal = "168 100% 36%";
-const girlUpPurple = "268 48% 63%";
 
 const sliderImages = [
   { image: girlupCreative1, alt: "Girl Up creative 1" },
@@ -11,11 +10,11 @@ const sliderImages = [
 ];
 
 const stats = [
-  { value: "3.1M", label: "Impressions" },
-  { value: "620%", label: "Follower growth" },
-  { value: "18.7%", label: "Engagement" },
-  { value: "52K", label: "Link clicks" },
-  { value: "3.8X", label: "ROI" },
+  { value: "3.1M", label: "Campaign reach" },
+  { value: "620%", label: "Community lift" },
+  { value: "18.7%", label: "Participation rate" },
+  { value: "52K", label: "Action clicks" },
+  { value: "3.8X", label: "Reported ROI" },
 ];
 
 const GirlUpCaseStudy = () => (
@@ -23,12 +22,19 @@ const GirlUpCaseStudy = () => (
     caseNumber="04"
     title="Girl"
     accentTitle="Up"
-    subtitle="UN Foundation youth movement. Louder where it mattered."
+    subtitle="UN Foundation youth movement. We shaped issue-led creative for reach, participation, and credibility."
+    proofNote="What it proves: public-interest messaging with clear action paths, not just awareness for awareness' sake."
+    market="Youth movement and advocacy"
+    owlsurfRole="Issue-led creative, campaign distribution, participation paths"
+    proofPoints={[
+      { label: "Audience", value: "Young supporters, partners, and action-oriented communities" },
+      { label: "Shift", value: "From broad awareness to specific participation cues" },
+      { label: "Proof", value: "Reach, action clicks, and participation rate stayed connected" },
+    ]}
     slides={sliderImages}
     stats={stats}
     accentColor={girlUpTeal}
-    secondaryColor={girlUpPurple}
-    background={`linear-gradient(160deg, hsl(${girlUpTeal} / 0.85), hsl(168 60% 22% / 0.7), hsl(${girlUpPurple} / 0.35))`}
+    background={`linear-gradient(160deg, hsl(${girlUpTeal} / 0.85), hsl(168 60% 22% / 0.7), hsl(268 48% 63% / 0.35))`}
   />
 );
 
