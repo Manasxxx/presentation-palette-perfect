@@ -192,13 +192,13 @@ Mobile-only layout fixes (desktop unchanged, screenshot-verified):
 - `src/components/slides/SkyrocketSlide.tsx` — top-aligned + compacted spacing + smaller headline; differentiator cards become a horizontal swipe row on mobile
 - `src/components/slides/ClientsSlide.tsx` — heading + logo rows centered as a group on mobile (no empty void); smaller mobile heading
 - `scripts/mobile-shots.mjs` — new Playwright mobile/desktop screenshot harness
-- `package.json`, `package-lock.json` — `playwright` added as a devDependency (kept for future visual passes); `lovable-tagger` removed
+- `package.json`, `package-lock.json` — `playwright` added as a devDependency (kept for future visual passes); builder-branded dev tagging plugin removed
 - `.gitignore` — ignore `scripts/_shots/` screenshot output
 - `prod.md`, `context.md`, `handoff.md` — Session 24 updates
 
 Builder/scaffolding de-branding (same session):
-- `vite.config.ts` — removed the `lovable-tagger` dev plugin import + usage (and the now-unused `mode` arg)
-- `package.json`, `package-lock.json` — uninstalled `lovable-tagger`
+- `vite.config.ts` — removed the builder-branded dev tagging plugin import + usage (and the now-unused `mode` arg)
+- `package.json`, `package-lock.json` — uninstalled the builder-branded dev tagging plugin
 - deleted `bun.lock` and `bun.lockb` — stale (repo uses npm); they were the last files carrying the scaffolding-tool name
 - `README.md` — rewritten to accurately describe the current architecture (the old one still referenced the deleted `ProfileCard`/`Radar` team slide and stale lint state)
 - doc mentions of the external OG placeholder reworded in `prod.md` / `context.md` / `handoff.md`
