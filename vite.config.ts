@@ -7,6 +7,10 @@ export default defineConfig(() => ({
   assetsInclude: ["**/*.glb"],
   server: {
     host: "::",
+    allowedHosts: [
+      'heyowlsurf.com',
+      'www.heyowlsurf.com'
+    ]
     port: 8080,
     hmr: {
       overlay: false,
