@@ -291,7 +291,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             </p>
           </div>
 
-          <aside className="ts-logo-outer relative min-h-[12rem] min-w-0 overflow-hidden sm:min-h-[13rem] md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
             <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
             <div className="absolute inset-y-12 left-1/2 w-px bg-gradient-to-b from-transparent via-white/16 to-transparent" />
             <div
@@ -318,7 +318,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               style={{ opacity: 0, animation: "ts-scan-drift 7s ease-in-out infinite" }}
             />
 
-            <div className="absolute left-1/2 top-1/2 h-[10.85rem] w-[10.85rem] -translate-x-1/2 -translate-y-1/2 sm:h-[11.6rem] sm:w-[11.6rem] md:h-[18.5rem] md:w-[18.5rem]">
+            <div className="absolute left-1/2 top-1/2 h-[12.5rem] w-[12.5rem] -translate-x-1/2 -translate-y-1/2 sm:h-[13.2rem] sm:w-[13.2rem] md:h-[18.5rem] md:w-[18.5rem]">
               <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/35" style={{ opacity: 0, transform: "scale(1.18)" }} />
               <div className="ts-ring absolute inset-0 rounded-full border border-white/14" style={{ opacity: 0, transform: "scale(1.55)" }} />
               <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/18" style={{ opacity: 0, transform: "scale(2)" }} />
@@ -359,7 +359,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 <button
                   type="button"
                   onClick={onViewCaseStudies}
-                  className="group rounded-full border border-white/10 bg-white/[0.07] px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.18em] shadow-[0_4px_24px_rgba(75,194,194,0.22)] backdrop-blur-md transition-all duration-300 hover:border-owl-teal/45 hover:bg-owl-teal/10 hover:shadow-[0_6px_30px_rgba(75,194,194,0.32)]"
+                  className="group rounded-full border border-white/10 bg-white/[0.07] px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.18em] shadow-[0_4px_24px_rgba(75,194,194,0.22)] backdrop-blur-md transition-[border-color,background-color,box-shadow] duration-300 hover:border-owl-teal/45 hover:bg-owl-teal/10 hover:shadow-[0_6px_30px_rgba(75,194,194,0.32)]"
                 >
                   <AnimatedShinyText className="gap-2 transition-transform duration-300 group-hover:translate-x-0.5" shimmerWidth={80}>
                     <span>Review case studies</span>
@@ -379,13 +379,13 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center md:h-[92px]"
+                  className="ts-cred-badge flex h-[52px] min-w-0 items-center justify-center md:h-[92px]"
                   style={{ opacity: 0 }}
                 >
                   <img
                     src={badge.src}
                     alt={badge.label}
-                    className={`block h-auto max-h-[38px] max-w-[22vw] object-contain md:max-h-none md:max-w-none ${badge.className}`}
+                    className={`block h-auto max-h-[46px] max-w-[24vw] object-contain md:max-h-none md:max-w-none ${badge.className}`}
                     loading="eager"
                     decoding="async"
                   />

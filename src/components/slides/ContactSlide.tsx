@@ -88,7 +88,7 @@ const ContactSlide = () => {
 
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-start px-6 pb-28 pt-7 text-center md:justify-center md:pb-40 md:pt-12">
         {/* OwlSurf ripple mark — hero */}
-        <div className="ct-mark relative mb-3 aspect-square w-[208px] opacity-0 md:mb-6 md:w-[340px]">
+        <div className="ct-mark relative mb-3 aspect-square w-[236px] opacity-0 md:mb-6 md:w-[380px]">
           <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full border border-white/12 opacity-0">
             <div className="absolute inset-[0.55rem] rounded-full border border-primary/25 md:inset-3" />
             <div className="absolute inset-5 rounded-full bg-primary/[0.05] blur-sm md:inset-7" />
@@ -99,7 +99,7 @@ const ContactSlide = () => {
         </div>
 
         <span className="ct-reveal mb-3 block text-[11px] font-bold uppercase tracking-[0.34em] text-primary opacity-0 md:mb-4 md:text-xs">
-          Let's talk
+          Let’s talk
         </span>
 
         <h2 className="ct-reveal max-w-[20rem] font-sans text-[clamp(2.05rem,8.6vw,2.9rem)] font-black uppercase leading-[1.06] tracking-normal text-white opacity-0 [overflow-wrap:anywhere] md:max-w-[44rem] md:text-[clamp(3rem,5.4vw,5.4rem)]">
@@ -118,7 +118,7 @@ const ContactSlide = () => {
         </h2>
 
         <p className="ct-reveal mt-4 max-w-[19rem] font-body text-sm leading-relaxed text-white/60 opacity-0 md:mt-5 md:max-w-[34rem] md:text-lg">
-          Bring the product, the market, and the sales problem. You'll see it the way your buyers should, fast.
+          Bring the product, the market, and the sales problem. You’ll see it the way your buyers should, fast.
         </p>
 
         <div className="ct-reveal mt-5 flex w-full max-w-[20rem] flex-col items-stretch gap-3 opacity-0 sm:w-auto sm:flex-row sm:items-center md:mt-7">

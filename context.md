@@ -5,6 +5,19 @@
 
 ---
 
+## Current State (as of Session 30 push prep)
+
+**Session 30** removed the Our Team slide, cleared the Hallmark-audit backlog, moved all animation to Anime.js (GSAP removed), ran a mobile polish round, and rewrote the Services / Buyer Systems copy in plain language across desktop + mobile.
+
+- **Our Team slide removed.** `OurTeamSlide.tsx` deleted; deck is now 12 slides. Indices shifted: Services 2, Clients 3, case studies 4–10, Contact 11. All hardcoded indices fixed in `Index.tsx` (slides array, `onCaseStudy` 4–10, cover CTA → 4) and `PillNav.tsx` (removed `Team` item, reindexed `slideToNavIndex`). The lanyard is orphaned, so `vendor-lanyard` dropped from ~3MB to ~477KB (residual is Hyperspeed's `three`).
+- **Hallmark audit fixes.** Global `:focus-visible` ring (teal, instant) in `index.css`; `transition-all` → named-property transitions (5 spots); `tabular-nums` on the Clients strip; curly apostrophes in Contact; `logo-main.jpg` → `logo-main.webp`. Eyebrows and the teal-gradient headline kept (brand-mandated by `design.md`). The original audit punch list lives under the Session 29 block below; all four majors are now addressed.
+- **Anime.js everywhere; GSAP removed.** `PillNav` + `CardSwap` ported to Anime.js. `gsap` uninstalled (package.json, lockfile, `vendor-gsap` chunk). CardSwap centering moved to CSS negative margins; its loop uses `createTimer`. Dead keyframes removed (`gradient-shift`, `float`, `pulse-glow`, `shimmer`). WebGL backgrounds (Hyperspeed, LightRays, PrismaticBurst, Globe) kept.
+- **Mobile polish.** Cover logo + badges bigger; Slide 1 breathing room; Services comprehension cues (`Tap a system…` hint + `INSIDE {category} · BUILD ORDER` header); Clients credibility cards prettied; case-study cover-flow image `contain` + aspect `1/1.5` so the whole image shows; Contact logo enlarged.
+- **Services plain-language rewrite.** Subtitle → `Five systems that make a complex product easy to buy.`; all 25 desktop pillar descriptions simplified to one short glanceable sentence; `AEO` → `AI Search Optimization`, `Marketing Copilots` → `Marketing Assistants`. The Clients credibility strip now also renders on desktop (rough 5-across). **All slide text is shared desktop↔mobile; copy changes must land on both.**
+- `npm run lint` (0 warnings) and `npm run build` pass; `vendor-gsap` gone.
+
+---
+
 ## Current State (as of Session 29 push prep)
 
 **Session 29** fixes the Session 28 real-phone black-screen bug and runs a mobile polish pass on the case studies, Contact, and Clients slides.
@@ -16,6 +29,22 @@
 - **Clients slide** — added a mobile-only credibility card strip below the logo loops; heading and loops untouched; desktop keeps PrismaticBurst.
 - **Cleanup** — removed the temporary mobile refresh button and a session-only debug jump-menu before push.
 - `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass; only the known `vendor-lanyard` chunk warning remains.
+
+### Next-session plan — Hallmark audit punch list (run Session 29, no edits made)
+
+Ran `hallmark audit` against the deck (editorial genre, `design.md`-managed). Structure is sound — no AI-template fingerprint, no critical findings. Backlog for next session, in priority order:
+
+- **MAJOR · `transition-all`** (`ParallaxCardSlider.tsx:262`, `TitleSlide.tsx:362`, `SkyrocketSlide.tsx:264`, `ServicesSlide.tsx:465,551`) — replace with named-property transitions (`background-color`, `transform`, `border-color`); never `all`.
+- **MAJOR · missing `:focus-visible` rings** — only `LogoLoop.css` has one. Add visible focus rings (≥3:1 contrast, instant, never animated) to the Contact CTAs, cover CTA, Slide-2 sector chips, Services tabs, and any custom interactive button. Real WCAG gap.
+- **MAJOR · eyebrow-on-every-section** — 11 uppercase tracked kickers across slides. Cap at 1–2 per deck; keep only genuinely-ordinal ones (case numbers). `design.md` "credentials rhythm" half-sanctions these, so this is a brand-vs-tell judgment call.
+- **MAJOR · gradient headline** (`text-gradient-green`, `index.css:230,330`) — bg-clip-text teal accent word on every slide is the canonical editorial AI tell, but `design.md`/`prod.md` explicitly mandate it as the brand signature. Decide: keep as signature, or switch to solid teal + weight/italic.
+- **MINOR · `tabular-nums`** — only 3 usages; verify the Clients stat strip and Contact numbers align (`font-variant-numeric: tabular-nums`).
+- **MINOR · straight apostrophes** — `Let's` / `We'll` / `You'll` in copy should use curly `’`.
+- **MINOR · scroll-reveal breadth** — IntersectionObserver entrance on 7 slides; `design.md` sanctions one entrance per slide, so keep as-is but don't add more stagger.
+- **MINOR · glassmorphism breadth** — `backdrop-blur` on 5 slides; purposeful now, watch for decorative creep.
+- **MINOR · existing known** — `logo-main.jpg` still JPG (→ WebP/SVG), OG image is a `/favicon.png` stopgap (→ true 1200×630 card), `vendor-lanyard` ~3MB chunk.
+
+Tally: 0 critical · 4 major · 6 minor. Verdict: close, fix the majors — focus rings and `transition-all` are the highest-value, lowest-risk wins.
 
 ---
 

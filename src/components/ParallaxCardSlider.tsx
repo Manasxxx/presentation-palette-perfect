@@ -259,7 +259,7 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
           <button
             key={i}
             onClick={() => changeSlide(i, i > currentIndex ? "right" : "left")}
-            className="w-2 h-2 rounded-full transition-all duration-300"
+            className="w-2 h-2 rounded-full transition-[background,transform] duration-300"
             style={{
               background: i === currentIndex ? `hsl(${accentColor})` : "hsl(0 0% 100% / 0.3)",
               transform: i === currentIndex ? "scale(1.4)" : "scale(1)",

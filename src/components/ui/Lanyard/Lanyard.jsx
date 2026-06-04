@@ -7,7 +7,7 @@ import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
 import cardGLB from '@/assets/lanyard/card.glb';
-import owlSurfLogo from '@/assets/logo-main.jpg';
+import owlSurfLogo from '@/assets/logo-main.webp';
 import owlIcon from '@/assets/owl-icon.png';
 import './Lanyard.css';
 

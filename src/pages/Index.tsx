@@ -7,7 +7,6 @@ import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
-const OurTeamSlide = lazy(() => import("@/components/slides/OurTeamSlide"));
 const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
 const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
 const CaseStudySlide = lazy(() => import("@/components/slides/CaseStudySlide"));
@@ -22,7 +21,6 @@ const ContactSlide = lazy(() => import("@/components/slides/ContactSlide"));
 const slides: ComponentType[] = [
   TitleSlide,
   SkyrocketSlide,
-  OurTeamSlide,
   ServicesSlide,
   ClientsSlide,
   CaseStudySlide,
@@ -69,7 +67,7 @@ const Index = () => {
 
   // Case studies (Mitsui through Raychem) are immersive on mobile — hide the
   // whole nav bar (logo + menu) there. Desktop keeps the nav untouched.
-  const onCaseStudy = currentSlide >= 5 && currentSlide <= 11;
+  const onCaseStudy = currentSlide >= 4 && currentSlide <= 10;
 
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -178,7 +176,7 @@ const Index = () => {
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>
               {index === 0 ? (
-                <TitleSlide onViewCaseStudies={() => navigateToSlide(5)} />
+                <TitleSlide onViewCaseStudies={() => navigateToSlide(4)} />
               ) : (
                 <SlideComponent />
               )}

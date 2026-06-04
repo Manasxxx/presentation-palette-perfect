@@ -1,22 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
+import { animate, stagger, utils } from 'animejs';
 import '@/styles/PillNav.css';
-import logoImg from '@/assets/logo-main.jpg';
+import logoImg from '@/assets/logo-main.webp';
 
 const navItems = [
   { label: 'Cover', slideIndex: 0 },
   { label: 'Positioning', slideIndex: 1 },
-  { label: 'Team', slideIndex: 2 },
-  { label: 'Services', slideIndex: 3 },
-  { label: 'Proof', slideIndex: 4 },
-  { label: 'Cases', slideIndex: 5 },
-  { label: 'Contact', slideIndex: 12 },
+  { label: 'Services', slideIndex: 2 },
+  { label: 'Proof', slideIndex: 3 },
+  { label: 'Cases', slideIndex: 4 },
+  { label: 'Contact', slideIndex: 11 },
 ];
 
 const slideToNavIndex = (slideIndex: number): number => {
-  if (slideIndex <= 5) return slideIndex;
-  if (slideIndex <= 11) return 5;
-  return 6;
+  if (slideIndex <= 3) return slideIndex;
+  if (slideIndex <= 10) return 4; // case studies map to "Cases"
+  return 5; // Contact
 };
 
 interface PillNavProps {
@@ -30,7 +29,7 @@ const PillNav = ({
   currentSlide,
   onNavigate,
 }: PillNavProps) => {
-  const ease = 'power3.easeOut';
+  const ease = 'out(4)';
   const baseColor = 'hsl(0, 0%, 100%)';
   const pillColor = 'hsl(214, 30%, 6%)';
   const hoveredPillTextColor = 'hsl(214, 30%, 6%)';
@@ -38,10 +37,8 @@ const PillNav = ({
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const tlRefs = useRef<gsap.core.Timeline[]>([]);
-  const activeTweenRefs = useRef<gsap.core.Tween[]>([]);
+  const pillGeomRef = useRef<{ h: number }[]>([]);
   const logoImgRef = useRef<HTMLImageElement>(null);
-  const logoTweenRef = useRef<gsap.core.Tween | null>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
@@ -58,38 +55,34 @@ const PillNav = ({
       hamburgerRef.current,
     ].filter(Boolean) as HTMLElement[];
 
-    gsap.killTweensOf([container, ...movingItems]);
+    utils.remove([container, ...movingItems]);
 
     if (visible) {
-      gsap.to(container, { autoAlpha: 1, y: 0, pointerEvents: 'auto', duration: 0.28, ease });
-      gsap.to(movingItems, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.34,
-        stagger: 0.035,
-        ease,
-        overwrite: 'auto',
-      });
+      container.style.visibility = 'visible';
+      container.style.pointerEvents = 'auto';
+      animate(container, { opacity: 1, translateY: 0, duration: 280, ease });
+      animate(movingItems, { opacity: 1, translateY: 0, duration: 340, delay: stagger(35), ease });
     } else {
-      gsap.to(movingItems, {
-        autoAlpha: 0,
-        y: -18,
-        duration: 0.24,
-        stagger: 0.025,
+      animate(movingItems, { opacity: 0, translateY: -18, duration: 240, delay: stagger(25), ease });
+      animate(container, {
+        opacity: 0,
+        translateY: -24,
+        duration: 320,
+        delay: 50,
         ease,
-        overwrite: 'auto',
+        onComplete: () => { container.style.pointerEvents = 'none'; },
       });
-      gsap.to(container, { autoAlpha: 0, y: -24, pointerEvents: 'none', duration: 0.32, delay: 0.05, ease });
     }
   }, [visible]);
 
+  // Geometry + initial-load animation (the hover circle-fill is animated
+  // directly on enter/leave below, so no paused timelines are stored).
   useEffect(() => {
     const layout = () => {
       circleRefs.current.forEach((circle, index) => {
         if (!circle?.parentElement) return;
         const pill = circle.parentElement;
-        const rect = pill.getBoundingClientRect();
-        const { width: w, height: h } = rect;
+        const { width: w, height: h } = pill.getBoundingClientRect();
         const R = ((w * w) / 4 + h * h) / (2 * h);
         const D = Math.ceil(2 * R) + 2;
         const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
@@ -98,29 +91,15 @@ const PillNav = ({
         circle.style.width = `${D}px`;
         circle.style.height = `${D}px`;
         circle.style.bottom = `-${delta}px`;
+        circle.style.transformOrigin = `50% ${originY}px`;
+        utils.set(circle, { translateX: '-50%', scale: 0 });
 
-        gsap.set(circle, {
-          xPercent: -50,
-          scale: 0,
-          transformOrigin: `50% ${originY}px`,
-        });
+        const label = pill.querySelector('.pill-label') as HTMLElement | null;
+        const white = pill.querySelector('.pill-label-hover') as HTMLElement | null;
+        if (label) utils.set(label, { translateY: 0 });
+        if (white) utils.set(white, { translateY: h + 12, opacity: 0 });
 
-        const label = pill.querySelector('.pill-label') as HTMLElement;
-        const white = pill.querySelector('.pill-label-hover') as HTMLElement;
-        if (label) gsap.set(label, { y: 0 });
-        if (white) gsap.set(white, { y: h + 12, opacity: 0 });
-
-        tlRefs.current[index]?.kill();
-        const tl = gsap.timeline({ paused: true });
-        tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
-        if (label) {
-          tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
-        }
-        if (white) {
-          gsap.set(white, { y: Math.ceil(h + 100), opacity: 0 });
-          tl.to(white, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
-        }
-        tlRefs.current[index] = tl;
+        pillGeomRef.current[index] = { h };
       });
     };
 
@@ -132,57 +111,62 @@ const PillNav = ({
 
     const menu = mobileMenuRef.current;
     if (menu) {
-      gsap.set(menu, { visibility: 'hidden', opacity: 0, scaleY: 1 });
+      menu.style.transformOrigin = 'top center';
+      utils.set(menu, { opacity: 0, scaleY: 1 });
+      menu.style.visibility = 'hidden';
     }
 
     // Initial load animation
     const logo = logoRef.current;
     const navI = navItemsRef.current;
     if (logo) {
-      gsap.set(logo, { scale: 0 });
-      gsap.to(logo, { scale: 1, duration: 0.6, ease });
+      utils.set(logo, { scale: 0 });
+      animate(logo, { scale: 1, duration: 600, ease });
     }
     if (navI) {
-      gsap.set(navI, { autoAlpha: 0, y: -8 });
-      gsap.to(navI, { autoAlpha: 1, y: 0, duration: 0.45, ease });
+      utils.set(navI, { opacity: 0, translateY: -8 });
+      animate(navI, { opacity: 1, translateY: 0, duration: 450, ease });
     }
 
     return () => window.removeEventListener('resize', layout);
   }, []);
 
+  const pillParts = (i: number) => {
+    const circle = circleRefs.current[i];
+    if (!circle?.parentElement) return null;
+    const pill = circle.parentElement;
+    const h = pillGeomRef.current[i]?.h ?? pill.getBoundingClientRect().height;
+    const label = pill.querySelector('.pill-label') as HTMLElement | null;
+    const white = pill.querySelector('.pill-label-hover') as HTMLElement | null;
+    return { circle, label, white, h };
+  };
+
   const handleEnter = (i: number) => {
-    const tl = tlRefs.current[i];
-    if (!tl) return;
-    activeTweenRefs.current[i]?.kill();
-    activeTweenRefs.current[i] = tl.tweenTo(tl.duration(), {
-      duration: 0.3,
-      ease,
-      overwrite: 'auto',
-    });
+    const parts = pillParts(i);
+    if (!parts) return;
+    const { circle, label, white, h } = parts;
+    utils.remove([circle, label, white].filter(Boolean) as HTMLElement[]);
+    animate(circle, { scale: 1.2, duration: 300, ease });
+    if (label) animate(label, { translateY: -(h + 8), duration: 300, ease });
+    if (white) animate(white, { translateY: 0, opacity: 1, duration: 300, ease });
   };
 
   const handleLeave = (i: number) => {
-    const tl = tlRefs.current[i];
-    if (!tl) return;
-    activeTweenRefs.current[i]?.kill();
-    activeTweenRefs.current[i] = tl.tweenTo(0, {
-      duration: 0.2,
-      ease,
-      overwrite: 'auto',
-    });
+    const parts = pillParts(i);
+    if (!parts) return;
+    const { circle, label, white, h } = parts;
+    utils.remove([circle, label, white].filter(Boolean) as HTMLElement[]);
+    animate(circle, { scale: 0, duration: 200, ease });
+    if (label) animate(label, { translateY: 0, duration: 200, ease });
+    if (white) animate(white, { translateY: h + 12, opacity: 0, duration: 200, ease });
   };
 
   const handleLogoEnter = () => {
     const img = logoImgRef.current;
     if (!img) return;
-    logoTweenRef.current?.kill();
-    gsap.set(img, { rotate: 0 });
-    logoTweenRef.current = gsap.to(img, {
-      rotate: 360,
-      duration: 0.2,
-      ease,
-      overwrite: 'auto',
-    });
+    utils.remove(img);
+    utils.set(img, { rotate: 0 });
+    animate(img, { rotate: 360, duration: 600, ease });
   };
 
   const toggleMobileMenu = () => {
@@ -196,36 +180,40 @@ const PillNav = ({
     if (hamburger) {
       const lines = hamburger.querySelectorAll('.hamburger-line');
       if (newState) {
-        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });
-        gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease });
+        animate(lines[0], { rotate: 45, translateY: 3, duration: 300, ease });
+        animate(lines[1], { rotate: -45, translateY: -3, duration: 300, ease });
       } else {
-        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease });
-        gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease });
+        animate(lines[0], { rotate: 0, translateY: 0, duration: 300, ease });
+        animate(lines[1], { rotate: 0, translateY: 0, duration: 300, ease });
       }
     }
 
     if (backdrop) {
       if (newState) {
-        gsap.set(backdrop, { visibility: 'visible' });
-        gsap.to(backdrop, { opacity: 1, duration: 0.3, ease });
+        backdrop.style.visibility = 'visible';
+        animate(backdrop, { opacity: 1, duration: 300, ease });
       } else {
-        gsap.to(backdrop, { opacity: 0, duration: 0.2, ease, onComplete: () => gsap.set(backdrop, { visibility: 'hidden' }) });
+        animate(backdrop, {
+          opacity: 0,
+          duration: 200,
+          ease,
+          onComplete: () => { backdrop.style.visibility = 'hidden'; },
+        });
       }
     }
 
     if (menu) {
       if (newState) {
-        gsap.set(menu, { visibility: 'visible' });
-        gsap.fromTo(
-          menu,
-          { opacity: 0, y: 10, scaleY: 1 },
-          { opacity: 1, y: 0, scaleY: 1, duration: 0.3, ease, transformOrigin: 'top center' }
-        );
+        menu.style.visibility = 'visible';
+        utils.set(menu, { opacity: 0, translateY: 10 });
+        animate(menu, { opacity: 1, translateY: 0, duration: 300, ease });
       } else {
-        gsap.to(menu, {
-          opacity: 0, y: 10, scaleY: 1, duration: 0.2, ease,
-          transformOrigin: 'top center',
-          onComplete: () => gsap.set(menu, { visibility: 'hidden' }),
+        animate(menu, {
+          opacity: 0,
+          translateY: 10,
+          duration: 200,
+          ease,
+          onComplete: () => { menu.style.visibility = 'hidden'; },
         });
       }
     }

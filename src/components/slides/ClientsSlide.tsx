@@ -166,8 +166,9 @@ const ClientsSlide = () => {
             ariaLabel="Major clients row two"
           />
 
-          {/* Mobile-only credibility strip — fills the empty space; desktop keeps the PrismaticBurst backdrop. */}
-          <div className="mt-4 grid grid-cols-2 gap-2.5 md:hidden">
+          {/* Credibility strip — shown on both. Desktop placement is rough (5-across row);
+              refine when working the desktop layout. */}
+          <div className="mt-8 grid grid-cols-2 gap-2.5 md:mt-10 md:grid-cols-5 md:gap-4">
             {[
               { n: "End-to-end", l: "Brand to demand" },
               { n: "6", l: "Sectors served" },
@@ -177,14 +178,18 @@ const ClientsSlide = () => {
             ].map((stat) => (
               <div
                 key={stat.l}
-                className={`flex flex-col items-center justify-center rounded-xl border border-white/12 bg-[#0b1217]/72 px-2 py-3 text-center backdrop-blur-sm ${
-                  stat.wide ? "col-span-2" : ""
+                className={`relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-b from-white/[0.07] to-white/[0.015] px-2.5 py-3.5 text-center shadow-[0_6px_22px_rgba(0,0,0,0.28)] backdrop-blur-md ${
+                  stat.wide ? "col-span-2 md:col-span-1" : ""
                 }`}
               >
-                <span className="font-sans text-[1.05rem] font-black leading-[1.1] tracking-tight text-primary">
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/55 to-transparent"
+                />
+                <span className="font-sans text-[1.1rem] font-black leading-[1.1] tracking-tight tabular-nums text-primary">
                   {stat.n}
                 </span>
-                <span className="mt-1.5 font-body text-[8.5px] font-semibold uppercase leading-tight tracking-[0.12em] text-white/60">
+                <span className="mt-1.5 font-body text-[8.5px] font-semibold uppercase leading-tight tracking-[0.14em] text-white/55">
                   {stat.l}
                 </span>
               </div>

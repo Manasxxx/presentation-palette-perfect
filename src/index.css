@@ -193,6 +193,14 @@
     overflow-x: clip;
   }
 
+  /* Keyboard focus ring for all interactive elements — teal, instant (never
+     animated), high-contrast on the dark paper. Mouse clicks don't trigger it. */
+  :where(a, button, [role="button"], [role="tab"], [role="link"], input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   h1 {
     font-family: var(--font-sans);
     font-weight: 900;
@@ -249,88 +257,6 @@
     @apply backdrop-blur-xl border border-white/15;
     background: linear-gradient(145deg, hsl(200 20% 50% / 0.1), hsl(200 15% 40% / 0.06));
     backdrop-filter: blur(20px) saturate(1.3);
-  }
-}
-
-@layer utilities {
-  .animate-gradient-shift {
-    animation: gradient-shift 12s ease-in-out infinite;
-  }
-
-  @keyframes gradient-shift {
-
-    0%,
-    100% {
-      background-position: 0% 0%;
-    }
-
-    25% {
-      background-position: 100% 50%;
-    }
-
-    50% {
-      background-position: 50% 100%;
-    }
-
-    75% {
-      background-position: 0% 50%;
-    }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-20px);
-    }
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow {
-
-    0%,
-    100% {
-      box-shadow: 0 0 40px -10px hsl(180 45% 53% / 0.4);
-    }
-
-    50% {
-      box-shadow: 0 0 60px -5px hsl(180 45% 53% / 0.6);
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -200% center;
-    }
-
-    100% {
-      background-position: 200% center;
-    }
-  }
-
-  .shimmer-text {
-    background-size: 200% auto;
-    background-image: linear-gradient(90deg,
-        hsl(180 45% 53%) 0%,
-        hsl(180 45% 70%) 25%,
-        hsl(0 0% 100% / 0.9) 50%,
-        hsl(180 45% 70%) 75%,
-        hsl(180 45% 53%) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 2s ease-in-out 1 forwards;
   }
 }
 
@@ -417,7 +343,7 @@
   position: relative;
   display: inline-block;
   width: 9.9rem;
-  aspect-ratio: 1 / 2;
+  aspect-ratio: 1 / 1.5;
   scroll-snap-align: center;
   transform-style: preserve-3d;
   view-timeline: --cs-slide inline calc(50% - 9.6rem);
@@ -452,7 +378,7 @@
 .cs-coverflow-card img {
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 

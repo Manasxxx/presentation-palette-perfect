@@ -1,5 +1,5 @@
 import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
-import gsap from 'gsap';
+import { createTimeline, createTimer, utils } from 'animejs';
 import './CardSwap.css';
 
 export const Card = forwardRef(({ customClass, ...rest }, ref) => (
@@ -13,18 +13,20 @@ const makeSlot = (i, distX, distY, total) => ({
   z: -i * distX * 1.5,
   zIndex: total - i
 });
-const placeNow = (el, slot, skew) =>
-  gsap.set(el, {
-    x: slot.x,
-    y: slot.y,
-    z: slot.z,
-    xPercent: -50,
-    yPercent: -50,
-    skewY: skew,
-    transformOrigin: 'center center',
-    zIndex: slot.zIndex,
-    force3D: true
+
+// Instant placement. Cards self-centre via negative margins in CSS, so the
+// transform here only carries the slot offset + skew and stays fully
+// animatable by Anime.js (no GSAP xPercent/yPercent compositing needed).
+const placeNow = (el, slot, skew) => {
+  if (!el) return;
+  el.style.zIndex = String(slot.zIndex);
+  utils.set(el, {
+    translateX: slot.x,
+    translateY: slot.y,
+    translateZ: slot.z,
+    skewY: skew
   });
+};
 
 const CardSwap = ({
   width = 500,
@@ -39,31 +41,32 @@ const CardSwap = ({
   reduceMotion = false,
   children
 }) => {
+  // Durations are in milliseconds (Anime.js), unlike the old GSAP seconds.
   const config = reduceMotion
     ? {
         // Reduced motion: cards still cycle so back-card content stays
         // reachable, but they snap into place instead of animating.
-        ease: 'none',
-        durDrop: 0.001,
-        durMove: 0.001,
-        durReturn: 0.001,
+        ease: 'linear',
+        durDrop: 1,
+        durMove: 1,
+        durReturn: 1,
         promoteOverlap: 0,
         returnDelay: 0
       }
     : easing === 'elastic'
       ? {
-          ease: 'elastic.out(0.6,0.9)',
-          durDrop: 2,
-          durMove: 2,
-          durReturn: 2,
+          ease: 'outElastic(0.6, 0.9)',
+          durDrop: 2000,
+          durMove: 2000,
+          durReturn: 2000,
           promoteOverlap: 0.9,
           returnDelay: 0.05
         }
       : {
-          ease: 'power1.inOut',
-          durDrop: 0.8,
-          durMove: 0.8,
-          durReturn: 0.8,
+          ease: 'inOutQuad',
+          durDrop: 800,
+          durMove: 800,
+          durReturn: 800,
           promoteOverlap: 0.45,
           returnDelay: 0.2
         };
@@ -78,82 +81,75 @@ const CardSwap = ({
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
 
   const tlRef = useRef(null);
-  const loopRef = useRef();
+  const loopRef = useRef(null);
   const container = useRef(null);
 
   useEffect(() => {
     const total = refs.length;
     refs.forEach((r, i) => placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount));
 
-    // Keep GSAP's rAF ticker awake: if it has slept after the heavy initial
-    // load, tweens scheduled off a setInterval/setTimeout won't reliably wake
-    // it, leaving the stack frozen until a user interaction kicks rAF alive.
-    gsap.ticker.wake();
+    let cancelled = false;
 
     const swap = () => {
       if (order.current.length < 2) return;
 
       const [front, ...rest] = order.current;
       const elFront = refs[front].current;
-      const tl = gsap.timeline();
+      const tl = createTimeline();
       tlRef.current = tl;
 
-      tl.to(elFront, {
-        y: '+=500',
-        duration: config.durDrop,
-        ease: config.ease
-      });
+      // Drop the front card down and out.
+      tl.add(elFront, { translateY: '+=500', duration: config.durDrop, ease: config.ease }, 0);
 
-      tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
+      // Promote the rest forward one slot, overlapping the drop.
+      const promoteAt = config.durDrop - config.durDrop * config.promoteOverlap;
       rest.forEach((idx, i) => {
         const el = refs[idx].current;
         const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
-        tl.set(el, { zIndex: slot.zIndex }, 'promote');
-        tl.to(
+        tl.call(() => { if (el) el.style.zIndex = String(slot.zIndex); }, promoteAt);
+        tl.add(
           el,
           {
-            x: slot.x,
-            y: slot.y,
-            z: slot.z,
+            translateX: slot.x,
+            translateY: slot.y,
+            translateZ: slot.z,
             duration: config.durMove,
             ease: config.ease
           },
-          `promote+=${i * 0.15}`
+          promoteAt + i * 150
         );
       });
 
+      // Send the dropped card to the back slot.
       const backSlot = makeSlot(refs.length - 1, cardDistance, verticalDistance, refs.length);
-      tl.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
-      tl.call(
-        () => {
-          gsap.set(elFront, { zIndex: backSlot.zIndex });
-        },
-        undefined,
-        'return'
-      );
-      tl.to(
+      const returnAt = promoteAt + config.durMove * config.returnDelay;
+      tl.call(() => { if (elFront) elFront.style.zIndex = String(backSlot.zIndex); }, returnAt);
+      tl.add(
         elFront,
         {
-          x: backSlot.x,
-          y: backSlot.y,
-          z: backSlot.z,
+          translateX: backSlot.x,
+          translateY: backSlot.y,
+          translateZ: backSlot.z,
           duration: config.durReturn,
           ease: config.ease
         },
-        'return'
+        returnAt
       );
 
-      tl.call(() => {
-        order.current = [...rest, front];
-      });
+      tl.call(() => { order.current = [...rest, front]; });
     };
 
-    // Self-scheduling loop driven by GSAP's ticker (not setInterval) so the
-    // whole cycle stays inside rAF and the ticker never goes stale mid-loop.
+    // Self-scheduling loop driven by Anime.js's own timer (its engine keeps a
+    // live rAF while animations/timers exist), so the stack never freezes the
+    // way the old setInterval-vs-GSAP-ticker combination could.
     const scheduleNext = () => {
-      loopRef.current = gsap.delayedCall(delay / 1000, () => {
-        swap();
-        scheduleNext();
+      loopRef.current = createTimer({
+        duration: delay,
+        onComplete: () => {
+          if (cancelled) return;
+          swap();
+          scheduleNext();
+        }
       });
     };
 
@@ -167,19 +163,24 @@ const CardSwap = ({
         loopRef.current?.pause();
       };
       const resume = () => {
-        gsap.ticker.wake();
         tlRef.current?.play();
-        loopRef.current?.resume();
+        loopRef.current?.play();
       };
       node.addEventListener('mouseenter', pause);
       node.addEventListener('mouseleave', resume);
       return () => {
+        cancelled = true;
         node.removeEventListener('mouseenter', pause);
         node.removeEventListener('mouseleave', resume);
-        loopRef.current?.kill();
+        tlRef.current?.pause();
+        loopRef.current?.pause();
       };
     }
-    return () => loopRef.current?.kill();
+    return () => {
+      cancelled = true;
+      tlRef.current?.pause();
+      loopRef.current?.pause();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing, reduceMotion]);
 
@@ -188,7 +189,9 @@ const CardSwap = ({
       ? cloneElement(child, {
           key: i,
           ref: refs[i],
-          style: { width, height, ...(child.props.style ?? {}) },
+          // Negative margins centre the card on its top:50%/left:50% anchor so
+          // the transform stays free for the slot animation (see placeNow).
+          style: { width, height, marginLeft: -width / 2, marginTop: -height / 2, ...(child.props.style ?? {}) },
           onClick: e => {
             child.props.onClick?.(e);
             onCardClick?.(i);

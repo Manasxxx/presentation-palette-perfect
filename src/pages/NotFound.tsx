@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowLeft, ArrowRight, Compass, Mail } from "lucide-react";
-import logo from "@/assets/logo-main.jpg";
+import logo from "@/assets/logo-main.webp";
 
 const NotFound = () => {
   const location = useLocation();

@@ -27,7 +27,6 @@ export default defineConfig(() => ({
       output: {
         manualChunks: {
           "vendor-react": ["react", "react-dom", "react-router-dom"],
-          "vendor-gsap": ["gsap"],
           "vendor-anime": ["animejs"],
           "vendor-3d": ["ogl", "cobe", "postprocessing"],
           "vendor-lanyard": ["three", "@react-three/fiber", "@react-three/drei", "@react-three/rapier", "meshline"],

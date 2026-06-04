@@ -85,35 +85,35 @@ const categories: Category[] = [
         icon: Target,
         title: "Technical Positioning",
         description:
-          "Turn specifications, process, and expertise into a buyer-ready story.",
+          "Turn specs and expertise into a story buyers actually get.",
         illustration: "story",
       },
       {
         icon: Film,
         title: "Explainer Films",
         description:
-          "Plant, product, and process films that make complex value visible.",
+          "Plant, product, and process films that make the value obvious.",
         illustration: "video",
       },
       {
         icon: PenTool,
         title: "Sales Collateral",
         description:
-          "Decks, brochures, and booth material that sales can actually use.",
+          "Decks, brochures, and booth material your sales team can use.",
         illustration: "system",
       },
       {
         icon: FileText,
         title: "Whitepapers",
         description:
-          "Research-led documents for buyers who need depth before trust.",
+          "In-depth docs for buyers who want proof before they trust you.",
         illustration: "research",
       },
       {
         icon: Sparkles,
         title: "Executive POV",
         description:
-          "Bylines, talks, and expert notes that make leadership credible.",
+          "Bylines, talks, and expert notes that make your leaders credible.",
         illustration: "thought",
       },
     ],
@@ -127,31 +127,31 @@ const categories: Category[] = [
         icon: TrendingUp,
         title: "Paid Ads",
         description:
-          "LinkedIn, Google, and programmatic campaigns measured against qualified interest.",
+          "LinkedIn, Google, and programmatic ads measured on real interest, not clicks.",
       },
       {
         icon: Target,
         title: "Account-Based Marketing (ABM)",
         description:
-          "Targeted plays for priority accounts, sales teams, and distributor networks.",
+          "Focused campaigns aimed at your priority accounts and partners.",
       },
       {
         icon: Users,
         title: "Creator & Influencer Network",
         description:
-          "Credible voices in the category, used carefully and commercially.",
+          "Trusted voices in your category, used carefully.",
       },
       {
         icon: Megaphone,
         title: "PR & Media Relations",
         description:
-          "Trade press, analyst notes, and earned coverage that supports sales.",
+          "Trade press, analyst notes, and coverage that backs up sales.",
       },
       {
         icon: Building2,
         title: "Events & Trade Shows",
         description:
-          "Booth story, lead capture, and follow-up for exhibitions and trade shows.",
+          "Booth story, lead capture, and follow-up for every show.",
       },
     ],
   },
@@ -164,31 +164,31 @@ const categories: Category[] = [
         icon: Search,
         title: "SEO",
         description:
-          "Found when technical buyers search by problem, product, or category.",
+          "Get found when buyers search by problem, product, or category.",
       },
       {
         icon: MessageSquare,
         title: "Social Listening",
         description:
-          "What buyers, competitors, and the category are already saying.",
+          "Know what buyers, rivals, and the market are already saying.",
       },
       {
         icon: ShieldCheck,
         title: "Reputation Management",
         description:
-          "How your brand appears in search, press, and buyer checks.",
+          "Shape how your brand shows up in search, press, and buyer checks.",
       },
       {
         icon: Activity,
         title: "Competitive Intelligence",
         description:
-          "Launches, hiring, pricing, positioning, and category shifts tracked early.",
+          "Spot rival launches, hiring, and pricing moves early.",
       },
       {
         icon: Mic,
         title: "Community Management",
         description:
-          "A steady presence in the rooms and channels your buyers already use.",
+          "A steady presence where your buyers already spend time.",
       },
     ],
   },
@@ -201,31 +201,31 @@ const categories: Category[] = [
         icon: Workflow,
         title: "Marketing Automation",
         description:
-          "HubSpot, Marketo, and Pardot flows that match long buying cycles.",
+          "HubSpot, Marketo, and Pardot flows built for long buying cycles.",
       },
       {
         icon: Database,
         title: "CRM Integration",
         description:
-          "Salesforce, HubSpot, and CRM hygiene so teams see the same buyer.",
+          "Salesforce and HubSpot set up so everyone sees the same buyer.",
       },
       {
         icon: BarChart2,
         title: "Analytics & Attribution",
         description:
-          "Which channels created qualified movement, not just clicks.",
+          "See which channels drive real pipeline, not just clicks.",
       },
       {
         icon: Cpu,
         title: "Lead Scoring",
         description:
-          "Prioritization based on buyer signals, fit, and sales readiness.",
+          "Rank leads by fit, intent, and readiness to buy.",
       },
       {
         icon: Globe,
         title: "Custom Microsites",
         description:
-          "Account pages, campaign pages, and product explainers for serious buyers.",
+          "Account, campaign, and product pages built for serious buyers.",
       },
     ],
   },
@@ -238,31 +238,31 @@ const categories: Category[] = [
         icon: Wand2,
         title: "AI Content Engine",
         description:
-          "Drafting support for blogs, emails, sales notes, and repurposing.",
+          "Faster first drafts for blogs, emails, and sales notes.",
       },
       {
         icon: Bot,
-        title: "Marketing Copilots",
+        title: "Marketing Assistants",
         description:
-          "Assistants trained around your sales, support, and marketing context.",
+          "AI assistants trained on your sales, support, and marketing context.",
       },
       {
         icon: Sparkles,
         title: "AI Personalization",
         description:
-          "Landing experiences that adapt to account, intent, and stage.",
+          "Pages that adapt to the account, intent, and buying stage.",
       },
       {
         icon: Lightbulb,
-        title: "Answer Engine Optimization (AEO)",
+        title: "AI Search Optimization",
         description:
-          "Making your expertise legible to answer engines and search systems.",
+          "Make your expertise show up in AI answers and search results.",
       },
       {
         icon: Zap,
         title: "Workflow Automation",
         description:
-          "Research, qualification, and reporting workflows with human judgment intact.",
+          "Automate research, qualifying, and reporting while keeping human judgment.",
       },
     ],
   },
@@ -292,9 +292,9 @@ const mobileServices: Record<string, { icon: LucideIcon; title: string }[]> = {
     { icon: Globe, title: "Custom Microsites" },
   ],
   ai: [
-    { icon: Bot, title: "AI Content & Copilots" },
+    { icon: Bot, title: "AI Content & Assistants" },
     { icon: Sparkles, title: "AI Personalization" },
-    { icon: Zap, title: "AEO & Automation" },
+    { icon: Zap, title: "AI Search & Automation" },
   ],
 };
 
@@ -434,13 +434,14 @@ const ServicesSlide = () => {
             </span>
           </h2>
           <p className="mt-2.5 max-w-[45rem] font-body text-sm leading-snug text-white/58 md:mt-3 md:text-lg">
-            The assets and operating layer around a technical sale: explain the product, find the right accounts, and give sales sharper proof.
+            Five systems that make a complex product easy to buy.
           </p>
         </header>
 
         <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[3vh] md:grid md:flex-initial md:gap-10">
           {isMobile ? (
-            <div className="col-span-12 flex h-full flex-col justify-center gap-7 pb-[6vh]">
+            <div className="col-span-12 flex h-full flex-col justify-center gap-6 pb-[6vh]">
+              <div className="flex flex-col gap-2.5">
               {/* Mobile: all five categories as a larger two-row segmented bar (3 + centered 2) */}
               <div
                 className="sv-tabs grid grid-cols-6 gap-2"
@@ -462,7 +463,7 @@ const ServicesSlide = () => {
                       ref={(el) => { tabRefs.current[index] = el; }}
                       onClick={() => setActiveKey(cat.key)}
                       onKeyDown={(event) => handleTabKey(event, index)}
-                      className={`sv-tab col-span-2 flex flex-col items-center gap-2 rounded-2xl border px-1.5 py-4 transition-all duration-300 ${
+                      className={`sv-tab col-span-2 flex flex-col items-center gap-2 rounded-2xl border px-1.5 py-4 transition-[border-color,background-color,color] duration-300 ${
                         index === 3 ? "col-start-2" : ""
                       } ${
                         active
@@ -488,8 +489,21 @@ const ServicesSlide = () => {
                   );
                 })}
               </div>
+                <p className="text-center font-body text-[0.7rem] leading-snug text-white/45">
+                  Tap a system to see how it’s built.
+                </p>
+              </div>
 
               {/* Mobile: active category as a connected, low-text build sequence (titles only) */}
+              <div className="flex flex-col gap-4">
+                <div className="flex items-baseline justify-between gap-3 border-b border-white/10 pb-2">
+                  <span className="font-sans text-[0.72rem] font-black uppercase tracking-[0.2em] text-primary">
+                    Inside {activeCategory.label}
+                  </span>
+                  <span className="font-body text-[0.62rem] uppercase tracking-[0.15em] text-white/40">
+                    build order
+                  </span>
+                </div>
               <ol
                 className="sv-card-stage relative flex flex-col gap-6 pl-1"
                 role="tabpanel"
@@ -523,6 +537,7 @@ const ServicesSlide = () => {
                   );
                 })}
               </ol>
+              </div>
             </div>
           ) : (
             <>
@@ -548,7 +563,7 @@ const ServicesSlide = () => {
                       ref={(el) => { tabRefs.current[index] = el; }}
                       onClick={() => setActiveKey(cat.key)}
                       onKeyDown={(event) => handleTabKey(event, index)}
-                      className={`sv-tab group relative flex shrink-0 items-center justify-between gap-3 text-left rounded-xl border px-4 py-3 transition-all duration-300 md:shrink md:gap-4 md:px-5 md:py-4 ${
+                      className={`sv-tab group relative flex shrink-0 items-center justify-between gap-3 text-left rounded-xl border px-4 py-3 transition-[border-color,background-color,color] duration-300 md:shrink md:gap-4 md:px-5 md:py-4 ${
                         active
                           ? "border-primary/60 bg-primary/10"
                           : "border-border/40 bg-white/[0.02] hover:border-primary/30 hover:bg-white/[0.05]"

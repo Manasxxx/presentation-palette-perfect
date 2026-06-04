@@ -167,9 +167,9 @@ const SkyrocketSlide = () => {
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-6 px-5 py-6 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-5 py-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
-        <div className="grid gap-5 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
+        <div className="grid gap-7 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
           <div className="md:col-span-7">
             <div className="who-kicker font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]" style={{ opacity: 0 }}>
@@ -249,19 +249,19 @@ const SkyrocketSlide = () => {
         </div>
 
         {/* BOTTOM — buyer outcomes (full width) */}
-        <div className="border-t border-white/10 pt-5 md:pt-9">
+        <div className="border-t border-white/10 pt-7 md:pt-9">
           <div className="who-copy mb-3 md:mb-6" style={{ opacity: 0 }}>
             <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
               What this means for buyers
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-5 md:gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4 lg:gap-6">
             {differentiators.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="who-chip group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-3 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] last:col-span-2 md:last:col-span-1 md:items-start md:gap-3 md:p-4 lg:gap-4 lg:p-5"
+                  className="who-chip group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-3 backdrop-blur-sm transition-[transform,border-color,background-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] last:col-span-2 md:last:col-span-1 md:items-start md:gap-3 md:p-4 lg:gap-4 lg:p-5"
                   style={{ opacity: 0 }}
                 >
                   <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/0 transition-colors duration-300 group-hover:bg-owl-teal" />
