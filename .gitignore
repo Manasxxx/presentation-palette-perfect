@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
 
 # Working artefacts (audits, scratch) — never ship in the product repo
 ux-audit-report.*
