@@ -5,6 +5,12 @@
 
 ---
 
+## Current State (as of Session 26 push prep)
+
+**Session 26** is the live mobile polish pass after the Hallmark credentials deck. The only intentional desktop visual change is the cover headline: it now reads `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`. The two dynamic teal pills are local React components powered by Anime.js, with dynamic width animation so shorter words shrink the pill. Mobile cover spacing, wordmark centering, logo scale, partner badge fit, and the shiny case-study CTA were tuned. Slide 2 now uses clearer buyer-outcome language, Our Team uses Anime.js for the roster/card transition and removes duplicate mobile card names, and the Proof Clients slide removes the market-note grid while centering and slightly speeding the logo slider. `git diff --check`, `npm run lint`, and `npm run build` pass; only the known Browserslist and `vendor-lanyard` warnings remain.
+
+---
+
 ## Current State (as of Session 25 push prep)
 
 **Session 25** is a Hallmark-led B2B credentials pass on top of Sessions 23 and 24. It adds a locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and sharpens the deck as a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and technical markets. The cover now reads `When the product is complex, the choice shouldn't be.`, uses a right-side editorial signal graphic instead of a literal proof/info box, and keeps the mobile WebGL gating from Session 23. Case studies now include proof/info panels, larger taglines, right-shifted creative carousels, and more translucent inactive carousel cards. The nav remains compact and centered with short labels. `npm run lint` and `npm run build` pass; only the known Browserslist and `vendor-lanyard` warnings remain.
@@ -33,6 +39,46 @@
 ---
 
 ## Session Log
+
+### Session 26 — Mobile cover, Slide 2, Team, and Proof Clients polish
+
+**What was done:**
+
+**1. Cover headline and CTA** (`src/components/slides/TitleSlide.tsx`, `src/components/ui/word-rotate.tsx`, `src/components/ui/animated-shiny-text.tsx`)
+- Replaced the prior cover line with `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`.
+- Added a local `WordRotate` component that uses Anime.js for word exit/entry and dynamic pill width, respecting reduced motion.
+- Rotating industry words: `Solar`, `Industrial`, `Chemical`, `Pharma`, `Manufacturing`, `Mobility`, and `Real Estate`.
+- Rotating buyer-confidence words: `trust`, `choose`, `believe`, `prefer`, and `buy from`.
+- Replaced the review-case-studies button text treatment with local `AnimatedShinyText`, preserving the same action.
+
+**2. Cover mobile fit** (`TitleSlide.tsx`)
+- Centered the top `OWLSURF DIGITAL` wordmark on mobile.
+- Removed the mobile credentials subline and the mobile strategy/content/demand paragraph.
+- Removed the teal vertical rule from the headline area.
+- Tuned heading spacing, shifted the CTA/badges upward, enlarged the logo circle, and compacted the partner badges so all four remain visible on one line.
+
+**3. Slide 2 buyer-outcome layout** (`src/components/slides/SkyrocketSlide.tsx`)
+- Improved the heading visibility for `What we understand`, `Priority sectors`, and `What this means for buyers`.
+- Removed the old rule/em-dash styling and removed `Why this replaces the PDF`.
+- Changed the headline to `Long sales. Technical buyers.`, with `sales.` and `buyers.` in teal cursive styling.
+- Replaced generic differentiators with buyer outcomes: `Clear first look`, `Faster buy-in`, `Less explaining`, `Credible proof`, and `Sales alignment`.
+
+**4. Our Team mobile and animation polish** (`src/components/slides/OurTeamSlide.tsx`)
+- Shifted the mobile heading upward and removed the rule before `Core team`.
+- Removed the duplicate employee name from the mobile card and moved the designation/title into the primary card text slot.
+- Reworked the roster roulette and mobile card change animation to Anime.js so the slider moves smoothly instead of snapping.
+
+**5. Proof Clients slider cleanup** (`src/components/slides/ClientsSlide.tsx`)
+- Shifted the heading upward.
+- Removed the four market-note lines below the heading.
+- Centered the logo loop in the available slide space.
+- Increased the two logo loop speeds slightly.
+
+**Verification:**
+- `git diff --check` passed.
+- `npm run lint` passed.
+- `npm run build` passed.
+- Known build notices remain the stale Browserslist/caniuse-lite warning and the large `vendor-lanyard` chunk warning.
 
 ### Session 25 — Hallmark B2B credentials pass, cover redesign, case-study proof polish
 

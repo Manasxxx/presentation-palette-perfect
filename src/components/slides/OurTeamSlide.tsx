@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { animate, createSpring, stagger } from 'animejs';
 import Lanyard from '@/components/ui/Lanyard/Lanyard';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -54,14 +54,73 @@ const getRouletteOffset = (index: number, activeIndex: number) => {
     return rawOffset;
 };
 
+const getRouletteVisualState = (index: number, activeIndex: number) => {
+    const offset = getRouletteOffset(index, activeIndex);
+    const absOffset = Math.abs(offset);
+
+    return {
+        hidden: absOffset > 2,
+        opacity: absOffset > 2 ? 0 : offset === 0 ? 1 : absOffset === 1 ? 0.6 : 0.28,
+        translateY: -40 + offset * 77.6,
+        rotateX: -offset * 18,
+        scale: offset === 0 ? 1 : absOffset === 1 ? 0.92 : 0.8,
+        filter: offset === 0 ? 'blur(0px)' : absOffset === 1 ? 'blur(0.12px)' : 'blur(0.65px)',
+    };
+};
+
 const OurTeamSlide = () => {
     const sectionRef = useRef<HTMLElement>(null);
+    const rosterItemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+    const cardRef = useRef<HTMLDivElement>(null);
+    const avatarRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLSpanElement>(null);
+    const previousActiveIndexRef = useRef(0);
     const triggered = useRef(false);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showLanyard, setShowLanyard] = useState(false);
     const prefersReducedMotion = usePrefersReducedMotion();
     const isMobile = useIsMobile();
     const activeMember = teamMembers[activeIndex];
+
+    useLayoutEffect(() => {
+        const previousActiveIndex = previousActiveIndexRef.current;
+
+        rosterItemRefs.current.forEach((item, index) => {
+            if (!item) return;
+            const previousState = getRouletteVisualState(index, previousActiveIndex);
+            const nextState = getRouletteVisualState(index, activeIndex);
+
+            item.style.pointerEvents = nextState.hidden ? 'none' : 'auto';
+
+            animate(item, {
+                opacity: [previousState.opacity, nextState.opacity],
+                translateY: [previousState.translateY, nextState.translateY],
+                rotateX: [previousState.rotateX, nextState.rotateX],
+                scale: [previousState.scale, nextState.scale],
+                filter: [previousState.filter, nextState.filter],
+                duration: prefersReducedMotion ? 0 : 850,
+                ease: createSpring({ stiffness: 78, damping: 16 }),
+            });
+        });
+
+        previousActiveIndexRef.current = activeIndex;
+    }, [activeIndex, prefersReducedMotion]);
+
+    useLayoutEffect(() => {
+        if (!isMobile) return;
+
+        const targets = [cardRef.current, avatarRef.current, titleRef.current].filter(Boolean);
+        if (!targets.length) return;
+
+        animate(targets, {
+            opacity: [0, 1],
+            translateY: [16, 0],
+            scale: [0.96, 1],
+            duration: prefersReducedMotion ? 0 : 620,
+            delay: (_, index) => index * 70,
+            ease: 'out(4)',
+        });
+    }, [activeIndex, isMobile, prefersReducedMotion]);
 
     useEffect(() => {
         // Respect reduced-motion: don't auto-rotate the roster, let the user drive it.
@@ -104,13 +163,6 @@ const OurTeamSlide = () => {
                 ease: 'out(4)',
             });
 
-            animate(el.querySelectorAll('.team-roulette-item'), {
-                opacity: [0, 1],
-                delay: stagger(80, { start: 320 }),
-                duration: 750,
-                ease: 'out(4)',
-            });
-
             animate(el.querySelector('.team-lanyard-stage')!, {
                 opacity: [0, 1],
                 scale: [0.82, 1.04, 1],
@@ -139,7 +191,7 @@ const OurTeamSlide = () => {
     }, []);
 
     return (
-        <section ref={sectionRef} className="slide relative min-h-screen w-full overflow-hidden bg-background px-5 pb-5 pt-16 font-sans md:px-8 md:pb-7 md:pt-16">
+        <section ref={sectionRef} className="slide relative min-h-screen w-full overflow-hidden bg-background px-5 pb-4 pt-10 font-sans md:px-8 md:pb-7 md:pt-16">
             <div className="absolute inset-0 z-0 pointer-events-none opacity-40 hexagon-pattern" />
             <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_76%_34%,rgba(75,194,194,0.2),transparent_30%),radial-gradient(circle_at_18%_78%,rgba(2,184,252,0.12),transparent_28%),linear-gradient(180deg,rgba(9,13,18,0.9),rgba(7,9,13,0.98))]" />
             <div className="relative z-10 flex h-full w-full max-w-[1720px] flex-col">
@@ -155,18 +207,17 @@ const OurTeamSlide = () => {
                     </h2>
                 </header>
 
-                <div className="relative grid min-h-0 flex-1 grid-cols-1 items-center gap-8 overflow-visible lg:grid-cols-[minmax(360px,0.82fr)_minmax(520px,1.18fr)]">
+                <div className="relative grid min-h-0 flex-1 grid-cols-1 items-start gap-4 overflow-visible md:gap-8 lg:grid-cols-[minmax(360px,0.82fr)_minmax(520px,1.18fr)] lg:items-center">
                     <div className="absolute inset-x-12 top-1/2 h-32 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />
 
                     <div className="relative z-10 flex w-full max-w-[560px] flex-col justify-center lg:-mt-2">
-                        <div className="mb-5 flex items-center gap-4">
-                            <span className="h-px w-12 bg-primary/70" />
+                        <div className="mb-3 flex items-center gap-4 md:mb-5">
                             <span className="font-body text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-white/45">
                                 Core team
                             </span>
                         </div>
 
-                        <div className="relative h-[286px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.22)] [perspective:1050px] md:h-[390px]">
+                        <div className="relative h-[246px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.22)] [perspective:1050px] md:h-[390px]">
                             <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-gradient-to-b from-background via-background/78 to-transparent" />
                             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-24 bg-gradient-to-t from-background via-background/78 to-transparent" />
                             <div className="pointer-events-none absolute left-6 right-6 top-1/2 z-10 h-[5.1rem] -translate-y-1/2 rounded-2xl border border-primary/35 bg-primary/[0.08] shadow-[0_0_42px_rgba(75,194,194,0.16)]" />
@@ -182,15 +233,17 @@ const OurTeamSlide = () => {
                                 return (
                                     <button
                                         key={member.name}
+                                        ref={(node) => {
+                                            rosterItemRefs.current[index] = node;
+                                        }}
                                         type="button"
                                         onClick={() => setActiveIndex(index)}
-                                        className="team-roulette-item absolute left-0 right-0 top-1/2 z-20 flex h-20 -translate-y-1/2 items-center justify-center transition-[opacity,filter,color,transform] duration-700"
+                                        className="team-roulette-item absolute left-0 right-0 top-1/2 z-20 flex h-20 items-center justify-center"
                                         style={{
                                             opacity: hidden ? 0 : isActive ? 1 : absOffset === 1 ? 0.6 : 0.28,
-                                            transform: `translateY(calc(-50% + ${offset * 4.85}rem)) rotateX(${-offset * 18}deg) scale(${isActive ? 1 : absOffset === 1 ? 0.92 : 0.8})`,
+                                            transform: `translateY(${-40 + offset * 77.6}px) rotateX(${-offset * 18}deg) scale(${isActive ? 1 : absOffset === 1 ? 0.92 : 0.8})`,
                                             filter: isActive ? 'blur(0px)' : absOffset === 1 ? 'blur(0.12px)' : 'blur(0.65px)',
                                             pointerEvents: hidden ? 'none' : 'auto',
-                                            transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
                                         }}
                                     >
                                         <span className="min-w-0 px-6 text-center">
@@ -208,14 +261,14 @@ const OurTeamSlide = () => {
                         </div>
                     </div>
 
-                    <div className="team-lanyard-stage relative z-10 flex min-h-[270px] items-center justify-center overflow-visible md:min-h-[620px]" style={{ opacity: 0 }}>
+                    <div className="team-lanyard-stage relative z-10 flex min-h-[220px] w-full items-start justify-center overflow-visible md:min-h-[620px] md:items-center" style={{ opacity: 0 }}>
                         <div className="absolute right-4 top-1/2 h-[58%] w-[72%] -translate-y-1/2 rounded-full bg-primary/14 blur-[70px]" />
                         {isMobile ? (
                             /* Mobile: the WebGL + physics lanyard is too tall and janky for phones.
                                Show a static badge card for the active member instead. */
-                            <div className="relative flex w-full max-w-[300px] flex-col items-center rounded-[2rem] border border-white/10 bg-white/[0.035] px-6 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.28)]">
-                                <span className="mb-4 h-px w-10 bg-primary/70" />
-                                <div className="relative h-32 w-32 overflow-hidden rounded-full border border-primary/40 bg-black/40 shadow-[0_0_42px_rgba(75,194,194,0.22)]">
+                            <div ref={cardRef} className="relative flex w-full max-w-[280px] flex-col items-center rounded-[2rem] border border-white/10 bg-white/[0.035] px-6 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_80px_rgba(0,0,0,0.28)]">
+                                <span className="mb-3 h-px w-10 bg-primary/70" />
+                                <div ref={avatarRef} className="relative h-28 w-28 overflow-hidden rounded-full border border-primary/40 bg-black/40 shadow-[0_0_42px_rgba(75,194,194,0.22)]">
                                     <img
                                         src={activeMember.avatar}
                                         alt={activeMember.name}
@@ -224,10 +277,7 @@ const OurTeamSlide = () => {
                                         decoding="async"
                                     />
                                 </div>
-                                <span className="mt-5 font-sans text-2xl font-black uppercase tracking-tight text-white">
-                                    {activeMember.name}
-                                </span>
-                                <span className="mt-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1 font-body text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                                <span ref={titleRef} className="mt-5 text-center font-sans text-xl font-black uppercase leading-tight tracking-tight text-white">
                                     {activeMember.title}
                                 </span>
                             </div>

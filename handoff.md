@@ -15,9 +15,11 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 25 (current) is a Hallmark-led B2B credentials pass on top of the already-pushed Session 23 accessibility/performance work and Session 24 mobile layout fixes. It adds a locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and refines the deck into a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and long-cycle technical sectors. The cover now reads `When the product is complex, the choice shouldn't be.`, removes the literal right-side info box, and replaces it with an editorial signal-map graphic around the OwlSurf mark. Services, Who We Are, Clients, Contact, and all case studies were tightened around proof, sector fit, and technical buyer clarity. Case studies now carry proof/info panels aligned with the creative carousel band, larger taglines, right-shifted creative stages, and more translucent inactive carousel images. The nav stays compact, centered, short-labelled, and keeps the Session 23 accessibility wiring.
+Session 26 (current) is a live mobile polish pass on top of the pushed Hallmark B2B credentials deck. It keeps the desktop deck intact except for the requested cover headline update: the cover now reads `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`, with Anime.js-powered dynamic teal pills for industries and buyer-confidence words, plus a local shiny-text case-study CTA. Mobile cover spacing, wordmark centering, logo scale, and partner badge fit were tuned. Slide 2 was rebuilt into a tighter buyer-outcomes layout, Our Team now uses Anime.js for the roster/card transitions and removes duplicate mobile badge names, and the Clients proof slide removes the market-note grid while centering and slightly speeding the logo loops.
 
-Session 24 (current) is a mobile-only layout pass. It fixes the phone-layout breakage that was the long-open "Mobile layout" item in Known Issues, with no desktop change (verified by desktop + mobile screenshots). Services cards are no longer hidden off-screen on mobile (the 3D `CardSwap` is replaced by a readable list + horizontal pillar chips); Our Team uses a static badge card instead of the clipped WebGL lanyard on mobile; Who We Are is compacted so the headline and differentiators stop clipping; Clients is centered instead of showing an empty void. A Playwright screenshot harness (`scripts/mobile-shots.mjs`) was added, `playwright` kept as a devDependency, and `scripts/_shots/` gitignored. `npm run lint` passes with 0 warnings. Full details under the Session 24 Files Touched list and in `context.md`.
+Session 25 is the Hallmark-led B2B credentials pass that added the locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and refined the deck into a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and long-cycle technical sectors.
+
+Session 24 is the mobile-only layout pass that fixed the phone-layout breakage from the long-open "Mobile layout" item in Known Issues. Services cards became readable on mobile, Our Team gained a static mobile badge card, Who We Are was compacted, Clients was balanced, and the Playwright screenshot harness was added.
 
 Session 23 is an accessibility + performance hardening pass on top of Session 22. It clears most of the long-standing P0 UX-audit backlog: real ARIA semantics in `PillNav` and the Services pillar tabs, a new `prefers-reduced-motion` gate, mobile gating of the heavy WebGL backdrops (now matching `prod.md` line 22 instead of self-violating it), a roster-contrast fix, the Contact landmark fix, a local OG image, and a soft slide skeleton to remove the black flash between slides. `npm run lint` and `npm run build` both pass clean. Full details under Current State below.
 
@@ -46,7 +48,16 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 25 push prep verified code without browser screenshots, per the user's standing preference to judge visual frontend changes manually. `npm run lint` and `npm run build` pass. The build still prints the stale Browserslist/caniuse-lite notice and the known large `vendor-lanyard` warning.
+The Session 26 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` for phone review during this session. Prior visual checks were done only where the user explicitly asked; final push verification is command-based. `git diff --check`, `npm run lint`, and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+
+### Session 26 mobile cover, Slide 2, Team, and Proof Clients polish
+
+- **Cover** — replaced the old complex-product headline with a rotating buyer-trust headline: `We turn [Solar / Industrial / Chemical / Pharma / Manufacturing / Mobility / Real Estate] businesses into brands buyers actually [trust / choose / believe / prefer / buy from]`. The rotating pills use the local `WordRotate` component and Anime.js width/word transitions.
+- **Cover mobile** — centered the `OWLSURF DIGITAL` wordmark, removed the mobile credentials subline, hid the mobile strategy/content/demand paragraph, improved heading spacing, enlarged the signal logo circle, and kept all four partner badges on one visible line.
+- **CTA** — replaced the review-case-studies CTA text effect with a local `AnimatedShinyText` component while preserving the click behavior.
+- **Slide 2** — improved the `What we understand`, `Priority sectors`, and `What this means for buyers` headings, removed the old wide rules and PDF-replacement copy, made `sales.` and `buyers.` teal serif accents, and changed the bottom block to buyer outcomes: clear first look, faster buy-in, less explaining, credible proof, and sales alignment.
+- **Our Team** — shifted the mobile heading up, removed the rule before `Core team`, removed duplicate names from the mobile employee card, moved the designation/title into the card's primary text slot, and moved both the roster roulette and mobile card change to Anime.js.
+- **Proof Clients** — shifted the heading up, removed the four market-note lines, centered the logo slider in the slide, and slightly increased both loop speeds.
 
 ### Session 25 Hallmark credentials pass
 
@@ -193,6 +204,17 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 26)
+
+Live mobile polish and the requested desktop cover headline change:
+- `src/components/slides/TitleSlide.tsx` — rotating headline pills, mobile wordmark/heading/logo/badge alignment, shiny case-study CTA
+- `src/components/ui/word-rotate.tsx` — new Anime.js word-rotation component with dynamic width
+- `src/components/ui/animated-shiny-text.tsx` — new local shiny-text CTA primitive
+- `src/components/slides/SkyrocketSlide.tsx` — Slide 2 buyer-outcome copy, compact mobile layout, teal serif headline accents
+- `src/components/slides/OurTeamSlide.tsx` — Anime.js roster/card animation, mobile card/title cleanup, heading/rule spacing
+- `src/components/slides/ClientsSlide.tsx` — proof-client heading/slider alignment, removed market notes, speed bump
+- `context.md`, `prod.md`, `handoff.md` — push-prep continuity updates
 
 ## Files Touched (Session 25)
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, ArrowUpRight, Layers, Cpu, Target, type LucideIcon } from "lucide-react";
+import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, ArrowUpRight, Eye, Handshake, MessageSquareText, ShieldCheck, UsersRound, type LucideIcon } from "lucide-react";
 import { animate, createSpring, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -17,9 +17,11 @@ const sectors: Sector[] = [
 type Differentiator = { icon: LucideIcon; label: string; desc: string };
 
 const differentiators: Differentiator[] = [
-  { icon: Layers, label: "Deck to demand", desc: "Positioning, assets, campaigns, and follow-through." },
-  { icon: Cpu, label: "Technical fluency", desc: "We can read the product before we write the pitch." },
-  { icon: Target, label: "Buyer proof", desc: "Built around sales conversations, not vanity activity." },
+  { icon: Eye, label: "Clear first look", desc: "Buyers understand what you do before the sales call starts." },
+  { icon: Handshake, label: "Faster buy-in", desc: "Internal champions get language they can repeat upstairs." },
+  { icon: MessageSquareText, label: "Less explaining", desc: "Technical details become simple without becoming shallow." },
+  { icon: ShieldCheck, label: "Credible proof", desc: "Proof points reduce perceived risk for serious buyers." },
+  { icon: UsersRound, label: "Sales alignment", desc: "Sales, marketing, and leadership tell the same story." },
 ];
 
 const SkyrocketSlide = () => {
@@ -99,7 +101,7 @@ const SkyrocketSlide = () => {
             ease: createSpring({ stiffness: 95, damping: 12 }),
           });
 
-          animate(el.querySelector(".who-title-accent")!, {
+          animate(el.querySelectorAll(".who-title-accent"), {
             translateX: [-24, 0],
             filter: ["blur(10px)", "blur(0px)"],
             duration: 900,
@@ -149,20 +151,20 @@ const SkyrocketSlide = () => {
       )}
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-5 px-6 py-5 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-4 px-6 py-4 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
-        <div className="grid gap-5 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
+        <div className="grid gap-4 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
           <div className="md:col-span-7">
-            <div className="who-kicker flex items-center gap-3 font-sans font-black uppercase text-owl-teal text-[10px] tracking-[0.24em] md:text-xs md:tracking-[0.3em]" style={{ opacity: 0 }}>
-              <span className="who-rule h-px w-10 origin-left bg-owl-teal/80 md:w-14" />
+            <div className="who-kicker font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]" style={{ opacity: 0 }}>
                 What we understand
-              <span className="ml-1 font-sans text-white/30">/ 02</span>
+              <span className="ml-1 hidden font-sans text-white/35 sm:inline">/ 02</span>
             </div>
 
-            <h2 className="mt-4 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[2rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
+            <h2 className="mt-3 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[1.9rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
               <span className="who-word block">
-                <span className="font-sans not-italic">Long sales.</span>
+                <span className="font-sans not-italic">Long </span>
+                <span className="who-title-accent font-serif italic text-owl-teal inline-block pr-2">sales.</span>
               </span>
               <span className="who-word block">
                 <span className="font-sans not-italic">Technical </span>
@@ -170,41 +172,40 @@ const SkyrocketSlide = () => {
               </span>
             </h2>
 
-            <p className="who-copy mt-3 max-w-[520px] font-body leading-[1.5] text-white/70 text-sm md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
+            <p className="who-copy mt-2 hidden max-w-[520px] font-body leading-[1.5] text-white/70 text-sm sm:block md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
               We turn dense product truth into market-facing clarity for teams selling into plants, labs, factories, institutions, and procurement rooms.
             </p>
           </div>
 
           {/* where we work */}
           <div className="md:col-span-5 md:border-l md:border-white/10 md:pl-12 lg:pl-16">
-            <div className="who-kicker flex items-center gap-3" style={{ opacity: 0 }}>
-              <span className="who-rule h-px w-10 origin-left bg-owl-teal/70" />
-              <span className="font-sans text-[10px] font-black uppercase tracking-[0.22em] text-owl-teal md:text-xs md:tracking-[0.26em]">
+            <div className="who-kicker" style={{ opacity: 0 }}>
+              <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
                 Priority sectors
               </span>
             </div>
 
-            <div className="mt-4 flex flex-col md:mt-6">
+            <div className="mt-3 grid grid-cols-2 gap-2 md:mt-6 md:flex md:flex-col md:gap-0">
               {sectors.map((sector) => {
                 const Icon = sector.icon;
                 return (
                   <div
                     key={sector.label}
-                    className="who-sector group flex items-center gap-4 border-b border-white/10 py-2.5 transition-colors duration-300 first:border-t hover:border-owl-teal/40 md:py-4"
+                    className="who-sector group flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.025] px-3 py-2 transition-colors duration-300 hover:border-owl-teal/40 md:gap-4 md:rounded-none md:border-x-0 md:border-b md:bg-transparent md:px-0 md:py-4 md:first:border-t"
                     style={{ opacity: 0 }}
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-owl-teal/10 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-11 md:w-11">
-                      <Icon className="h-[1.2rem] w-[1.2rem]" strokeWidth={1.8} />
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-owl-teal/10 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-11 md:w-11">
+                      <Icon className="h-[1rem] w-[1rem] md:h-[1.2rem] md:w-[1.2rem]" strokeWidth={1.8} />
                     </span>
                     <span className="flex min-w-0 flex-col">
-                      <span className="font-sans text-base font-black leading-tight text-white">
+                      <span className="font-sans text-[0.86rem] font-black leading-tight text-white md:text-base">
                         {sector.label}
                       </span>
-                      <span className="font-body text-xs leading-tight text-white/45 md:text-[0.8rem]">
+                      <span className="hidden font-body text-xs leading-tight text-white/45 md:block md:text-[0.8rem]">
                         {sector.tag}
                       </span>
                     </span>
-                    <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 -translate-x-1 text-white/0 transition-colors duration-300 group-hover:translate-x-0 group-hover:text-owl-teal" strokeWidth={2} />
+                    <ArrowUpRight className="ml-auto hidden h-4 w-4 shrink-0 -translate-x-1 text-white/0 transition-colors duration-300 group-hover:translate-x-0 group-hover:text-owl-teal md:block" strokeWidth={2} />
                   </div>
                 );
               })}
@@ -212,32 +213,31 @@ const SkyrocketSlide = () => {
           </div>
         </div>
 
-        {/* BOTTOM — what makes us different (full width) */}
-        <div className="border-t border-white/10 pt-4 md:pt-9">
-          <div className="who-copy mb-3 flex items-center gap-3 md:mb-6" style={{ opacity: 0 }}>
-            <span className="who-rule h-px w-10 origin-left bg-owl-teal/70" />
-            <span className="font-sans text-[10px] font-black uppercase tracking-[0.22em] text-owl-teal md:text-xs md:tracking-[0.26em]">
-              Why this replaces the PDF
+        {/* BOTTOM — buyer outcomes (full width) */}
+        <div className="border-t border-white/10 pt-3 md:pt-9">
+          <div className="who-copy mb-2 md:mb-6" style={{ opacity: 0 }}>
+            <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
+              What this means for buyers
             </span>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-1 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 md:gap-6">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-5 md:gap-4 lg:gap-6">
             {differentiators.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="who-chip group relative flex min-w-[78%] shrink-0 items-start gap-4 overflow-hidden rounded-xl border border-white/10 bg-white/[0.035] p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] sm:min-w-0 sm:p-5"
+                  className="who-chip group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-2.5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] md:items-start md:gap-3 md:p-4 lg:gap-4 lg:p-5"
                   style={{ opacity: 0 }}
                 >
                   <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/0 transition-colors duration-300 group-hover:bg-owl-teal" />
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-owl-teal/30 bg-owl-teal/12 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20">
-                    <Icon className="h-[1.25rem] w-[1.25rem]" strokeWidth={1.9} />
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-owl-teal/30 bg-owl-teal/12 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-10 md:w-10 lg:h-11 lg:w-11">
+                    <Icon className="h-[1rem] w-[1rem] md:h-[1.15rem] md:w-[1.15rem] lg:h-[1.25rem] lg:w-[1.25rem]" strokeWidth={1.9} />
                   </span>
                   <span className="flex min-w-0 flex-col gap-1">
-                    <span className="font-sans text-[0.95rem] font-black uppercase leading-tight tracking-tight text-white">
+                    <span className="font-sans text-[0.78rem] font-black uppercase leading-tight tracking-[0.04em] text-white md:text-[0.82rem] lg:text-[0.95rem]">
                       {item.label}
                     </span>
-                    <span className="font-body text-sm leading-snug text-white/55">
+                    <span className="hidden font-body text-xs leading-snug text-white/55 md:block lg:text-sm">
                       {item.desc}
                     </span>
                   </span>

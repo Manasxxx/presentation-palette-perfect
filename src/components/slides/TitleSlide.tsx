@@ -16,18 +16,22 @@ import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
-import MagneticButton from "@/components/ui/MagneticButton";
+import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
+import { WordRotate } from "@/components/ui/word-rotate";
 import metaBusinessPartnerBadge from "@/assets/badge-meta-business-partner.png";
 import googlePartnerBadge from "@/assets/badge-google-partner.png";
 import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-partner.png";
 import hubspotPartnerBadge from "@/assets/badge-hubspot-partner-gold.png";
 
 const credibilityBadges = [
-  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "h-[48px] md:h-[62px]" },
-  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "h-[64px] md:h-[80px]" },
-  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "h-[62px] md:h-[78px]" },
-  { label: "Google Partner", src: googlePartnerBadge, className: "h-[66px] md:h-[84px]" },
+  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "md:h-[62px]" },
+  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "md:h-[80px]" },
+  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "md:h-[78px]" },
+  { label: "Google Partner", src: googlePartnerBadge, className: "md:h-[84px]" },
 ];
+
+const rotatingIndustries = ["Solar", "Industrial", "Chemical", "Pharma", "Manufacturing", "Mobility", "Real Estate"];
+const rotatingTrustWords = ["trust", "choose", "believe", "prefer", "buy from"];
 
 const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) => {
   const isMobile = useIsMobile();
@@ -78,9 +82,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       });
     }
 
-    const hookAccent = el.querySelector(".ts-hook-accent");
-    if (hookAccent) {
-      animate(hookAccent, {
+    const hookAccents = el.querySelectorAll(".ts-hook-accent");
+    if (hookAccents.length) {
+      animate(hookAccents, {
         opacity: [0, 1],
         translateX: [-26, 0],
         filter: ["blur(14px)", "blur(0px)"],
@@ -237,14 +241,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-20"
       >
         {/* TOP: brand lockup */}
-        <div className="flex flex-row items-start justify-between gap-6">
-          <div className="ts-wordmark-line min-w-0" style={{ opacity: 0 }}>
-            <span className="block font-sans font-black uppercase leading-none tracking-tight text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
+        <div className="flex flex-row items-start justify-center gap-6 md:justify-between">
+          <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left" style={{ opacity: 0 }}>
+            <span className="block font-sans font-black uppercase leading-none tracking-tight text-owl-teal md:text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
               <span className="font-sans not-italic">OWL</span>
               <span className="ts-title-accent font-sans not-italic text-owl-teal inline-block">SURF</span>
-              <span className="font-sans not-italic"> DIGITAL</span>
+              <span className="font-sans not-italic text-white"> DIGITAL</span>
             </span>
-            <span className="block font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)]">
+            <span className="hidden font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)] md:block">
               Credentials for chemical and industrial markets
             </span>
           </div>
@@ -254,35 +258,40 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
 
         {/* CENTER: editorial claim (left) + signal map (right) */}
-        <div className="grid items-center gap-8 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
-          <div className="relative min-w-0 pl-5 md:pl-8">
-            <span
-              className="ts-seam absolute left-0 top-1 bottom-1 w-[2px] rounded-full bg-gradient-to-b from-transparent via-owl-teal to-transparent"
-              style={{ opacity: 0, transformOrigin: "top" }}
-            />
-            <h1 className="ts-hook max-w-[48rem] font-sans font-black tracking-normal text-white [overflow-wrap:anywhere]" style={{ opacity: 0 }}>
-              <span className="block font-sans text-[clamp(1.1rem,1.55vw,1.55rem)] font-semibold uppercase leading-none tracking-[0.16em] text-white/58">
-                When the product is
-              </span>
-              <span className="mt-3 block font-sans text-[clamp(3.1rem,5.65vw,5.8rem)] font-black uppercase leading-[0.9] text-white">
-                complex,
-              </span>
-              <span className="mt-5 block font-body text-[clamp(1.4rem,2.35vw,2.35rem)] font-medium normal-case leading-tight tracking-normal text-white/70">
-                the choice{" "}
-                <span
-                  className="ts-hook-accent font-serif text-[clamp(2.1rem,4vw,4.25rem)] font-semibold italic lowercase leading-none tracking-tight text-owl-teal"
-                  style={{ opacity: 0 }}
-                >
-                  shouldn't be.
+        <div className="grid translate-y-0 items-center gap-8 md:translate-y-0 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
+          <div className="relative min-w-0">
+            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left" style={{ opacity: 0 }}>
+              <span className="block max-w-[22rem] md:max-w-[52rem]">
+                <span className="block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]">
+                  We turn
+                </span>
+                <span className="mt-3 block md:mt-4">
+                  <span className="inline-flex rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]">
+                    <WordRotate words={rotatingIndustries} duration={1900} className="text-center" />
+                  </span>
+                </span>
+                <span className="mt-3 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]">
+                  businesses into brands
+                </span>
+                <span className="mt-2 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:mt-3 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]">
+                  buyers actually
+                </span>
+                <span className="mt-3 block md:mt-4">
+                  <span
+                    className="ts-hook-accent inline-flex rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]"
+                    style={{ opacity: 0 }}
+                  >
+                    <WordRotate words={rotatingTrustWords} duration={1900} className="text-center" />
+                  </span>
                 </span>
               </span>
             </h1>
-            <p className="ts-info-col mt-6 max-w-[42rem] font-body text-sm leading-[1.55] text-white/58 md:text-lg" style={{ opacity: 0 }}>
+            <p className="ts-info-col mt-6 hidden max-w-[42rem] font-body text-sm leading-[1.55] text-white/58 md:block md:text-lg" style={{ opacity: 0 }}>
               Strategy, content, demand, and digital proof for chemical, industrial, and technical brands that need buyers to understand the value fast.
             </p>
           </div>
 
-          <aside className="ts-logo-outer relative min-h-[20rem] min-w-0 overflow-hidden md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+          <aside className="ts-logo-outer relative min-h-[12rem] min-w-0 overflow-hidden sm:min-h-[13rem] md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
             <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
             <div className="absolute inset-y-12 left-1/2 w-px bg-gradient-to-b from-transparent via-white/16 to-transparent" />
             <div
@@ -309,7 +318,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               style={{ opacity: 0, animation: "ts-scan-drift 7s ease-in-out infinite" }}
             />
 
-            <div className="absolute left-1/2 top-1/2 h-[11rem] w-[11rem] -translate-x-1/2 -translate-y-1/2 md:h-[14rem] md:w-[14rem]">
+            <div className="absolute left-1/2 top-1/2 h-[10.85rem] w-[10.85rem] -translate-x-1/2 -translate-y-1/2 sm:h-[11.6rem] sm:w-[11.6rem] md:h-[18.5rem] md:w-[18.5rem]">
               <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/35" style={{ opacity: 0, transform: "scale(1.18)" }} />
               <div className="ts-ring absolute inset-0 rounded-full border border-white/14" style={{ opacity: 0, transform: "scale(1.55)" }} />
               <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/18" style={{ opacity: 0, transform: "scale(2)" }} />
@@ -339,7 +348,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
 
         {/* BOTTOM: centered CTA over a centered partner badge strip */}
-        <div className="flex flex-col items-center gap-8 md:gap-10">
+        <div className="flex -translate-y-4 flex-col items-center gap-4 md:translate-y-0 md:gap-10">
           {onViewCaseStudies && (
             <div className="relative">
               <Arrow19
@@ -347,46 +356,36 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 style={{ opacity: 0, transform: "rotate(120deg) scaleX(-1)" }}
               />
               <div className="ts-button" style={{ opacity: 0 }}>
-                <MagneticButton
+                <button
+                  type="button"
                   onClick={onViewCaseStudies}
-                  strength={0.32}
-                  radius={170}
-                  className="relative overflow-hidden rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition-shadow duration-300"
-                  style={{
-                    background: "linear-gradient(135deg, hsl(180 45% 53%), hsl(180 45% 40%))",
-                    boxShadow: "0 4px 24px rgba(75, 194, 194, 0.45)",
-                  }}
+                  className="group rounded-full border border-white/10 bg-white/[0.07] px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.18em] shadow-[0_4px_24px_rgba(75,194,194,0.22)] backdrop-blur-md transition-all duration-300 hover:border-owl-teal/45 hover:bg-owl-teal/10 hover:shadow-[0_6px_30px_rgba(75,194,194,0.32)]"
                 >
-                  <span className="relative z-10">Review case studies →</span>
-                  <span
-                    className="absolute inset-0 z-0"
-                    style={{
-                      background: "linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%)",
-                      backgroundSize: "200% 100%",
-                      animation: "shimmer-cascade 2.5s ease-in-out infinite",
-                    }}
-                  />
-                </MagneticButton>
+                  <AnimatedShinyText className="gap-2 transition-transform duration-300 group-hover:translate-x-0.5" shimmerWidth={80}>
+                    <span>Review case studies</span>
+                    <span aria-hidden="true">→</span>
+                  </AnimatedShinyText>
+                </button>
               </div>
             </div>
           )}
 
           {/* Partner badge strip — secondary credibility, centered */}
-          <div className="flex translate-y-5 flex-col items-center gap-3 md:translate-y-8">
+          <div className="flex flex-col items-center gap-2 md:translate-y-8 md:gap-3">
             <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
               Platform partners
             </span>
-            <div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-7 gap-y-4 md:flex-nowrap md:gap-x-11">
+            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-2 md:gap-x-11">
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex h-[74px] items-center justify-center md:h-[92px]"
+                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center md:h-[92px]"
                   style={{ opacity: 0 }}
                 >
                   <img
                     src={badge.src}
                     alt={badge.label}
-                    className={`block w-auto max-w-none object-contain ${badge.className}`}
+                    className={`block h-auto max-h-[38px] max-w-[22vw] object-contain md:max-h-none md:max-w-none ${badge.className}`}
                     loading="eager"
                     decoding="async"
                   />
