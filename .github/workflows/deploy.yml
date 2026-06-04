@@ -22,7 +22,7 @@ jobs:
             -o /tmp/deploy-response.json \
             -w "%{http_code}" \
             -X POST \
-            "https://www.heyowlsurf.com/deploy" \
+            "https://www.owlsurf.media/deploy" \
             -H "X-Deploy-Token: ${{ secrets.DEPLOY_TOKEN }}")
 
           echo "HTTP Status: $status_code"

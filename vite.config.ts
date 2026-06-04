@@ -8,8 +8,8 @@ export default defineConfig(() => ({
   server: {
     host: "::",
     allowedHosts: [
-      'heyowlsurf.com',
-      'www.heyowlsurf.com'
+      'owlsurf.media',
+      'www.owlsurf.media'
     ],
     port: 8080,
     hmr: {
