@@ -9,7 +9,6 @@ jobs:
 deploy:
 runs-on: ubuntu-latest
 
-```
 steps:
   - name: Trigger Deployment
     run: |
@@ -35,4 +34,3 @@ steps:
         echo "Deployment webhook failed with status $status_code"
         exit 1
       fi
-```
