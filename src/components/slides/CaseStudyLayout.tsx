@@ -149,10 +149,10 @@ const CaseStudyLayout = ({
       />
       <div className="absolute inset-0 z-[-1]" style={{ background }} />
 
-      <div className="relative z-10 flex h-full w-full flex-col gap-2 px-5 pt-8 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-5 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
         <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
-            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 block uppercase"
+            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
             style={{ opacity: isMobile ? 1 : 0, color: `hsl(${accentColor})` }}
           >
             Case proof {caseNumber}
@@ -170,7 +170,7 @@ const CaseStudyLayout = ({
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.8rem] leading-snug md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
+            className="cs-subtitle mt-2.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0, color: muted }}
           >
             {subtitle}
@@ -194,7 +194,7 @@ const CaseStudyLayout = ({
           {proofRows.map((point) => (
             <div
               key={`${point.label}-${point.value}`}
-              className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b px-3 py-1 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4"
+              className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4"
               style={{ borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.12)" : "hsl(0 0% 100% / 0.12)") : statBorder }}
             >
               <span className="font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${accentColor})` }}>
@@ -208,11 +208,11 @@ const CaseStudyLayout = ({
         </div>
 
         {stats.length > 0 && (
-          <div className="cs-stats order-4 grid grid-cols-2 gap-1.5 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
+          <div className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="cs-stat flex h-[2.45rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border px-3 py-1 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:p-3"
+                className="cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:p-3"
                 style={{
                   opacity: isMobile ? 1 : 0,
                   borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.16)") : statBorder,
@@ -220,7 +220,7 @@ const CaseStudyLayout = ({
                 }}
               >
                 <div
-                  className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.32rem] font-semibold leading-none tracking-normal md:min-h-11 md:gap-1.5 md:text-[clamp(1.55rem,2.05vw,2.4rem)]"
+                  className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal md:min-h-11 md:gap-1.5 md:text-[clamp(1.55rem,2.05vw,2.4rem)]"
                   style={{ color: statInk }}
                 >
                   {stat.value}
@@ -239,7 +239,7 @@ const CaseStudyLayout = ({
           </div>
         )}
 
-        <div className="order-2 mt-5 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
+        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <ParallaxCardSlider
               slides={slides}

@@ -168,10 +168,10 @@ const CaseStudySlide = () => {
         style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "circle(150% at 50% 50%)" : "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
-      <div className="relative z-10 flex h-full w-full flex-col gap-2 px-5 pt-8 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-5 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
         <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
-            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 block uppercase"
+            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
             style={{ opacity: isMobile ? 1 : 0, color: `hsl(${mitsuiCyan})` }}
           >
             Case proof 01
@@ -186,7 +186,7 @@ const CaseStudySlide = () => {
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.8rem] leading-snug text-white/70 md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
+            className="cs-subtitle mt-2.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/70 md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
             Specialty chemicals across APAC. We made technical value visible across regions, formats, and paid channels.
@@ -201,7 +201,7 @@ const CaseStudySlide = () => {
 
         <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border border-white/16 bg-white/[0.045] backdrop-blur-sm md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none md:rounded-none lg:w-[30%]" style={{ opacity: isMobile ? 1 : 0 }}>
           {mitsuiProofPoints.map((point) => (
-            <div key={point.label} className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b border-white/12 px-3 py-1 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4">
+            <div key={point.label} className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b border-white/12 px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4">
               <span className="font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${mitsuiCyan})` }}>
                 {point.label}
               </span>
@@ -212,15 +212,15 @@ const CaseStudySlide = () => {
           ))}
         </div>
 
-        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-1.5 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
+        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
           {statDefs.map((stat) => (
             <div
               key={stat.label}
-              className="cs-stat flex h-[2.45rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/16 bg-white/[0.055] px-3 py-1 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:bg-black/20 md:p-3"
+              className="cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/16 bg-white/[0.055] px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:bg-black/20 md:p-3"
               style={{ opacity: isMobile ? 1 : 0 }}
             >
               <div
-                className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.32rem] font-semibold leading-none tracking-normal text-white md:min-h-11 md:gap-1.5 md:text-[clamp(1.7rem,2.25vw,2.55rem)]"
+                className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal text-white md:min-h-11 md:gap-1.5 md:text-[clamp(1.7rem,2.25vw,2.55rem)]"
               >
                 <span>
                   <AnimatedStatValue num={stat.num} suffix={stat.suffix} decimals={stat.decimals} triggered={statsTriggered} />
@@ -248,7 +248,7 @@ const CaseStudySlide = () => {
         </div>
 
         {/* RIGHT: creative gallery */}
-        <div className="order-2 mt-5 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
+        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <ParallaxCardSlider
               slides={sliderImages}

@@ -5,6 +5,20 @@
 
 ---
 
+## Current State (as of Session 29 push prep)
+
+**Session 29** fixes the Session 28 real-phone black-screen bug and runs a mobile polish pass on the case studies, Contact, and Clients slides.
+
+- **Black-screen root cause + fix** — `Index.tsx` computed the active slide as `Math.round(scrollTop / window.innerHeight)`. On Android Chrome `window.innerHeight` grows when the URL bar auto-hides, but slides are a constant rendered height, so the index drifted low and compounded down the deck. With `SLIDE_MOUNT_RADIUS = 0`, a wrong index means the looked-at slide isn't mounted and the black `SlideFallback` shows; the final slide survived only because `Math.min(..., length-1)` clamped it (why Contact stayed visible while the middle case studies blacked out). Fixed with `getSlideHeight(container)` measuring a real `.slide` via `getBoundingClientRect`, used for both the scroll→index map and `navigateToSlide`. Confirmed fixed on the user's phone. Not the Blossom carousel / WebGL / backdrop-filter — those were ruled out with a temporary `?dbg=` toggle harness (since removed).
+- **Case studies (mobile)** — top-aligned, "Case proof NN" eyebrow hidden on mobile, smaller stat pills, tuned spacing; cover-flow image taller (`aspect-ratio 1/2`) with `object-fit: cover`. Nav bar (logo + menu) hidden on case-study slides 5–11 on mobile.
+- **Contact slide** — redesigned centered closer: enlarged OwlSurf ripple mark, `Let's talk` eyebrow, `We make the [rotating] easy to [rotating]` with two teal block-uppercase `WordRotate` pills, primary email CTA + ghost phone CTA, trimmed footer. Removed the old `LET'S MAKE / COMPLEX / obvious.` headline, the PDF-replacement line, the four frame borders, and the desktop-only side mark.
+- **Footer (`FlyonFooter`)** — logo + three social badges + copyright only; phone/email/owlsurf.com moved to the Contact CTA buttons.
+- **Clients slide** — added a mobile-only credibility card strip below the logo loops; heading and loops untouched; desktop keeps PrismaticBurst.
+- **Cleanup** — removed the temporary mobile refresh button and a session-only debug jump-menu before push.
+- `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass; only the known `vendor-lanyard` chunk warning remains.
+
+---
+
 ## Current State (as of Session 28 push prep)
 
 **Session 28** is a mobile-only case-study pass. The desktop case-study layouts were not intentionally changed.

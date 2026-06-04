@@ -4,7 +4,7 @@ import TitleSlide from "@/components/slides/TitleSlide";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
-import { RefreshCw } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const OurTeamSlide = lazy(() => import("@/components/slides/OurTeamSlide"));
@@ -38,6 +38,21 @@ const slides: ComponentType[] = [
 const SLIDE_MOUNT_RADIUS = 0;
 const NAV_IDLE_HIDE_DELAY = 1600;
 
+/**
+ * The slides are sized in `svh` (small-viewport height, constant), but
+ * `window.innerHeight` grows on mobile when the browser URL bar auto-hides on
+ * scroll. Dividing `scrollTop` (which accrues in real svh-based layout pixels)
+ * by `window.innerHeight` makes the active-slide index drift low and compound
+ * down the deck, so the looked-at slide stops being the mounted one and shows
+ * the black `SlideFallback`. Measuring an actual rendered slide gives the true
+ * per-slide stride and is correct on desktop too.
+ */
+const getSlideHeight = (container: HTMLElement) => {
+  const probe = container.querySelector<HTMLElement>(".slide");
+  const height = probe?.getBoundingClientRect().height ?? 0;
+  return height > 0 ? height : window.innerHeight;
+};
+
 // A soft branded skeleton instead of a black void, so the lazy-chunk fetch for
 // the next slide does not flash an empty frame between scroll-snap stops.
 const SlideFallback = () => (
@@ -50,6 +65,11 @@ const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const isMobile = useIsMobile();
+
+  // Case studies (Mitsui through Raychem) are immersive on mobile — hide the
+  // whole nav bar (logo + menu) there. Desktop keeps the nav untouched.
+  const onCaseStudy = currentSlide >= 5 && currentSlide <= 11;
 
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -113,9 +133,9 @@ const Index = () => {
       if (rafId !== null) return;
       rafId = requestAnimationFrame(() => {
         const scrollTop = container.scrollTop;
-        const slideHeight = window.innerHeight;
+        const slideHeight = getSlideHeight(container);
         const newSlide = Math.round(scrollTop / slideHeight);
-        setCurrentSlide(Math.min(newSlide, slides.length - 1));
+        setCurrentSlide(Math.max(0, Math.min(newSlide, slides.length - 1)));
         rafId = null;
       });
     };
@@ -135,13 +155,9 @@ const Index = () => {
     if (!container) return;
 
     container.scrollTo({
-      top: index * window.innerHeight,
+      top: index * getSlideHeight(container),
       behavior: prefersReducedMotion ? "auto" : "smooth",
     });
-  };
-
-  const refreshPage = () => {
-    window.location.reload();
   };
 
   return (
@@ -153,18 +169,10 @@ const Index = () => {
     >
 
       <PillNav
-        visible={navActive}
+        visible={navActive && !(isMobile && onCaseStudy)}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
-      <button
-        type="button"
-        onClick={refreshPage}
-        className="fixed right-3 top-1/2 z-[1000] flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/18 bg-white text-black shadow-[0_12px_34px_rgba(0,0,0,0.35)] md:hidden"
-        aria-label="Refresh"
-      >
-        <RefreshCw className="h-5 w-5" strokeWidth={2.4} />
-      </button>
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {mountedSlides.has(index) ? (

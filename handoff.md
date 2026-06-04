@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 28 (current) is a mobile-only case-study pass. It replaces the mobile case-study carousel with Blossom cover-flow, adds 3-second auto-advance, compacts proof rows and metrics into translucent mobile pills, keeps only four stat pills per case study, keeps the `Role` row, removes the `Proof` row, and adds a temporary site-wide mobile refresh button near the center-right edge. The user still reports a critical real-phone bug: after the Baxsaa slide, later case-study slides briefly appear and then turn black/dark. This is not fixed. Next session should start there using the live phone path first. The previously-uncommitted deploy webhook retry flags still cannot ship in this push because the remote auth lacks `workflow` scope; that file stays in the working tree for a separate workflow-scoped push.
+Session 29 (current) fixes the Session 28 real-phone black-screen bug and runs a mobile polish pass on the case studies, the Contact slide, and the Clients slide. The black-screen root cause was the active-slide index math in `Index.tsx`: it divided `scrollTop` by `window.innerHeight`, which grows on Android Chrome when the URL bar auto-hides, while the slides are a constant height — the index drifted low and compounded down the deck, so the looked-at slide stopped being the mounted one and showed the black `SlideFallback` (the final slide survived only because `Math.min` clamped it). Fixed by measuring a real rendered `.slide` height (`getSlideHeight`) for both the scroll→index map and the programmatic `scrollTo`. Verified fixed on the user's phone. The case studies got a mobile spacing pass (top-aligned, smaller stat pills, hidden "Case proof NN" eyebrow on mobile) and a taller cover-flow image (`aspect-ratio 1/2`, `object-fit: cover`). The nav bar (logo + menu) is now hidden on case-study slides 5–11 on mobile. The Contact slide was redesigned into a centered closer with an enlarged OwlSurf ripple mark, two teal block-uppercase rotating pills (`WordRotate`: a complexity word and a decision word), email + phone CTA buttons, and a stripped footer; its old PDF-replacement line and frame borders were removed. The footer (`FlyonFooter`) now shows only the logo, three social badges, and the copyright. The Clients slide gained a mobile-only credibility card strip. The temporary mobile refresh button and a session-only debug jump-menu were both removed before this push. `.github/workflows/deploy.yml` is still excluded (remote PAT lacks `workflow` scope).
+
+Session 28 was a mobile-only case-study pass. It replaces the mobile case-study carousel with Blossom cover-flow, adds 3-second auto-advance, compacts proof rows and metrics into translucent mobile pills, keeps only four stat pills per case study, keeps the `Role` row, removes the `Proof` row, and adds a temporary site-wide mobile refresh button near the center-right edge. The user still reports a critical real-phone bug: after the Baxsaa slide, later case-study slides briefly appear and then turn black/dark. This is not fixed. Next session should start there using the live phone path first. The previously-uncommitted deploy webhook retry flags still cannot ship in this push because the remote auth lacks `workflow` scope; that file stays in the working tree for a separate workflow-scoped push.
 
 Session 27 is a live mobile polish pass on slides 2 (Who We Are) and 4 (Services), with no desktop change. Slide 2 mobile gains breathing room, an auto-scrolling teal-pill marquee for `Priority sectors` (replacing a broken `LogoLoop` attempt that over-duplicated because it measures `<img>` children the icon pills don't have), and a two-column buyer-outcomes grid. Slide 4 mobile is restructured: a two-row segmented category bar so all five verticals are visible with no hidden horizontal scroll, the highlighted category auto-advancing every 3.5s, and a numbered titles-only stepper consolidated to three headline groups per category (descriptions dropped on mobile only via a `mobileServices` map; desktop CardSwap untouched).
 
@@ -52,7 +54,18 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 28 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` for phone review. Final push verification is command-based. `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+The Session 29 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` (Vite `host: "::"`) for phone review. Final push verification is command-based. `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+
+### Session 29 — black-screen fix + mobile polish (case studies, Contact, Clients)
+
+- **Real-phone black-screen bug FIXED** (`src/pages/Index.tsx`). Root cause was the active-slide index drifting because `scrollTop` was divided by `window.innerHeight` (which grows when the Android Chrome URL bar hides) instead of the constant rendered slide height. Added `getSlideHeight(container)` (measures a real `.slide` via `getBoundingClientRect`) and used it for both the scroll→index map and `navigateToSlide`'s `scrollTo`. The drift compounded down the deck, which is why later case studies blacked out while the clamped final slide survived. Confirmed fixed on the user's phone.
+- **Case-study mobile spacing** (`CaseStudyLayout.tsx`, `CaseStudySlide.tsx`). Content is top-aligned (`justify-start`) on mobile, the "Case proof NN" eyebrow is hidden on mobile (`hidden md:block`), stat pills are smaller (`h-[2.2rem]`, `text-[1.12rem]`), and gaps/paddings were tuned to stop bottom clipping. Desktop unchanged.
+- **Taller cover-flow image** (`src/index.css`). `.cs-coverflow-item` aspect `1/1.92 → 1/2`; `.cs-coverflow-card img` `object-fit: contain → cover` (fills the card, removes letterboxing). The Session 28 diagnostic `?dbg=` harness was already removed.
+- **Nav hidden on case studies** (`Index.tsx`). `PillNav visible` is false on slides 5–11 on mobile (`!(isMobile && onCaseStudy)`); desktop nav untouched.
+- **Contact slide redesign** (`ContactSlide.tsx`). Centered closer: enlarged OwlSurf ripple mark hero (mobile-visible now, not desktop-only), `Let's talk` eyebrow, `We make the [rotating] easy to [rotating]` with two teal block-uppercase `WordRotate` pills (`rotatingComplexity`, `rotatingChoose`), a primary email CTA + ghost phone CTA, and the footer. Removed the old `LET'S MAKE / COMPLEX / obvious.` headline, the `If this replaces the portfolio PDF…` line, the four `white/12` frame borders, and the desktop-only side aside.
+- **Footer trimmed** (`FlyonFooter.tsx`). Single row of logo + three social badges + centered copyright. Phone, email, and `owlsurf.com` links were removed (they now live as CTA buttons on the Contact slide).
+- **Clients credibility strip** (`ClientsSlide.tsx`). Added a mobile-only (`md:hidden`) 5-card strip below the logo loops: `End-to-end / Brand to demand`, `6 / Sectors served`, `India + APAC / Markets reached`, `Meta + Google / Certified partner`, `B2B / Built for complex sales` (last full width). Heading and logo loops untouched; desktop keeps the PrismaticBurst backdrop.
+- **Temp aids removed** (`Index.tsx`). The Session 28 temporary mobile refresh button and a session-only debug jump-menu were both removed before this push.
 
 ### Session 28 mobile case-study pass
 
@@ -225,6 +238,19 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 29)
+
+Black-screen fix + mobile polish:
+- `src/pages/Index.tsx` — `getSlideHeight` mount-index fix (scroll map + `scrollTo`); `PillNav` hidden on mobile case studies (slides 5–11); removed temp refresh button + debug jump-menu
+- `src/components/slides/CaseStudyLayout.tsx` — top-aligned mobile, hidden eyebrow on mobile, smaller stat pills, tuned spacing
+- `src/components/slides/CaseStudySlide.tsx` — same mobile spacing pass for Mitsui
+- `src/index.css` — taller `.cs-coverflow-item` (`aspect 1/2`), `.cs-coverflow-card img` `object-fit: cover`; removed the Session 28 `?dbg=` diagnostic block
+- `src/components/slides/ContactSlide.tsx` — centered closer redesign, enlarged ripple mark, two `WordRotate` block pills, email/phone CTAs, removed PDF line + frame borders
+- `src/components/blocks/FlyonFooter.tsx` — logo + social badges + copyright only (removed phone/email/owlsurf.com)
+- `src/components/slides/ClientsSlide.tsx` — mobile-only credibility card strip
+- `src/main.tsx` — removed the Session 28 `?dbg=` query reader (reverted to original)
+- `.github/workflows/deploy.yml` — retry flags remain in the working tree but are NOT in this commit (remote PAT lacks `workflow` scope)
 
 ## Files Touched (Session 28)
 
@@ -507,7 +533,8 @@ Doc updates (this commit):
 
 ## Verified / Evidence
 
-- Session 28: `git diff --check`, `npm run lint`, and `npm run build` pass before push. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. Visual approval did not pass on the user's phone: after Baxsaa, later case-study slides still briefly appear and then turn black/dark. This is the first next-session bug.
+- Session 29: `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass before push. Build still reports the known large `vendor-lanyard` chunk warning. The black-screen fix and the Contact/Clients/case-study mobile work were screenshot-verified with `scripts/mobile-shots.mjs` at 360×740, 360×800, and 390×844, and the black-screen fix was confirmed on the user's real phone.
+- Session 28: `git diff --check`, `npm run lint`, and `npm run build` pass before push. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. Visual approval did not pass on the user's phone: after Baxsaa, later case-study slides still briefly appear and then turn black/dark (FIXED in Session 29).
 - Session 25: `git diff --check`, `npm run lint`, and `npm run build` pass before push. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. Browser/screenshot verification was skipped per the user's standing preference; visual approval remains with the user.
 - Session 22: asset filename scan reports no obvious unused files in `src/assets`; `find src/assets -type f -size +1000k` shows only the existing lanyard `card.glb` above 1 MB; `npm run lint` passes; `npm run build` passes. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. `npm uninstall` reported 17 dependency advisories still present; audit remediation was not part of this visual push.
 - Session 21: `npm run build` passed before push. Browser visual approval remains with the user per standing preference. CardSwap fix verified by reasoning about GSAP ticker behavior; the user confirms motion in the live browser.
@@ -526,7 +553,7 @@ Doc updates (this commit):
 
 Highest-priority follow-ups, in two stacks: the UX audit P0 batch (Session 11, still pending) and the UI design plan (Session 12, parked but ready).
 
-0. **Real-phone case-study black-screen bug — highest priority.** On the user's phone, after the Baxsaa slide, later case-study slides briefly appear and then turn black/dark. Start next session here before doing more polish. Check `SlideReveal.tsx`, `CaseStudyLayout.tsx`, `CaseStudySlide.tsx`, `use-mobile.tsx`, `index.css` mobile visibility overrides, and the Blossom mobile carousel branch in `ParallaxCardSlider.tsx`.
+0. **Real-phone case-study black-screen bug — FIXED in Session 29.** Root cause was the active-slide index math in `Index.tsx` dividing `scrollTop` by `window.innerHeight` (which grows when the Android Chrome URL bar hides) while slides are a constant height, so the index drifted low and the looked-at slide stopped being the mounted one (showing the black `SlideFallback`). Fixed with `getSlideHeight` measuring a real `.slide`. Confirmed on the user's phone. Not the Blossom carousel / WebGL as previously suspected.
 
 Most of the P0 UX-audit batch was cleared in Session 23. Remaining and follow-ups:
 

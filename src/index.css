@@ -417,7 +417,7 @@
   position: relative;
   display: inline-block;
   width: 9.9rem;
-  aspect-ratio: 1 / 1.92;
+  aspect-ratio: 1 / 2;
   scroll-snap-align: center;
   transform-style: preserve-3d;
   view-timeline: --cs-slide inline calc(50% - 9.6rem);
@@ -452,7 +452,8 @@
 .cs-coverflow-card img {
   height: 100%;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
 }
 
 @keyframes cs-coverflow-rotate {

@@ -165,6 +165,31 @@ const ClientsSlide = () => {
             renderItem={renderClientLogo}
             ariaLabel="Major clients row two"
           />
+
+          {/* Mobile-only credibility strip — fills the empty space; desktop keeps the PrismaticBurst backdrop. */}
+          <div className="mt-4 grid grid-cols-2 gap-2.5 md:hidden">
+            {[
+              { n: "End-to-end", l: "Brand to demand" },
+              { n: "6", l: "Sectors served" },
+              { n: "India + APAC", l: "Markets reached" },
+              { n: "Meta + Google", l: "Certified partner" },
+              { n: "B2B", l: "Built for complex sales", wide: true },
+            ].map((stat) => (
+              <div
+                key={stat.l}
+                className={`flex flex-col items-center justify-center rounded-xl border border-white/12 bg-[#0b1217]/72 px-2 py-3 text-center backdrop-blur-sm ${
+                  stat.wide ? "col-span-2" : ""
+                }`}
+              >
+                <span className="font-sans text-[1.05rem] font-black leading-[1.1] tracking-tight text-primary">
+                  {stat.n}
+                </span>
+                <span className="mt-1.5 font-body text-[8.5px] font-semibold uppercase leading-tight tracking-[0.12em] text-white/60">
+                  {stat.l}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
