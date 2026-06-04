@@ -393,6 +393,122 @@
   }
 }
 
+/* Mobile case-study creative carousel: Blossom cover-flow recipe. */
+.cs-coverflow {
+  display: block;
+  box-sizing: border-box;
+  list-style: none;
+  white-space: nowrap;
+  width: min(100%, 24rem);
+  margin-inline: auto;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 0 calc(50% - 4.95rem) 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+}
+
+.cs-coverflow::-webkit-scrollbar {
+  display: none;
+}
+
+.cs-coverflow-item {
+  position: relative;
+  display: inline-block;
+  width: 9.9rem;
+  aspect-ratio: 1 / 1.92;
+  scroll-snap-align: center;
+  transform-style: preserve-3d;
+  view-timeline: --cs-slide inline calc(50% - 9.6rem);
+}
+
+.cs-coverflow-stage {
+  position: absolute;
+  inset: 0;
+  left: -34%;
+  width: 168%;
+  perspective: 560px;
+  transform-style: preserve-3d;
+  animation: cs-coverflow-slide linear both;
+  animation-timeline: --cs-slide;
+  animation-range: contain;
+}
+
+.cs-coverflow-card {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid hsl(0 0% 100% / 0.18);
+  background: hsl(0 0% 100% / 0.045);
+  box-shadow: 0 1rem 2.5rem hsl(0 0% 0% / 0.28);
+  transform-style: preserve-3d;
+  animation: cs-coverflow-rotate linear both;
+  animation-timeline: --cs-slide;
+  animation-range: contain;
+}
+
+.cs-coverflow-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+@keyframes cs-coverflow-rotate {
+  0% {
+    opacity: 0.42;
+    transform: rotateY(-54deg) scale(0.88);
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+
+  100% {
+    opacity: 0.42;
+    transform: rotateY(54deg) scale(0.88);
+  }
+}
+
+@keyframes cs-coverflow-slide {
+  0% {
+    transform: translateX(24%);
+  }
+
+  50% {
+    transform: translateX(0) scale(1.14);
+  }
+
+  100% {
+    transform: translateX(-24%);
+  }
+}
+
+@supports not (animation-timeline: --cs-slide) {
+  .cs-coverflow-stage,
+  .cs-coverflow-card {
+    animation: none;
+  }
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  .cs-heading,
+  .cs-title-accent,
+  .cs-subtitle,
+  .cs-slider,
+  .cs-proof,
+  .cs-stat,
+  .bg-wipe {
+    opacity: 1 !important;
+  }
+
+  .bg-wipe {
+    clip-path: circle(150% at 50% 50%) !important;
+  }
+}
+
 /* Mobile-only Services stepper: fade each item in when the active category changes */
 @keyframes sv-step-in {
   from {

@@ -56,10 +56,20 @@ const CaseStudyLayout = ({
   const muted = lightMode ? "hsl(0 0% 36%)" : "hsl(0 0% 100% / 0.7)";
   const statBorder = lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.18)";
   const statInk = lightMode ? "hsl(0 0% 15%)" : "white";
+  const proofRows = [
+    { label: "Market", value: market },
+    { label: "Role", value: owlsurfRole },
+    ...proofPoints,
+  ].filter((point) => point.label.toLowerCase() !== "proof");
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    if (
+      isMobile ||
+      window.innerWidth < 1024 ||
+      window.matchMedia("(pointer: coarse)").matches
+    ) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !triggered) {
@@ -129,27 +139,27 @@ const CaseStudyLayout = ({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [triggered]);
+  }, [triggered, isMobile]);
 
   return (
     <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
       <div
         className="bg-wipe absolute inset-0 z-0"
-        style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background }}
+        style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "circle(150% at 50% 50%)" : "circle(5% at 50% 50%)", background }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background }} />
 
-      <div className="relative z-10 flex h-full w-full flex-col gap-8 px-6 pt-20 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
-        <header className="text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
+      <div className="relative z-10 flex h-full w-full flex-col gap-2 px-5 pt-8 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
+        <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
             className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 block uppercase"
-            style={{ opacity: 0, color: `hsl(${accentColor})` }}
+            style={{ opacity: isMobile ? 1 : 0, color: `hsl(${accentColor})` }}
           >
             Case proof {caseNumber}
           </span>
           <h2
-            className="cs-heading font-sans text-[clamp(2.45rem,4vw,4.8rem)] font-black uppercase leading-[1.02] tracking-normal text-left pb-2 [overflow-wrap:anywhere]"
-            style={{ opacity: 0, color: ink }}
+            className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.45rem,4vw,4.8rem)] md:pb-2"
+            style={{ opacity: isMobile ? 1 : 0, color: ink }}
           >
             <span className="font-sans not-italic block">{title}</span>
             <span
@@ -160,13 +170,13 @@ const CaseStudyLayout = ({
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-3 max-w-[34rem] font-body text-[1.08rem] leading-snug md:text-[1.24rem]"
-            style={{ opacity: 0, color: muted }}
+            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.8rem] leading-snug md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
+            style={{ opacity: isMobile ? 1 : 0, color: muted }}
           >
             {subtitle}
           </p>
           <div
-            className="cs-subtitle mt-5 max-w-[23rem] border-t pt-3 font-body text-[0.95rem] leading-snug md:hidden"
+            className="hidden"
             style={{ opacity: 0, color: muted, borderColor: statBorder }}
           >
             {proofNote}
@@ -174,71 +184,49 @@ const CaseStudyLayout = ({
         </header>
 
         <div
-          className="cs-proof max-w-[27rem] overflow-hidden border md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none lg:w-[30%]"
+          className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border backdrop-blur-sm md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none md:rounded-none lg:w-[30%]"
           style={{
-            opacity: 0,
-            borderColor: statBorder,
-            backgroundColor: lightMode ? "hsl(0 0% 100% / 0.38)" : "hsl(0 0% 0% / 0.18)",
+            opacity: isMobile ? 1 : 0,
+            borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.16)" : "hsl(0 0% 100% / 0.16)") : statBorder,
+            backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.46)" : "hsl(0 0% 100% / 0.045)") : (lightMode ? "hsl(0 0% 100% / 0.38)" : "hsl(0 0% 0% / 0.18)"),
           }}
         >
-          <div className="grid grid-cols-2 border-b" style={{ borderColor: statBorder }}>
-            <div className="border-r p-4" style={{ borderColor: statBorder }}>
-              <div className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${accentColor})` }}>
-                Market
-              </div>
-              <div className="mt-1.5 font-body text-[0.95rem] leading-tight md:text-base" style={{ color: statInk }}>
-                {market}
-              </div>
+          {proofRows.map((point) => (
+            <div
+              key={`${point.label}-${point.value}`}
+              className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b px-3 py-1 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4"
+              style={{ borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.12)" : "hsl(0 0% 100% / 0.12)") : statBorder }}
+            >
+              <span className="font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${accentColor})` }}>
+                {point.label}
+              </span>
+              <span className="font-body text-[0.66rem] leading-tight md:text-base" style={{ color: isMobile ? (lightMode ? "hsl(0 0% 12% / 0.78)" : "hsl(0 0% 100% / 0.76)") : muted }}>
+                {point.value}
+              </span>
             </div>
-            <div className="p-4">
-              <div className="font-sans text-[10px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${accentColor})` }}>
-                OwlSurf role
-              </div>
-              <div className="mt-1.5 font-body text-[0.95rem] leading-tight md:text-base" style={{ color: statInk }}>
-                {owlsurfRole}
-              </div>
-            </div>
-          </div>
-          {proofPoints.length > 0 && (
-            <div className="grid gap-0">
-              {proofPoints.map((point) => (
-                <div
-                  key={`${point.label}-${point.value}`}
-                  className="grid grid-cols-[6.7rem_minmax(0,1fr)] border-b p-4 last:border-b-0"
-                  style={{ borderColor: statBorder }}
-                >
-                  <span className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: `hsl(${accentColor})` }}>
-                    {point.label}
-                  </span>
-                  <span className="font-body text-[0.95rem] leading-snug md:text-base" style={{ color: muted }}>
-                    {point.value}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
 
         {stats.length > 0 && (
-          <div className="cs-stats grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 lg:w-[50%]">
+          <div className="cs-stats order-4 grid grid-cols-2 gap-1.5 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="cs-stat flex min-w-0 flex-col justify-between border p-3 text-left"
+                className="cs-stat flex h-[2.45rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border px-3 py-1 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:p-3"
                 style={{
-                  opacity: 0,
-                  borderColor: statBorder,
-                  backgroundColor: lightMode ? "hsl(0 0% 100% / 0.42)" : "hsl(0 0% 0% / 0.2)",
+                  opacity: isMobile ? 1 : 0,
+                  borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.16)") : statBorder,
+                  backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.52)" : "hsl(0 0% 100% / 0.055)") : (lightMode ? "hsl(0 0% 100% / 0.42)" : "hsl(0 0% 0% / 0.2)"),
                 }}
               >
                 <div
-                  className="flex min-h-11 items-center gap-1.5 font-sans tabular-nums text-[clamp(1.55rem,2.05vw,2.4rem)] font-black leading-none tracking-normal"
+                  className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.32rem] font-semibold leading-none tracking-normal md:min-h-11 md:gap-1.5 md:text-[clamp(1.55rem,2.05vw,2.4rem)]"
                   style={{ color: statInk }}
                 >
                   {stat.value}
                 </div>
                 <div
-                  className="mt-2 flex min-h-7 w-full items-center border-t pt-2 font-body text-[10px] font-semibold uppercase leading-[1.05] tracking-[0.08em] md:text-[9px] lg:text-[10px]"
+                  className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] md:mt-2 md:min-h-7 md:border-l-0 md:border-t md:pl-0 md:pt-2 md:text-[9px] lg:text-[10px]"
                   style={{
                     color: lightMode ? "hsl(0 0% 18% / 0.92)" : "hsl(0 0% 100% / 0.92)",
                     borderColor: `hsl(${accentColor} / 0.28)`,
@@ -251,8 +239,8 @@ const CaseStudyLayout = ({
           </div>
         )}
 
-        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:w-[54%] md:-translate-x-1/2">
-          <div className="cs-slider flex h-full w-full items-center justify-center" style={{ opacity: 0 }}>
+        <div className="order-2 mt-5 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
+          <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <ParallaxCardSlider
               slides={slides}
               accentColor={accentColor}

@@ -25,7 +25,6 @@ const statDefs: StatDef[] = [
   { label: "Site-bound clicks", num: 104, suffix: "K", decimals: 0 },
   { label: "Engagement lift", num: 99.2, suffix: "%", decimals: 1, trend: true },
   { label: "Reported ROI", num: 3, suffix: "X", decimals: 0 },
-  { label: "Follower lift", num: 1000, suffix: "%", decimals: 0 },
 ];
 
 const mitsuiBlue = "210 100% 30%";
@@ -46,7 +45,6 @@ const mitsuiProofPoints = [
   { label: "Market", value: "Specialty chemicals across APAC" },
   { label: "Buyer", value: "Regional teams, technical audiences, and channel decision-makers" },
   { label: "Role", value: "Creative, media, reporting, and demand signals across markets" },
-  { label: "Proof", value: "Reach, clicks, engagement, ROI, and follower lift moved together" },
 ];
 
 function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; suffix: string; decimals: number; triggered: boolean }) {
@@ -79,6 +77,11 @@ const CaseStudySlide = () => {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    if (
+      isMobile ||
+      window.innerWidth < 1024 ||
+      window.matchMedia("(pointer: coarse)").matches
+    ) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !triggered) {
@@ -129,11 +132,15 @@ const CaseStudySlide = () => {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [triggered]);
+  }, [triggered, isMobile]);
 
   useEffect(() => {
     const el = statsRef.current;
     if (!el) return;
+    if (isMobile) {
+      if (!statsTriggered) setStatsTriggered(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !statsTriggered) {
@@ -152,24 +159,24 @@ const CaseStudySlide = () => {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [statsTriggered]);
+  }, [statsTriggered, isMobile]);
 
   return (
     <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
       <div
         className="bg-wipe absolute inset-0 z-0"
-        style={{ opacity: 0, clipPath: "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
+        style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "circle(150% at 50% 50%)" : "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
-      <div className="relative z-10 flex h-full w-full flex-col gap-8 px-6 pt-20 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
-        <header className="text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
+      <div className="relative z-10 flex h-full w-full flex-col gap-2 px-5 pt-8 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
+        <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
             className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 block uppercase"
-            style={{ opacity: 0, color: `hsl(${mitsuiCyan})` }}
+            style={{ opacity: isMobile ? 1 : 0, color: `hsl(${mitsuiCyan})` }}
           >
             Case proof 01
           </span>
-          <h2 className="cs-heading font-sans text-[clamp(2.6rem,4.1vw,4.9rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]" style={{ opacity: 0 }}>
+          <h2 className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.6rem,4.1vw,4.9rem)] md:pb-2" style={{ opacity: isMobile ? 1 : 0 }}>
             <span className="font-sans not-italic block">Mitsui</span>
             <span
               className="cs-title-accent font-sans not-italic inline-block pr-2"
@@ -179,55 +186,57 @@ const CaseStudySlide = () => {
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-3 max-w-[34rem] font-body text-[1.08rem] leading-snug text-white/70 md:text-[1.24rem]"
-            style={{ opacity: 0 }}
+            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.8rem] leading-snug text-white/70 md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
+            style={{ opacity: isMobile ? 1 : 0 }}
           >
             Specialty chemicals across APAC. We made technical value visible across regions, formats, and paid channels.
           </p>
           <div
-            className="cs-subtitle mt-5 max-w-[23rem] border-t border-white/18 pt-3 font-body text-[0.95rem] leading-snug text-white/64 md:hidden"
+            className="hidden"
             style={{ opacity: 0 }}
           >
             What it proves: chemical-sector delivery, regional campaign handling, and creative built around product credibility.
           </div>
         </header>
 
-        <div className="cs-proof max-w-[27rem] overflow-hidden border border-white/18 bg-black/20 md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none lg:w-[30%]" style={{ opacity: 0 }}>
+        <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border border-white/16 bg-white/[0.045] backdrop-blur-sm md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none md:rounded-none lg:w-[30%]" style={{ opacity: isMobile ? 1 : 0 }}>
           {mitsuiProofPoints.map((point) => (
-            <div key={point.label} className="grid grid-cols-[6.7rem_minmax(0,1fr)] border-b border-white/12 p-4 last:border-b-0">
-              <span className="font-sans text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: `hsl(${mitsuiCyan})` }}>
+            <div key={point.label} className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b border-white/12 px-3 py-1 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4">
+              <span className="font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${mitsuiCyan})` }}>
                 {point.label}
               </span>
-              <span className="font-body text-[0.95rem] leading-snug text-white/68 md:text-base">
+              <span className="font-body text-[0.66rem] leading-tight text-white/76 md:text-base">
                 {point.value}
               </span>
             </div>
           ))}
         </div>
 
-        <div ref={statsRef} className="cs-stats grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 lg:w-[50%]">
+        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-1.5 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
           {statDefs.map((stat) => (
             <div
               key={stat.label}
-              className="cs-stat flex min-w-0 flex-col justify-between border border-white/18 bg-black/20 p-3 text-left"
-              style={{ opacity: 0 }}
+              className="cs-stat flex h-[2.45rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/16 bg-white/[0.055] px-3 py-1 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:bg-black/20 md:p-3"
+              style={{ opacity: isMobile ? 1 : 0 }}
             >
-              <div className="flex min-h-11 items-center gap-1.5 font-sans tabular-nums text-[clamp(1.7rem,2.25vw,2.55rem)] font-black leading-none tracking-normal text-white">
+              <div
+                className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.32rem] font-semibold leading-none tracking-normal text-white md:min-h-11 md:gap-1.5 md:text-[clamp(1.7rem,2.25vw,2.55rem)]"
+              >
                 <span>
                   <AnimatedStatValue num={stat.num} suffix={stat.suffix} decimals={stat.decimals} triggered={statsTriggered} />
                 </span>
                 {stat.trend && (
                   <span
-                    className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full md:h-6 md:w-6"
+                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full md:h-6 md:w-6"
                     style={{ backgroundColor: `hsl(${mitsuiCyan} / 0.18)`, color: `hsl(${mitsuiCyan})` }}
                     aria-hidden="true"
                   >
-                    <ArrowUpRight className="h-3 w-3 md:h-3.5 md:w-3.5" strokeWidth={2.6} />
+                    <ArrowUpRight className="h-2.5 w-2.5 md:h-3.5 md:w-3.5" strokeWidth={2.6} />
                   </span>
                 )}
               </div>
               <div
-                className="mt-2 flex min-h-7 w-full items-center border-t pt-2 font-body text-[10px] font-semibold uppercase leading-[1.05] tracking-[0.08em] text-white/92 md:text-[9px] lg:text-[10px]"
+                className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] text-white/88 md:mt-2 md:min-h-7 md:border-l-0 md:border-t md:pl-0 md:pt-2 md:text-[9px] lg:text-[10px]"
                 style={{
                   borderColor: `hsl(${mitsuiCyan} / 0.28)`,
                 }}
@@ -239,8 +248,8 @@ const CaseStudySlide = () => {
         </div>
 
         {/* RIGHT: creative gallery */}
-        <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:w-[54%] md:-translate-x-1/2">
-          <div className="cs-slider flex h-full w-full items-center justify-center" style={{ opacity: 0 }}>
+        <div className="order-2 mt-5 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
+          <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <ParallaxCardSlider
               slides={sliderImages}
               accentColor={mitsuiCyan}

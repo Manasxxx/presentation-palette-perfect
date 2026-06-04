@@ -10,7 +10,6 @@ const sliderImages = [
 
 const stats = [
   { value: "2.76M", label: "Qualified views" },
-  { value: "14.6K", label: "Community size" },
   { value: "3.9M", label: "Market reach" },
   { value: "3X", label: "CTR multiple" },
   { value: "97/100", label: "Mobile score" },

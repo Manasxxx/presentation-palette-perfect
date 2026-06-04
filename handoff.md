@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 27 (current) is a live mobile polish pass on slides 2 (Who We Are) and 4 (Services), with no desktop change. Slide 2 mobile gains breathing room, an auto-scrolling teal-pill marquee for `Priority sectors` (replacing a broken `LogoLoop` attempt that over-duplicated because it measures `<img>` children the icon pills don't have), and a two-column buyer-outcomes grid. Slide 4 mobile is restructured: a two-row segmented category bar so all five verticals are visible with no hidden horizontal scroll, the highlighted category auto-advancing every 3.5s, and a numbered titles-only stepper consolidated to three headline groups per category (descriptions dropped on mobile only via a `mobileServices` map; desktop CardSwap untouched). The previously-uncommitted deploy webhook retry flags could not ship in this push (the remote PAT lacks `workflow` scope, so `deploy.yml` is rejected); that change stays in the working tree for a separate workflow-scoped push.
+Session 28 (current) is a mobile-only case-study pass. It replaces the mobile case-study carousel with Blossom cover-flow, adds 3-second auto-advance, compacts proof rows and metrics into translucent mobile pills, keeps only four stat pills per case study, keeps the `Role` row, removes the `Proof` row, and adds a temporary site-wide mobile refresh button near the center-right edge. The user still reports a critical real-phone bug: after the Baxsaa slide, later case-study slides briefly appear and then turn black/dark. This is not fixed. Next session should start there using the live phone path first. The previously-uncommitted deploy webhook retry flags still cannot ship in this push because the remote auth lacks `workflow` scope; that file stays in the working tree for a separate workflow-scoped push.
+
+Session 27 is a live mobile polish pass on slides 2 (Who We Are) and 4 (Services), with no desktop change. Slide 2 mobile gains breathing room, an auto-scrolling teal-pill marquee for `Priority sectors` (replacing a broken `LogoLoop` attempt that over-duplicated because it measures `<img>` children the icon pills don't have), and a two-column buyer-outcomes grid. Slide 4 mobile is restructured: a two-row segmented category bar so all five verticals are visible with no hidden horizontal scroll, the highlighted category auto-advancing every 3.5s, and a numbered titles-only stepper consolidated to three headline groups per category (descriptions dropped on mobile only via a `mobileServices` map; desktop CardSwap untouched).
 
 Session 26 is a live mobile polish pass on top of the pushed Hallmark B2B credentials deck. It keeps the desktop deck intact except for the requested cover headline update: the cover now reads `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`, with Anime.js-powered dynamic teal pills for industries and buyer-confidence words, plus a local shiny-text case-study CTA. Mobile cover spacing, wordmark centering, logo scale, and partner badge fit were tuned. Slide 2 was rebuilt into a tighter buyer-outcomes layout, Our Team now uses Anime.js for the roster/card transitions and removes duplicate mobile badge names, and the Clients proof slide removes the market-note grid while centering and slightly speeding the logo loops.
 
@@ -50,7 +52,17 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 27 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` for phone review during this session, and mobile layouts were verified with the Playwright shot harness at 390x844. Final push verification is command-based. `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+The Session 28 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` for phone review. Final push verification is command-based. `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+
+### Session 28 mobile case-study pass
+
+- **Mobile carousel** — `ParallaxCardSlider` now uses Blossom cover-flow on mobile only, with hand scrolling and 3-second auto-advance. Desktop keeps the existing parallax slider.
+- **Mitsui mobile** — heading/subtitle, taller carousel, compact proof table, and translucent metric pills were tuned for phone review. `Role` stays; `Proof` was removed.
+- **Shared case-study mobile** — Baxsaa, CultFit, GirlUp, CTP, VNT, and Raychem use the same compact mobile treatment through `CaseStudyLayout`.
+- **Stats** — every case study with metrics now shows four pills max. The least relevant fifth metric was removed from each affected case study.
+- **Temporary refresh** — `Index.tsx` has a center-right mobile refresh button so the user can force reload on the phone.
+- **Unfixed** — after the Baxsaa slide, the user's phone still shows later case-study slides briefly and then black/dark. Next session should debug this first in `SlideReveal.tsx`, `CaseStudyLayout.tsx`, `CaseStudySlide.tsx`, `use-mobile.tsx`, `index.css` mobile visibility overrides, and the Blossom branch in `ParallaxCardSlider.tsx`.
+- **Carry-over** — Slide 2 mobile Hyperspeed/running-lines animation was re-enabled/tuned but still unreliable on the user's phone. Revisit after the case-study black-screen bug.
 
 ### Session 27 mobile polish — Slide 2 + Slide 4
 
@@ -213,6 +225,21 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 28)
+
+Mobile case-study pass and temporary phone refresh:
+- `package.json`, `package-lock.json` — added Blossom carousel package
+- `src/main.tsx` — imports Blossom carousel CSS
+- `src/components/ParallaxCardSlider.tsx` — mobile-only Blossom cover-flow branch with hand scroll and 3-second auto-advance
+- `src/components/slides/CaseStudySlide.tsx` — Mitsui mobile layout, proof table, four metric pills
+- `src/components/slides/CaseStudyLayout.tsx` — shared mobile layout, proof table, four metric pills
+- `src/components/slides/BaxsaaCaseStudy.tsx`, `CultFitCaseStudy.tsx`, `GirlUpCaseStudy.tsx`, `CTPCaseStudy.tsx` — removed least relevant fifth metric
+- `src/components/SlideReveal.tsx`, `src/hooks/use-mobile.tsx`, `src/index.css` — mobile visibility/debugging changes for the black-screen issue
+- `src/pages/Index.tsx` — temporary site-wide mobile refresh button
+- `src/components/slides/SkyrocketSlide.tsx`, `src/components/ui/Hyperspeed/Hyperspeed.tsx` — mobile Hyperspeed re-enable/tuning, still a carry-over issue
+- `prod.md`, `context.md`, `handoff.md` — Session 28 push-prep updates and next-session bug note
+- `.github/workflows/deploy.yml` — webhook retry flags remain in the working tree but NOT in this commit (auth lacks `workflow` scope)
 
 ## Files Touched (Session 27)
 
@@ -480,6 +507,7 @@ Doc updates (this commit):
 
 ## Verified / Evidence
 
+- Session 28: `git diff --check`, `npm run lint`, and `npm run build` pass before push. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. Visual approval did not pass on the user's phone: after Baxsaa, later case-study slides still briefly appear and then turn black/dark. This is the first next-session bug.
 - Session 25: `git diff --check`, `npm run lint`, and `npm run build` pass before push. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. Browser/screenshot verification was skipped per the user's standing preference; visual approval remains with the user.
 - Session 22: asset filename scan reports no obvious unused files in `src/assets`; `find src/assets -type f -size +1000k` shows only the existing lanyard `card.glb` above 1 MB; `npm run lint` passes; `npm run build` passes. Build still reports stale Browserslist/caniuse-lite data and the known large `vendor-lanyard` chunk. `npm uninstall` reported 17 dependency advisories still present; audit remediation was not part of this visual push.
 - Session 21: `npm run build` passed before push. Browser visual approval remains with the user per standing preference. CardSwap fix verified by reasoning about GSAP ticker behavior; the user confirms motion in the live browser.
@@ -497,6 +525,8 @@ Doc updates (this commit):
 ## Known Issues / Next Things To Do
 
 Highest-priority follow-ups, in two stacks: the UX audit P0 batch (Session 11, still pending) and the UI design plan (Session 12, parked but ready).
+
+0. **Real-phone case-study black-screen bug — highest priority.** On the user's phone, after the Baxsaa slide, later case-study slides briefly appear and then turn black/dark. Start next session here before doing more polish. Check `SlideReveal.tsx`, `CaseStudyLayout.tsx`, `CaseStudySlide.tsx`, `use-mobile.tsx`, `index.css` mobile visibility overrides, and the Blossom mobile carousel branch in `ParallaxCardSlider.tsx`.
 
 Most of the P0 UX-audit batch was cleared in Session 23. Remaining and follow-ups:
 
@@ -538,10 +568,11 @@ Push to `main` auto-deploys to https://www.owlsurf.media in ~10-60s: GitHub Acti
 
 ## Current Workspace Notes
 
-Intended files for the Session 25 Hallmark credentials commit:
-- slide/source changes listed under `Files Touched (Session 25)`
-- Hallmark files: `.hallmark/`, `design.md`, `tokens.css`
+Intended files for the Session 28 mobile case-study commit:
+- slide/source changes listed under `Files Touched (Session 28)`
+- dependency updates for Blossom carousel
 - doc updates: `prod.md`, `context.md`, `handoff.md`
+- exclude `.github/workflows/deploy.yml` unless auth is refreshed with `workflow` scope
 
 Unrelated untracked items that should remain unstaged unless asked:
 - `.agents/`

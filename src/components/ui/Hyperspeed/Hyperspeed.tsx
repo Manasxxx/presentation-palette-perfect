@@ -34,6 +34,7 @@ interface HyperspeedOptions {
   fov: number;
   fovSpeedUp: number;
   speedUp: number;
+  autoSpeedUp?: number;
   carLightsFade: number;
   totalSideLightSticks: number;
   lightPairsPerRoadWay: number;
@@ -68,6 +69,7 @@ const defaultOptions: HyperspeedOptions = {
   fov: 90,
   fovSpeedUp: 150,
   speedUp: 2,
+  autoSpeedUp: 0,
   carLightsFade: 0.4,
   totalSideLightSticks: 20,
   lightPairsPerRoadWay: 40,
@@ -995,7 +997,7 @@ class App {
     this.leftSticks = new LightsSticks(this, options);
 
     this.fovTarget = options.fov;
-    this.speedUpTarget = 0;
+    this.speedUpTarget = options.autoSpeedUp ?? 0;
     this.speedUp = 0;
     this.timeOffset = 0;
     this.animationFrameId = null;
@@ -1118,7 +1120,7 @@ class App {
   onMouseUp(ev: MouseEvent) {
     if (this.options.onSlowDown) this.options.onSlowDown(ev);
     this.fovTarget = this.options.fov;
-    this.speedUpTarget = 0;
+    this.speedUpTarget = this.options.autoSpeedUp ?? 0;
   }
 
   onTouchStart(ev: TouchEvent) {
@@ -1130,7 +1132,7 @@ class App {
   onTouchEnd(ev: TouchEvent) {
     if (this.options.onSlowDown) this.options.onSlowDown(ev);
     this.fovTarget = this.options.fov;
-    this.speedUpTarget = 0;
+    this.speedUpTarget = this.options.autoSpeedUp ?? 0;
   }
 
   onContextMenu(ev: MouseEvent) {

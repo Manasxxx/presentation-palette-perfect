@@ -13,7 +13,6 @@ const sliderImages = [
 
 const stats = [
   { value: "1.8M", label: "Search reach" },
-  { value: "430%", label: "Audience lift" },
   { value: "14.2%", label: "Engaged traffic" },
   { value: "36K", label: "Property clicks" },
   { value: "3.2X", label: "Reported ROI" },

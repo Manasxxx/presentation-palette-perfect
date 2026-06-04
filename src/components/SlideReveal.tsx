@@ -13,6 +13,18 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
   useEffect(() => {
     const content = contentRef.current;
     if (!content) return;
+
+    if (
+      window.innerWidth < 1024 ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(max-width: 767px)").matches
+    ) {
+      content.style.opacity = "1";
+      content.style.transform = "none";
+      return;
+    }
+
+    content.style.opacity = "0";
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !triggered.current) {
@@ -51,7 +63,7 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
 
   return (
     <div className={`${className} bg-background`}>
-      <div ref={contentRef} className="relative" style={{ opacity: 0, willChange: "transform, opacity" }}>
+      <div ref={contentRef} className="relative" style={{ opacity: 1, willChange: "transform, opacity" }}>
         <div
           className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
           style={{ transform: "scaleX(0)" }}

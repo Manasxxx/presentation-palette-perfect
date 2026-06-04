@@ -5,6 +5,20 @@
 
 ---
 
+## Current State (as of Session 28 push prep)
+
+**Session 28** is a mobile-only case-study pass. The desktop case-study layouts were not intentionally changed.
+
+- **Mobile case-study carousel** — `ParallaxCardSlider` now uses Blossom cover-flow on mobile only, with native hand scrolling and a 3-second auto-advance. Desktop keeps the existing parallax slider.
+- **Mobile case-study layout** — Mitsui plus the shared case-study slides now use a tighter mobile stack: heading, subtitle, taller creative carousel, compact translucent proof table, and four translucent stat pills where metrics exist. The `Role` row stays in the table; the `Proof` row was removed. The least relevant fifth metric was removed from slides that had five metrics.
+- **Temporary mobile refresh button** — `Index.tsx` has a site-wide center-right refresh button for phone testing. It is temporary and should be removed once browser refresh behavior is normal again.
+- **Known unresolved phone bug** — on the user's real phone, after the Baxsaa slide, the later case-study slides briefly appear and then turn black/dark. This was not fixed in this session. Next session should start here, using the live phone path first. Likely files to inspect: `SlideReveal.tsx`, `CaseStudyLayout.tsx`, `CaseStudySlide.tsx`, `use-mobile.tsx`, `index.css` mobile visibility overrides, and the Blossom carousel mobile branch in `ParallaxCardSlider.tsx`.
+- **Slide 2 mobile animation carry-over** — the Hyperspeed/running-lines mobile animation was re-enabled/tuned earlier but was still unreliable on the user's phone. Keep it as a later follow-up after the case-study black-screen bug.
+- **Deploy hardening (still pending commit)** — `.github/workflows/deploy.yml` still has local retry flags, but it is not included in this push because the current remote auth rejects workflow-file changes without `workflow` scope.
+- `git diff --check`, `npm run lint`, and `npm run build` pass; only the known Browserslist and `vendor-lanyard` chunk warnings remain.
+
+---
+
 ## Current State (as of Session 27 push prep)
 
 **Session 27** is a live mobile polish pass on slides 2 (Who We Are) and 4 (Services), with zero desktop change (both use `isMobile` branches or mobile-only Tailwind/`md:` pairs).
@@ -33,7 +47,7 @@
 3. On the VPS, `deployment/server.js` (Express, bound to `127.0.0.1:8081`, reverse-proxied at `/deploy`) checks the token, then spawns `deployment/deploy.sh` **detached** with `child.unref()`. The `200` response is only an ack — the build runs after the response returns, so a fast `200` does not mean the build succeeded.
 4. `deployment/deploy.sh`: `git fetch` → `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. Logs to `deployment/logs/deploy.log`; self-locks via `deployment/.deploy-lock` (mirrored by an in-memory flag in `server.js`) so deploys can't overlap.
 
-**Webhook resilience.** The Actions `curl` now uses `--retry 5 --retry-all-errors --retry-delay 10` on top of `--connect-timeout 15 --max-time 30`, so a brief VPS blip no longer fails the whole deploy.
+**Webhook resilience follow-up.** The desired Actions `curl` retry flags (`--retry 5 --retry-all-errors --retry-delay 10`) are present locally but not pushed yet because the current remote auth rejects workflow-file changes without `workflow` scope. Until that lands, a brief VPS blip can still fail the deploy.
 
 **Failure mode is silent.** There is no alerting. A failed deploy just leaves the live site on the previous build — the only symptom is "my push didn't show up." It does **not** retry itself once the Actions job has ended.
 

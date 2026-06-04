@@ -4,6 +4,7 @@ import TitleSlide from "@/components/slides/TitleSlide";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
+import { RefreshCw } from "lucide-react";
 
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const OurTeamSlide = lazy(() => import("@/components/slides/OurTeamSlide"));
@@ -139,6 +140,10 @@ const Index = () => {
     });
   };
 
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   return (
     <div
       ref={containerRef}
@@ -152,6 +157,14 @@ const Index = () => {
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
+      <button
+        type="button"
+        onClick={refreshPage}
+        className="fixed right-3 top-1/2 z-[1000] flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/18 bg-white text-black shadow-[0_12px_34px_rgba(0,0,0,0.35)] md:hidden"
+        aria-label="Refresh"
+      >
+        <RefreshCw className="h-5 w-5" strokeWidth={2.4} />
+      </button>
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {mountedSlides.has(index) ? (

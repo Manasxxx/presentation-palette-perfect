@@ -1,5 +1,6 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, type ElementRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { BlossomCarousel } from "@blossom-carousel/react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SlideData {
@@ -17,13 +18,12 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = "min(32vw, 340px)" }: ParallaxCardSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [displayIndex, setDisplayIndex] = useState(0);
-  const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
   const [isAnimating, setIsAnimating] = useState(false);
   const [tilt, setTilt] = useState({ rotX: 0, rotY: 0, bgX: 0, bgY: 0 });
   const tiltTarget = useRef({ rotX: 0, rotY: 0, bgX: 0, bgY: 0 });
   const rafRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const blossomRef = useRef<ElementRef<typeof BlossomCarousel>>(null);
   const [isVisible, setIsVisible] = useState(false);
   const timeoutsRef = useRef<number[]>([]);
   const isMobile = useIsMobile();
@@ -35,11 +35,9 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
   const changeSlide = useCallback((newIndex: number, direction: "left" | "right") => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setSlideDirection(direction);
 
     // Start exit animation, then after transition swap
     const swapTimeout = window.setTimeout(() => {
-      setDisplayIndex(newIndex);
       setCurrentIndex(newIndex);
       tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
       const finishTimeout = window.setTimeout(() => setIsAnimating(false), 400);
@@ -114,19 +112,6 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
     tiltTarget.current = { rotX: 0, rotY: 0, bgX: 0, bgY: 0 };
   }, []);
 
-  // Touch swipe support for mobile
-  const touchStartX = useRef(0);
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  }, []);
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    const diff = e.changedTouches[0].clientX - touchStartX.current;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) goPrev();
-      else goNext();
-    }
-  }, [goNext, goPrev]);
-
   const getSlideStyle = (index: number): React.CSSProperties => {
     const slideWidth = cardWidth;
 
@@ -162,49 +147,37 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%", cardWidth = 
     };
   };
 
-  // ─── Mobile: single full-width image with CSS transition ───
+  // ─── Mobile: Blossom cover-flow carousel ───
+  useEffect(() => {
+    if (!isMobile) return;
+    const interval = window.setInterval(() => {
+      blossomRef.current?.next();
+    }, 3000);
+    return () => window.clearInterval(interval);
+  }, [isMobile]);
+
   if (isMobile) {
-    const exitTransform = slideDirection === "right" ? "translateX(-60px)" : "translateX(60px)";
-    const enterTransform = slideDirection === "right" ? "translateX(60px)" : "translateX(-60px)";
-
     return (
-      <div
-        ref={containerRef}
-        className="relative w-full flex flex-col items-center select-none"
-        style={{ width: "92vw", margin: "0 auto" }}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
+      <BlossomCarousel
+        as="ul"
+        load="always"
+        ref={blossomRef}
+        className="cs-coverflow"
+        aria-label="Case-study creative carousel"
       >
-        <div className="relative w-full overflow-hidden rounded-2xl" style={{ aspectRatio: "1 / 1" }}>
-          <img
-            key={displayIndex}
-            src={slides[displayIndex].image}
-            alt={slides[displayIndex].alt}
-            className="absolute inset-0 w-full h-full object-contain rounded-2xl"
-            style={{
-              opacity: isAnimating ? 0 : 1,
-              transform: isAnimating ? (displayIndex === currentIndex ? exitTransform : enterTransform) : "translateX(0)",
-              transition: "opacity 0.4s ease-in-out, transform 0.4s ease-in-out",
-            }}
-          />
-        </div>
-
-        {/* Dot navigation */}
-        <div className="flex gap-2 mt-3">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => changeSlide(i, i > currentIndex ? "right" : "left")}
-              className="w-2 h-2 rounded-full transition-all duration-300"
-              style={{
-                background: i === currentIndex ? `hsl(${accentColor})` : "hsl(0 0% 50% / 0.3)",
-                transform: i === currentIndex ? "scale(1.4)" : "scale(1)",
-              }}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
-      </div>
+        {slides.map((slide) => (
+          <li key={slide.image} className="cs-coverflow-item">
+            <div className="cs-coverflow-stage">
+              <div
+                className="cs-coverflow-card"
+                style={{ borderColor: `hsl(${accentColor} / 0.24)` }}
+              >
+                <img src={slide.image} alt={slide.alt} loading="lazy" />
+              </div>
+            </div>
+          </li>
+        ))}
+      </BlossomCarousel>
     );
   }
 

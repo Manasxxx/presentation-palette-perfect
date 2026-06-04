@@ -11,7 +11,6 @@ const sliderImages = [
 
 const stats = [
   { value: "4.2M", label: "Audience reach" },
-  { value: "850%", label: "Community lift" },
   { value: "12.4%", label: "Interaction rate" },
   { value: "78K", label: "Intent clicks" },
   { value: "4.5X", label: "Reported ROI" },

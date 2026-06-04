@@ -52,12 +52,13 @@ const SkyrocketSlide = () => {
       onSlowDown: () => { },
       distortion: "turbulentDistortion",
       length: 400,
-      roadWidth: 10,
-      islandWidth: 2,
+      roadWidth: isMobile ? 12.5 : 10,
+      islandWidth: isMobile ? 2.25 : 2,
       lanesPerRoad: 3,
-      fov: 90,
-      fovSpeedUp: 150,
-      speedUp: 2,
+      fov: isMobile ? 104 : 90,
+      fovSpeedUp: isMobile ? 154 : 150,
+      speedUp: isMobile ? 3 : 2,
+      autoSpeedUp: isMobile ? 0.9 : 0,
       carLightsFade: 0.4,
       totalSideLightSticks: 20,
       lightPairsPerRoadWay: 40,
@@ -66,8 +67,8 @@ const SkyrocketSlide = () => {
       brokenLinesLengthPercentage: 0.5,
       lightStickWidth: [0.12, 0.5] as [number, number],
       lightStickHeight: [1.3, 1.7] as [number, number],
-      movingAwaySpeed: [60, 80] as [number, number],
-      movingCloserSpeed: [-120, -160] as [number, number],
+      movingAwaySpeed: (isMobile ? [82, 108] : [60, 80]) as [number, number],
+      movingCloserSpeed: (isMobile ? [-165, -215] : [-120, -160]) as [number, number],
       carLightsLength: [400 * 0.03, 400 * 0.2] as [number, number],
       carLightsRadius: [0.05, 0.14] as [number, number],
       carWidthPercentage: [0.3, 0.5] as [number, number],
@@ -84,7 +85,7 @@ const SkyrocketSlide = () => {
         sticks: 0x4bc2c2,
       },
     }),
-    []
+    [isMobile]
   );
 
   useEffect(() => {
@@ -161,12 +162,9 @@ const SkyrocketSlide = () => {
 
   return (
     <section ref={sectionRef} className="slide relative overflow-hidden bg-background p-3 sm:p-5 md:p-7">
-      {/* Background running lines — desktop only (heavy WebGL gated off mobile per prod.md) */}
-      {!isMobile && (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-70">
-          <Hyperspeed effectOptions={hyperspeedOptions} />
-        </div>
-      )}
+      <div className="absolute inset-0 z-0 pointer-events-none translate-x-[3%] opacity-70 md:translate-x-0">
+        <Hyperspeed effectOptions={hyperspeedOptions} />
+      </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-6 px-5 py-6 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
