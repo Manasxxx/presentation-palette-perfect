@@ -268,6 +268,36 @@ const categories: Category[] = [
   },
 ];
 
+// Mobile-only: each category collapsed to three headline groups so the stepper stays
+// light on phones. Desktop CardSwap keeps the full five services + descriptions.
+const mobileServices: Record<string, { icon: LucideIcon; title: string }[]> = {
+  content: [
+    { icon: Target, title: "Positioning & Story" },
+    { icon: Film, title: "Films & Collateral" },
+    { icon: Sparkles, title: "Thought Leadership" },
+  ],
+  reach: [
+    { icon: TrendingUp, title: "Paid & ABM" },
+    { icon: Megaphone, title: "PR & Influencers" },
+    { icon: Building2, title: "Events & Trade Shows" },
+  ],
+  discovery: [
+    { icon: Search, title: "SEO & Discovery" },
+    { icon: MessageSquare, title: "Social & Community" },
+    { icon: ShieldCheck, title: "Reputation & Intel" },
+  ],
+  engineering: [
+    { icon: Database, title: "Automation & CRM" },
+    { icon: BarChart2, title: "Analytics & Scoring" },
+    { icon: Globe, title: "Custom Microsites" },
+  ],
+  ai: [
+    { icon: Bot, title: "AI Content & Copilots" },
+    { icon: Sparkles, title: "AI Personalization" },
+    { icon: Zap, title: "AEO & Automation" },
+  ],
+};
+
 const ServicesSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggered = useRef(false);
@@ -294,6 +324,19 @@ const ServicesSlide = () => {
     setActiveKey(categories[nextIndex].key);
     tabRefs.current[nextIndex]?.focus();
   };
+
+  // Mobile: auto-advance the highlighted category every 3.5s (re-armed on each change,
+  // so a manual tap resets the cycle). Paused under reduced-motion.
+  useEffect(() => {
+    if (!isMobile || prefersReducedMotion) return;
+    const id = window.setTimeout(() => {
+      setActiveKey((prev) => {
+        const idx = categories.findIndex((c) => c.key === prev);
+        return categories[(idx + 1) % categories.length].key;
+      });
+    }, 3500);
+    return () => window.clearTimeout(id);
+  }, [isMobile, prefersReducedMotion, activeKey]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -390,169 +433,229 @@ const ServicesSlide = () => {
               SYSTEMS
             </span>
           </h2>
-          <p className="mt-3 max-w-[45rem] font-body text-base leading-snug text-white/58 md:text-lg">
+          <p className="mt-2.5 max-w-[45rem] font-body text-sm leading-snug text-white/58 md:mt-3 md:text-lg">
             The assets and operating layer around a technical sale: explain the product, find the right accounts, and give sales sharper proof.
           </p>
         </header>
 
-        <div className="mt-6 grid w-full grid-cols-12 items-start gap-6 md:mt-[3vh] md:gap-10">
-          {/* Left: compact category tabs (horizontal scroll on mobile, vertical column on desktop) */}
-          <div
-            className="sv-tabs col-span-12 -mx-1 flex flex-row gap-2 overflow-x-auto px-1 pb-1 md:col-span-4 md:mx-0 md:flex-col md:gap-4 md:overflow-visible md:px-0 md:pb-0"
-            role="tablist"
-            aria-label="Service categories"
-            aria-orientation="vertical"
-          >
-            {categories.map((cat, index) => {
-              const active = cat.key === activeKey;
-              const CatIcon = cat.icon;
-              return (
-                <button
-                  key={cat.key}
-                  type="button"
-                  role="tab"
-                  id={`sv-tab-${cat.key}`}
-                  aria-selected={active}
-                  aria-controls="sv-panel"
-                  tabIndex={active ? 0 : -1}
-                  ref={(el) => { tabRefs.current[index] = el; }}
-                  onClick={() => setActiveKey(cat.key)}
-                  onKeyDown={(event) => handleTabKey(event, index)}
-                  className={`sv-tab group relative flex shrink-0 items-center justify-between gap-3 text-left rounded-xl border px-4 py-3 transition-all duration-300 md:shrink md:gap-4 md:px-5 md:py-4 ${
-                    active
-                      ? "border-primary/60 bg-primary/10"
-                      : "border-border/40 bg-white/[0.02] hover:border-primary/30 hover:bg-white/[0.05]"
-                  }`}
-                >
-                  {active && (
-                    <span className="absolute left-0 top-[20%] bottom-[20%] w-[3px] rounded-full bg-primary" />
-                  )}
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
+        <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[3vh] md:grid md:flex-initial md:gap-10">
+          {isMobile ? (
+            <div className="col-span-12 flex h-full flex-col justify-center gap-7 pb-[6vh]">
+              {/* Mobile: all five categories as a larger two-row segmented bar (3 + centered 2) */}
+              <div
+                className="sv-tabs grid grid-cols-6 gap-2"
+                role="tablist"
+                aria-label="Service categories"
+              >
+                {categories.map((cat, index) => {
+                  const active = cat.key === activeKey;
+                  const CatIcon = cat.icon;
+                  return (
+                    <button
+                      key={cat.key}
+                      type="button"
+                      role="tab"
+                      id={`sv-mtab-${cat.key}`}
+                      aria-selected={active}
+                      aria-controls="sv-mpanel"
+                      tabIndex={active ? 0 : -1}
+                      ref={(el) => { tabRefs.current[index] = el; }}
+                      onClick={() => setActiveKey(cat.key)}
+                      onKeyDown={(event) => handleTabKey(event, index)}
+                      className={`sv-tab col-span-2 flex flex-col items-center gap-2 rounded-2xl border px-1.5 py-4 transition-all duration-300 ${
+                        index === 3 ? "col-start-2" : ""
+                      } ${
                         active
-                          ? "bg-primary/25 text-primary"
-                          : "bg-white/5 text-muted-foreground"
+                          ? "border-primary/60 bg-primary/10"
+                          : "border-border/40 bg-white/[0.02]"
                       }`}
                     >
-                      <CatIcon className="h-[18px] w-[18px]" />
-                    </span>
-                    <span
-                      className={`block font-sans text-base md:text-lg font-black uppercase tracking-tight truncate transition-colors ${
-                        active ? "text-white" : "text-foreground/80"
-                      }`}
-                    >
-                      {cat.label}
-                    </span>
-                  </div>
-                  <span
-                    className={`hidden shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 transition-colors md:inline-block ${
-                      active
-                        ? "bg-primary/25 text-primary"
-                        : "bg-white/5 text-muted-foreground"
-                    }`}
-                  >
-                    {cat.services.length}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+                      <span
+                        className={`flex h-12 w-12 items-center justify-center rounded-xl transition-colors ${
+                          active ? "bg-primary/25 text-primary" : "bg-white/5 text-muted-foreground"
+                        }`}
+                      >
+                        <CatIcon className="h-[22px] w-[22px]" />
+                      </span>
+                      <span
+                        className={`text-center font-sans text-[0.62rem] font-black uppercase leading-[1.1] tracking-tight transition-colors ${
+                          active ? "text-white" : "text-foreground/55"
+                        }`}
+                      >
+                        {cat.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-          {/* Right: CardSwap stack — 5 cards per category, simpler content */}
-          <div
-            className="sv-card-stage relative col-span-12 h-auto md:col-span-8 md:h-[460px]"
-            style={{ opacity: 0 }}
-            role="tabpanel"
-            id="sv-panel"
-            aria-labelledby={`sv-tab-${activeKey}`}
-          >
-            {isMobile ? (
-              /* Mobile: the 3D CardSwap stack overflows the viewport, so render the
-                 active category's services as a plain readable list instead. */
-              <ul className="flex flex-col gap-2">
-                {activeCategory.services.map((svc) => {
+              {/* Mobile: active category as a connected, low-text build sequence (titles only) */}
+              <ol
+                className="sv-card-stage relative flex flex-col gap-6 pl-1"
+                role="tabpanel"
+                id="sv-mpanel"
+                aria-labelledby={`sv-mtab-${activeKey}`}
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute left-[25px] top-5 bottom-5 w-px bg-gradient-to-b from-primary/45 via-primary/20 to-transparent"
+                />
+                {(mobileServices[activeKey] ?? activeCategory.services).map((svc, i) => {
                   const Icon = svc.icon;
                   return (
                     <li
-                      key={svc.title}
-                      className="relative flex items-start gap-3 overflow-hidden rounded-xl border border-border/40 bg-white/[0.025] px-4 py-2.5"
+                      key={`${activeKey}-${svc.title}`}
+                      className="sv-step-in relative flex items-center gap-4"
+                      style={{ animationDelay: `${i * 80}ms` }}
                     >
-                      <span className="absolute left-0 top-2.5 bottom-2.5 w-[3px] rounded-r bg-primary" />
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15">
-                        <Icon className="h-4 w-4 text-primary" />
+                      <span className="relative z-10 flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-[0_0_0_4px_hsl(var(--background))]">
+                        <Icon className="h-[18px] w-[18px]" />
                       </span>
-                      <span className="flex min-w-0 flex-col">
-                        <span className="font-sans text-[0.92rem] font-black uppercase leading-tight tracking-tight text-primary">
-                          {svc.title}
+                      <span className="flex items-baseline gap-2.5">
+                        <span className="font-sans text-[0.65rem] font-black tabular-nums text-primary/55">
+                          {String(i + 1).padStart(2, "0")}
                         </span>
-                        <span className="mt-0.5 font-body text-[0.82rem] leading-snug text-white/70">
-                          {svc.description}
+                        <span className="font-sans text-[1.05rem] font-black uppercase leading-tight tracking-tight text-white">
+                          {svc.title}
                         </span>
                       </span>
                     </li>
                   );
                 })}
-              </ul>
-            ) : (
-            <CardSwap
-              key={activeKey}
-              width={520}
-              height={270}
-              cardDistance={48}
-              verticalDistance={52}
-              delay={3000}
-              pauseOnHover
-              skewAmount={5}
-              easing="elastic"
-              reduceMotion={prefersReducedMotion}
-            >
-              {activeCategory.services.map((svc) => {
-                const Icon = svc.icon;
-                const hasIllustration =
-                  activeCategory.key === "content" && svc.illustration;
-                return (
-                  <Card key={svc.title}>
-                    <div className="relative flex h-full w-full flex-col overflow-hidden">
-                      {/* Vertical accent stripe on the left edge */}
-                      <span className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r bg-primary" />
-
-                      {/* Top edge: tight icon + compact monster heading — peeks above when stacked */}
-                      <div className="relative z-10 flex items-center gap-2.5 px-5 pt-2.5">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15">
-                          <Icon className="h-3.5 w-3.5 text-primary" />
-                        </div>
-                        <h3 className="font-sans text-[0.95rem] md:text-base font-black uppercase tracking-tight text-primary leading-none truncate">
-                          {svc.title}
-                        </h3>
+              </ol>
+            </div>
+          ) : (
+            <>
+              {/* Left: compact category tabs (vertical column on desktop) */}
+              <div
+                className="sv-tabs col-span-12 -mx-1 flex flex-row gap-2 overflow-x-auto px-1 pb-1 md:col-span-4 md:mx-0 md:flex-col md:gap-4 md:overflow-visible md:px-0 md:pb-0"
+                role="tablist"
+                aria-label="Service categories"
+                aria-orientation="vertical"
+              >
+                {categories.map((cat, index) => {
+                  const active = cat.key === activeKey;
+                  const CatIcon = cat.icon;
+                  return (
+                    <button
+                      key={cat.key}
+                      type="button"
+                      role="tab"
+                      id={`sv-tab-${cat.key}`}
+                      aria-selected={active}
+                      aria-controls="sv-panel"
+                      tabIndex={active ? 0 : -1}
+                      ref={(el) => { tabRefs.current[index] = el; }}
+                      onClick={() => setActiveKey(cat.key)}
+                      onKeyDown={(event) => handleTabKey(event, index)}
+                      className={`sv-tab group relative flex shrink-0 items-center justify-between gap-3 text-left rounded-xl border px-4 py-3 transition-all duration-300 md:shrink md:gap-4 md:px-5 md:py-4 ${
+                        active
+                          ? "border-primary/60 bg-primary/10"
+                          : "border-border/40 bg-white/[0.02] hover:border-primary/30 hover:bg-white/[0.05]"
+                      }`}
+                    >
+                      {active && (
+                        <span className="absolute left-0 top-[20%] bottom-[20%] w-[3px] rounded-full bg-primary" />
+                      )}
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                            active
+                              ? "bg-primary/25 text-primary"
+                              : "bg-white/5 text-muted-foreground"
+                          }`}
+                        >
+                          <CatIcon className="h-[18px] w-[18px]" />
+                        </span>
+                        <span
+                          className={`block font-sans text-base md:text-lg font-black uppercase tracking-tight truncate transition-colors ${
+                            active ? "text-white" : "text-foreground/80"
+                          }`}
+                        >
+                          {cat.label}
+                        </span>
                       </div>
+                      <span
+                        className={`hidden shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 transition-colors md:inline-block ${
+                          active
+                            ? "bg-primary/25 text-primary"
+                            : "bg-white/5 text-muted-foreground"
+                        }`}
+                      >
+                        {cat.services.length}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-                      {/* Body content */}
-                      <div className="relative z-10 flex-1">
-                        {hasIllustration ? (
-                          <div className="grid h-full grid-cols-[0.9fr_1.1fr] gap-4 px-5 pb-4 pt-4">
-                            <div className="flex min-w-0 items-start">
-                              <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
-                                {svc.description}
-                              </p>
+              {/* Right: CardSwap stack — 5 cards per category, simpler content */}
+              <div
+                className="sv-card-stage relative col-span-12 h-auto md:col-span-8 md:h-[460px]"
+                style={{ opacity: 0 }}
+                role="tabpanel"
+                id="sv-panel"
+                aria-labelledby={`sv-tab-${activeKey}`}
+              >
+                <CardSwap
+                  key={activeKey}
+                  width={520}
+                  height={270}
+                  cardDistance={48}
+                  verticalDistance={52}
+                  delay={3000}
+                  pauseOnHover
+                  skewAmount={5}
+                  easing="elastic"
+                  reduceMotion={prefersReducedMotion}
+                >
+                  {activeCategory.services.map((svc) => {
+                    const Icon = svc.icon;
+                    const hasIllustration =
+                      activeCategory.key === "content" && svc.illustration;
+                    return (
+                      <Card key={svc.title}>
+                        <div className="relative flex h-full w-full flex-col overflow-hidden">
+                          {/* Vertical accent stripe on the left edge */}
+                          <span className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r bg-primary" />
+
+                          {/* Top edge: tight icon + compact monster heading — peeks above when stacked */}
+                          <div className="relative z-10 flex items-center gap-2.5 px-5 pt-2.5">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15">
+                              <Icon className="h-3.5 w-3.5 text-primary" />
                             </div>
-                            <ServiceClipArt kind={hasIllustration} />
+                            <h3 className="font-sans text-[0.95rem] md:text-base font-black uppercase tracking-tight text-primary leading-none truncate">
+                              {svc.title}
+                            </h3>
                           </div>
-                        ) : (
-                          <div className="px-5 pt-4">
-                            <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
-                              {svc.description}
-                            </p>
+
+                          {/* Body content */}
+                          <div className="relative z-10 flex-1">
+                            {hasIllustration ? (
+                              <div className="grid h-full grid-cols-[0.9fr_1.1fr] gap-4 px-5 pb-4 pt-4">
+                                <div className="flex min-w-0 items-start">
+                                  <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
+                                    {svc.description}
+                                  </p>
+                                </div>
+                                <ServiceClipArt kind={hasIllustration} />
+                              </div>
+                            ) : (
+                              <div className="px-5 pt-4">
+                                <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
+                                  {svc.description}
+                                </p>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    </div>
-                  </Card>
-                );
-              })}
-            </CardSwap>
-            )}
-          </div>
+                        </div>
+                      </Card>
+                    );
+                  })}
+                </CardSwap>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>

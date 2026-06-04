@@ -5,6 +5,17 @@
 
 ---
 
+## Current State (as of Session 27 push prep)
+
+**Session 27** is a live mobile polish pass on slides 2 (Who We Are) and 4 (Services), with zero desktop change (both use `isMobile` branches or mobile-only Tailwind/`md:` pairs).
+
+- **Slide 2 (`SkyrocketSlide`) mobile** — more breathing room (centered, larger headline, bigger gaps/padding). `Priority sectors` now render as an auto-scrolling CSS marquee of teal pills (two duplicated sets, `translateX(-50%)` loop, edge mask-fade, `prefers-reduced-motion` pauses it) instead of the desktop vertical list. `What this means for buyers` is now a two-column card grid with the final card spanning full width. An earlier attempt to reuse the `LogoLoop` component failed: LogoLoop measures sequence width from `<img>` children, and the icon pills have none, so it measured ~0 and over-duplicated to ~965 items off-screen (invisible). Replaced with a self-contained CSS marquee (`who-sector-marquee` keyframe in `index.css`).
+- **Slide 4 (`ServicesSlide`) mobile** — bigger structural redesign. The category tabs became a two-row segmented icon bar (3 + centered 2) so all five verticals are visible with no hidden horizontal scroll. The highlighted category now auto-advances every 3.5s (re-armed on each change so a manual tap resets it; paused under reduced motion; cleared when the slide unmounts offscreen). The right panel is a numbered build-sequence stepper on a teal spine, titles only — descriptions are dropped on mobile to cut the "wall of text." Each category is consolidated from five services to three headline groups on mobile via a new `mobileServices` map; desktop CardSwap still shows all five with descriptions. Item swaps fade in via the `sv-step-in` keyframe.
+- **Deploy hardening (still pending commit)** — the `--retry 5 --retry-all-errors --retry-delay 10` flags on the Actions webhook `curl` (documented after the 2026-06-04 incident) remain uncommitted on disk. The Session 27 push could not include `deploy.yml` because the remote PAT lacks `workflow` scope (push rejected). Land it separately after `gh auth refresh -s workflow` (and switch the remote off the embedded PAT), or commit the one file via the GitHub web UI.
+- `npm run lint` (0 warnings) and `npm run build` pass; only the known Browserslist and `vendor-lanyard` chunk warnings remain.
+
+---
+
 ## Current State (as of Session 26 push prep)
 
 **Session 26** is the live mobile polish pass after the Hallmark credentials deck. The only intentional desktop visual change is the cover headline: it now reads `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`. The two dynamic teal pills are local React components powered by Anime.js, with dynamic width animation so shorter words shrink the pill. Mobile cover spacing, wordmark centering, logo scale, partner badge fit, and the shiny case-study CTA were tuned. Slide 2 now uses clearer buyer-outcome language, Our Team uses Anime.js for the roster/card transition and removes duplicate mobile card names, and the Proof Clients slide removes the market-note grid while centering and slightly speeding the logo slider. `git diff --check`, `npm run lint`, and `npm run build` pass; only the known Browserslist and `vendor-lanyard` warnings remain.

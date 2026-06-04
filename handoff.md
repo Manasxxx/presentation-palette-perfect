@@ -15,7 +15,9 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 26 (current) is a live mobile polish pass on top of the pushed Hallmark B2B credentials deck. It keeps the desktop deck intact except for the requested cover headline update: the cover now reads `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`, with Anime.js-powered dynamic teal pills for industries and buyer-confidence words, plus a local shiny-text case-study CTA. Mobile cover spacing, wordmark centering, logo scale, and partner badge fit were tuned. Slide 2 was rebuilt into a tighter buyer-outcomes layout, Our Team now uses Anime.js for the roster/card transitions and removes duplicate mobile badge names, and the Clients proof slide removes the market-note grid while centering and slightly speeding the logo loops.
+Session 27 (current) is a live mobile polish pass on slides 2 (Who We Are) and 4 (Services), with no desktop change. Slide 2 mobile gains breathing room, an auto-scrolling teal-pill marquee for `Priority sectors` (replacing a broken `LogoLoop` attempt that over-duplicated because it measures `<img>` children the icon pills don't have), and a two-column buyer-outcomes grid. Slide 4 mobile is restructured: a two-row segmented category bar so all five verticals are visible with no hidden horizontal scroll, the highlighted category auto-advancing every 3.5s, and a numbered titles-only stepper consolidated to three headline groups per category (descriptions dropped on mobile only via a `mobileServices` map; desktop CardSwap untouched). The previously-uncommitted deploy webhook retry flags could not ship in this push (the remote PAT lacks `workflow` scope, so `deploy.yml` is rejected); that change stays in the working tree for a separate workflow-scoped push.
+
+Session 26 is a live mobile polish pass on top of the pushed Hallmark B2B credentials deck. It keeps the desktop deck intact except for the requested cover headline update: the cover now reads `We turn [rotating industry] businesses into brands buyers actually [rotating trust word]`, with Anime.js-powered dynamic teal pills for industries and buyer-confidence words, plus a local shiny-text case-study CTA. Mobile cover spacing, wordmark centering, logo scale, and partner badge fit were tuned. Slide 2 was rebuilt into a tighter buyer-outcomes layout, Our Team now uses Anime.js for the roster/card transitions and removes duplicate mobile badge names, and the Clients proof slide removes the market-note grid while centering and slightly speeding the logo loops.
 
 Session 25 is the Hallmark-led B2B credentials pass that added the locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and refined the deck into a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and long-cycle technical sectors.
 
@@ -48,7 +50,14 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 26 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` for phone review during this session. Prior visual checks were done only where the user explicitly asked; final push verification is command-based. `git diff --check`, `npm run lint`, and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+The Session 27 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`; a WiFi-accessible dev server was also run at `http://192.168.0.132:8080/` for phone review during this session, and mobile layouts were verified with the Playwright shot harness at 390x844. Final push verification is command-based. `git diff --check`, `npm run lint` (0 warnings), and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning.
+
+### Session 27 mobile polish — Slide 2 + Slide 4
+
+- **Slide 2 (`SkyrocketSlide`) mobile** — centered with larger headline and bigger gaps. `Priority sectors` is now an auto-scrolling CSS marquee of teal pills (two duplicated sets, `translateX(-50%)`, edge mask-fade, reduced-motion pauses); `who-sector-marquee` keyframe added to `index.css`. `What this means for buyers` is now a two-column card grid, last card full width. Do not use `LogoLoop` for these pills (it measures `<img>` widths the pills lack and over-duplicates).
+- **Slide 4 (`ServicesSlide`) mobile** — the tabs + panel are now a dedicated `isMobile` branch (desktop CardSwap markup is reproduced verbatim in the `else` branch, byte-for-byte). Categories show as a two-row segmented icon bar (3 + centered 2), all five visible, no hidden scroll. The highlighted category auto-advances every 3.5s (one-shot `setTimeout` re-armed on `activeKey` change, so manual taps reset it; gated off under reduced motion; cleared on unmount). The panel is a numbered build-sequence stepper on a teal spine, titles only, consolidated 5 -> 3 per category via the new `mobileServices` map. Item swaps fade in via the `sv-step-in` keyframe. Desktop still shows all five services with descriptions.
+- **Deploy hardening (NOT pushed)** — the `--retry 5 --retry-all-errors --retry-delay 10` flags on the Actions webhook `curl` are still only in the working tree. The push that included `deploy.yml` was rejected because the remote PAT has no `workflow` scope. Land separately via `gh auth refresh -s workflow` (and move the remote off the embedded PAT) or the GitHub web editor.
+
 
 ### Session 26 mobile cover, Slide 2, Team, and Proof Clients polish
 
@@ -204,6 +213,15 @@ Removed 16 orphan files in this session:
 `npm run build` passes after these deletes.
 
 Session 22 removed the previously noted unused Radix dependencies, `@gsap/react`, and `class-variance-authority`, then tightened the manual chunk lists accordingly.
+
+## Files Touched (Session 27)
+
+Mobile polish on slides 2 and 4 + deploy hardening:
+- `src/components/slides/SkyrocketSlide.tsx` — mobile breathing room, sector marquee, two-column buyer-outcomes grid
+- `src/components/slides/ServicesSlide.tsx` — mobile `isMobile` branch: two-row segmented category bar, 3.5s auto-advance, numbered titles-only stepper, `mobileServices` 5->3 consolidation map
+- `src/index.css` — `who-sector-marquee` and `sv-step-in` keyframes
+- `prod.md`, `context.md`, `handoff.md` — Session 27 push-prep updates
+- `.github/workflows/deploy.yml` — webhook `curl` retry flags staged in the working tree but NOT in this commit (PAT lacks `workflow` scope)
 
 ## Files Touched (Session 26)
 

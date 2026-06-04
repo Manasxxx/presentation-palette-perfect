@@ -24,6 +24,24 @@ const differentiators: Differentiator[] = [
   { icon: UsersRound, label: "Sales alignment", desc: "Sales, marketing, and leadership tell the same story." },
 ];
 
+// Mobile-only: priority sectors render as an auto-scrolling marquee pill (like the Clients slide)
+const renderSectorChip = (sector: Sector, key: React.Key) => {
+  const Icon = sector.icon;
+  return (
+    <div
+      key={key}
+      className="mr-3 flex shrink-0 items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2.5 backdrop-blur-sm"
+    >
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-owl-teal/25 bg-owl-teal/12 text-owl-teal">
+        <Icon className="h-[0.95rem] w-[0.95rem]" strokeWidth={1.9} />
+      </span>
+      <span className="whitespace-nowrap font-sans text-[0.9rem] font-black leading-none text-white">
+        {sector.label}
+      </span>
+    </div>
+  );
+};
+
 const SkyrocketSlide = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [triggered, setTriggered] = useState(false);
@@ -151,9 +169,9 @@ const SkyrocketSlide = () => {
       )}
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-4 px-6 py-4 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-6 px-5 py-6 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
-        <div className="grid gap-4 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
+        <div className="grid gap-5 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
           <div className="md:col-span-7">
             <div className="who-kicker font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]" style={{ opacity: 0 }}>
@@ -161,7 +179,7 @@ const SkyrocketSlide = () => {
               <span className="ml-1 hidden font-sans text-white/35 sm:inline">/ 02</span>
             </div>
 
-            <h2 className="mt-3 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[1.9rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
+            <h2 className="mt-3 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[2.25rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
               <span className="who-word block">
                 <span className="font-sans not-italic">Long </span>
                 <span className="who-title-accent font-serif italic text-owl-teal inline-block pr-2">sales.</span>
@@ -185,13 +203,32 @@ const SkyrocketSlide = () => {
               </span>
             </div>
 
-            <div className="mt-3 grid grid-cols-2 gap-2 md:mt-6 md:flex md:flex-col md:gap-0">
+            {/* Mobile: auto-scrolling sector marquee (CSS loop, two duplicated sets) */}
+            <div
+              className="md:hidden mt-4 -mx-5 overflow-hidden"
+              style={{
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+                maskImage:
+                  "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+              }}
+              aria-label="Priority sectors"
+            >
+              <div className="who-sector-track">
+                {[...sectors, ...sectors].map((sector, i) =>
+                  renderSectorChip(sector, i)
+                )}
+              </div>
+            </div>
+
+            {/* Desktop: vertical sector list (unchanged) */}
+            <div className="hidden md:mt-6 md:flex md:flex-col md:gap-0">
               {sectors.map((sector) => {
                 const Icon = sector.icon;
                 return (
                   <div
                     key={sector.label}
-                    className="who-sector group flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.025] px-3 py-2 transition-colors duration-300 hover:border-owl-teal/40 md:gap-4 md:rounded-none md:border-x-0 md:border-b md:bg-transparent md:px-0 md:py-4 md:first:border-t"
+                    className="who-sector group flex shrink-0 items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2.5 transition-colors duration-300 hover:border-owl-teal/40 md:shrink md:gap-4 md:rounded-none md:border-x-0 md:border-b md:bg-transparent md:px-0 md:py-4 md:first:border-t"
                     style={{ opacity: 0 }}
                   >
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-owl-teal/10 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-11 md:w-11">
@@ -214,19 +251,19 @@ const SkyrocketSlide = () => {
         </div>
 
         {/* BOTTOM — buyer outcomes (full width) */}
-        <div className="border-t border-white/10 pt-3 md:pt-9">
-          <div className="who-copy mb-2 md:mb-6" style={{ opacity: 0 }}>
+        <div className="border-t border-white/10 pt-5 md:pt-9">
+          <div className="who-copy mb-3 md:mb-6" style={{ opacity: 0 }}>
             <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
               What this means for buyers
             </span>
           </div>
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-5 md:gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 gap-2.5 md:grid-cols-5 md:gap-4 lg:gap-6">
             {differentiators.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="who-chip group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-2.5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] md:items-start md:gap-3 md:p-4 lg:gap-4 lg:p-5"
+                  className="who-chip group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-3 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] last:col-span-2 md:last:col-span-1 md:items-start md:gap-3 md:p-4 lg:gap-4 lg:p-5"
                   style={{ opacity: 0 }}
                 >
                   <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/0 transition-colors duration-300 group-hover:bg-owl-teal" />
