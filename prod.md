@@ -121,3 +121,13 @@ Unlike traditional multipage websites, it adopts a **Vertical Scroll-Snapping Pr
 ### Aesthetic Patterns "The Glass and Glow"
 - **Glassmorphism:** Navigation menus (`PillNav`), popovers, and specific slide cards rely on `backdrop-filter: blur() saturate()`. Elements are intended to sit fluidly over complex background arrays or 3D visuals.
 - **Soft Emittance (Glow):** Gradients (`.text-gradient-green`, `.glow-green`) and box-shadow pulses give elements a neon, high-contrast, cyberpunk-adjacent glow against the otherwise dark backgrounds. Ensure any primary accent is accompanied by an underglow to give an illusion of light emissions.
+
+## 4. Deployment Principles
+
+> The live site at https://www.owlsurf.media is push-to-deploy. Full mechanics and the recovery runbook live in `context.md` under "Deployment Pipeline & Operations" — this section is the short operational contract.
+
+- **A push to `main` is a deploy.** `.github/workflows/deploy.yml` POSTs `https://www.owlsurf.media/deploy` (token-gated), the VPS webhook (`deployment/server.js`) spawns `deployment/deploy.sh` detached, and that script does `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. Live in ~10-60s. Treat every push to `main` as a production release, not a checkpoint.
+- **The Actions `200` is an ack, not a success.** The build runs detached after the response returns. A green Actions run means the webhook was received, not that the build passed. Confirm the live site visually after a push.
+- **Deploy failures are silent.** No alerting. If a push doesn't appear live, check `gh run list`. A `curl: (28) ... Timeout` on port 443 is transient VPS unavailability (often build memory pressure from the `vendor-lanyard` Three.js chunk), not a repo bug. The webhook now retries (`--retry 5 --retry-all-errors --retry-delay 10`); for an already-failed run, recover with `gh run rerun <id>`. See the 2026-06-04 incident in `context.md`.
+- **Never hand-edit files directly on the VPS.** `deploy.sh` runs `git reset --hard origin/main` on every deploy, which discards any uncommitted server-side edits. All changes go through `main`.
+- **Do not commit secrets to the deploy path.** `DEPLOY_TOKEN` lives in GitHub Actions secrets and the VPS `.env` only. Standing security debt: the GitHub PAT currently in plaintext in `.git/config` must be rotated and the remote moved to SSH or a credential helper.

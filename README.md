@@ -74,4 +74,29 @@ There's a small amount of process here because the deck is iterated live with pr
 
 ## Deployment
 
-Production is a static build: `npm run build` emits `dist/`, served by any static host with an SPA fallback to `index.html` (the 404 route is client-side). Start with `docs/vps-domain-migration.md`, `docs/dependencies.md`, and the example configs in `deploy/`. A prior Vercel deployment and domain still need reconnecting before going live.
+Production is a static build (`npm run build` emits `dist/`) served from a VPS at **https://www.owlsurf.media**. The build is fronted by a reverse proxy with an SPA fallback to `index.html` (the 404 route is client-side). See `docs/vps-domain-migration.md`, `docs/dependencies.md`, and the example configs in `deploy/` for the server setup.
+
+### Continuous deployment (push-to-deploy)
+
+A push to `main` updates the live site automatically in ~10-60s. The chain:
+
+1. **GitHub Actions** (`.github/workflows/deploy.yml`) fires on push to `main`.
+2. It sends `POST https://www.owlsurf.media/deploy` with an `X-Deploy-Token` header (`secrets.DEPLOY_TOKEN`).
+3. On the VPS, a small Express webhook (`deployment/server.js`, bound to `127.0.0.1:8081`, reverse-proxied at `/deploy`) validates the token and spawns `deployment/deploy.sh` **detached** — so the HTTP `200` is just an ack, the real work runs after the response returns.
+4. `deployment/deploy.sh` runs: `git fetch` → `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. It logs to `deployment/logs/deploy.log` and self-locks via `deployment/.deploy-lock` so two deploys can't overlap.
+
+**The webhook step retries** (`curl --retry 5 --retry-all-errors --retry-delay 10`) to ride out brief VPS unavailability.
+
+### If a push doesn't update the live site
+
+The pipeline is fire-and-forget with no alerting, so a failed deploy is silent — the site just stays on the old build. To diagnose:
+
+1. **Check the Actions run:** `gh run list --limit 5`. A `failure` is the deploy. `gh run view <id> --log` shows why.
+   - `curl: (28) ... Timeout` connecting to port 443 = the VPS was unreachable when the webhook fired (server down / rebooting / overloaded mid-build). The build/`pm2 restart` can briefly saturate a small VPS. This is **transient and not a repo bug** — the retry flags now absorb most of these.
+2. **Confirm the endpoint is healthy from your machine:**
+   - `curl -sS -o /dev/null -w "%{http_code}\n" https://www.owlsurf.media/` → expect `200`.
+   - `curl -sS -X POST https://www.owlsurf.media/deploy` → expect `403 Forbidden` (server up, rejecting the missing token).
+3. **Re-fire the missed deploy** (the workflow does not retry itself once the job has ended): `gh run rerun <id>`. It's idempotent — it only rebuilds whatever is already on `origin/main`. No force-push, no history change, nothing on a teammate's machine is touched. Worst case it fails the same way and changes nothing. Note `git reset --hard` discards uncommitted edits made *directly on the VPS* (every deploy already does this, so don't hand-edit files on the server).
+4. **On the VPS itself:** `tail deployment/logs/deploy.log` for the build output, `pm2 status` / `pm2 logs heyowlsurf`, and remove a stale `deployment/.deploy-lock` if a deploy died without cleaning up.
+
+> Real incident, 2026-06-04: a push at 14:03 UTC didn't go live. Push and Actions were fine; the webhook `curl` timed out connecting to port 443 (transient VPS unavailability), so `deploy.sh` never ran. Recovery was `gh run rerun <id>` once the box was reachable again. Retry flags were added afterward.

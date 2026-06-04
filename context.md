@@ -11,6 +11,33 @@
 
 ---
 
+## Deployment Pipeline & Operations
+
+> How the live site at https://www.owlsurf.media gets updated, and how to recover when it doesn't. Added 2026-06-04 after a missed-deploy incident.
+
+**Push-to-deploy chain.** A push to `main` updates production in ~10-60s with no manual step:
+
+1. GitHub Actions `.github/workflows/deploy.yml` fires on push to `main`.
+2. It sends `POST https://www.owlsurf.media/deploy` with header `X-Deploy-Token: ${{ secrets.DEPLOY_TOKEN }}`.
+3. On the VPS, `deployment/server.js` (Express, bound to `127.0.0.1:8081`, reverse-proxied at `/deploy`) checks the token, then spawns `deployment/deploy.sh` **detached** with `child.unref()`. The `200` response is only an ack — the build runs after the response returns, so a fast `200` does not mean the build succeeded.
+4. `deployment/deploy.sh`: `git fetch` → `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. Logs to `deployment/logs/deploy.log`; self-locks via `deployment/.deploy-lock` (mirrored by an in-memory flag in `server.js`) so deploys can't overlap.
+
+**Webhook resilience.** The Actions `curl` now uses `--retry 5 --retry-all-errors --retry-delay 10` on top of `--connect-timeout 15 --max-time 30`, so a brief VPS blip no longer fails the whole deploy.
+
+**Failure mode is silent.** There is no alerting. A failed deploy just leaves the live site on the previous build — the only symptom is "my push didn't show up." It does **not** retry itself once the Actions job has ended.
+
+**Incident, 2026-06-04.** A push (`e930531` "Polish mobile deck slides") didn't go live. Diagnosis: `git push` reached GitHub fine (local `HEAD` == `origin/main`), the Actions workflow ran, but the deploy step failed in 22s with `curl: (28) Failed to connect to www.owlsurf.media port 443 after 15001 ms: Timeout`. The webhook never reached the VPS, so `deploy.sh` never ran. From a separate machine the endpoint was healthy minutes later (DNS → `187.127.133.27`, `GET /` → `200`, `POST /deploy` without token → `403`), confirming a **transient VPS unavailability** at the moment the webhook fired — most likely the box being saturated/unresponsive during a build or `pm2 restart` (the `vendor-lanyard` Three.js chunk makes the build heavy on a small VPS). Not a repo or pipeline bug. Recovered with `gh run rerun 26956763977`, which succeeded; live site returned `200`. Retry flags were added afterward to absorb future blips.
+
+**Recovery runbook.**
+1. `gh run list --limit 5` — find the `failure`; `gh run view <id> --log` for the reason.
+2. Verify endpoint from any machine: `GET https://www.owlsurf.media/` should be `200`; `POST /deploy` (no token) should be `403`.
+3. Re-fire: `gh run rerun <id>`. Idempotent — only rebuilds `origin/main`. No force-push, no history rewrite, nothing on teammates' machines. `git reset --hard` discards uncommitted edits made directly on the VPS, so don't hand-edit on the server.
+4. On the VPS: `tail deployment/logs/deploy.log`, `pm2 status` / `pm2 logs heyowlsurf`, clear a stale `deployment/.deploy-lock` if a deploy died mid-run.
+
+**Open follow-up.** Investigate *why* the VPS goes unreachable during deploys (likely build memory pressure from `vendor-lanyard`); consider building to a temp dir and swapping, or capping build concurrency. Plus the standing security item: rotate the plaintext GitHub PAT in `.git/config` and move the remote to SSH or a credential helper.
+
+---
+
 ## Current State (as of Session 25 push prep)
 
 **Session 25** is a Hallmark-led B2B credentials pass on top of Sessions 23 and 24. It adds a locked Hallmark design system (`design.md`, `tokens.css`, `.hallmark/`) and sharpens the deck as a concise portfolio-PDF replacement for Indian and international B2B buyers in chemical, industrial, and technical markets. The cover now reads `When the product is complex, the choice shouldn't be.`, uses a right-side editorial signal graphic instead of a literal proof/info box, and keeps the mobile WebGL gating from Session 23. Case studies now include proof/info panels, larger taglines, right-shifted creative carousels, and more translucent inactive carousel cards. The nav remains compact and centered with short labels. `npm run lint` and `npm run build` pass; only the known Browserslist and `vendor-lanyard` warnings remain.

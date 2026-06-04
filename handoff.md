@@ -500,11 +500,19 @@ Most of the P0 UX-audit batch was cleared in Session 23. Remaining and follow-up
 See `ui-design-plan.scratch.md` (local only). Three phases, ~3 hrs / 4 hrs / 1 day respectively. Pick up by phase, not piecemeal. Phase 1 is the lowest-risk batch of eight single-line edits.
 
 Other open project items carried over from earlier sessions:
-- Vercel deployment is still broken and needs reconnect / redeploy.
+- Production now runs on a VPS at https://www.owlsurf.media via push-to-deploy (see "Deployment pipeline" below), not Vercel. The old Vercel item is retired.
 - `logo-main.jpg` is still a JPG; should be WebP or SVG.
 - Vishnu still reuses Pankaj's avatar until a dedicated Vishnu avatar is supplied.
 - `vendor-lanyard` remains a very large chunk (~3MB minified / ~1MB gzip); the chunk is isolated but not reduced in this session.
 - `npm audit` still reports 17 dependency advisories after the unused-package cleanup; review separately from the visual push.
+
+### Deployment pipeline + 2026-06-04 missed-deploy incident
+
+Push to `main` auto-deploys to https://www.owlsurf.media in ~10-60s: GitHub Actions (`.github/workflows/deploy.yml`) POSTs the token-gated `/deploy` webhook → VPS `deployment/server.js` spawns `deployment/deploy.sh` detached → `git reset --hard origin/main` + `npm ci` + `npm run build` + `pm2 restart heyowlsurf`. Full mechanics + recovery runbook are in `context.md` ("Deployment Pipeline & Operations"); the operational contract is in `prod.md` section 4.
+
+**Incident 2026-06-04:** push `e930531` didn't go live. Push + Actions were fine; the deploy step failed with `curl: (28) ... port 443 ... Timeout` — the webhook never reached the VPS (transient unavailability, likely build memory pressure from `vendor-lanyard`). `deploy.sh` never ran, so the site stayed on the old build. Recovered with `gh run rerun 26956763977` once the box was reachable; site returned `200`.
+
+**Hardening done:** added `--retry 5 --retry-all-errors --retry-delay 10` to the webhook `curl` so brief VPS blips no longer fail the deploy. **Still open:** find the root cause of the VPS going unreachable during builds (consider building to a temp dir + atomic swap, or a swapfile / build memory cap on a small box). Deploy failures remain silent (no alerting) — consider adding a notification.
 
 ### Security flag carried from the audit
 
