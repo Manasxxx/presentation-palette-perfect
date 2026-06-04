@@ -10,7 +10,7 @@ export default defineConfig(() => ({
     allowedHosts: [
       'heyowlsurf.com',
       'www.heyowlsurf.com'
-    ]
+    ],
     port: 8080,
     hmr: {
       overlay: false,
