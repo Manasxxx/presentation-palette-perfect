@@ -1,18 +1,19 @@
 .pill-nav-container {
   position: fixed;
   top: 1rem;
-  left: 50%;
-  right: auto;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  width: max-content;
+  /* Center via auto margins, not transform: the show/hide animation animates
+     translateY on this element and would clobber a translateX(-50%) centering. */
+  margin-inline: auto;
   z-index: 99;
 }
 
 @media (max-width: 768px) {
   .pill-nav-container {
     width: 100%;
-    left: 0;
-    right: auto;
-    transform: none;
+    margin-inline: 0;
   }
 }
 

@@ -56,7 +56,9 @@ export function WordRotate({ words, duration = 2500, className, motionProps }: W
     const measure = measureRef.current;
     if (!shell || !word || !measure) return;
 
-    const nextWidth = measure.offsetWidth;
+    // +6px buffer so bold/uppercase glyph side-bearing on the last letter
+    // isn't clipped by the shell's overflow-hidden.
+    const nextWidth = measure.offsetWidth + 6;
 
     if (reduceMotion) {
       shell.style.width = `${nextWidth}px`;
@@ -90,10 +92,10 @@ export function WordRotate({ words, duration = 2500, className, motionProps }: W
 
   return (
     <span ref={shellRef} className={cn("relative inline-block overflow-hidden align-baseline", className)} aria-live="polite">
-      <span ref={measureRef} className="invisible absolute left-0 top-0 whitespace-nowrap">
+      <span ref={measureRef} className="invisible absolute left-0 top-0 whitespace-nowrap" aria-hidden="true">
         {safeWords[index]}
       </span>
-      <span ref={wordRef} className="block whitespace-nowrap" {...motionProps}>
+      <span ref={wordRef} className="block whitespace-nowrap text-center" {...motionProps}>
         {safeWords[index]}
       </span>
     </span>

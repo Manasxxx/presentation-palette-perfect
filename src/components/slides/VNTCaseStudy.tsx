@@ -1,5 +1,6 @@
 import vntCreative1 from "@/assets/vnt-creative-1.webp";
 import vntCreative2 from "@/assets/vnt-creative-2.png";
+import vntExtra1 from "@/assets/vnt-extra-1.webp";
 import CaseStudyLayout from "@/components/slides/CaseStudyLayout";
 
 const vntGreen = "100 55% 38%";
@@ -7,6 +8,7 @@ const vntGreen = "100 55% 38%";
 const sliderImages = [
   { image: vntCreative1, alt: "VNT creative 1" },
   { image: vntCreative2, alt: "VNT creative 2" },
+  { image: vntExtra1, alt: "VNT creative 3" },
 ];
 
 const VNTCaseStudy = () => (

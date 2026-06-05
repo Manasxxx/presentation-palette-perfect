@@ -1,11 +1,17 @@
 import baxsaaCreative1 from "@/assets/baxsaa-creative-1.png";
 import baxsaaCreative2 from "@/assets/baxsaa-creative-2.webp";
+import baxsaaExtra1 from "@/assets/baxsaa-extra-1.webp";
+import baxsaaExtra2 from "@/assets/baxsaa-extra-2.webp";
+import baxsaaExtra3 from "@/assets/baxsaa-extra-3.webp";
 import CaseStudyLayout from "@/components/slides/CaseStudyLayout";
 
 const baxsaaMaroon = "0 68% 33%";
 const sliderImages = [
   { image: baxsaaCreative1, alt: "Baxsaa Co. creative 1" },
   { image: baxsaaCreative2, alt: "Baxsaa Co. creative 2" },
+  { image: baxsaaExtra1, alt: "Baxsaa Co. creative 3" },
+  { image: baxsaaExtra2, alt: "Baxsaa Co. creative 4" },
+  { image: baxsaaExtra3, alt: "Baxsaa Co. creative 5" },
 ];
 
 const stats = [

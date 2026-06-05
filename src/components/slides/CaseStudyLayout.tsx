@@ -208,11 +208,11 @@ const CaseStudyLayout = ({
         </div>
 
         {stats.length > 0 && (
-          <div className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[52%] md:grid-cols-5 md:gap-2 lg:w-[50%]">
+          <div className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[68%] md:grid-cols-5 md:gap-2 lg:w-[66%]">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:rounded-none md:p-3"
+                className="cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:min-h-[3.4rem] md:gap-2 md:px-3 md:py-1"
                 style={{
                   opacity: isMobile ? 1 : 0,
                   borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.16)") : statBorder,
@@ -220,13 +220,13 @@ const CaseStudyLayout = ({
                 }}
               >
                 <div
-                  className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal md:min-h-11 md:gap-1.5 md:text-[clamp(1.55rem,2.05vw,2.4rem)]"
+                  className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal md:gap-1.5 md:text-[clamp(1.1rem,1.45vw,1.55rem)]"
                   style={{ color: statInk }}
                 >
                   {stat.value}
                 </div>
                 <div
-                  className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] md:mt-2 md:min-h-7 md:border-l-0 md:border-t md:pl-0 md:pt-2 md:text-[9px] lg:text-[10px]"
+                  className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] md:pl-2.5 md:tracking-[0.015em] md:text-[9px] lg:text-[10px]"
                   style={{
                     color: lightMode ? "hsl(0 0% 18% / 0.92)" : "hsl(0 0% 100% / 0.92)",
                     borderColor: `hsl(${accentColor} / 0.28)`,
@@ -239,13 +239,9 @@ const CaseStudyLayout = ({
           </div>
         )}
 
-        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:bottom-[6%] md:left-[73%] md:top-[36%] md:mb-0 md:mt-0 md:w-[54%] md:-translate-x-1/2">
+        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[50%] md:top-[58%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
-            <ParallaxCardSlider
-              slides={slides}
-              accentColor={accentColor}
-              cardWidth={isMobile ? undefined : "min(23vw, 310px)"}
-            />
+            <ParallaxCardSlider slides={slides} accentColor={accentColor} />
           </div>
         </div>
       </div>

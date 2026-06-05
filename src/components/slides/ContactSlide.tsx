@@ -6,8 +6,8 @@ import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import { Meteors } from "@/components/ui/meteors";
 import { WordRotate } from "@/components/ui/word-rotate";
 
-const rotatingComplexity = ["complex", "technical", "industrial", "chemical", "dense"];
-const rotatingChoose = ["choose", "trust", "buy", "prefer", "commit"];
+const rotatingComplexity = ["complex", "technical", "complicated", "confusing", "overwhelming"];
+const rotatingChoose = ["understand", "explain", "buy", "get", "choose"];
 
 const ContactSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -86,9 +86,9 @@ const ContactSlide = () => {
         />
       </div>
 
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-start px-6 pb-28 pt-7 text-center md:justify-center md:pb-40 md:pt-12">
+      <div className="relative z-10 flex h-full w-full flex-col items-center justify-start px-6 pb-28 pt-7 text-center md:justify-center md:pb-32 md:pt-8">
         {/* OwlSurf ripple mark — hero */}
-        <div className="ct-mark relative mb-3 aspect-square w-[236px] opacity-0 md:mb-6 md:w-[380px]">
+        <div className="ct-mark relative mb-3 aspect-square w-[236px] opacity-0 md:mb-4 md:w-[300px]">
           <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full border border-white/12 opacity-0">
             <div className="absolute inset-[0.55rem] rounded-full border border-primary/25 md:inset-3" />
             <div className="absolute inset-5 rounded-full bg-primary/[0.05] blur-sm md:inset-7" />
@@ -102,36 +102,32 @@ const ContactSlide = () => {
           Let’s talk
         </span>
 
-        <h2 className="ct-reveal max-w-[20rem] font-sans text-[clamp(2.05rem,8.6vw,2.9rem)] font-black uppercase leading-[1.06] tracking-normal text-white opacity-0 [overflow-wrap:anywhere] md:max-w-[44rem] md:text-[clamp(3rem,5.4vw,5.4rem)]">
-          <span className="block not-italic">We make the</span>
-          <span className="my-1.5 block md:my-3.5">
-            <span className="ct-title-accent inline-flex rounded-full border border-owl-teal/45 bg-owl-teal px-5 py-2 text-[1.6rem] font-black uppercase leading-[1.16] tracking-[0.02em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] md:px-8 md:py-3 md:text-[clamp(2.6rem,4.6vw,4.8rem)]">
-              <WordRotate words={rotatingComplexity} duration={1900} className="text-center" />
-            </span>
+        <h2 className="ct-reveal flex max-w-[22rem] flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-[clamp(1.7rem,7vw,2.5rem)] font-black uppercase leading-[1.08] tracking-normal text-white opacity-0 [overflow-wrap:anywhere] md:max-w-none md:flex-nowrap md:gap-x-4 md:text-[clamp(1.7rem,3.1vw,2.6rem)]">
+          <span className="shrink-0 whitespace-nowrap not-italic">We make the</span>
+          <span className="ct-title-accent inline-flex shrink-0 rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-1.5 text-[1.4rem] font-black uppercase leading-[1.16] tracking-[0.02em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] md:px-6 md:py-2 md:text-[clamp(1.5rem,2.7vw,2.4rem)]">
+            <WordRotate words={rotatingComplexity} duration={1900} className="text-center" />
           </span>
-          <span className="block not-italic">easy to</span>
-          <span className="mt-1.5 block md:mt-3.5">
-            <span className="inline-flex rounded-full border border-owl-teal/45 bg-owl-teal px-5 py-2 text-[1.6rem] font-black uppercase leading-[1.16] tracking-[0.02em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] md:px-8 md:py-3 md:text-[clamp(2.6rem,4.6vw,4.8rem)]">
-              <WordRotate words={rotatingChoose} duration={1900} className="text-center" />
-            </span>
+          <span className="shrink-0 whitespace-nowrap not-italic">easy to</span>
+          <span className="inline-flex shrink-0 rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-1.5 text-[1.4rem] font-black uppercase leading-[1.16] tracking-[0.02em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] md:px-6 md:py-2 md:text-[clamp(1.5rem,2.7vw,2.4rem)]">
+            <WordRotate words={rotatingChoose} duration={1900} className="text-center" />
           </span>
         </h2>
 
-        <p className="ct-reveal mt-4 max-w-[19rem] font-body text-sm leading-relaxed text-white/60 opacity-0 md:mt-5 md:max-w-[34rem] md:text-lg">
+        <p className="ct-reveal mt-4 max-w-[19rem] font-body text-sm leading-relaxed text-white/60 opacity-0 md:mt-4 md:max-w-[34rem] md:text-lg">
           Bring the product, the market, and the sales problem. You’ll see it the way your buyers should, fast.
         </p>
 
-        <div className="ct-reveal mt-5 flex w-full max-w-[20rem] flex-col items-stretch gap-3 opacity-0 sm:w-auto sm:flex-row sm:items-center md:mt-7">
+        <div className="ct-reveal mt-5 flex w-full max-w-[20rem] flex-col items-stretch gap-3 opacity-0 sm:w-auto sm:max-w-none sm:flex-row sm:items-center md:mt-5">
           <a
             href="mailto:growth@owlsurf.com"
-            className="group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-sans text-sm font-bold uppercase tracking-[0.05em] text-background shadow-[0_0_30px_rgba(75,194,194,0.3)] transition duration-300 hover:bg-primary/90 md:text-base"
+            className="group inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-6 py-3 font-sans text-sm font-bold uppercase tracking-[0.05em] text-background shadow-[0_0_30px_rgba(75,194,194,0.3)] transition duration-300 hover:bg-primary/90 md:text-base"
           >
             growth@owlsurf.com
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
           </a>
           <a
             href="tel:+919520367546"
-            className="inline-flex items-center justify-center rounded-full border border-white/22 px-6 py-3 font-sans text-sm font-semibold tracking-[0.03em] text-white/82 transition duration-300 hover:border-primary/60 hover:text-primary md:text-base"
+            className="inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-white/22 px-6 py-3 font-sans text-sm font-semibold tracking-[0.03em] text-white/82 transition duration-300 hover:border-primary/60 hover:text-primary md:text-base"
           >
             +91 9520 367546
           </a>
