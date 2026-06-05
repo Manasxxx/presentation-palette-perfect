@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, createSpring, stagger } from "animejs";
-import ParallaxCardSlider from "@/components/ParallaxCardSlider";
+import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type SlideImage = {
@@ -241,7 +241,7 @@ const CaseStudyLayout = ({
 
         <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[50%] md:top-[58%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
-            <ParallaxCardSlider slides={slides} accentColor={accentColor} />
+            <CaseStudyCarousel slides={slides} accentColor={accentColor} />
           </div>
         </div>
       </div>

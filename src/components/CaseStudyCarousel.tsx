@@ -7,12 +7,12 @@ interface SlideData {
   alt: string;
 }
 
-interface ParallaxCardSliderProps {
+interface CaseStudyCarouselProps {
   slides: SlideData[];
   accentColor?: string;
 }
 
-const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCardSliderProps) => {
+const CaseStudyCarousel = ({ slides, accentColor = "193 100% 42%" }: CaseStudyCarouselProps) => {
   const blossomRef = useRef<ElementRef<typeof BlossomCarousel>>(null);
   const isMobile = useIsMobile();
 
@@ -73,4 +73,4 @@ const ParallaxCardSlider = ({ slides, accentColor = "193 100% 42%" }: ParallaxCa
   );
 };
 
-export default ParallaxCardSlider;
+export default CaseStudyCarousel;

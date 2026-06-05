@@ -9,7 +9,7 @@ import mitsuiExtra1 from "@/assets/mitsui-extra-1.webp";
 import mitsuiExtra2 from "@/assets/mitsui-extra-2.webp";
 import mitsuiExtra4 from "@/assets/mitsui-extra-4.webp";
 import mitsuiExtra5 from "@/assets/mitsui-extra-5.webp";
-import ParallaxCardSlider from "@/components/ParallaxCardSlider";
+import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface StatDef {
@@ -250,7 +250,7 @@ const CaseStudySlide = () => {
         {/* RIGHT: creative gallery */}
         <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[50%] md:top-[58%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
-            <ParallaxCardSlider slides={sliderImages} accentColor={mitsuiCyan} />
+            <CaseStudyCarousel slides={sliderImages} accentColor={mitsuiCyan} />
           </div>
         </div>
       </div>
