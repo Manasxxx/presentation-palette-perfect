@@ -26,14 +26,12 @@ const BaxsaaCaseStudy = () => (
     caseNumber="02"
     title="The Baxsaa"
     accentTitle="Co."
-    subtitle="Beauty commerce brand. We tightened search, content, and funnel signals so the brand looked sharper at every buyer check."
-    proofNote="What it proves: search hygiene, mobile readiness, and performance discipline for a brand where trust is built before checkout."
-    market="D2C beauty commerce"
-    owlsurfRole="SEO, content, funnel, mobile proof"
+    subtitle="A Mumbai studio that makes premium custom packaging. We made them easier to find online and gave the brand a sharper look, so more of the right buyers saw the work and reached out."
+    proofNote="What it proves: clear search presence, a sharper brand look, and fast mobile pages for a maker whose work sells on craft."
+    market="Premium custom packaging"
+    owlsurfRole="Search, content, creative, and mobile"
     proofPoints={[
-      { label: "Buyer", value: "Discovery-led shoppers checking credibility before purchase" },
-      { label: "Shift", value: "From scattered brand touchpoints to a cleaner conversion path" },
-      { label: "Proof", value: "Reach, mobile performance, and CTR moved together" },
+      { label: "Buyer", value: "Businesses choosing a packaging partner they can trust" },
     ]}
     slides={sliderImages}
     stats={stats}

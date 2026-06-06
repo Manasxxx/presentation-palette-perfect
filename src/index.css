@@ -329,8 +329,9 @@
   margin-inline: auto;
   overflow-x: auto;
   overflow-y: visible;
-  padding: 0 calc(50% - 4.95rem) 0;
+  padding: 0 calc(50% - 9.3rem) 0;
   scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
   scrollbar-width: none;
   touch-action: pan-x;
 }
@@ -342,11 +343,11 @@
 .cs-coverflow-item {
   position: relative;
   display: inline-block;
-  width: 9.9rem;
-  aspect-ratio: 1 / 1.5;
+  width: 18.6rem;
+  aspect-ratio: 1 / 1.08;
   scroll-snap-align: center;
   transform-style: preserve-3d;
-  view-timeline: --cs-slide inline calc(50% - 9.6rem);
+  view-timeline: --cs-slide inline calc(50% - 18rem);
 }
 
 .cs-coverflow-stage {
@@ -365,6 +366,7 @@
   height: 100%;
   width: 100%;
   overflow: hidden;
+  padding: 1px;
   border-radius: 0.75rem;
   border: 1px solid hsl(0 0% 100% / 0.18);
   background: hsl(0 0% 100% / 0.045);
@@ -380,6 +382,7 @@
   width: 100%;
   object-fit: contain;
   object-position: center;
+  border-radius: inherit;
 }
 
 @keyframes cs-coverflow-rotate {
@@ -401,15 +404,15 @@
 
 @keyframes cs-coverflow-slide {
   0% {
-    transform: translateX(24%);
+    transform: translateX(20%);
   }
 
   50% {
-    transform: translateX(0) scale(1.14);
+    transform: translateX(0) scale(1.06);
   }
 
   100% {
-    transform: translateX(-24%);
+    transform: translateX(-20%);
   }
 }
 

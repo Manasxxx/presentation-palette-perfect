@@ -424,7 +424,7 @@ const ServicesSlide = () => {
       )}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-16 pb-6 md:px-12 md:pt-20 md:pb-10">
         <header className="sv-header text-left self-start">
-          <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
+          <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
             WHAT WE BUILD
           </span>
           <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
@@ -489,9 +489,6 @@ const ServicesSlide = () => {
                   );
                 })}
               </div>
-                <p className="text-center font-body text-[0.7rem] leading-snug text-white/45">
-                  Tap a system to see how it’s built.
-                </p>
               </div>
 
               {/* Mobile: active category as a connected, low-text build sequence (titles only) */}
@@ -525,13 +522,8 @@ const ServicesSlide = () => {
                       <span className="relative z-10 flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-[0_0_0_4px_hsl(var(--background))]">
                         <Icon className="h-[18px] w-[18px]" />
                       </span>
-                      <span className="flex items-baseline gap-2.5">
-                        <span className="font-sans text-[0.65rem] font-black tabular-nums text-primary/55">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="font-sans text-[1.05rem] font-black uppercase leading-tight tracking-tight text-white">
-                          {svc.title}
-                        </span>
+                      <span className="font-sans text-[1.05rem] font-black uppercase leading-tight tracking-tight text-white">
+                        {svc.title}
                       </span>
                     </li>
                   );

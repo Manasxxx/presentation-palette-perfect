@@ -24,6 +24,14 @@ const differentiators: Differentiator[] = [
   { icon: UsersRound, label: "Sales alignment", desc: "Sales, marketing, and leadership tell the same story." },
 ];
 
+// Mobile-only: the five outcomes above consolidated into three, each with a
+// one-line sentence (comprehension, internal buy-in, lower risk).
+const mobileOutcomes: Differentiator[] = [
+  { icon: Eye, label: "Understood faster", desc: "Buyers grasp your technical product before the first sales call, with far less explaining." },
+  { icon: Handshake, label: "Easier internal buy-in", desc: "Champions and your team carry one clear story to the people who sign off." },
+  { icon: ShieldCheck, label: "Lower perceived risk", desc: "Concrete proof reassures serious, high-stakes buyers and de-risks the decision." },
+];
+
 // Mobile-only: priority sectors render as an auto-scrolling marquee pill (like the Clients slide)
 const renderSectorChip = (sector: Sector, key: React.Key) => {
   const Icon = sector.icon;
@@ -58,7 +66,7 @@ const SkyrocketSlide = () => {
       fov: isMobile ? 104 : 90,
       fovSpeedUp: isMobile ? 154 : 150,
       speedUp: isMobile ? 3 : 2,
-      autoSpeedUp: isMobile ? 0.9 : 0,
+      autoSpeedUp: isMobile ? 0.5 : 0,
       carLightsFade: 0.4,
       totalSideLightSticks: 20,
       lightPairsPerRoadWay: 40,
@@ -67,8 +75,8 @@ const SkyrocketSlide = () => {
       brokenLinesLengthPercentage: 0.5,
       lightStickWidth: [0.12, 0.5] as [number, number],
       lightStickHeight: [1.3, 1.7] as [number, number],
-      movingAwaySpeed: (isMobile ? [82, 108] : [60, 80]) as [number, number],
-      movingCloserSpeed: (isMobile ? [-165, -215] : [-120, -160]) as [number, number],
+      movingAwaySpeed: (isMobile ? [55, 72] : [60, 80]) as [number, number],
+      movingCloserSpeed: (isMobile ? [-112, -148] : [-120, -160]) as [number, number],
       carLightsLength: [400 * 0.03, 400 * 0.2] as [number, number],
       carLightsRadius: [0.05, 0.14] as [number, number],
       carWidthPercentage: [0.3, 0.5] as [number, number],
@@ -169,7 +177,7 @@ const SkyrocketSlide = () => {
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-5 py-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
-        <div className="grid gap-7 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
+        <div className="grid gap-8 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
           <div className="md:col-span-7">
             <div className="who-kicker font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]" style={{ opacity: 0 }}>
@@ -177,7 +185,7 @@ const SkyrocketSlide = () => {
               <span className="ml-1 hidden font-sans text-white/35 sm:inline">/ 02</span>
             </div>
 
-            <h2 className="mt-3 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[2.25rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
+            <h2 className="mt-4 font-sans font-black leading-[0.98] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] text-[2.25rem] sm:text-[2.5rem] md:mt-9 md:text-[clamp(2.7rem,5.6vw,5.4rem)]">
               <span className="who-word block">
                 <span className="font-sans not-italic">Long </span>
                 <span className="who-title-accent font-serif italic text-owl-teal inline-block pr-2">sales.</span>
@@ -206,9 +214,9 @@ const SkyrocketSlide = () => {
               className="md:hidden mt-4 -mx-5 overflow-hidden"
               style={{
                 WebkitMaskImage:
-                  "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+                  "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)",
                 maskImage:
-                  "linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%)",
+                  "linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%)",
               }}
               aria-label="Priority sectors"
             >
@@ -255,24 +263,52 @@ const SkyrocketSlide = () => {
               What this means for buyers
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4 lg:gap-6">
+          {/* Mobile: three consolidated outcome pills, each with a one-line sentence */}
+          <div className="flex flex-col gap-2.5 md:hidden">
+            {mobileOutcomes.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.label}
+                  className="who-chip relative flex items-center gap-3.5 overflow-hidden rounded-xl border border-white/10 bg-white/[0.045] p-3.5 backdrop-blur-sm"
+                  style={{ opacity: 0 }}
+                >
+                  <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/45" />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-owl-teal/30 bg-owl-teal/12 text-owl-teal">
+                    <Icon className="h-[1.05rem] w-[1.05rem]" strokeWidth={1.9} />
+                  </span>
+                  <span className="flex min-w-0 flex-col gap-0.5">
+                    <span className="font-sans text-[0.82rem] font-black uppercase leading-tight tracking-[0.03em] text-white">
+                      {item.label}
+                    </span>
+                    <span className="font-body text-[0.78rem] leading-snug text-white/60">
+                      {item.desc}
+                    </span>
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop: 5-col cards with supporting copy (unchanged) */}
+          <div className="hidden md:grid md:grid-cols-5 md:gap-4 lg:gap-6">
             {differentiators.map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="who-chip group relative flex min-w-0 items-center gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-3 backdrop-blur-sm transition-[transform,border-color,background-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] last:col-span-2 md:last:col-span-1 md:items-start md:gap-3 md:p-4 lg:gap-4 lg:p-5"
+                  className="who-chip group relative flex min-w-0 items-start gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-4 backdrop-blur-sm transition-[transform,border-color,background-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] lg:gap-4 lg:p-5"
                   style={{ opacity: 0 }}
                 >
                   <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/0 transition-colors duration-300 group-hover:bg-owl-teal" />
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-owl-teal/30 bg-owl-teal/12 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-10 md:w-10 lg:h-11 lg:w-11">
-                    <Icon className="h-[1rem] w-[1rem] md:h-[1.15rem] md:w-[1.15rem] lg:h-[1.25rem] lg:w-[1.25rem]" strokeWidth={1.9} />
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-owl-teal/30 bg-owl-teal/12 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 lg:h-11 lg:w-11">
+                    <Icon className="h-[1.15rem] w-[1.15rem] lg:h-[1.25rem] lg:w-[1.25rem]" strokeWidth={1.9} />
                   </span>
                   <span className="flex min-w-0 flex-col gap-1">
-                    <span className="font-sans text-[0.78rem] font-black uppercase leading-tight tracking-[0.04em] text-white md:text-[0.82rem] lg:text-[0.95rem]">
+                    <span className="font-sans text-[0.82rem] font-black uppercase leading-tight tracking-[0.04em] text-white lg:text-[0.95rem]">
                       {item.label}
                     </span>
-                    <span className="hidden font-body text-xs leading-snug text-white/55 md:block lg:text-sm">
+                    <span className="font-body text-xs leading-snug text-white/55 lg:text-sm">
                       {item.desc}
                     </span>
                   </span>

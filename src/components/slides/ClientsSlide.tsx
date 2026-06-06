@@ -34,15 +34,21 @@ const allClients: Client[] = [
 const firstRow = allClients.slice(0, Math.ceil(allClients.length / 2));
 const secondRow = allClients.slice(Math.ceil(allClients.length / 2));
 
+// Mobile: three rows, each a distinct set of logos so the same logo never
+// appears in two rows at the same moment.
+const mobileRow1 = allClients.slice(0, 3);
+const mobileRow2 = allClients.slice(3, 6);
+const mobileRow3 = allClients.slice(6, 9);
+
 const renderClientLogo = (client: Client, key: React.Key) => (
   <div
     key={key}
-    className="flex h-[96px] w-[210px] items-center justify-center rounded-lg border border-white/12 bg-[#0b1217]/72 px-8 backdrop-blur-sm transition duration-300 hover:border-primary/60 hover:bg-primary/10 md:h-[128px] md:w-[280px]"
+    className="flex h-[96px] w-[188px] items-center justify-center rounded-lg border border-white/12 bg-[#0b1217]/72 px-4 backdrop-blur-sm transition duration-300 hover:border-primary/60 hover:bg-primary/10 md:h-[128px] md:w-[252px] md:px-5"
   >
     <img
       src={client.src}
       alt={client.alt}
-      className="max-h-[70px] max-w-[165px] object-contain md:max-h-[98px] md:max-w-[230px]"
+      className="max-h-[84px] max-w-[170px] object-contain md:max-h-[114px] md:max-w-[238px]"
       loading="lazy"
       decoding="async"
       draggable={false}
@@ -129,7 +135,7 @@ const ClientsSlide = () => {
       {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-12 md:px-12 md:pb-12 md:pt-16">
         <header className="cl-heading text-left self-start">
-          <span className="text-[10px] md:text-xs tracking-[0.3em] text-primary font-medium mb-3 block">
+          <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
             WHO HAS SEEN THE WORK
           </span>
           <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
@@ -139,61 +145,101 @@ const ClientsSlide = () => {
         </header>
 
         <div className="cl-cards relative flex flex-1 w-full flex-col justify-center gap-4 md:gap-6">
-          <LogoLoop
-            logos={firstRow}
-            speed={52}
-            direction="left"
-            logoHeight={96}
-            gap={22}
-            hoverSpeed={0}
-            scaleOnHover
-            fadeOut
-            fadeOutColor="#090d12"
-            renderItem={renderClientLogo}
-            ariaLabel="Major clients row one"
-          />
-          <LogoLoop
-            logos={secondRow}
-            speed={46}
-            direction="right"
-            logoHeight={96}
-            gap={22}
-            hoverSpeed={0}
-            scaleOnHover
-            fadeOut
-            fadeOutColor="#090d12"
-            renderItem={renderClientLogo}
-            ariaLabel="Major clients row two"
-          />
+          {/* Mobile: three logo sliders (replaces the credibility pills), each a
+              distinct logo set so no logo repeats across rows at the same time */}
+          <div className="flex flex-col gap-4 md:hidden">
+            <LogoLoop
+              logos={mobileRow1}
+              speed={58}
+              direction="left"
+              logoHeight={96}
+              gap={22}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="#090d12"
+              renderItem={renderClientLogo}
+              ariaLabel="Clients row one"
+            />
+            <LogoLoop
+              logos={mobileRow2}
+              speed={66}
+              direction="right"
+              logoHeight={96}
+              gap={22}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="#090d12"
+              renderItem={renderClientLogo}
+              ariaLabel="Clients row two"
+            />
+            <LogoLoop
+              logos={mobileRow3}
+              speed={54}
+              direction="left"
+              logoHeight={96}
+              gap={22}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="#090d12"
+              renderItem={renderClientLogo}
+              ariaLabel="Clients row three"
+            />
+          </div>
 
-          {/* Credibility strip — shown on both. Desktop placement is rough (5-across row);
-              refine when working the desktop layout. */}
-          <div className="mt-8 grid grid-cols-2 gap-2.5 md:mt-10 md:grid-cols-5 md:gap-4">
-            {[
-              { n: "End-to-end", l: "Brand to demand" },
-              { n: "6", l: "Sectors served" },
-              { n: "India + APAC", l: "Markets reached" },
-              { n: "Meta + Google", l: "Certified partner" },
-              { n: "B2B", l: "Built for complex sales", wide: true },
-            ].map((stat) => (
-              <div
-                key={stat.l}
-                className={`relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-b from-white/[0.07] to-white/[0.015] px-2.5 py-3.5 text-center shadow-[0_6px_22px_rgba(0,0,0,0.28)] backdrop-blur-md ${
-                  stat.wide ? "col-span-2 md:col-span-1" : ""
-                }`}
-              >
+          {/* Desktop: two logo sliders + credibility pills */}
+          <div className="hidden md:flex md:flex-col md:gap-6">
+            <LogoLoop
+              logos={firstRow}
+              speed={64}
+              direction="left"
+              logoHeight={96}
+              gap={22}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="#090d12"
+              renderItem={renderClientLogo}
+              ariaLabel="Major clients row one"
+            />
+            <LogoLoop
+              logos={secondRow}
+              speed={57}
+              direction="right"
+              logoHeight={96}
+              gap={22}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="#090d12"
+              renderItem={renderClientLogo}
+              ariaLabel="Major clients row two"
+            />
+
+            {/* Credibility strip — pills in the same family as the sector / outcome pills */}
+            <div className="mt-10 flex flex-wrap justify-center gap-2.5">
+              {[
+                { n: "End-to-end", l: "Brand to demand" },
+                { n: "6", l: "Sectors served" },
+                { n: "India + APAC", l: "Markets reached" },
+                { n: "Meta + Google", l: "Certified partner" },
+                { n: "B2B", l: "Built for complex sales" },
+              ].map((stat) => (
                 <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/55 to-transparent"
-                />
-                <span className="font-sans text-[1.1rem] font-black leading-[1.1] tracking-tight tabular-nums text-primary">
-                  {stat.n}
+                  key={stat.l}
+                  className="flex items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.045] px-4 py-2 backdrop-blur-sm"
+                >
+                  <span className="font-sans text-[0.82rem] font-black leading-none tracking-tight text-primary">
+                    {stat.n}
+                  </span>
+                  <span className="font-body text-[0.62rem] font-semibold uppercase leading-none tracking-[0.14em] text-white/55">
+                    {stat.l}
+                  </span>
                 </span>
-                <span className="mt-1.5 font-body text-[8.5px] font-semibold uppercase leading-tight tracking-[0.14em] text-white/55">
-                  {stat.l}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

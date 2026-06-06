@@ -15,7 +15,18 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 31 (current) is a desktop case-study + Contact polish pass (and folds in some working-tree changes that were already staged: nav centering and extra case-study creatives).
+Session 32 (current) is a mobile polish pass across slides 2–4 and all seven case studies, plus the orphaned-lanyard cleanup and a temporary on-device debug menu.
+
+- **Lanyard stack removed.** The Our Team slide was deleted in Session 30, orphaning the lanyard. Deleted `src/components/ui/Lanyard/` and `src/assets/lanyard/card.glb` (~2.4 MB), uninstalled `@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`, and `meshline`, dropped the `vendor-lanyard` manualChunk (folded the residual `three`, used only by Hyperspeed, into `vendor-3d`), removed the `*.glb`/`meshline` type decls and the `*.glb` `assetsInclude`. `three`/`postprocessing`/`cobe`/`ogl` stay (Hyperspeed + Globe). Net ~2.4 MB removed; build + lint clean.
+- **Temporary mobile debug menu.** New `src/components/DebugMenu.tsx` — a `md:hidden` teal bug FAB (bottom-right) that expands to a Hot-reload button + a jump-to-any-slide list (0–11, current highlighted). Wired into `Index.tsx`. **KEEP for now; remove before the production push.**
+- **Slide 2 (Who We Are), mobile.** More vertical rhythm (modest). Priority-sectors marquee now bleeds full width (`-mx-5`) with a symmetric edge fade (transparent 0%/100%, solid 8–92%). The five buyer outcomes consolidated into three pills with one-line sentences (`mobileOutcomes`: Understood faster / Easier internal buy-in / Lower perceived risk); desktop keeps the 5-card grid. Hyperspeed ambient speed eased on mobile (autoSpeedUp 0.9→0.5, moving speeds down ~30%).
+- **Slide 3 (Services / Buyer Systems), mobile.** Header eyebrow "WHAT WE BUILD" switched to the thicker `font-black` teal eyebrow used on the other slides. Removed the "Tap a system to see how it's built" hint and the `01/02…` numbering in the mobile build-sequence list.
+- **Slide 4 (Clients / Proof), mobile.** Header eyebrow to the same `font-black` teal style. Credibility badges rebuilt as rounded-full pills in the sector/outcome family (desktop keeps them; mobile shows three moving logo sliders **in place of** the pills — `mobileRow1/2/3`, distinct logo sets so no logo repeats across rows at once). Logo cards zoomed in and narrowed; loop speeds bumped.
+- **Case studies (all seven), mobile.** Cover-flow image is now the hero: `.cs-coverflow-item` width 9.9→18.6rem, aspect 1/1.5→1/1.08, `object-fit: contain` (full image; cover was clipping), 1px card frame, `scroll-behavior: smooth` + softened cover-flow motion. Company name forced to one line, description nudged up, container top/bottom spacing pt-10/pb-8. Proof table: the **"Shift" row is filtered out centrally** in `CaseStudyLayout` (alongside the existing "Proof" filter), scrim + stronger borders + brighter/larger values. Stat-pill numbers use a Helvetica stack (`"Helvetica Neue", Helvetica, Arial, sans-serif`); on Mitsui the number `<span>` needed its own class+style because `index.css` `span:not([class])` was forcing Palanquin. General contrast pass on light + dark slides.
+- **Baxsaa copy corrected.** Was wrongly described as "beauty commerce". The Baxsaa Co is a Mumbai premium custom-packaging studio (rigid boxes, paper bags). Rewrote subtitle/market/role in plain, outcome-based language. Standing rule: case-study descriptions must be plain (not corporate) and outcome-based; verify client identity first.
+- **Push:** committed and pushed to production. `.github/workflows/deploy.yml` excluded again (remote PAT lacks `workflow` scope). `DebugMenu.tsx` intentionally shipped (temporary — remove before production).
+
+Session 31 is a desktop case-study + Contact polish pass (and folds in some working-tree changes that were already staged: nav centering and extra case-study creatives).
 
 - **Desktop case-study carousel → Blossom "cards" stack.** `CaseStudyCarousel.tsx` (renamed from `ParallaxCardSlider.tsx`) rewritten: desktop now renders a `BlossomCarousel` card stack (CSS recipe `.cs-cards*` in `index.css`, ported from blossom-carousel.com's cards example — scroll-snap + sticky slides + `view-timeline`/`sibling-index()` keyframes, with an `@supports not` static fallback). The old JS `requestAnimationFrame` 3D-tilt parallax was deleted. Mobile cover-flow unchanged. Cards are square (`--card-width: 25rem`, `aspect-ratio 1/1`, `object-fit: contain`, 1px inner inset) so the whole creative shows; the stage is centered + aligned to the left proof table (`md:left-[50%] md:top-[58%]`, both translate-1/2), leaving the right blank for future video embeds (`.cs-cards-card video` is pre-styled). To resize, change `--card-width`. The component was **renamed `ParallaxCardSlider` → `CaseStudyCarousel`** (Session 31 follow-up) since it's no longer a parallax slider; both importers (`CaseStudyLayout`, `CaseStudySlide`) updated.
 - **Case-study stat pills unified.** Desktop pills in `CaseStudyLayout.tsx` (6 studies) + `CaseStudySlide.tsx` (Mitsui) switched from a fixed-height box to the `rounded-full` mobile pill with `md:min-h-[3.4rem]` (grows, won't clip); container widened (`md:w-[68%] lg:w-[60%]`) and padding/value-size/label-tracking tightened so long labels fit.
@@ -617,8 +628,9 @@ Other open project items carried over from earlier sessions:
 - Production now runs on a VPS at https://www.owlsurf.media via push-to-deploy (see "Deployment pipeline" below), not Vercel. The old Vercel item is retired.
 - `logo-main.jpg` is still a JPG; should be WebP or SVG.
 - Vishnu still reuses Pankaj's avatar until a dedicated Vishnu avatar is supplied.
-- `vendor-lanyard` remains a very large chunk (~3MB minified / ~1MB gzip); the chunk is isolated but not reduced in this session.
-- `npm audit` still reports 17 dependency advisories after the unused-package cleanup; review separately from the visual push.
+- `vendor-lanyard` chunk **removed in Session 32** (Lanyard deleted, 4 deps uninstalled, `three` folded into `vendor-3d`). The largest chunk is now `vendor-3d` (~686 KB / ~210 KB gzip = `three` + `postprocessing` for Hyperspeed, desktop-gated). Still over the 600 KB warning, but it is desktop-only.
+- `npm audit` still reports dependency advisories; not yet run/remediated this session (user deferred). Review separately from the visual push.
+- `DebugMenu.tsx` is a temporary on-device aid shipped in Session 32 — **remove before production** (delete the file + its import/usage in `Index.tsx`).
 
 ### Deployment pipeline + 2026-06-04 missed-deploy incident
 
@@ -634,9 +646,11 @@ Push to `main` auto-deploys to https://www.owlsurf.media in ~10-60s: GitHub Acti
 
 ## Current Workspace Notes
 
-Intended files for the Session 28 mobile case-study commit:
-- slide/source changes listed under `Files Touched (Session 28)`
-- dependency updates for Blossom carousel
+Intended files for the Session 32 mobile-polish + lanyard-cleanup commit:
+- slide/source changes: `SkyrocketSlide.tsx`, `ServicesSlide.tsx`, `ClientsSlide.tsx`, `CaseStudySlide.tsx`, `CaseStudyLayout.tsx`, `BaxsaaCaseStudy.tsx`, `index.css`, `Index.tsx`, `vite-env.d.ts`, `vite.config.ts`
+- new file: `src/components/DebugMenu.tsx` (temporary)
+- deletions: `src/components/ui/Lanyard/*`, `src/assets/lanyard/card.glb`
+- dependency updates: `package.json`, `package-lock.json` (removed 4 react-three/meshline deps)
 - doc updates: `prod.md`, `context.md`, `handoff.md`
 - exclude `.github/workflows/deploy.yml` unless auth is refreshed with `workflow` scope
 

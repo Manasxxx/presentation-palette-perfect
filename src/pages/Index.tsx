@@ -3,6 +3,7 @@ import TitleSlide from "@/components/slides/TitleSlide";
 
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
+import DebugMenu from "@/components/DebugMenu";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -171,6 +172,7 @@ const Index = () => {
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
+      <DebugMenu currentSlide={currentSlide} onNavigate={navigateToSlide} />
       {slides.map((SlideComponent, index) => (
         <SlideReveal key={index} className="relative">
           {mountedSlides.has(index) ? (

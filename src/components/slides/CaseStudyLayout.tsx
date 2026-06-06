@@ -53,14 +53,14 @@ const CaseStudyLayout = ({
   const [triggered, setTriggered] = useState(false);
   const isMobile = useIsMobile();
   const ink = lightMode ? "hsl(0 0% 15%)" : "white";
-  const muted = lightMode ? "hsl(0 0% 36%)" : "hsl(0 0% 100% / 0.7)";
+  const muted = lightMode ? "hsl(0 0% 28%)" : "hsl(0 0% 100% / 0.84)";
   const statBorder = lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.18)";
   const statInk = lightMode ? "hsl(0 0% 15%)" : "white";
   const proofRows = [
     { label: "Market", value: market },
     { label: "Role", value: owlsurfRole },
     ...proofPoints,
-  ].filter((point) => point.label.toLowerCase() !== "proof");
+  ].filter((point) => !["proof", "shift"].includes(point.label.toLowerCase()));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -149,7 +149,7 @@ const CaseStudyLayout = ({
       />
       <div className="absolute inset-0 z-[-1]" style={{ background }} />
 
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-5 pb-5 md:block md:px-12 md:pt-24 md:pb-14">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-10 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
         <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
             className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
@@ -161,7 +161,7 @@ const CaseStudyLayout = ({
             className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.45rem,4vw,4.8rem)] md:pb-2"
             style={{ opacity: isMobile ? 1 : 0, color: ink }}
           >
-            <span className="font-sans not-italic block">{title}</span>
+            <span className="font-sans not-italic md:block">{title} </span>
             <span
               className="cs-title-accent font-sans not-italic inline-block pr-2"
               style={{ color: `hsl(${accentColor})` }}
@@ -170,7 +170,7 @@ const CaseStudyLayout = ({
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-2.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
+            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0, color: muted }}
           >
             {subtitle}
@@ -187,20 +187,20 @@ const CaseStudyLayout = ({
           className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border backdrop-blur-sm md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none md:rounded-none lg:w-[30%]"
           style={{
             opacity: isMobile ? 1 : 0,
-            borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.16)" : "hsl(0 0% 100% / 0.16)") : statBorder,
-            backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.46)" : "hsl(0 0% 100% / 0.045)") : (lightMode ? "hsl(0 0% 100% / 0.38)" : "hsl(0 0% 0% / 0.18)"),
+            borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.22)" : "hsl(0 0% 100% / 0.22)") : statBorder,
+            backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.7)" : "hsl(0 0% 0% / 0.42)") : (lightMode ? "hsl(0 0% 100% / 0.38)" : "hsl(0 0% 0% / 0.18)"),
           }}
         >
           {proofRows.map((point) => (
             <div
               key={`${point.label}-${point.value}`}
               className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4"
-              style={{ borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.12)" : "hsl(0 0% 100% / 0.12)") : statBorder }}
+              style={{ borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.16)" : "hsl(0 0% 100% / 0.16)") : statBorder }}
             >
-              <span className="font-sans text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `hsl(${accentColor})` }}>
+              <span className="font-sans text-[9.5px] font-black uppercase tracking-[0.16em]" style={{ color: `hsl(${accentColor})` }}>
                 {point.label}
               </span>
-              <span className="font-body text-[0.66rem] leading-tight md:text-base" style={{ color: isMobile ? (lightMode ? "hsl(0 0% 12% / 0.78)" : "hsl(0 0% 100% / 0.76)") : muted }}>
+              <span className="font-body text-[0.72rem] leading-tight md:text-base" style={{ color: isMobile ? (lightMode ? "hsl(0 0% 10%)" : "hsl(0 0% 100% / 0.92)") : muted }}>
                 {point.value}
               </span>
             </div>
@@ -215,21 +215,21 @@ const CaseStudyLayout = ({
                 className="cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:min-h-[3.4rem] md:gap-2 md:px-3 md:py-1"
                 style={{
                   opacity: isMobile ? 1 : 0,
-                  borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.16)") : statBorder,
-                  backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.52)" : "hsl(0 0% 100% / 0.055)") : (lightMode ? "hsl(0 0% 100% / 0.42)" : "hsl(0 0% 0% / 0.2)"),
+                  borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.2)" : "hsl(0 0% 100% / 0.22)") : statBorder,
+                  backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.72)" : "hsl(0 0% 0% / 0.42)") : (lightMode ? "hsl(0 0% 100% / 0.42)" : "hsl(0 0% 0% / 0.2)"),
                 }}
               >
                 <div
                   className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal md:gap-1.5 md:text-[clamp(1.1rem,1.45vw,1.55rem)]"
-                  style={{ color: statInk }}
+                  style={{ color: statInk, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
                 >
                   {stat.value}
                 </div>
                 <div
                   className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] md:pl-2.5 md:tracking-[0.015em] md:text-[9px] lg:text-[10px]"
                   style={{
-                    color: lightMode ? "hsl(0 0% 18% / 0.92)" : "hsl(0 0% 100% / 0.92)",
-                    borderColor: `hsl(${accentColor} / 0.28)`,
+                    color: lightMode ? "hsl(0 0% 12%)" : "hsl(0 0% 100% / 0.96)",
+                    borderColor: `hsl(${accentColor} / 0.4)`,
                   }}
                 >
                   {stat.label}

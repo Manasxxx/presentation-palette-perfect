@@ -4,7 +4,6 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-  assetsInclude: ["**/*.glb"],
   server: {
     host: "::",
     allowedHosts: [
@@ -28,8 +27,7 @@ export default defineConfig(() => ({
         manualChunks: {
           "vendor-react": ["react", "react-dom", "react-router-dom"],
           "vendor-anime": ["animejs"],
-          "vendor-3d": ["ogl", "cobe", "postprocessing"],
-          "vendor-lanyard": ["three", "@react-three/fiber", "@react-three/drei", "@react-three/rapier", "meshline"],
+          "vendor-3d": ["ogl", "cobe", "postprocessing", "three"],
           "vendor-ui": ["lucide-react", "react-liquid-glass-card"],
         },
       },
