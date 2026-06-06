@@ -1,12 +1,12 @@
-import { useEffect, useRef, ReactNode } from "react";
+import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
 import { animate } from "animejs";
 
-interface SlideRevealProps {
+interface SlideRevealProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
 }
 
-const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
+const SlideReveal = ({ children, className = "", ...props }: SlideRevealProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const triggered = useRef(false);
 
@@ -62,8 +62,13 @@ const SlideReveal = ({ children, className = "" }: SlideRevealProps) => {
   }, []);
 
   return (
-    <div className={`${className} bg-background`}>
-      <div ref={contentRef} className="relative" style={{ opacity: 1, willChange: "transform, opacity" }}>
+    <div className={`${className} bg-background`} {...props}>
+      <div
+        ref={contentRef}
+        data-slide-content
+        className="relative"
+        style={{ opacity: 1, willChange: "transform, opacity" }}
+      >
         <div
           className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
           style={{ transform: "scaleX(0)" }}

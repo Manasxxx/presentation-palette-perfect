@@ -253,6 +253,47 @@
     box-shadow: 0 0 40px -10px hsl(0 0% 100% / 0.3);
   }
 
+  .deck-liquid-wash {
+    border-radius: 42% 58% 48% 52% / 36% 42% 58% 64%;
+    background:
+      radial-gradient(ellipse at 50% 52%, hsl(180 64% 62% / 0.28), transparent 58%),
+      radial-gradient(ellipse at 22% 40%, hsl(180 52% 58% / 0.18), transparent 34%),
+      radial-gradient(ellipse at 78% 62%, hsl(191 58% 55% / 0.16), transparent 36%),
+      linear-gradient(180deg, transparent 0%, hsl(180 50% 55% / 0.16) 42%, transparent 88%);
+    filter: blur(28px) saturate(1.35);
+    mix-blend-mode: screen;
+    transform-origin: center;
+    will-change: opacity, transform;
+  }
+
+  .deck-liquid-wash-mobile {
+    inset-inline: -32%;
+    top: -18%;
+    height: 138%;
+    background:
+      radial-gradient(ellipse at 50% 52%, hsl(180 72% 66% / 0.42), transparent 60%),
+      radial-gradient(ellipse at 20% 38%, hsl(180 58% 60% / 0.26), transparent 36%),
+      radial-gradient(ellipse at 82% 64%, hsl(191 64% 58% / 0.24), transparent 38%),
+      linear-gradient(180deg, transparent 0%, hsl(180 56% 58% / 0.24) 44%, transparent 90%);
+    filter: blur(22px) saturate(1.5);
+  }
+
+  .deck-liquid-crest {
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, transparent 2%, hsl(180 76% 72% / 0.08) 16%, hsl(180 78% 70% / 0.34) 48%, hsl(180 76% 72% / 0.08) 82%, transparent 98%),
+      radial-gradient(ellipse at 50% 50%, hsl(180 82% 74% / 0.28), transparent 62%);
+    filter: blur(16px);
+    mix-blend-mode: screen;
+    will-change: opacity, transform;
+  }
+
+  .deck-liquid-crest-mobile {
+    inset-inline: -24%;
+    height: 22vh;
+    filter: blur(12px);
+  }
+
   .card-glass {
     @apply backdrop-blur-xl border border-white/15;
     background: linear-gradient(145deg, hsl(200 20% 50% / 0.1), hsl(200 15% 40% / 0.06));

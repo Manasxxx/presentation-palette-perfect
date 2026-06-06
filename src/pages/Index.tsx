@@ -4,8 +4,10 @@ import TitleSlide from "@/components/slides/TitleSlide";
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 import DebugMenu from "@/components/DebugMenu";
+import DeckTransitionLayer from "@/components/DeckTransitionLayer";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getMountedSlideIndexes, getSlideIndexFromScroll } from "./slide-window";
 
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
@@ -34,7 +36,7 @@ const slides: ComponentType[] = [
   ContactSlide,
 ];
 
-const SLIDE_MOUNT_RADIUS = 0;
+const SLIDE_MOUNT_RADIUS = 1;
 const NAV_IDLE_HIDE_DELAY = 1600;
 
 /**
@@ -73,15 +75,10 @@ const Index = () => {
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const mountedSlides = useMemo(() => {
-    const next = new Set<number>();
-    const start = Math.max(0, currentSlide - SLIDE_MOUNT_RADIUS);
-    const end = Math.min(slides.length - 1, currentSlide + SLIDE_MOUNT_RADIUS);
-    for (let index = start; index <= end; index += 1) {
-      next.add(index);
-    }
-    return next;
-  }, [currentSlide]);
+  const mountedSlides = useMemo(
+    () => getMountedSlideIndexes(slides.length, currentSlide, SLIDE_MOUNT_RADIUS),
+    [currentSlide],
+  );
 
   /**
    * Keeps the header navigation available while the user is moving through the
@@ -133,8 +130,7 @@ const Index = () => {
       rafId = requestAnimationFrame(() => {
         const scrollTop = container.scrollTop;
         const slideHeight = getSlideHeight(container);
-        const newSlide = Math.round(scrollTop / slideHeight);
-        setCurrentSlide(Math.max(0, Math.min(newSlide, slides.length - 1)));
+        setCurrentSlide(getSlideIndexFromScroll(scrollTop, slideHeight, slides.length));
         rafId = null;
       });
     };
@@ -174,7 +170,7 @@ const Index = () => {
       />
       <DebugMenu currentSlide={currentSlide} onNavigate={navigateToSlide} />
       {slides.map((SlideComponent, index) => (
-        <SlideReveal key={index} className="relative">
+        <SlideReveal key={index} className="relative" data-slide-index={index}>
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>
               {index === 0 ? (
@@ -188,6 +184,11 @@ const Index = () => {
           )}
         </SlideReveal>
       ))}
+      <DeckTransitionLayer
+        currentSlide={currentSlide}
+        isMobile={isMobile}
+        reducedMotion={prefersReducedMotion}
+      />
     </div>
   );
 };

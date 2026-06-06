@@ -8,17 +8,17 @@ It's a marketing artifact first, so most of the engineering effort goes into two
 
 **The deck is an array, not a router.** `src/pages/Index.tsx` holds an ordered list of slide components and maps the container's scroll offset to a current index. There's no per-slide route; the URL stays at `/`. React Router only exists to catch unknown paths and render a branded 404 outside the deck. State is deliberately local React state and prop drilling. No Redux, no Zustand. For a linear deck the global store would be ceremony.
 
-**Only the active slide is mounted.** `SLIDE_MOUNT_RADIUS` is `0`, so off-screen slides are replaced by a height-preserving skeleton instead of staying in the DOM. This is the main defense against cumulative jank: several of these slides own a WebGL context, a physics sim, or a RAF loop, and keeping them all alive while you scroll is what kills the framerate. The trade-off is a lazy-load fetch on each transition, which the skeleton hides so you never see a black flash.
+**Only the current slide and its immediate neighbors are mounted.** `SLIDE_MOUNT_RADIUS` is `1`, so the next and previous slides are already present during scroll-snap movement while farther-off slides stay as height-preserving skeletons. This smooths transitions without keeping the whole deck alive. Several slides own WebGL, timers, or RAF loops, so the mounted window stays deliberately tight.
 
-**Heavy effects are desktop-only and gated in code.** `Hyperspeed`, `LightRays`, `PrismaticBurst`, and the cover globe mount only above 768px via `useIsMobile()`. Ambient WebGL caps its device pixel ratio so retina displays don't cook the GPU. The one foreground exception is the Our Team lanyard (Three.js + Rapier physics), which earns a higher DPR because the brand mark needs to stay crisp, and which is deferred ~650ms after the slide settles so its init doesn't stutter the scroll-snap entrance.
+**Heavy effects are desktop-only and gated in code.** `LightRays`, `PrismaticBurst`, and the cover globe mount only above 768px via `useIsMobile()`; Hyperspeed is the one currently retained ambient exception for the Who We Are slide. Ambient WebGL caps its device pixel ratio so retina displays don't cook the GPU. The old Our Team lanyard stack was removed.
 
-**Mobile gets purpose-built variants, not shrunk desktop.** Two widgets don't survive a naive resize: the Services 3D card stack and the Our Team lanyard. On phones the former becomes a readable service list with a horizontal chip selector, and the latter becomes a static badge card. Everything else is handled with `max`/`md:` Tailwind pairs so the desktop layout is byte-for-byte unchanged. Slides are kept inside a single viewport rather than made internally scrollable, because an oversized slide fights `scroll-snap-type: y mandatory`.
+**Mobile gets purpose-built variants, not shrunk desktop.** The Services 3D card stack does not survive a naive resize, so phones get a readable two-row selector and build-sequence panel instead. Everything else is handled with `max`/`md:` Tailwind pairs or explicit `useIsMobile()` branches. Slides are kept inside a single viewport rather than made internally scrollable, because an oversized slide fights `scroll-snap-type: y mandatory`.
 
-**Two animation systems, on purpose.** Anime.js drives entrance choreography (heading springs, accent-word blur-to-sharp, staggered reveals). GSAP drives anything with an interdependent timeline or its own scheduler, like the Services card swap and `PillNav`. Both respect `prefers-reduced-motion` through `useReducedMotion`, which downgrades the deck scroll to instant and pauses auto-advancing content.
+**Anime.js owns motion.** Anime.js drives entrance choreography, the Services card swap, `PillNav`, rotating words, and the deck-level liquid transition layer. Reduced-motion users get instant deck scroll and shortened/no-op motion where the effect would otherwise be distracting.
 
 ## Stack
 
-Vite · React 18 · TypeScript · Tailwind CSS 3 · Anime.js · GSAP · Three.js / React Three Fiber / Rapier (lanyard) · OGL / cobe / postprocessing (ambient effects).
+Vite · React 18 · TypeScript · Tailwind CSS 3 · Anime.js · Three.js / postprocessing (Hyperspeed) · OGL / cobe (ambient effects).
 
 Node target is pinned in `.nvmrc` (Node 22). npm is the package manager of record; `package-lock.json` is the lockfile the deploy uses.
 
@@ -38,14 +38,14 @@ npm test         # vitest
 npm run images:convert   # batch PNG -> WebP, requires `npm i -D sharp`
 ```
 
-`npm run build` prints a known size warning for the `vendor-lanyard` chunk (the Three.js + physics stack). It's isolated in its own lazy chunk on purpose and doesn't block first paint.
+`npm run build` prints a known size warning for `vendor-3d` (`three` + `postprocessing` for Hyperspeed). It is isolated in its own vendor chunk and remains desktop-gated where possible.
 
 ## Project layout
 
 ```txt
 src/
   pages/
-    Index.tsx              Slide registry, one-active-slide mounting, scroll-to-index nav
+    Index.tsx              Slide registry, tight slide-window mounting, scroll-to-index nav
     NotFound.tsx           Branded 404, lives outside the deck
   components/
     slides/                One file per full-screen slide (cover, who-we-are, team, services, clients, 7 case studies, contact)

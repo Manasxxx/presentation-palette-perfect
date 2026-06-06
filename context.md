@@ -5,6 +5,21 @@
 
 ---
 
+## Current State (as of Session 33 push prep)
+
+**Session 33** is a deck-level slide-transition polish pass. The goal was to make the vertical deck movement feel smoother, more liquid, and more noticeable on mobile without adding a new heavy animation dependency.
+
+- **Tight neighbor mounting** (`src/pages/Index.tsx`, `src/pages/slide-window.ts`). `SLIDE_MOUNT_RADIUS` is now `1`, so the active slide plus the immediate previous/next slide stay mounted during scroll-snap movement. This fixes the jagged placeholder-to-real-slide handoff while still keeping the mounted window tight enough to avoid keeping the whole WebGL-heavy deck alive. `getSlideIndexFromScroll` keeps the Session 29 measured slide-height behavior, so the Android Chrome URL-bar black-screen bug should not regress.
+- **Anime.js liquid transition layer** (`src/components/DeckTransitionLayer.tsx`). A fixed, pointer-events-none deck overlay animates on `currentSlide` changes. It uses Anime.js `createTimeline`, `cubicBezier`, `spring`, and `stagger`: a teal liquid wash and crest sweep through, the incoming slide settles from slight offset/scale/blur, and key text/buttons drift into place. The layer is mounted once in `Index.tsx` and targets slide wrappers through the new `data-slide-index` / `data-slide-content` markers in `SlideReveal`.
+- **Mobile-specific strength** (`src/pages/deck-transition.ts`, `src/index.css`). The first pass was too subtle on phone, so `getDeckTransitionMotionProfile(true)` now gives mobile a longer wash/crest, stronger opacity, larger vertical travel, and more blur. `.deck-liquid-wash-mobile` and `.deck-liquid-crest-mobile` use larger/brighter gradients so the transition is visible against busy mobile slide backgrounds. Desktop keeps the calmer profile.
+- **Reduced motion** is preserved. When `prefers-reduced-motion` is enabled, the watery overlay is skipped and the active slide only receives a short opacity settle.
+- **Tests** (`src/pages/slide-window.test.ts`, `src/pages/deck-transition.test.ts`). Added coverage for the one-neighbor mount window, clamped scroll-index math, direction/intensity detection, and desktop/mobile transition profiles.
+- **Docs updated** (`prod.md`, `README.md`, `handoff.md`). The architecture docs now say the deck keeps the current slide plus immediate neighbors mounted, not active-only. `handoff.md` was updated before this push per the push-gated workflow.
+- **Verification before push.** `npm test` passes (9 tests), `npm run lint` passes, `npm run build` passes, and `git diff --check` passes. The live dev server responded at both `http://localhost:8080/` and `http://192.168.0.132:8080/`. Known build notices remain: stale Browserslist/caniuse-lite and `vendor-3d` over 600 KB.
+- **Excluded from this push.** `.github/workflows/deploy.yml` still has unrelated local webhook retry flags and is intentionally excluded because workflow-file changes have previously required workflow-scoped auth.
+
+---
+
 ## Current State (as of Session 32 push prep)
 
 **Session 32** is a mobile polish pass (slides 2–4 + all seven case studies), the orphaned-lanyard cleanup, and a temporary on-device debug menu.
@@ -126,7 +141,7 @@ Tally: 0 critical · 4 major · 6 minor. Verdict: close, fix the majors — focu
 
 **Failure mode is silent.** There is no alerting. A failed deploy just leaves the live site on the previous build — the only symptom is "my push didn't show up." It does **not** retry itself once the Actions job has ended.
 
-**Incident, 2026-06-04.** A push (`e930531` "Polish mobile deck slides") didn't go live. Diagnosis: `git push` reached GitHub fine (local `HEAD` == `origin/main`), the Actions workflow ran, but the deploy step failed in 22s with `curl: (28) Failed to connect to www.owlsurf.media port 443 after 15001 ms: Timeout`. The webhook never reached the VPS, so `deploy.sh` never ran. From a separate machine the endpoint was healthy minutes later (DNS → `187.127.133.27`, `GET /` → `200`, `POST /deploy` without token → `403`), confirming a **transient VPS unavailability** at the moment the webhook fired — most likely the box being saturated/unresponsive during a build or `pm2 restart` (the `vendor-lanyard` Three.js chunk makes the build heavy on a small VPS). Not a repo or pipeline bug. Recovered with `gh run rerun 26956763977`, which succeeded; live site returned `200`. Retry flags were added afterward to absorb future blips.
+**Incident, 2026-06-04.** A push (`e930531` "Polish mobile deck slides") didn't go live. Diagnosis: `git push` reached GitHub fine (local `HEAD` == `origin/main`), the Actions workflow ran, but the deploy step failed in 22s with `curl: (28) Failed to connect to www.owlsurf.media port 443 after 15001 ms: Timeout`. The webhook never reached the VPS, so `deploy.sh` never ran. From a separate machine the endpoint was healthy minutes later (DNS → `187.127.133.27`, `GET /` → `200`, `POST /deploy` without token → `403`), confirming a **transient VPS unavailability** at the moment the webhook fired — most likely the box being saturated/unresponsive during a build or `pm2 restart` (then worsened by the old `vendor-lanyard` chunk; today the largest chunk is `vendor-3d`). Not a repo or pipeline bug. Recovered with `gh run rerun 26956763977`, which succeeded; live site returned `200`. Retry flags were added afterward to absorb future blips.
 
 **Recovery runbook.**
 1. `gh run list --limit 5` — find the `failure`; `gh run view <id> --log` for the reason.
@@ -134,7 +149,7 @@ Tally: 0 critical · 4 major · 6 minor. Verdict: close, fix the majors — focu
 3. Re-fire: `gh run rerun <id>`. Idempotent — only rebuilds `origin/main`. No force-push, no history rewrite, nothing on teammates' machines. `git reset --hard` discards uncommitted edits made directly on the VPS, so don't hand-edit on the server.
 4. On the VPS: `tail deployment/logs/deploy.log`, `pm2 status` / `pm2 logs heyowlsurf`, clear a stale `deployment/.deploy-lock` if a deploy died mid-run.
 
-**Open follow-up.** Investigate *why* the VPS goes unreachable during deploys (likely build memory pressure from `vendor-lanyard`); consider building to a temp dir and swapping, or capping build concurrency. Plus the standing security item: rotate the plaintext GitHub PAT in `.git/config` and move the remote to SSH or a credential helper.
+**Open follow-up.** Investigate *why* the VPS goes unreachable during deploys (likely build memory pressure from the current `vendor-3d` chunk or general VPS saturation); consider building to a temp dir and swapping, or capping build concurrency. Plus the standing security item: rotate the plaintext GitHub PAT in `.git/config` and move the remote to SSH or a credential helper.
 
 ---
 

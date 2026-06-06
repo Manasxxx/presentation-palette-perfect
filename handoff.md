@@ -15,7 +15,18 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 32 (current) is a mobile polish pass across slides 2–4 and all seven case studies, plus the orphaned-lanyard cleanup and a temporary on-device debug menu.
+Session 33 (current) is a deck-level transition polish pass: smooth the vertical slide changes with Anime.js and make the liquid light transition noticeable on mobile.
+
+- **Slide transition window fixed.** `Index.tsx` now keeps the current slide plus one immediate neighbor mounted (`SLIDE_MOUNT_RADIUS = 1`) instead of only the active slide. This prevents the next slide from being a placeholder during the actual scroll-snap movement, which was making slide-to-slide transitions feel jagged. The measured slide-height math from Session 29 is preserved through `getSlideIndexFromScroll`, so do **not** return to `window.innerHeight` math.
+- **Tested transition helpers.** Added `src/pages/slide-window.ts` + `slide-window.test.ts` for the mounted-neighbor window and clamped scroll-index mapping. Added `src/pages/deck-transition.ts` + `deck-transition.test.ts` for slide direction, intensity, and the desktop/mobile motion profiles.
+- **Liquid light curtain.** Added `src/components/DeckTransitionLayer.tsx`, mounted once in `Index.tsx`. It uses Anime.js `createTimeline`, `cubicBezier`, `spring`, and `stagger` to animate a fixed, pointer-events-none teal wash/crest over slide changes, then softly settles the active slide and its key text/buttons into place.
+- **Mobile made stronger.** The first liquid pass was too subtle on the user's phone. Mobile now has its own profile (`getDeckTransitionMotionProfile(true)`): longer wash/crest timing, stronger opacity multiplier, more slide travel, more blur, and mobile-specific `.deck-liquid-wash-mobile` / `.deck-liquid-crest-mobile` CSS in `index.css`.
+- **Reduced motion respected.** When `prefers-reduced-motion` is active, `DeckTransitionLayer` skips the watery wash and does only a short opacity settle on the active slide.
+- **Docs refreshed.** `prod.md` and `README.md` now describe the tight one-neighbor slide window instead of the old active-only mount rule. `context.md` and this handoff were updated before push.
+- **What failed / got adjusted.** A Node REPL smoke-check rerun initially hit a reused `chromium` binding name; reran with fresh variable names. The initial desktop/mobile liquid transition worked but was not noticeable enough on mobile, so mobile received the stronger profile above.
+- **Push scope.** Ship the transition files and docs only. Keep `.github/workflows/deploy.yml` excluded again; it still contains unrelated local webhook retry flags that may require workflow-scoped auth.
+
+Session 32 was a mobile polish pass across slides 2–4 and all seven case studies, plus the orphaned-lanyard cleanup and a temporary on-device debug menu.
 
 - **Lanyard stack removed.** The Our Team slide was deleted in Session 30, orphaning the lanyard. Deleted `src/components/ui/Lanyard/` and `src/assets/lanyard/card.glb` (~2.4 MB), uninstalled `@react-three/fiber`, `@react-three/drei`, `@react-three/rapier`, and `meshline`, dropped the `vendor-lanyard` manualChunk (folded the residual `three`, used only by Hyperspeed, into `vendor-3d`), removed the `*.glb`/`meshline` type decls and the `*.glb` `assetsInclude`. `three`/`postprocessing`/`cobe`/`ogl` stay (Hyperspeed + Globe). Net ~2.4 MB removed; build + lint clean.
 - **Temporary mobile debug menu.** New `src/components/DebugMenu.tsx` — a `md:hidden` teal bug FAB (bottom-right) that expands to a Hot-reload button + a jump-to-any-slide list (0–11, current highlighted). Wired into `Index.tsx`. **KEEP for now; remove before the production push.**
@@ -82,7 +93,7 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 31 push prep is checked and ready to push. Current live-dev shape is `localhost:8080`. Final push verification is command-based. `npm run lint` (0 warnings) and `npm run build` pass. The known build notices are still the stale Browserslist/caniuse-lite message and the large `vendor-lanyard` chunk warning. Full Session 31 details are in `context.md` under "Current State (as of Session 31 push prep)".
+The Session 33 push prep is checked and ready to push. Current live-dev shape is `localhost:8080` / Wi-Fi `http://192.168.0.132:8080/`. Final push verification is command-based: `git diff --check`, `npm test`, `npm run lint`, and `npm run build`. Known build notices remain the stale Browserslist/caniuse-lite message and the large `vendor-3d` chunk warning.
 
 ### Session 29 — black-screen fix + mobile polish (case studies, Contact, Clients)
 
