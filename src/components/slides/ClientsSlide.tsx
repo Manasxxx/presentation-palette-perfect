@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
-import { animate, createSpring } from "animejs";
+import { animate } from "animejs";
 import LogoLoop from "@/components/ui/LogoLoop/LogoLoop";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase } from "./slide-motion";
 import cultfitLogo from "@/assets/client-cultfit.png";
 import vntLogo from "@/assets/client-vnt.png";
 import girlupLogo from "@/assets/client-girlup.png";
@@ -77,27 +78,15 @@ const ClientsSlide = () => {
     const reveal = () => {
       if (triggered.current) return;
       triggered.current = true;
-      animate(heading, {
-        opacity: 1,
-        translateY: 0,
-        scale: [0.94, 1],
-        duration: 900,
-        ease: createSpring({ stiffness: 95, damping: 12 }),
-      });
-      animate(el.querySelector(".cl-title-accent")!, {
-        translateX: [-26, 0],
-        filter: ["blur(10px)", "blur(0px)"],
-        duration: 900,
-        delay: 120,
-        ease: "out(4)",
-      });
+      const profile = getSharedSlideMotionProfile(isMobile);
+      animateSlideHeading(el, ".cl-heading", isMobile);
       animate(cards, {
-        opacity: 1,
-        translateY: [60, -10, 0],
-        scale: [0.92, 1.03, 1],
-        duration: 1100,
-        delay: 200,
-        ease: "out(4)",
+        opacity: [0, 1],
+        translateY: [18, 0],
+        filter: ["blur(7px)", "blur(0px)"],
+        duration: isMobile ? 860 : 980,
+        delay: profile.contentDelay + 80,
+        ease: slideEditorialEase,
       });
     };
 
@@ -109,14 +98,15 @@ const ClientsSlide = () => {
     );
     observer.observe(el);
 
-    // Fallback: if observer hasn't fired within 600ms, reveal anyway
-    const fallback = window.setTimeout(reveal, 600);
+    // Desktop fallback only. On mobile this slide is mounted one step early, so
+    // a timeout can run the animation before the user reaches the slide.
+    const fallback = isMobile ? 0 : window.setTimeout(reveal, 600);
 
     return () => {
       observer.disconnect();
-      window.clearTimeout(fallback);
+      if (fallback) window.clearTimeout(fallback);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
@@ -135,11 +125,7 @@ const ClientsSlide = () => {
       {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-12 md:px-12 md:pb-12 md:pt-16">
         <header className="cl-heading text-left self-start">
-          <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
-            WHO HAS SEEN THE WORK
-          </span>
           <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
-            <span className="font-sans not-italic">PROOF </span>
             <span className="cl-title-accent font-sans not-italic text-primary inline-block pr-2">CLIENTS</span>
           </h2>
         </header>

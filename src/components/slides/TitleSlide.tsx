@@ -11,13 +11,14 @@ const Arrow19 = React.forwardRef<Arrow19Element, Arrow19Props>(
   )
 );
 Arrow19.displayName = "Arrow19";
-import { animate, createSpring } from "animejs";
+import { animate, cubicBezier, spring, stagger } from "animejs";
 import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { WordRotate } from "@/components/ui/word-rotate";
+import { getTitleTextMotionProfile } from "./title-motion";
 import metaBusinessPartnerBadge from "@/assets/badge-meta-business-partner.png";
 import googlePartnerBadge from "@/assets/badge-google-partner.png";
 import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-partner.png";
@@ -43,70 +44,72 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     const el = ref.current;
     if (!el) return;
 
-    animate(el.querySelectorAll(".ts-wordmark-line"), {
+    const profile = getTitleTextMotionProfile(isMobile);
+    const editorialEase = cubicBezier(0.18, 0.82, 0.18, 1);
+    const signalEase = cubicBezier(0.16, 1, 0.3, 1);
+    const wordmarkEase = spring({ stiffness: 145, damping: 18, mass: 0.9 });
+    const pillEase = spring({ stiffness: 105, damping: 14, mass: 0.8 });
+
+    animate(el.querySelectorAll(".ts-brand-token"), {
+      opacity: [0, 1],
+      translateY: [profile.wordmarkDropY, 0],
+      scale: [0.94, 1],
+      filter: ["blur(10px)", "blur(0px)"],
+      duration: profile.wordmarkDuration,
+      delay: stagger(profile.wordmarkStagger, { start: 90 }),
+      ease: wordmarkEase,
+    });
+
+    animate(el.querySelectorAll(".ts-brand-subtitle, .ts-brand-rule"), {
+      opacity: [0, 1],
+      translateY: [-10, 0],
+      scaleX: [0.74, 1],
+      transformOrigin: ["left center", "left center"],
+      duration: 740,
+      delay: 260,
+      ease: signalEase,
+    });
+
+    animate(el.querySelectorAll(".ts-cover-line"), {
       opacity: [0, 1],
       translateY: [34, 0],
-      scale: [0.94, 1],
-      duration: 950,
-      delay: (_, i) => 150 + i * 120,
-      ease: createSpring({ stiffness: 95, damping: 12 }),
-    });
-
-    animate(el.querySelector(".ts-title-accent")!, {
-      translateX: [-30, 0],
       filter: ["blur(12px)", "blur(0px)"],
-      duration: 950,
-      delay: 260,
-      ease: "out(4)",
+      duration: profile.lineDuration,
+      delay: stagger(profile.lineStagger, { start: 260 }),
+      ease: editorialEase,
     });
 
-    const seam = el.querySelector(".ts-seam");
-    if (seam) {
-      animate(seam, {
-        opacity: [0, 1],
-        scaleY: [0, 1],
-        duration: 900,
-        delay: 240,
-        ease: "out(3)",
-      });
-    }
+    animate(el.querySelectorAll(".ts-pill-shell"), {
+      opacity: [0, 1],
+      translateY: [28, 0],
+      scale: [0.78, 1.035, 1],
+      filter: ["blur(14px)", "blur(0px)"],
+      duration: profile.pillDuration,
+      delay: stagger(profile.pillStagger, { start: 430 }),
+      ease: pillEase,
+    });
 
-    const hook = el.querySelector(".ts-hook");
-    if (hook) {
-      animate(hook, {
-        opacity: [0, 1],
-        translateY: [44, 0],
-        duration: 1100,
-        delay: 220,
-        ease: "out(4)",
-      });
-    }
-
-    const hookAccents = el.querySelectorAll(".ts-hook-accent");
-    if (hookAccents.length) {
-      animate(hookAccents, {
-        opacity: [0, 1],
-        translateX: [-26, 0],
-        filter: ["blur(14px)", "blur(0px)"],
-        duration: 1000,
-        delay: 560,
-        ease: "out(4)",
-      });
-    }
+    animate(el.querySelectorAll(".ts-pill-glow"), {
+      opacity: [0, 0.72, 0.38],
+      scaleX: [0.45, 1.08, 1],
+      duration: profile.pillDuration + 180,
+      delay: stagger(profile.pillStagger, { start: 520 }),
+      ease: editorialEase,
+    });
 
     animate(el.querySelector(".ts-logo-outer")!, {
       opacity: [0, 1],
       scale: [0.85, 1],
       duration: 1000,
       delay: 250,
-      ease: "cubicBezier(0.16, 1, 0.3, 1)",
+      ease: signalEase,
     });
 
     animate(el.querySelector(".ts-logo-inner")!, {
       clipPath: ["circle(0% at 50% 50%)", "circle(50% at 50% 50%)"],
       duration: 1200,
       delay: 400,
-      ease: "cubicBezier(0.16, 1, 0.3, 1)",
+      ease: signalEase,
     });
 
     animate(el.querySelectorAll(".ts-ring"), {
@@ -114,15 +117,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       scale: [0.6, 1],
       duration: 1400,
       delay: (_, i) => 500 + i * 120,
-      ease: "cubicBezier(0.16, 1, 0.3, 1)",
+      ease: signalEase,
     });
 
     animate(el.querySelectorAll(".ts-info-col"), {
       opacity: [0, 1],
       translateY: [16, 0],
       duration: 800,
-      delay: (_, i) => 600 + i * 120,
-      ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
+      delay: (_, i) => profile.subcopyDelay + i * 120,
+      ease: editorialEase,
     });
 
     animate(el.querySelectorAll(".ts-orbit-node, .ts-signal-line"), {
@@ -130,7 +133,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       scale: [0.8, 1],
       delay: (_, i) => 720 + i * 80,
       duration: 620,
-      ease: "out(3)",
+      ease: signalEase,
     });
 
     animate(el.querySelectorAll(".ts-cred-badge"), {
@@ -138,8 +141,8 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       translateY: [12, 0],
       scale: [0.96, 1],
       duration: 700,
-      delay: (_, i) => 520 + i * 90,
-      ease: "out(3)",
+      delay: (_, i) => profile.badgeDelay + i * 90,
+      ease: editorialEase,
     });
 
     const btn = el.querySelector(".ts-button");
@@ -149,8 +152,8 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         translateY: [18, 0],
         scale: [0.88, 1.04, 1],
         duration: 950,
-        delay: 1000,
-        ease: "out(4)",
+        delay: profile.badgeDelay - 160,
+        ease: pillEase,
       });
     }
 
@@ -161,11 +164,11 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         scale: [0.5, 1],
         duration: 800,
         delay: 1400,
-        ease: createSpring({ stiffness: 200, damping: 12 }),
+        ease: spring({ stiffness: 200, damping: 12 }),
       });
     }
 
-  }, []);
+  }, [isMobile]);
 
   // Scroll-driven parallax
   useEffect(() => {
@@ -242,45 +245,49 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       >
         {/* TOP: brand lockup */}
         <div className="flex flex-row items-start justify-center gap-6 md:justify-between">
-          <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left" style={{ opacity: 0 }}>
+          <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left">
             <span className="block font-sans font-black uppercase leading-none tracking-tight text-owl-teal md:text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
-              <span className="font-sans not-italic">OWL</span>
-              <span className="ts-title-accent font-sans not-italic text-owl-teal inline-block">SURF</span>
-              <span className="font-sans not-italic text-white"> DIGITAL</span>
+              <span className="ts-brand-token inline-block font-sans not-italic" style={{ opacity: 0 }}>OWL</span>
+              <span className="ts-brand-token ts-title-accent mx-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
+                SURF
+              </span>
+              <span className="ts-brand-token inline-block font-sans not-italic text-white" style={{ opacity: 0 }}>DIGITAL</span>
             </span>
-            <span className="hidden font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)] md:block">
+            <span className="ts-brand-subtitle hidden font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)] md:block" style={{ opacity: 0 }}>
               Credentials for chemical and industrial markets
             </span>
           </div>
-          <div className="hidden w-[23vw] max-w-[24rem] border-t border-white/15 md:block" aria-hidden="true">
-            <div className="mt-2 h-px w-1/3 bg-owl-teal/50" />
+          <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 md:block" aria-hidden="true" style={{ opacity: 0 }}>
+            <div className="mt-2 h-px w-1/3 bg-owl-teal/50 shadow-[0_0_18px_rgba(75,194,194,0.32)]" />
           </div>
         </div>
 
         {/* CENTER: editorial claim (left) + signal map (right) */}
         <div className="grid translate-y-0 items-center gap-8 md:translate-y-0 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
           <div className="relative min-w-0">
-            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left" style={{ opacity: 0 }}>
+            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left">
               <span className="block max-w-[22rem] md:max-w-[52rem]">
-                <span className="block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]">
+                <span className="ts-cover-line block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]" style={{ opacity: 0 }}>
                   We turn
                 </span>
                 <span className="mt-3 block md:mt-4">
-                  <span className="inline-flex rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]">
+                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]" style={{ opacity: 0 }}>
+                    <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
                     <WordRotate words={rotatingIndustries} duration={1900} className="text-center" />
                   </span>
                 </span>
-                <span className="mt-3 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]">
+                <span className="ts-cover-line mt-3 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]" style={{ opacity: 0 }}>
                   businesses into brands
                 </span>
-                <span className="mt-2 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:mt-3 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]">
+                <span className="ts-cover-line mt-2 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:mt-3 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]" style={{ opacity: 0 }}>
                   buyers actually
                 </span>
                 <span className="mt-3 block md:mt-4">
                   <span
-                    className="ts-hook-accent inline-flex rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]"
+                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]"
                     style={{ opacity: 0 }}
                   >
+                    <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
                     <WordRotate words={rotatingTrustWords} duration={1900} className="text-center" />
                   </span>
                 </span>

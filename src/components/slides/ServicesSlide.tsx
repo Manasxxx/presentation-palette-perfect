@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
-import { animate, createSpring, stagger } from "animejs";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { animate, stagger } from "animejs";
 import {
   Target,
   Film,
@@ -31,6 +31,7 @@ import LightRays from "@/components/LightRays";
 import CardSwap, { Card } from "@/components/ui/CardSwap/CardSwap";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase } from "./slide-motion";
 import brandStoryIllustration from "@/assets/service-illustration-brand-story.svg";
 import videoIllustration from "@/assets/service-illustration-video.svg";
 import designSystemIllustration from "@/assets/service-illustration-design-system.svg";
@@ -301,13 +302,21 @@ const mobileServices: Record<string, { icon: LucideIcon; title: string }[]> = {
 const ServicesSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggered = useRef(false);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const lastMobilePanelKeyRef = useRef<string | null>(null);
+  const activeKeyRef = useRef<string>(categories[0].key);
   const isMobile = useIsMobile();
   const prefersReducedMotion = usePrefersReducedMotion();
   const [activeKey, setActiveKey] = useState<string>(categories[0].key);
+  const [mobileEntryReady, setMobileEntryReady] = useState(false);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const activeCategory =
     categories.find((c) => c.key === activeKey) ?? categories[0];
+
+  useEffect(() => {
+    activeKeyRef.current = activeKey;
+  }, [activeKey]);
 
   // Roving-focus keyboard support for the vertical tablist (WAI-ARIA tabs pattern).
   const handleTabKey = (event: ReactKeyboardEvent, index: number) => {
@@ -325,10 +334,54 @@ const ServicesSlide = () => {
     tabRefs.current[nextIndex]?.focus();
   };
 
+  const animateMobilePanel = useCallback((start = 0) => {
+    const panel = mobilePanelRef.current;
+    if (!panel) return;
+
+    const meta = panel.querySelector(".sv-mobile-panel-meta");
+    const steps = panel.querySelectorAll(".sv-step-in");
+    if (prefersReducedMotion) {
+      if (meta instanceof HTMLElement) meta.style.opacity = "1";
+      steps.forEach((step) => {
+        if (step instanceof HTMLElement) {
+          step.style.opacity = "1";
+          step.style.transform = "none";
+          step.style.filter = "none";
+        }
+      });
+      lastMobilePanelKeyRef.current = activeKeyRef.current;
+      return;
+    }
+
+    const profile = getSharedSlideMotionProfile(true);
+    if (meta) {
+      animate(meta, {
+        opacity: [0, 1],
+        translateY: [-14, 0],
+        filter: ["blur(10px)", "blur(0px)"],
+        duration: 560,
+        delay: start,
+        ease: slideEditorialEase,
+      });
+    }
+    if (steps.length) {
+      animate(steps, {
+        opacity: [0, 1],
+        translateY: [26, 0],
+        scale: [0.94, 1],
+        filter: ["blur(12px)", "blur(0px)"],
+        delay: stagger(profile.itemStagger, { start: start + 110 }),
+        duration: 680,
+        ease: slideContentSpring,
+      });
+    }
+    lastMobilePanelKeyRef.current = activeKeyRef.current;
+  }, [prefersReducedMotion]);
+
   // Mobile: auto-advance the highlighted category every 3.5s (re-armed on each change,
   // so a manual tap resets the cycle). Paused under reduced-motion.
   useEffect(() => {
-    if (!isMobile || prefersReducedMotion) return;
+    if (!isMobile || prefersReducedMotion || !mobileEntryReady) return;
     const id = window.setTimeout(() => {
       setActiveKey((prev) => {
         const idx = categories.findIndex((c) => c.key === prev);
@@ -336,7 +389,12 @@ const ServicesSlide = () => {
       });
     }, 3500);
     return () => window.clearTimeout(id);
-  }, [isMobile, prefersReducedMotion, activeKey]);
+  }, [isMobile, prefersReducedMotion, activeKey, mobileEntryReady]);
+
+  useEffect(() => {
+    if (!isMobile || !mobileEntryReady || lastMobilePanelKeyRef.current === activeKey) return;
+    animateMobilePanel();
+  }, [activeKey, animateMobilePanel, isMobile, mobileEntryReady]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -345,51 +403,48 @@ const ServicesSlide = () => {
     const tabs = el.querySelector(".sv-tabs") as HTMLElement | null;
     if (!header || !tabs) return;
 
-    header.style.opacity = "0";
-    header.style.transform = "translateY(30px)";
-    tabs.style.opacity = "0";
-    tabs.style.transform = "translateY(20px)";
+    if (!triggered.current) {
+      header.style.opacity = "0";
+      header.style.transform = "translateY(30px)";
+      tabs.style.opacity = "0";
+      tabs.style.transform = "translateY(20px)";
+    }
 
     const reveal = () => {
       if (triggered.current) return;
       triggered.current = true;
-      animate(header, {
-        opacity: 1,
-        translateY: 0,
-        scale: [0.94, 1],
-        duration: 900,
-        ease: createSpring({ stiffness: 95, damping: 12 }),
-      });
-      animate(el.querySelector(".sv-title-accent")!, {
-        translateX: [-26, 0],
-        filter: ["blur(10px)", "blur(0px)"],
-        duration: 900,
-        delay: 120,
-        ease: "out(4)",
-      });
+      const profile = getSharedSlideMotionProfile(isMobile);
+      animateSlideHeading(el, ".sv-header", isMobile);
+      animateSlideAccent(el, ".sv-title-accent", isMobile);
       animate(tabs, {
         opacity: 1,
         translateY: 0,
-        delay: 200,
+        delay: profile.contentDelay,
         duration: 600,
-        ease: "out(3)",
+        ease: slideEditorialEase,
       });
       animate(el.querySelectorAll(".sv-tab"), {
         opacity: [0, 1],
-        translateX: [-20, 0],
-        delay: stagger(70, { start: 250 }),
-        duration: 500,
-        ease: "out(3)",
+        translateY: [10, 0],
+        filter: ["blur(5px)", "blur(0px)"],
+        delay: stagger(profile.itemStagger + 18, { start: profile.contentDelay + 80 }),
+        duration: isMobile ? 760 : 640,
+        ease: slideEditorialEase,
       });
-      animate(el.querySelector(".sv-card-stage")!, {
-        opacity: [0, 1],
-        scale: [0.82, 1.04, 1],
-        translateX: [120, -14, 0],
-        rotate: [4, -1, 0],
-        duration: 1250,
-        delay: 360,
-        ease: "out(4)",
-      });
+      if (!isMobile) {
+        animate(el.querySelector(".sv-card-stage")!, {
+          opacity: [0, 1],
+          scale: [0.9, 1],
+          translateY: [38, 0],
+          filter: ["blur(10px)", "blur(0px)"],
+          duration: 980,
+          delay: profile.contentDelay + 140,
+          ease: slideContentSpring,
+        });
+      } else {
+        animateMobilePanel(profile.contentDelay + 220);
+        window.setTimeout(() => setMobileEntryReady(true), profile.contentDelay + 980);
+      }
     };
 
     const observer = new IntersectionObserver(
@@ -399,12 +454,12 @@ const ServicesSlide = () => {
       { threshold: 0.15 }
     );
     observer.observe(el);
-    const fallback = window.setTimeout(reveal, 600);
+    const fallback = isMobile ? 0 : window.setTimeout(reveal, 600);
     return () => {
       observer.disconnect();
-      window.clearTimeout(fallback);
+      if (fallback) window.clearTimeout(fallback);
     };
-  }, []);
+  }, [animateMobilePanel, isMobile, prefersReducedMotion]);
 
   return (
     <section ref={sectionRef} className="slide font-sans">
@@ -463,23 +518,24 @@ const ServicesSlide = () => {
                       ref={(el) => { tabRefs.current[index] = el; }}
                       onClick={() => setActiveKey(cat.key)}
                       onKeyDown={(event) => handleTabKey(event, index)}
-                      className={`sv-tab col-span-2 flex flex-col items-center gap-2 rounded-2xl border px-1.5 py-4 transition-[border-color,background-color,color] duration-300 ${
+                      data-native-slide-motion
+                      className={`sv-tab col-span-2 flex flex-col items-center gap-2 rounded-2xl border px-1.5 py-4 transition-[border-color,background-color,color,box-shadow] duration-700 [transition-timing-function:cubic-bezier(0.18,0.82,0.18,1)] ${
                         index === 3 ? "col-start-2" : ""
                       } ${
                         active
-                          ? "border-primary/60 bg-primary/10"
+                          ? "border-primary/60 bg-primary/10 shadow-[0_0_22px_rgba(75,194,194,0.12)]"
                           : "border-border/40 bg-white/[0.02]"
                       }`}
                     >
                       <span
-                        className={`flex h-12 w-12 items-center justify-center rounded-xl transition-colors ${
+                        className={`flex h-12 w-12 items-center justify-center rounded-xl transition-[background-color,color,box-shadow] duration-700 [transition-timing-function:cubic-bezier(0.18,0.82,0.18,1)] ${
                           active ? "bg-primary/25 text-primary" : "bg-white/5 text-muted-foreground"
                         }`}
                       >
                         <CatIcon className="h-[22px] w-[22px]" />
                       </span>
                       <span
-                        className={`text-center font-sans text-[0.62rem] font-black uppercase leading-[1.1] tracking-tight transition-colors ${
+                        className={`text-center font-sans text-[0.62rem] font-black uppercase leading-[1.1] tracking-tight transition-colors duration-700 [transition-timing-function:cubic-bezier(0.18,0.82,0.18,1)] ${
                           active ? "text-white" : "text-foreground/55"
                         }`}
                       >
@@ -492,13 +548,10 @@ const ServicesSlide = () => {
               </div>
 
               {/* Mobile: active category as a connected, low-text build sequence (titles only) */}
-              <div className="flex flex-col gap-4">
-                <div className="flex items-baseline justify-between gap-3 border-b border-white/10 pb-2">
+              <div ref={mobilePanelRef} className="flex flex-col gap-4">
+                <div key={`sv-panel-meta-${activeKey}`} className="sv-mobile-panel-meta flex items-baseline justify-between gap-3 border-b border-white/10 pb-2" style={{ opacity: 0 }}>
                   <span className="font-sans text-[0.72rem] font-black uppercase tracking-[0.2em] text-primary">
                     Inside {activeCategory.label}
-                  </span>
-                  <span className="font-body text-[0.62rem] uppercase tracking-[0.15em] text-white/40">
-                    build order
                   </span>
                 </div>
               <ol
@@ -517,7 +570,7 @@ const ServicesSlide = () => {
                     <li
                       key={`${activeKey}-${svc.title}`}
                       className="sv-step-in relative flex items-center gap-4"
-                      style={{ animationDelay: `${i * 80}ms` }}
+                      style={{ opacity: 0 }}
                     >
                       <span className="relative z-10 flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full border border-primary/40 bg-background text-primary shadow-[0_0_0_4px_hsl(var(--background))]">
                         <Icon className="h-[18px] w-[18px]" />

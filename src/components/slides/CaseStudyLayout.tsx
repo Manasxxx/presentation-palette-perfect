@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { animate, createSpring, stagger } from "animejs";
+import { animate, stagger } from "animejs";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 type SlideImage = {
   image: string;
@@ -65,80 +66,72 @@ const CaseStudyLayout = ({
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
-    if (
-      isMobile ||
-      window.innerWidth < 1024 ||
-      window.matchMedia("(pointer: coarse)").matches
-    ) return;
+    const profile = getSharedSlideMotionProfile(isMobile);
+    const reveal = () => {
+      if (triggered) return;
+      setTriggered(true);
+
+      animate(el.querySelector(".bg-wipe")!, {
+        clipPath: ["circle(5% at 50% 50%)", "circle(150% at 50% 50%)"],
+        opacity: [0, 1],
+        duration: isMobile ? 1100 : 1800,
+        ease: slideSettleEase,
+      });
+
+      animateSlideHeading(el, ".cs-heading", isMobile, 90);
+
+      animate(el.querySelector(".cs-subtitle")!, {
+        opacity: [0, 1],
+        translateY: [16, 0],
+        filter: ["blur(7px)", "blur(0px)"],
+        duration: isMobile ? 680 : 760,
+        delay: profile.copyDelay + 40,
+        ease: slideEditorialEase,
+      });
+
+      animate(el.querySelector(".cs-slider")!, {
+        opacity: [0, 1],
+        scale: [0.985, 1],
+        translateY: [18, 0],
+        filter: ["blur(8px)", "blur(0px)"],
+        duration: isMobile ? 920 : 1080,
+        delay: profile.contentDelay + 160,
+        ease: slideEditorialEase,
+      });
+
+      animate(el.querySelectorAll(".cs-stat"), {
+        opacity: [0, 1],
+        translateY: [24, 0],
+        scale: [0.96, 1],
+        delay: stagger(profile.itemStagger, { start: profile.contentDelay + 220 }),
+        duration: 760,
+        ease: slideEditorialEase,
+      });
+
+      animate(el.querySelectorAll(".cs-proof"), {
+        opacity: [0, 1],
+        translateY: [18, 0],
+        filter: ["blur(8px)", "blur(0px)"],
+        delay: stagger(profile.itemStagger, { start: profile.contentDelay + 160 }),
+        duration: 680,
+        ease: slideEditorialEase,
+      });
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !triggered) {
-          setTriggered(true);
-
-          animate(el.querySelector(".bg-wipe")!, {
-            clipPath: ["circle(5% at 50% 50%)", "circle(150% at 50% 50%)"],
-            opacity: [0, 1],
-            duration: 1800,
-            ease: "cubicBezier(0.22, 1, 0.36, 1)",
-          });
-
-          animate(el.querySelectorAll(".cs-heading"), {
-            opacity: [0, 1],
-            translateY: [70, 0],
-            scale: [0.94, 1],
-            delay: stagger(80),
-            duration: 900,
-            ease: createSpring({ stiffness: 95, damping: 12 }),
-          });
-
-          animate(el.querySelector(".cs-title-accent")!, {
-            translateX: [-26, 0],
-            filter: ["blur(10px)", "blur(0px)"],
-            duration: 900,
-            delay: 160,
-            ease: "out(4)",
-          });
-
-          animate(el.querySelector(".cs-subtitle")!, {
-            opacity: [0, 1],
-            translateY: [30, 0],
-            duration: 600,
-            delay: 280,
-            ease: "out(3)",
-          });
-
-          animate(el.querySelector(".cs-slider")!, {
-            opacity: [0, 1],
-            scale: [0.78, 1.04, 1],
-            translateX: [180, -18, 0],
-            rotate: [6, -1, 0],
-            duration: 1350,
-            delay: 360,
-            ease: "out(4)",
-          });
-
-          animate(el.querySelectorAll(".cs-stat"), {
-            opacity: [0, 1],
-            translateY: [24, 0],
-            scale: [0.96, 1],
-            delay: stagger(90, { start: 520 }),
-            duration: 760,
-            ease: "out(3)",
-          });
-
-          animate(el.querySelectorAll(".cs-proof"), {
-            opacity: [0, 1],
-            translateY: [18, 0],
-            delay: stagger(80, { start: 460 }),
-            duration: 680,
-            ease: "out(3)",
-          });
-        }
+        if (entry.isIntersecting) reveal();
       },
-      { threshold: 0.3 }
+      { threshold: isMobile ? 0.18 : 0.3 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    // Desktop fallback only. On mobile these slides are mounted one step early,
+    // so a timer can run the entry before the user reaches the slide.
+    const fallback = isMobile ? 0 : window.setTimeout(reveal, 900);
+    return () => {
+      observer.disconnect();
+      if (fallback) window.clearTimeout(fallback);
+    };
   }, [triggered, isMobile]);
 
   return (

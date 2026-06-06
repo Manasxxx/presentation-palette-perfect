@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, ArrowUpRight, Eye, Handshake, MessageSquareText, ShieldCheck, UsersRound, type LucideIcon } from "lucide-react";
-import { animate, createSpring, stagger } from "animejs";
+import { animate, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 type Sector = { label: string; tag: string; icon: LucideIcon };
 
@@ -104,61 +105,68 @@ const SkyrocketSlide = () => {
       ([entry]) => {
         if (entry.isIntersecting && !triggered) {
           setTriggered(true);
+          const profile = getSharedSlideMotionProfile(isMobile);
 
-          animate(el.querySelectorAll(".who-kicker"), {
-            opacity: [0, 1],
-            translateY: [16, 0],
-            duration: 600,
-            delay: stagger(120),
-            ease: "out(3)",
-          });
+          const kickers = el.querySelectorAll(".who-kicker");
+          if (kickers.length) {
+            animate(kickers, {
+              opacity: [0, 1],
+              translateY: [profile.headingDropY * 0.45, 0],
+              filter: ["blur(7px)", "blur(0px)"],
+              duration: 600,
+              delay: stagger(120),
+              ease: slideSettleEase,
+            });
+          }
 
-          animate(el.querySelectorAll(".who-rule"), {
-            scaleX: [0, 1],
-            duration: 800,
-            delay: 200,
-            ease: "out(3)",
-          });
+          const rules = el.querySelectorAll(".who-rule");
+          if (rules.length) {
+            animate(rules, {
+              scaleX: [0, 1],
+              duration: 800,
+              delay: 200,
+              ease: slideSettleEase,
+            });
+          }
 
-          animate(el.querySelectorAll(".who-word"), {
-            opacity: [0, 1],
-            translateY: [28, 0],
-            delay: stagger(90, { start: 240 }),
-            duration: 900,
-            ease: createSpring({ stiffness: 95, damping: 12 }),
-          });
+          animateSlideHeading(el, ".who-word", isMobile, 210);
+          animateSlideAccent(el, ".who-title-accent", isMobile, 260);
 
-          animate(el.querySelectorAll(".who-title-accent"), {
-            translateX: [-24, 0],
-            filter: ["blur(10px)", "blur(0px)"],
-            duration: 900,
-            delay: 460,
-            ease: "out(4)",
-          });
+          const copy = el.querySelectorAll(".who-copy");
+          if (copy.length) {
+            animate(copy, {
+              opacity: [0, 1],
+              translateY: [22, 0],
+              filter: ["blur(8px)", "blur(0px)"],
+              delay: stagger(110, { start: profile.copyDelay + 240 }),
+              duration: 760,
+              ease: slideEditorialEase,
+            });
+          }
 
-          animate(el.querySelectorAll(".who-copy"), {
-            opacity: [0, 1],
-            translateY: [22, 0],
-            delay: stagger(110, { start: 520 }),
-            duration: 760,
-            ease: "out(3)",
-          });
+          const chips = el.querySelectorAll(".who-chip");
+          if (chips.length) {
+            animate(chips, {
+              opacity: [0, 1],
+              translateY: [18, 0],
+              scale: [0.9, 1],
+              delay: stagger(70, { start: 640 }),
+              duration: 560,
+              ease: slideContentSpring,
+            });
+          }
 
-          animate(el.querySelectorAll(".who-chip"), {
-            opacity: [0, 1],
-            scale: [0.85, 1],
-            delay: stagger(70, { start: 640 }),
-            duration: 560,
-            ease: createSpring({ stiffness: 130, damping: 14 }),
-          });
-
-          animate(el.querySelectorAll(".who-sector"), {
-            opacity: [0, 1],
-            translateX: [40, 0],
-            delay: stagger(90, { start: 560 }),
-            duration: 760,
-            ease: "out(4)",
-          });
+          const sectors = el.querySelectorAll(".who-sector");
+          if (sectors.length) {
+            animate(sectors, {
+              opacity: [0, 1],
+              translateY: [24, 0],
+              filter: ["blur(8px)", "blur(0px)"],
+              delay: stagger(90, { start: 560 }),
+              duration: 760,
+              ease: slideEditorialEase,
+            });
+          }
         }
       },
       { threshold: 0.3 }
@@ -166,7 +174,7 @@ const SkyrocketSlide = () => {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [triggered]);
+  }, [triggered, isMobile]);
 
   return (
     <section ref={sectionRef} className="slide relative overflow-hidden bg-background p-3 sm:p-5 md:p-7">

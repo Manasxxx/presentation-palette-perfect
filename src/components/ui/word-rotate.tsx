@@ -1,5 +1,5 @@
 import { type HTMLAttributes, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { animate } from "animejs";
+import { animate, eases } from "animejs";
 import { cn } from "@/lib/utils";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 
@@ -36,7 +36,7 @@ export function WordRotate({ words, duration = 2500, className, motionProps }: W
         translateY: [0, -18],
         filter: ["blur(0px)", "blur(8px)"],
         duration: 260,
-        ease: "in(2)",
+        ease: eases.in(2),
       });
 
       timeoutRef.current = window.setTimeout(() => {
@@ -71,7 +71,7 @@ export function WordRotate({ words, duration = 2500, className, motionProps }: W
     animate(shell, {
       width: nextWidth,
       duration: 430,
-      ease: "out(4)",
+      ease: eases.out(4),
     });
 
     word.style.opacity = "0";
@@ -84,7 +84,7 @@ export function WordRotate({ words, duration = 2500, className, motionProps }: W
       filter: ["blur(8px)", "blur(0px)"],
       duration: 420,
       delay: 80,
-      ease: "out(4)",
+      ease: eases.out(4),
     });
   }, [index, reduceMotion]);
 

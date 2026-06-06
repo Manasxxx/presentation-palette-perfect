@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
-import { animate, createSpring, stagger } from "animejs";
+import { animate, stagger } from "animejs";
 import { ArrowUpRight } from "lucide-react";
 import FlyonFooter from "@/components/blocks/FlyonFooter";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import { Meteors } from "@/components/ui/meteors";
 import { WordRotate } from "@/components/ui/word-rotate";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 const rotatingComplexity = ["complex", "technical", "complicated", "confusing", "overwhelming"];
 const rotatingChoose = ["understand", "explain", "buy", "get", "choose"];
@@ -12,6 +14,7 @@ const rotatingChoose = ["understand", "explain", "buy", "get", "choose"];
 const ContactSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggered = useRef(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -20,29 +23,25 @@ const ContactSlide = () => {
     const reveal = () => {
       if (triggered.current) return;
       triggered.current = true;
+      const profile = getSharedSlideMotionProfile(isMobile);
 
       animate(el.querySelectorAll(".ct-reveal"), {
         opacity: [0, 1],
         translateY: [24, 0],
         scale: [0.96, 1],
         duration: 850,
-        delay: stagger(110),
-        ease: createSpring({ stiffness: 100, damping: 14 }),
+        delay: stagger(profile.itemStagger, { start: profile.contentDelay }),
+        ease: slideContentSpring,
       });
 
-      animate(el.querySelector(".ct-title-accent")!, {
-        translateX: [-26, 0],
-        filter: ["blur(10px)", "blur(0px)"],
-        duration: 900,
-        delay: 250,
-        ease: "out(4)",
-      });
+      animateSlideHeading(el, ".ct-heading", isMobile, 120);
+      animateSlideAccent(el, ".ct-title-accent", isMobile, 170);
 
       animate(el.querySelector(".ct-mark"), {
         opacity: [0, 1],
         duration: 800,
         delay: 220,
-        ease: "out(3)",
+        ease: slideSettleEase,
       });
 
       animate(el.querySelector(".ct-mark-inner"), {
@@ -51,7 +50,7 @@ const ContactSlide = () => {
         rotate: [8, -1, 0],
         duration: 1350,
         delay: 220,
-        ease: "out(4)",
+        ease: slideEditorialEase,
       });
 
     };
@@ -70,7 +69,7 @@ const ContactSlide = () => {
       observer.disconnect();
       window.clearTimeout(fallback);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section ref={sectionRef} className="slide overflow-hidden bg-background font-sans">
@@ -102,7 +101,7 @@ const ContactSlide = () => {
           Let’s talk
         </span>
 
-        <h2 className="ct-reveal flex max-w-[22rem] flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-[clamp(1.7rem,7vw,2.5rem)] font-black uppercase leading-[1.08] tracking-normal text-white opacity-0 [overflow-wrap:anywhere] md:max-w-none md:flex-nowrap md:gap-x-4 md:text-[clamp(1.7rem,3.1vw,2.6rem)]">
+        <h2 className="ct-heading flex max-w-[22rem] flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-[clamp(1.7rem,7vw,2.5rem)] font-black uppercase leading-[1.08] tracking-normal text-white opacity-0 [overflow-wrap:anywhere] md:max-w-none md:flex-nowrap md:gap-x-4 md:text-[clamp(1.7rem,3.1vw,2.6rem)]">
           <span className="shrink-0 whitespace-nowrap not-italic">We make the</span>
           <span className="ct-title-accent inline-flex shrink-0 rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-1.5 text-[1.4rem] font-black uppercase leading-[1.16] tracking-[0.02em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] md:px-6 md:py-2 md:text-[clamp(1.5rem,2.7vw,2.4rem)]">
             <WordRotate words={rotatingComplexity} duration={1900} className="text-center" />

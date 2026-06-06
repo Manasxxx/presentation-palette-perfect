@@ -15,16 +15,17 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 33 (current) is a deck-level transition polish pass: smooth the vertical slide changes with Anime.js and make the liquid light transition noticeable on mobile.
+Session 34 (current) is a mobile-first Anime.js motion refinement pass across the cover, Services, Clients, and all case-study slides.
 
-- **Slide transition window fixed.** `Index.tsx` now keeps the current slide plus one immediate neighbor mounted (`SLIDE_MOUNT_RADIUS = 1`) instead of only the active slide. This prevents the next slide from being a placeholder during the actual scroll-snap movement, which was making slide-to-slide transitions feel jagged. The measured slide-height math from Session 29 is preserved through `getSlideIndexFromScroll`, so do **not** return to `window.innerHeight` math.
-- **Tested transition helpers.** Added `src/pages/slide-window.ts` + `slide-window.test.ts` for the mounted-neighbor window and clamped scroll-index mapping. Added `src/pages/deck-transition.ts` + `deck-transition.test.ts` for slide direction, intensity, and the desktop/mobile motion profiles.
-- **Liquid light curtain.** Added `src/components/DeckTransitionLayer.tsx`, mounted once in `Index.tsx`. It uses Anime.js `createTimeline`, `cubicBezier`, `spring`, and `stagger` to animate a fixed, pointer-events-none teal wash/crest over slide changes, then softly settles the active slide and its key text/buttons into place.
-- **Mobile made stronger.** The first liquid pass was too subtle on the user's phone. Mobile now has its own profile (`getDeckTransitionMotionProfile(true)`): longer wash/crest timing, stronger opacity multiplier, more slide travel, more blur, and mobile-specific `.deck-liquid-wash-mobile` / `.deck-liquid-crest-mobile` CSS in `index.css`.
-- **Reduced motion respected.** When `prefers-reduced-motion` is active, `DeckTransitionLayer` skips the watery wash and does only a short opacity settle on the active slide.
-- **Docs refreshed.** `prod.md` and `README.md` now describe the tight one-neighbor slide window instead of the old active-only mount rule. `context.md` and this handoff were updated before push.
-- **What failed / got adjusted.** A Node REPL smoke-check rerun initially hit a reused `chromium` binding name; reran with fresh variable names. The initial desktop/mobile liquid transition worked but was not noticeable enough on mobile, so mobile received the stronger profile above.
-- **Push scope.** Ship the transition files and docs only. Keep `.github/workflows/deploy.yml` excluded again; it still contains unrelated local webhook retry flags that may require workflow-scoped auth.
+- **Current goal.** Remove the remaining double jaggering and sharp end-snap from slide entry, especially on mobile, while keeping the watery deck light visible and calm.
+- **Current state.** Cover text reveal is rebuilt: `OWLSURF DIGITAL` drops in as one lockup, the headline/pills/CTA use the new title motion profile, and the late `SURF` appearance is gone. Services, Clients, and all case studies are now `nativeMotion` slides, so they own their local Anime.js entry while the deck transition layer supplies only the watery wash/crest.
+- **Files in play.** Main motion files: `src/components/DeckTransitionLayer.tsx`, `src/components/SlideReveal.tsx`, `src/pages/Index.tsx`, `src/pages/deck-transition.ts`, `src/components/slides/title-motion.ts`, `src/components/slides/slide-motion.ts`, `src/components/slides/TitleSlide.tsx`, `ServicesSlide.tsx`, `ClientsSlide.tsx`, `CaseStudySlide.tsx`, `CaseStudyLayout.tsx`, `SkyrocketSlide.tsx`, `ContactSlide.tsx`, `src/components/ui/word-rotate.tsx`, and `src/index.css`.
+- **What changed.** Deck transition profiles now have smoother mobile settle timings plus deterministic organic light drift. `SlideReveal` supports `nativeMotion`, skips wrapper reveal for those slides, and tags content with `data-native-slide-motion`. Buyer Systems mobile entry moved off the old `sv-step-in` CSS keyframe and removed the rogue `BUILD ORDER` text. Clients heading is now only `CLIENTS`, with no Proof wording. Mitsui and every shared case-study slide use the same no-double-motion entry path.
+- **Efficiency check.** Removed the native-slide no-op deck animation, avoided re-creating the Services entry observer on each active category change, guarded optional Skyrocket animation targets, and moved touched Anime.js calls away from deprecated string eases.
+- **What failed / got adjusted.** Earlier slide entries still had two owners: the deck-level settle plus per-slide motion. The fix was to assign ownership, not keep tuning both. Native-motion slides now avoid the double path.
+- **Verification.** Focused Vitest motion tests pass (10 tests), `npm run lint` passes, `npm run build` passes, and `git diff --check` passes. Known notices remain stale Browserslist/caniuse-lite and the large desktop-gated `vendor-3d` chunk.
+- **What to do next.** After this push, review on the user's phone first. If anything still feels jagged, tune the native slide profiles in `slide-motion.ts` and the mobile profile in `deck-transition.ts`; do not re-add wrapper reveal to Services, Clients, or case studies.
+- **Push scope.** Ship the motion files and docs only. Keep `.github/workflows/deploy.yml` excluded again; it contains an unrelated workflow retry change that may require workflow-scoped auth.
 
 Session 32 was a mobile polish pass across slides 2–4 and all seven case studies, plus the orphaned-lanyard cleanup and a temporary on-device debug menu.
 
@@ -93,7 +94,7 @@ Session 12 cover/contact polish, the audit-file cleanup, and the parked `ui-desi
 The app is a Vite + React presentation-style SPA running on the fixed dev port:
 - `http://localhost:8080/`
 
-The Session 33 push prep is checked and ready to push. Current live-dev shape is `localhost:8080` / Wi-Fi `http://192.168.0.132:8080/`. Final push verification is command-based: `git diff --check`, `npm test`, `npm run lint`, and `npm run build`. Known build notices remain the stale Browserslist/caniuse-lite message and the large `vendor-3d` chunk warning.
+The Session 34 push prep is checked and ready to push. Current live-dev shape is `localhost:8080` / Wi-Fi `http://192.168.0.132:8080/`. Final push verification is command-based: focused Vitest motion tests, `npm run lint`, `npm run build`, and `git diff --check`. Known build notices remain the stale Browserslist/caniuse-lite message and the large `vendor-3d` chunk warning.
 
 ### Session 29 — black-screen fix + mobile polish (case studies, Contact, Clients)
 

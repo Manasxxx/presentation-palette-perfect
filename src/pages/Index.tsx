@@ -170,7 +170,7 @@ const Index = () => {
       />
       <DebugMenu currentSlide={currentSlide} onNavigate={navigateToSlide} />
       {slides.map((SlideComponent, index) => (
-        <SlideReveal key={index} className="relative" data-slide-index={index}>
+        <SlideReveal key={index} className="relative" data-slide-index={index} nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}>
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>
               {index === 0 ? (

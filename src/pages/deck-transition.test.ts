@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { getDeckTransitionMotionProfile, getDeckTransitionState } from "./deck-transition";
+import { getDeckTransitionMotionProfile, getDeckTransitionOrganicOffset, getDeckTransitionState } from "./deck-transition";
 
 describe("deck transition helpers", () => {
   it("detects forward and backward slide movement", () => {
@@ -32,6 +32,8 @@ describe("deck transition helpers", () => {
       washDuration: 1280,
       crestDuration: 1180,
       slideDuration: 1120,
+      settleDuration: 1360,
+      settleBounce: 0.24,
       pieceDuration: 960,
       pieceStagger: 18,
       washOpacityMultiplier: 1,
@@ -40,12 +42,30 @@ describe("deck transition helpers", () => {
 
   it("uses a more noticeable liquid profile on mobile", () => {
     expect(getDeckTransitionMotionProfile(true)).toMatchObject({
-      washDuration: 1420,
-      crestDuration: 1320,
-      slideDuration: 1180,
-      pieceDuration: 1040,
+      washDuration: 1580,
+      crestDuration: 1500,
+      slideDuration: 1240,
+      settleDuration: 1540,
+      settleBounce: 0.32,
+      pieceDuration: 1160,
       pieceStagger: 22,
       washOpacityMultiplier: 1.65,
+    });
+  });
+
+  it("adds deterministic organic drift so the light does not finish identically each time", () => {
+    expect(getDeckTransitionOrganicOffset(2, "forward")).toMatchObject({
+      lightX: -10,
+      lightY: 6,
+      rotate: 0.6,
+    });
+    expect(getDeckTransitionOrganicOffset(3, "forward")).not.toEqual(
+      getDeckTransitionOrganicOffset(2, "forward"),
+    );
+    expect(getDeckTransitionOrganicOffset(2, "idle")).toMatchObject({
+      lightX: 0,
+      lightY: 0,
+      rotate: 0,
     });
   });
 });

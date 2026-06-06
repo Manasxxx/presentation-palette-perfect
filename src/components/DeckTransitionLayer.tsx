@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { animate, createTimeline, cubicBezier, spring, stagger } from "animejs";
 
-import { getDeckTransitionMotionProfile, getDeckTransitionState } from "@/pages/deck-transition";
+import { getDeckTransitionMotionProfile, getDeckTransitionOrganicOffset, getDeckTransitionState } from "@/pages/deck-transition";
 
 interface DeckTransitionLayerProps {
   currentSlide: number;
@@ -25,9 +25,10 @@ const DeckTransitionLayer = ({ currentSlide, reducedMotion, isMobile }: DeckTran
     const activeSlide = document.querySelector<HTMLElement>(
       `[data-slide-index="${currentSlide}"] [data-slide-content]`,
     );
+    const usesNativeSlideMotion = activeSlide?.dataset.nativeSlideMotion === "true";
 
     if (reducedMotion) {
-      if (activeSlide) {
+      if (activeSlide && !usesNativeSlideMotion) {
         animate(activeSlide, {
           opacity: [0.82, 1],
           duration: 180,
@@ -43,24 +44,27 @@ const DeckTransitionLayer = ({ currentSlide, reducedMotion, isMobile }: DeckTran
     if (!layer || !wash || !crest || !activeSlide) return;
 
     const profile = getDeckTransitionMotionProfile(isMobile);
+    const organicOffset = getDeckTransitionOrganicOffset(currentSlide, transition.direction);
     const fromY = (transition.direction === "forward" ? 42 : -42) * profile.slideTravelMultiplier;
     const sweepStart = transition.direction === "forward" ? 42 : -42;
-    const sweepEnd = transition.direction === "forward" ? -18 : 18;
+    const sweepEnd = (transition.direction === "forward" ? -18 : 18) + organicOffset.lightY;
     const settleY = (transition.direction === "forward" ? 16 : -16) * profile.slideTravelMultiplier;
     const opacityPeak = 0.28 * transition.intensity * profile.washOpacityMultiplier;
-    const liquidEase = cubicBezier(0.22, 0.72, 0.12, 1);
-    const driftEase = cubicBezier(0.33, 0.02, 0.18, 1);
-    const settleEase = spring({ bounce: 0.18, duration: profile.slideDuration });
+    const liquidEase = cubicBezier(0.18, 0.78, 0.16, 1);
+    const driftEase = cubicBezier(0.22, 0.08, 0.14, 1);
+    const settleEase = spring({ bounce: profile.settleBounce, duration: profile.settleDuration });
 
-    const movingPieces = activeSlide.querySelectorAll<HTMLElement>(
-      "[data-deck-motion], h1, h2, p, a, button",
-    );
+    const movingPieces = usesNativeSlideMotion
+      ? []
+      : activeSlide.querySelectorAll<HTMLElement>(
+          "[data-deck-motion], h1, h2, p, a, button:not([data-native-slide-motion])",
+        );
 
     layer.style.opacity = "1";
     wash.style.opacity = "0";
     crest.style.opacity = "0";
-    wash.style.transform = `translate3d(0, ${sweepStart}%, 0) scaleY(0.62)`;
-    crest.style.transform = `translate3d(0, ${sweepStart * 0.55}%, 0) scaleX(0.86)`;
+    wash.style.transform = `translate3d(${-organicOffset.lightX * 0.45}px, ${sweepStart}%, 0) scaleY(0.62) rotate(${organicOffset.rotate * -0.5}deg)`;
+    crest.style.transform = `translate3d(${-organicOffset.lightX}px, ${sweepStart * 0.55}%, 0) scaleX(0.86) rotate(${organicOffset.rotate * -0.8}deg)`;
     activeSlide.style.willChange = "transform, opacity, filter";
 
     const tl = createTimeline({
@@ -73,7 +77,9 @@ const DeckTransitionLayer = ({ currentSlide, reducedMotion, isMobile }: DeckTran
     tl.add(wash, {
       opacity: [0, opacityPeak, 0],
       translateY: [`${sweepStart}%`, `${sweepEnd}%`],
-      scaleY: [0.58, 1.24, 0.82],
+      translateX: [-organicOffset.lightX * 0.45, organicOffset.lightX, organicOffset.lightX * 0.35],
+      rotate: [organicOffset.rotate * -0.5, organicOffset.rotate, organicOffset.rotate * 0.25],
+      scaleY: [0.58, 1.18, 0.94],
       duration: profile.washDuration,
       ease: liquidEase,
     })
@@ -82,25 +88,31 @@ const DeckTransitionLayer = ({ currentSlide, reducedMotion, isMobile }: DeckTran
         {
           opacity: [0, 0.38 * transition.intensity, 0],
           translateY: [`${sweepStart * 0.55}%`, `${sweepEnd * 0.7}%`],
-          scaleX: [0.82, 1.1, 0.95],
+          translateX: [-organicOffset.lightX, organicOffset.lightX * 0.7, organicOffset.lightX * 0.22],
+          rotate: [organicOffset.rotate * -0.8, organicOffset.rotate * 0.75, organicOffset.rotate * 0.18],
+          scaleX: [0.82, 1.08, 0.98],
           duration: profile.crestDuration,
           ease: liquidEase,
         },
         110,
       )
-      .add(
+    if (!usesNativeSlideMotion) {
+      tl.add(
         activeSlide,
         {
           opacity: [0.78, 1],
           translateY: [fromY, 0],
           scale: [0.988, 1],
           filter: [`blur(${profile.blurPx}px)`, "blur(0px)"],
-          duration: profile.slideDuration,
+          duration: profile.settleDuration,
           ease: settleEase,
         },
         70,
-      )
-      .add(
+      );
+    }
+
+    if (!usesNativeSlideMotion && movingPieces.length) {
+      tl.add(
         movingPieces,
         {
           opacity: [0.64, 1],
@@ -111,6 +123,7 @@ const DeckTransitionLayer = ({ currentSlide, reducedMotion, isMobile }: DeckTran
         },
         80,
       );
+    }
   }, [currentSlide, isMobile, reducedMotion]);
 
   return (

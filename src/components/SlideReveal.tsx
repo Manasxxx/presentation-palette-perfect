@@ -1,82 +1,98 @@
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
-import { animate } from "animejs";
+import { animate, cubicBezier } from "animejs";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SlideRevealProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
+  nativeMotion?: boolean;
 }
 
-const SlideReveal = ({ children, className = "", ...props }: SlideRevealProps) => {
+const SlideReveal = ({ children, className = "", nativeMotion = false, ...props }: SlideRevealProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const triggered = useRef(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const content = contentRef.current;
     if (!content) return;
 
-    if (
-      window.innerWidth < 1024 ||
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.matchMedia("(max-width: 767px)").matches
-    ) {
+    if (nativeMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       content.style.opacity = "1";
       content.style.transform = "none";
+      content.style.filter = "none";
       return;
     }
 
     content.style.opacity = "0";
+    content.style.transform = `translateY(${isMobile ? -18 : -28}px)`;
+    const slideRevealEase = cubicBezier(0.18, 0.82, 0.18, 1);
+
+    const reveal = () => {
+      if (triggered.current) return;
+      triggered.current = true;
+
+      // Content reveal — only animate the inner wrapper, not the outer container
+      animate(content, {
+        opacity: [0, 1],
+        translateY: [isMobile ? -18 : -28, 0],
+        filter: ["blur(10px)", "blur(0px)"],
+        duration: isMobile ? 720 : 980,
+        ease: slideRevealEase,
+      });
+
+      // Top wipe line
+      animate(content.querySelector(".sr-top-line")!, {
+        scaleX: [0, 1],
+        duration: isMobile ? 680 : 900,
+        delay: isMobile ? 160 : 250,
+        ease: slideRevealEase,
+      });
+
+      // Bottom wipe line
+      animate(content.querySelector(".sr-bottom-line")!, {
+        scaleX: [0, 1],
+        duration: isMobile ? 680 : 900,
+        delay: isMobile ? 260 : 450,
+        ease: slideRevealEase,
+      });
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !triggered.current) {
-          triggered.current = true;
-
-          // Content reveal — only animate the inner wrapper, not the outer container
-          animate(content, {
-            opacity: [0, 1],
-            translateY: [32, 0],
-            duration: 1100,
-            ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
-          });
-
-          // Top wipe line
-          animate(content.querySelector(".sr-top-line")!, {
-            scaleX: [0, 1],
-            duration: 900,
-            delay: 250,
-            ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
-          });
-
-          // Bottom wipe line
-          animate(content.querySelector(".sr-bottom-line")!, {
-            scaleX: [0, 1],
-            duration: 900,
-            delay: 450,
-            ease: "cubicBezier(0.25, 0.1, 0.25, 1.0)",
-          });
-        }
+        if (entry.isIntersecting) reveal();
       },
-      { threshold: 0.15 }
+      { threshold: isMobile ? 0.08 : 0.15 }
     );
     observer.observe(content);
-    return () => observer.disconnect();
-  }, []);
+    const fallback = window.setTimeout(reveal, isMobile ? 700 : 900);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, [isMobile, nativeMotion]);
 
   return (
     <div className={`${className} bg-background`} {...props}>
       <div
         ref={contentRef}
         data-slide-content
+        data-native-slide-motion={nativeMotion ? "true" : undefined}
         className="relative"
         style={{ opacity: 1, willChange: "transform, opacity" }}
       >
-        <div
-          className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
-          style={{ transform: "scaleX(0)" }}
-        />
-        <div
-          className="sr-bottom-line absolute bottom-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent z-20"
-          style={{ transform: "scaleX(0)" }}
-        />
+        {!nativeMotion && (
+          <>
+            <div
+              className="sr-top-line absolute top-0 left-[5%] right-[5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent z-20"
+              style={{ transform: "scaleX(0)" }}
+            />
+            <div
+              className="sr-bottom-line absolute bottom-0 left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent z-20"
+              style={{ transform: "scaleX(0)" }}
+            />
+          </>
+        )}
         {children}
       </div>
     </div>

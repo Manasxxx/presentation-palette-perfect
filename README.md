@@ -12,9 +12,9 @@ It's a marketing artifact first, so most of the engineering effort goes into two
 
 **Heavy effects are desktop-only and gated in code.** `LightRays`, `PrismaticBurst`, and the cover globe mount only above 768px via `useIsMobile()`; Hyperspeed is the one currently retained ambient exception for the Who We Are slide. Ambient WebGL caps its device pixel ratio so retina displays don't cook the GPU. The old Our Team lanyard stack was removed.
 
-**Mobile gets purpose-built variants, not shrunk desktop.** The Services 3D card stack does not survive a naive resize, so phones get a readable two-row selector and build-sequence panel instead. Everything else is handled with `max`/`md:` Tailwind pairs or explicit `useIsMobile()` branches. Slides are kept inside a single viewport rather than made internally scrollable, because an oversized slide fights `scroll-snap-type: y mandatory`.
+**Mobile gets purpose-built variants, not shrunk desktop.** The Services 3D card stack does not survive a naive resize, so phones get a readable two-row selector and Anime.js-driven build panel instead. Everything else is handled with `max`/`md:` Tailwind pairs or explicit `useIsMobile()` branches. Slides are kept inside a single viewport rather than made internally scrollable, because an oversized slide fights `scroll-snap-type: y mandatory`.
 
-**Anime.js owns motion.** Anime.js drives entrance choreography, the Services card swap, `PillNav`, rotating words, and the deck-level liquid transition layer. Reduced-motion users get instant deck scroll and shortened/no-op motion where the effect would otherwise be distracting.
+**Anime.js owns motion.** Anime.js drives entrance choreography, the Services card swap, `PillNav`, rotating words, and the deck-level liquid transition layer. Services, Clients, and all case-study slides now mark their own native motion path so the deck overlay can supply the watery light without double-moving slide content. Reduced-motion users get instant deck scroll and shortened/no-op motion where the effect would otherwise be distracting.
 
 ## Stack
 
@@ -48,8 +48,8 @@ src/
     Index.tsx              Slide registry, tight slide-window mounting, scroll-to-index nav
     NotFound.tsx           Branded 404, lives outside the deck
   components/
-    slides/                One file per full-screen slide (cover, who-we-are, team, services, clients, 7 case studies, contact)
-    ui/                    Self-contained visual primitives (Lanyard, CardSwap, LogoLoop, Hyperspeed, PrismaticBurst, ...)
+    slides/                One file per full-screen slide (cover, who-we-are, services, clients, 7 case studies, contact)
+    ui/                    Self-contained visual primitives (CardSwap, LogoLoop, Hyperspeed, PrismaticBurst, ...)
     PillNav.tsx            Activity-driven header nav (shows on movement, hides when idle)
     SlideReveal.tsx        IntersectionObserver wrapper that hands entrance timing to the animation libs
   hooks/
