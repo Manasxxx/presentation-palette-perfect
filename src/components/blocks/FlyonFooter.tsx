@@ -10,10 +10,10 @@ const socialLinks = [
 const FlyonFooter = () => (
   <footer className="w-full font-sans text-white">
     <div className="mx-auto flex max-w-[1720px] flex-row items-center justify-between gap-3 px-0 py-2 md:py-2.5 lg:px-8">
-      <div className="flex min-h-10 items-center md:min-h-14">
+      <div className="flex min-h-14 items-center md:min-h-20">
         <img
           src={logoPill}
-          className="h-10 w-auto object-contain md:h-14"
+          className="h-14 w-auto object-contain md:h-20"
           alt="OwlSurf Digital"
           loading="lazy"
           decoding="async"
