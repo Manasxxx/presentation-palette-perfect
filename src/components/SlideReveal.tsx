@@ -1,6 +1,7 @@
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from "react";
 import { animate, cubicBezier } from "animejs";
 import { useIsMobile } from "@/hooks/use-mobile";
+import MobileSlideMotion from "./MobileSlideMotion";
 
 interface SlideRevealProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
@@ -14,6 +15,10 @@ const SlideReveal = ({ children, className = "", nativeMotion = false, ...props 
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Mobile uses the Motion scroll-linked reveal (see render branch below);
+    // skip the animejs reveal entirely so the two systems never overlap.
+    if (isMobile) return;
+
     const content = contentRef.current;
     if (!content) return;
 
@@ -71,6 +76,16 @@ const SlideReveal = ({ children, className = "", nativeMotion = false, ...props 
       window.clearTimeout(fallback);
     };
   }, [isMobile, nativeMotion]);
+
+  // Mobile: hand off to the Motion scroll-linked cross-fade. No animejs reveal,
+  // no wipe lines. Desktop keeps the exact markup + animation below, untouched.
+  if (isMobile) {
+    return (
+      <div className={`${className} bg-background`} {...props}>
+        <MobileSlideMotion>{children}</MobileSlideMotion>
+      </div>
+    );
+  }
 
   return (
     <div className={`${className} bg-background`} {...props}>

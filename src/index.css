@@ -231,6 +231,82 @@
     scroll-snap-stop: always;
   }
 
+  /* Mobile (Way A): light "proximity" snap — slides scroll freely with a small
+     amount of friction that eases them into place when the user settles near a
+     boundary, rather than the rigid mandatory snap desktop uses. The container's
+     scroll-snap-type is set to `y proximity` on mobile (see Index.tsx). */
+  @media (max-width: 767px) {
+    .slide {
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+    }
+  }
+
+  /* Mobile seam blend (see Index.tsx). Fixed soft fades to the deck background
+     at the top and bottom viewport edges, so slide-to-slide joints dissolve. */
+  .deck-seam-fade {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 9svh;
+    z-index: 40;
+    pointer-events: none;
+  }
+
+  .deck-seam-fade-top {
+    top: 0;
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--background) / 0.85) 0%,
+      hsl(var(--background) / 0) 100%
+    );
+  }
+
+  .deck-seam-fade-bottom {
+    bottom: 0;
+    background: linear-gradient(
+      to top,
+      hsl(var(--background) / 0.85) 0%,
+      hsl(var(--background) / 0) 100%
+    );
+  }
+
+  /* Phase B signature transition (mobile, see MobileTransitionLayer.tsx).
+     A teal light band + a centred glow mark, scrubbed by inter-slide scroll. */
+  .deck-sig-wash {
+    /* Uses the site's signature teal (--primary). A vertical band layered over
+       a wide radial bloom so the field reads as a travelling sweep, not just a
+       static circle, as it pans with the scroll. */
+    background:
+      linear-gradient(
+        to bottom,
+        hsl(var(--primary) / 0) 0%,
+        hsl(var(--primary) / 0.4) 50%,
+        hsl(var(--primary) / 0) 100%
+      ),
+      radial-gradient(
+        130% 100% at 50% 50%,
+        hsl(var(--primary) / 0.95) 0%,
+        hsl(var(--primary) / 0.5) 42%,
+        hsl(var(--primary) / 0) 82%
+      );
+    will-change: opacity, transform;
+  }
+
+  .deck-sig-mark {
+    width: 140px;
+    height: 140px;
+    margin: 0;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsl(var(--primary) / 0.5) 0%,
+      hsl(var(--primary) / 0) 70%
+    );
+    box-shadow: 0 0 64px 14px hsl(var(--primary) / 0.3);
+    will-change: opacity, transform;
+  }
+
   .hexagon-pattern {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234bc2c2' fill-opacity='0.08'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }

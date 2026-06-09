@@ -81,6 +81,17 @@
 - **Keep slides inside the scroll-snap height.** Do not make a single mobile slide taller than the viewport to "solve" overflow; that breaks `scroll-snap-type: y mandatory`. Compact spacing/type and swap widgets instead.
 - **Mobile verification harness:** `scripts/mobile-shots.mjs` (Playwright, kept as a devDependency) screenshots every slide at a phone viewport against the running dev server. `SHOT_TAG`, `SHOT_W`/`SHOT_H`, `SHOT_ONLY` (comma slide indices), and `SHOT_DESKTOP=1` env vars control it. Output under `scripts/_shots/` is gitignored. Use it before declaring mobile work done.
 
+### Mobile Motion & Transitions (Session 36)
+
+The **mobile** deck motion was rebuilt from scratch and is gated entirely behind `useIsMobile()` / `@media (max-width:767px)`. **Desktop must stay byte-for-byte identical** — it keeps mandatory scroll-snap, the animejs `SlideReveal` reveal, and the animejs `DeckTransitionLayer` liquid-wash, and never syncs the URL. Do not let mobile motion edits leak into the desktop branches.
+
+- **Way A — scroll-synced URLs.** The deck is still one continuous scroll page, but each slide has a real URL slug (`src/pages/slide-routes.ts`; routes registered in `App.tsx`, all rendering the same `<Index/>`). On mobile, scrolling syncs the URL to the slide in view (debounced), so slides are deep-linkable and back/forward steps between them. Desktop never syncs (a deep link only scrolls once on mount). The two effects in `Index.tsx` guard against a navigate↔scroll loop via `suppressUrlSyncRef` + `currentSlideRef` — keep both when editing.
+- **Light snap, not rigid.** Mobile uses `scroll-snap-type: y proximity` (friction + settle into place) instead of desktop's `y mandatory`. Do not restore mandatory snap on mobile.
+- **Slide cross-fade** is Motion (`motion.dev`), not animejs: `MobileSlideMotion.tsx` wraps each slide via `SlideReveal`'s mobile branch and drives opacity/translateY/blur from `useScroll` against the deck container (passed through `DeckScrollContext`). **Never add a `scale` transform to that wrapper** — it is an ancestor of `.slide` and scaling corrupts the `getBoundingClientRect` height `getSlideHeight` relies on for the scroll→index math.
+- **Seam blend.** Fixed `.deck-seam-fade-top`/`-bottom` fades (9 svh) dissolve slide joints into the dark background so boundaries don't read as a divider line. Mobile + non-reduced-motion only.
+- **Signature transition is a parked WIP.** `MobileTransitionLayer.tsx` (a scroll-linked teal sweep authored via Theatre.js `src/theatre/deck.ts`) replaces `DeckTransitionLayer` on mobile. It uses the site teal `hsl(var(--primary))`, not `owl-teal-200`. It still reads as too brief / doesn't bridge slides well — flagged for a follow-up pass. Theatre **studio auto-init is disabled** (it rendered an unwanted dev toolbar); re-enable the guarded dev-only `import("@theatre/studio")` in `deck.ts` to author the sweep. `@theatre/studio` is a devDependency and must never ship to prod.
+- animejs stays the in-slide entrance engine on both platforms; only the deck-level transition + reveal wrapper changed on mobile.
+
 This document serves as a comprehensive overview of the design schemas, structural paradigms, and coding principles adopted in this project. It is intended to guide future development, maintenance, and refactoring efforts.
 
 ## 1. Architectural Overview

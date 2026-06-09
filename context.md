@@ -5,6 +5,32 @@
 
 ---
 
+## Current State (as of Session 36 push prep)
+
+**Session 36** rebuilt the **mobile** deck navigation + transitions from scratch using new libraries, gated entirely behind `useIsMobile()` so **desktop is byte-for-byte unchanged** (snap, animejs `SlideReveal` reveal, animejs `DeckTransitionLayer` liquid-wash, no URL sync — all intact). Decision history: the owner wanted mobile to feel fluid/authoritative, not PowerPoint-snappy; we evaluated Motion (`motion.dev`), Theatre.js, and Swup. **Swup was dropped** — it animates navigation between real URLs/pages and a single continuous-scroll page gives it no role. Final model is "Way A": one continuous scroll page where the URL is synced to the slide in view.
+
+**New deps:** `motion` (12.x, `vendor-motion` chunk ~35 KB gz), `@theatre/core` (0.7, `vendor-theatre` chunk), `@theatre/studio` (0.7, **devDependency**). animejs stays for all in-slide entrance motion (touching it risks desktop) — only the deck-level transition + reveal wrapper was swapped, mobile-only.
+
+### Phase A — fluidity + scroll-synced URLs (mobile)
+- **`src/pages/slide-routes.ts`** (new) — single source of truth mapping slide index ↔ URL slug: `/`, `/who-we-are`, `/services`, `/clients`, `/work/{mitsui,kuraray,baxsaa,cultfit,girlup,ctp,vnt}`, `/contact`. `slugForIndex` / `indexForSlug`.
+- **`src/App.tsx`** — every slug registered as a `<Route>` rendering the same `<Index/>` (above the `*`→`NotFound` catch-all).
+- **Scroll-snap removed on mobile.** `Index.tsx` container `scrollSnapType` is `isMobile ? "y proximity" : "y mandatory"` (proximity = light "snap into place" with friction, per the owner's request — NOT rigid). `index.css` `@media (max-width:767px)` sets `.slide { scroll-snap-align: start; scroll-snap-stop: normal; }`. Desktop `.slide` rule (mandatory snap) untouched.
+- **Scroll-synced URLs (Way A), mobile only** (`Index.tsx`). On scroll settle (160 ms debounce) the URL is `navigate()`d to the current slide's slug → deep-linkable, back/forward steps slides. A second effect reacts to URL changes (initial deep link instant; back/forward smooth) and scrolls the container to the slug's slide. A `suppressUrlSyncRef` flag and a `currentSlideRef` mirror prevent the navigate↔scroll feedback loop. Desktop never syncs (a deep link only scrolls once on mount).
+- **Motion cross-fade** (`src/components/MobileSlideMotion.tsx`, new; `src/components/deck-scroll-context.ts`, new). On mobile, `SlideReveal` delegates to `MobileSlideMotion` (desktop keeps the exact animejs markup). It uses Motion `useScroll({ target, container })` (container from `DeckScrollContext`, provided by `Index`) + `useTransform` to fade/translate/blur each slide as it crosses the viewport so neighbours blend. **No `scale` transform** — it is an ancestor of `.slide` and a scale would corrupt the `getBoundingClientRect` height that `getSlideHeight` depends on (caught in testing). opacity floors at 0.4, y±26, blur±5.
+- **Seam blend** (`Index.tsx` + `index.css`). Fixed `.deck-seam-fade-top`/`-bottom` (mobile, non-reduced-motion) — 9 svh fades to `hsl(var(--background))` at the viewport top/bottom so slide joints dissolve into the shared dark instead of a hard divider line.
+
+### Phase B — Theatre.js signature transition (mobile)
+- **`src/theatre/deck.ts`** (new) — Theatre project `OwlSurf Deck`, sheet `slide-transition`, object `signature sweep` exposing tunable params (`tealOpacity`, `travelY`, `blurPx`, `glowScale`, `markOpacity`). **Studio auto-init is currently disabled** (commented out) — it rendered a dev-only top toolbar the owner didn't want, and the transition is parked. The object runs on code defaults; re-enable the guarded `import("@theatre/studio")` block to author again.
+- **`src/components/MobileTransitionLayer.tsx`** (new) — fixed full-bleed teal field + centred glow mark, **scroll-linked** (rAF reading the deck container while scrolling, idles off after 240 ms). Intensity = `sin(π·f)^0.4` (broad plateau across the crossover), field pans with the scroll so it tracks the gesture and bridges A→B. Lazy-loaded and rendered only on mobile + non-reduced-motion, so `vendor-theatre` loads only on mobile. Uses the **site signature teal `hsl(var(--primary))`** (180 45% 53%), not `owl-teal-200` (`#4BC2C2`). CSS `.deck-sig-wash` (vertical band + radial bloom) and `.deck-sig-mark` in `index.css`.
+
+### Known limitation (parked)
+The mobile signature transition still reads as a quick flash and doesn't fully "connect the journey" between slides on the owner's device. Iterated scroll-linked → triggered → scroll-linked; the proximity snap shortens the crossover so the sweep is brief. **Flagged for a dedicated follow-up pass** (see handoff). Possible directions: loosen/remove snap to give the crossover room, add a deliberate transition zone between slides, or author the sweep timeline in Theatre studio. `DebugMenu.tsx` (the owner's mobile FAB) was **intentionally kept** this push at the owner's request, despite the standing "remove before prod" note.
+
+### Verification
+`npm run lint` (0 warnings) + `npm run build` pass; `vendor-motion` ~35 KB gz, `vendor-theatre` chunked, `@theatre/studio` not in the prod bundle (never imported). Mobile behaviour (snap off, scroll→URL, deep link, back/forward) was confirmed via Playwright before the owner's device review. `.github/workflows/deploy.yml` left excluded again (remote PAT lacks `workflow` scope).
+
+---
+
 ## Current State (as of Session 35 push prep)
 
 **Session 35** reshaped the case-study block and did a focused desktop+mobile cover (TitleSlide) pass, plus a mobile exception for the Clients shimmer.

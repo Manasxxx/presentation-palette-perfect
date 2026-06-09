@@ -27,6 +27,8 @@ export default defineConfig(() => ({
         manualChunks: {
           "vendor-react": ["react", "react-dom", "react-router-dom"],
           "vendor-anime": ["animejs"],
+          "vendor-motion": ["motion"],
+          "vendor-theatre": ["@theatre/core"],
           "vendor-3d": ["ogl", "cobe", "postprocessing", "three"],
           "vendor-ui": ["lucide-react", "react-liquid-glass-card"],
         },

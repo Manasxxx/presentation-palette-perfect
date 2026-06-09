@@ -1,14 +1,18 @@
 import { lazy, Suspense, useMemo, useState, useEffect, useRef, type ComponentType } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import TitleSlide from "@/components/slides/TitleSlide";
 
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
 import DebugMenu from "@/components/DebugMenu";
 import DeckTransitionLayer from "@/components/DeckTransitionLayer";
+import { DeckScrollContext } from "@/components/deck-scroll-context";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getMountedSlideIndexes, getSlideIndexFromScroll } from "./slide-window";
+import { indexForSlug, slugForIndex } from "./slide-routes";
 
+const MobileTransitionLayer = lazy(() => import("@/components/MobileTransitionLayer"));
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
 const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
@@ -67,6 +71,19 @@ const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Mirrors `currentSlide` for use inside effects that must not re-run on every
+  // scroll tick (URL sync + history navigation).
+  const currentSlideRef = useRef(currentSlide);
+  // True while we are programmatically scrolling in response to a URL change
+  // (deep link / back-forward), so the scroll it produces does not push a new
+  // history entry and create a navigate <-> scroll loop.
+  const suppressUrlSyncRef = useRef(false);
+  // Distinguishes the first URL→scroll sync (instant, no animation on initial
+  // deep link) from later back/forward navigations (smooth).
+  const hasSyncedInitialUrlRef = useRef(false);
 
   // Case studies (Mitsui through VNT) are immersive on mobile — hide the
   // whole nav bar (logo + menu) there. Desktop keeps the nav untouched.
@@ -130,7 +147,9 @@ const Index = () => {
       rafId = requestAnimationFrame(() => {
         const scrollTop = container.scrollTop;
         const slideHeight = getSlideHeight(container);
-        setCurrentSlide(getSlideIndexFromScroll(scrollTop, slideHeight, slides.length));
+        const next = getSlideIndexFromScroll(scrollTop, slideHeight, slides.length);
+        currentSlideRef.current = next;
+        setCurrentSlide(next);
         rafId = null;
       });
     };
@@ -155,13 +174,72 @@ const Index = () => {
     });
   };
 
+  /**
+   * Mobile only — Way A scroll-synced URLs. Once the user settles on a slide,
+   * reflect it in the address bar so every slide is deep-linkable and back /
+   * forward steps between slides. Debounced so a single scroll-through writes
+   * one history entry, not one per slide it passes. Desktop never syncs.
+   */
+  useEffect(() => {
+    if (!isMobile) return;
+    const id = window.setTimeout(() => {
+      if (suppressUrlSyncRef.current) return;
+      const slug = slugForIndex(currentSlide);
+      if (slug !== window.location.pathname) {
+        navigate(slug);
+      }
+    }, 160);
+    return () => window.clearTimeout(id);
+  }, [currentSlide, isMobile, navigate]);
+
+  /**
+   * Reacts to URL changes that did NOT originate from scrolling: the initial
+   * deep link on mount, and browser back / forward. Scrolls the container to
+   * the slide the URL points at. The scroll this triggers is suppressed from
+   * re-writing the URL (see `suppressUrlSyncRef`) so the two effects can't loop.
+   */
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const targetIndex = indexForSlug(location.pathname);
+    if (targetIndex === currentSlideRef.current) return;
+
+    const firstPaint = !hasSyncedInitialUrlRef.current;
+    hasSyncedInitialUrlRef.current = true;
+
+    suppressUrlSyncRef.current = true;
+    currentSlideRef.current = targetIndex;
+    container.scrollTo({
+      top: targetIndex * getSlideHeight(container),
+      behavior: firstPaint || prefersReducedMotion ? "auto" : "smooth",
+    });
+
+    const release = window.setTimeout(() => {
+      suppressUrlSyncRef.current = false;
+    }, 650);
+    return () => window.clearTimeout(release);
+  }, [location.pathname, prefersReducedMotion]);
+
   return (
+    <DeckScrollContext.Provider value={containerRef}>
     <div
       ref={containerRef}
       data-deck-scroll-container
       className={`h-screen w-full overflow-y-auto overflow-x-hidden bg-background${prefersReducedMotion ? "" : " scroll-smooth"}`}
-      style={{ scrollSnapType: "y mandatory", WebkitOverflowScrolling: "touch" }}
+      style={{ scrollSnapType: isMobile ? "y proximity" : "y mandatory", WebkitOverflowScrolling: "touch" }}
     >
+
+      {/* Mobile seam blend: fixed soft fades at the viewport top/bottom edges.
+          Every slide boundary scrolls through these bands, so the joint between
+          one slide's end and the next slide's start melts into the shared dark
+          background instead of reading as a hard divider line. */}
+      {isMobile && !prefersReducedMotion && (
+        <>
+          <div className="deck-seam-fade deck-seam-fade-top" aria-hidden="true" />
+          <div className="deck-seam-fade deck-seam-fade-bottom" aria-hidden="true" />
+        </>
+      )}
 
       <PillNav
         visible={navActive && !(isMobile && onCaseStudy)}
@@ -184,12 +262,23 @@ const Index = () => {
           )}
         </SlideReveal>
       ))}
-      <DeckTransitionLayer
-        currentSlide={currentSlide}
-        isMobile={isMobile}
-        reducedMotion={prefersReducedMotion}
-      />
+      {/* Desktop keeps the animejs liquid-wash transition. Mobile gets the
+          Motion scroll-linked cross-fade (SlideReveal) plus the Theatre.js
+          signature sweep below. */}
+      {!isMobile && (
+        <DeckTransitionLayer
+          currentSlide={currentSlide}
+          isMobile={isMobile}
+          reducedMotion={prefersReducedMotion}
+        />
+      )}
+      {isMobile && !prefersReducedMotion && (
+        <Suspense fallback={null}>
+          <MobileTransitionLayer />
+        </Suspense>
+      )}
     </div>
+    </DeckScrollContext.Provider>
   );
 };
 
