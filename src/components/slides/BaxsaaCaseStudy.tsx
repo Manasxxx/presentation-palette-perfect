@@ -23,7 +23,7 @@ const stats = [
 
 const BaxsaaCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="02"
+    caseNumber="03"
     title="The Baxsaa"
     accentTitle="Co."
     subtitle="A Mumbai studio that makes premium custom packaging. We made them easier to find online and gave the brand a sharper look, so more of the right buyers saw the work and reached out."

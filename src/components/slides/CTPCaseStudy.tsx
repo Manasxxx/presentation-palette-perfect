@@ -20,7 +20,7 @@ const stats = [
 
 const CTPCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="05"
+    caseNumber="06"
     title="Check This"
     accentTitle="Property"
     subtitle="Australian property tech. We clarified the product story so searchers could understand and act faster."

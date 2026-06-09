@@ -24,7 +24,7 @@ const stats = [
 
 const GirlUpCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="04"
+    caseNumber="05"
     title="Girl"
     accentTitle="Up"
     subtitle="UN Foundation youth movement. We shaped issue-led creative for reach, participation, and credibility."

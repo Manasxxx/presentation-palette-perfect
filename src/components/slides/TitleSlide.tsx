@@ -16,19 +16,18 @@ import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
-import { AnimatedShinyText } from "@/components/ui/animated-shiny-text";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { getTitleTextMotionProfile } from "./title-motion";
-import metaBusinessPartnerBadge from "@/assets/badge-meta-business-partner.png";
-import googlePartnerBadge from "@/assets/badge-google-partner.png";
-import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-partner.png";
-import hubspotPartnerBadge from "@/assets/badge-hubspot-partner-gold.png";
+import metaPartnerBadge from "@/assets/badge-meta-partner-trim.png";
+import googlePartnerBadge from "@/assets/badge-google-partner-2026-trim.png";
+import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-partner-trim.png";
 
+// Badges are trimmed to content and shown on identical white chips at one fixed
+// height, so the row reads as a uniform, vertically-aligned partner strip.
 const credibilityBadges = [
-  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge, className: "md:h-[62px]" },
-  { label: "HubSpot Solutions Partner", src: hubspotPartnerBadge, className: "md:h-[80px]" },
-  { label: "Meta Business Partner", src: metaBusinessPartnerBadge, className: "md:h-[78px]" },
-  { label: "Google Partner", src: googlePartnerBadge, className: "md:h-[84px]" },
+  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge },
+  { label: "Google Ads Agency Partner", src: googlePartnerBadge },
+  { label: "Meta Agency Partner", src: metaPartnerBadge },
 ];
 
 const rotatingIndustries = ["Solar", "Industrial", "Chemical", "Pharma", "Manufacturing", "Mobility", "Real Estate"];
@@ -222,21 +221,32 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         }}
       />
 
-      {/* Globe — top hemisphere rises from the bottom edge (desktop only) */}
-      {!isMobile && (
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            top: '100%',
-            left: '50%',
-            width: '120%',
-            height: '120%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <Globe className="opacity-25 !max-w-none !w-full" />
-        </div>
-      )}
+      {/* Globe — top hemisphere rises from the bottom edge. Runs on mobile too
+          (user-requested exception to the desktop-only WebGL rule; cobe is a light
+          single-canvas renderer). On mobile the globe is anchored so its center sits
+          exactly on the bottom edge (only the dotted top half shows). */}
+      <div
+        className="absolute pointer-events-none"
+        style={
+          isMobile
+            ? {
+                top: 'calc(100% - 97.5vw)',
+                left: '50%',
+                width: '130vw',
+                height: '130vw',
+                transform: 'translateX(-50%)',
+              }
+            : {
+                top: '100%',
+                left: '50%',
+                width: '120%',
+                height: '120%',
+                transform: 'translate(-50%, -50%)',
+              }
+        }
+      >
+        <Globe className={`${isMobile ? "opacity-60" : "opacity-25"} !max-w-none !w-full`} />
+      </div>
 
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
@@ -251,10 +261,11 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               <span className="ts-brand-token ts-title-accent mx-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
                 SURF
               </span>
-              <span className="ts-brand-token inline-block font-sans not-italic text-white" style={{ opacity: 0 }}>DIGITAL</span>
+              <span className="ts-brand-token ml-2 inline-block font-sans not-italic text-white md:ml-3" style={{ opacity: 0 }}>DIGITAL</span>
             </span>
-            <span className="ts-brand-subtitle hidden font-body font-medium uppercase text-white/65 tracking-[0.22em] mt-1.5 text-[clamp(0.6rem,0.95vw,0.82rem)] md:block" style={{ opacity: 0 }}>
-              Credentials for chemical and industrial markets
+            <span className="ts-brand-subtitle mt-2.5 hidden font-sans text-white/72 md:block md:text-[clamp(1rem,1.5vw,1.45rem)]" style={{ opacity: 0 }}>
+              <span className="font-semibold not-italic tracking-tight">where tech meets </span>
+              <span className="font-serif italic text-owl-teal">design</span>
             </span>
           </div>
           <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 md:block" aria-hidden="true" style={{ opacity: 0 }}>
@@ -271,7 +282,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                   We turn
                 </span>
                 <span className="mt-3 block md:mt-4">
-                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]" style={{ opacity: 0 }}>
+                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-6 md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]" style={{ opacity: 0 }}>
                     <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
                     <WordRotate words={rotatingIndustries} duration={1900} className="text-center" />
                   </span>
@@ -284,7 +295,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 </span>
                 <span className="mt-3 block md:mt-4">
                   <span
-                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]"
+                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-6 md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]"
                     style={{ opacity: 0 }}
                   >
                     <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
@@ -293,14 +304,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 </span>
               </span>
             </h1>
-            <p className="ts-info-col mt-6 hidden max-w-[42rem] font-body text-sm leading-[1.55] text-white/58 md:block md:text-lg" style={{ opacity: 0 }}>
-              Strategy, content, demand, and digital proof for chemical, industrial, and technical brands that need buyers to understand the value fast.
-            </p>
           </div>
 
           <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
-            <div className="absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent" />
-            <div className="absolute inset-y-12 left-1/2 w-px bg-gradient-to-b from-transparent via-white/16 to-transparent" />
             <div
               className="ts-signal-line absolute left-[13%] top-[20%] h-[62%] w-[62%] rounded-full border border-white/10"
               style={{ opacity: 0, animation: "ts-orbit-drift 18s linear infinite" }}
@@ -308,17 +314,6 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             <div
               className="ts-signal-line absolute right-[4%] top-[8%] h-[76%] w-[76%] rounded-full border border-owl-teal/20"
               style={{ opacity: 0, animation: "ts-orbit-drift 24s linear infinite reverse" }}
-            />
-            <div className="absolute inset-6 border border-white/10" />
-            <div className="absolute inset-14 border border-white/10" />
-            <div
-              className="absolute inset-0 opacity-[0.08]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
-                backgroundSize: "38px 38px",
-                color: "white",
-              }}
             />
             <div
               className="ts-signal-line absolute -left-10 top-1/2 h-28 w-[120%] -translate-y-1/2 rotate-[-8deg] bg-gradient-to-r from-transparent via-owl-teal/18 to-transparent blur-sm"
@@ -366,33 +361,36 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 <button
                   type="button"
                   onClick={onViewCaseStudies}
-                  className="group rounded-full border border-white/10 bg-white/[0.07] px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.18em] shadow-[0_4px_24px_rgba(75,194,194,0.22)] backdrop-blur-md transition-[border-color,background-color,box-shadow] duration-300 hover:border-owl-teal/45 hover:bg-owl-teal/10 hover:shadow-[0_6px_30px_rgba(75,194,194,0.32)]"
+                  className="group relative overflow-hidden rounded-full border border-white/10 bg-white/[0.07] px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.18em] shadow-[0_4px_24px_rgba(75,194,194,0.22)] backdrop-blur-md transition-[border-color,background-color,box-shadow] duration-300 hover:border-owl-teal/45 hover:bg-owl-teal/10 hover:shadow-[0_6px_30px_rgba(75,194,194,0.32)]"
                 >
-                  <AnimatedShinyText className="gap-2 transition-transform duration-300 group-hover:translate-x-0.5" shimmerWidth={80}>
+                  <span
+                    aria-hidden="true"
+                    className="ts-cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent"
+                  />
+                  <span className="relative inline-flex items-center text-white transition-transform duration-300 group-hover:translate-x-0.5">
                     <span>Review case studies</span>
-                    <span aria-hidden="true">→</span>
-                  </AnimatedShinyText>
+                  </span>
                 </button>
               </div>
             </div>
           )}
 
           {/* Partner badge strip — secondary credibility, centered */}
-          <div className="flex flex-col items-center gap-2 md:translate-y-8 md:gap-3">
+          <div className="flex flex-col items-center gap-2 md:-translate-y-3 md:gap-3">
             <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
               Platform partners
             </span>
-            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-2 md:gap-x-11">
+            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-3 md:gap-x-8">
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex h-[52px] min-w-0 items-center justify-center md:h-[92px]"
+                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center rounded-lg bg-white px-2.5 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.28)] md:h-[62px] md:px-3.5 md:py-2"
                   style={{ opacity: 0 }}
                 >
                   <img
                     src={badge.src}
                     alt={badge.label}
-                    className={`block h-auto max-h-[46px] max-w-[24vw] object-contain md:max-h-none md:max-w-none ${badge.className}`}
+                    className="block h-full w-auto max-w-[26vw] object-contain md:max-w-none"
                     loading="eager"
                     decoding="async"
                   />

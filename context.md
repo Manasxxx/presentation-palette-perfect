@@ -5,6 +5,27 @@
 
 ---
 
+## Current State (as of Session 35 push prep)
+
+**Session 35** reshaped the case-study block and did a focused desktop+mobile cover (TitleSlide) pass, plus a mobile exception for the Clients shimmer.
+
+- **New Kuraray case study** (`src/components/slides/KurarayCaseStudy.tsx`). Added right after Mitsui as case `02`, built on the shared `CaseStudyLayout`. Kuraray = Japanese specialty-chemicals maker (EVAL EVOH, PVOH/POVAL, MOWITAL PVB, SEPTON/HYBRAR elastomers — confirmed by web search); plain, outcome-based copy per the standing rule. Ten creatives were converted from the user's Downloads `Kuraray` folder to WebP, trimmed of name noise, and imported as `kuraray-*.webp`. Dark blue theme. Wired into `Index.tsx` (lazy import + slides array), and the downstream case numbers were bumped: Baxsaa 03, CultFit 04, GirlUp 05, CTP 06, VNT 07.
+- **Raychem RPG removed entirely.** Deleted `RaychemRPGCaseStudy.tsx` and its six `raychem-*`/`Raychemcasestudy 3` assets, removed the lazy import + slides entry, and reverted the index ranges. Net effect of the two changes: deck is back to **12 slides**, case studies are indices 4–10 (Mitsui, Kuraray, Baxsaa, CultFit, GirlUp, CTP, VNT), Contact is 11.
+- **Index/nav bookkeeping.** `Index.tsx`: `onCaseStudy` is `4–10`, `nativeMotion` covers `index 2,3` + `4–10`. `PillNav.tsx`: Contact `slideIndex` 11, `slideToNavIndex` maps `<=10` to Cases. `DebugMenu.tsx`: added "Kuraray", removed "Raychem RPG".
+- **VNT creatives added** (`VNTCaseStudy.tsx`). Seven new WebP creatives from the Downloads `vnt` folder appended to the slider (`vntnew-*.webp`).
+- **Clients shimmer on mobile** (`ClientsSlide.tsx`). The `PrismaticBurst` WebGL backdrop now renders on mobile too (user-requested). Safe because the component already caps DPR at 1.25 and pauses its RAF offscreen. Documented as an explicit exception in `prod.md`.
+- **Cover (TitleSlide) pass.**
+  - Pills (`SOLAR` / `PREFER` etc.) get a desktop `md:-ml-6` so their text optically left-aligns with the plain heading lines.
+  - Wordmark gets a space before `DIGITAL`; the old `Credentials for chemical and industrial markets` subline was replaced with the tagline **`where tech meets design`** — "where tech meets" in Montserrat, "design" in the Lora cursive italic teal treatment (desktop-only).
+  - Removed the `Strategy, content, demand…` paragraph under the hook.
+  - **Badges:** reduced to three — LinkedIn Marketing Partner, Google Ads Agency Partner, Meta Agency Partner (HubSpot dropped). Google + Meta badges fetched from third-party logo mirrors (eDigital / brandlogovector — not portal-sanctioned, flagged to the user). All three trimmed to content with `sharp.trim()` (`badge-*-trim.png`) and shown on identical fixed-height white chips so the strip is uniform and vertically centred. `sharp` was added as a devDependency (already expected by `images:convert`).
+  - Removed the boxy grid lines / inset square borders / centre cross-lines behind the OwlSurf mark; kept the circular orbit rings + nodes + scan glow.
+  - **Globe on mobile.** The cover `Globe` (cobe) now runs on mobile, anchored so its center sits below the bottom edge — `top: calc(100% - 97.5vw)`, `130vw` square — so ~3/4 shows, at `opacity-60` for legibility. Desktop unchanged. Documented as a WebGL exception in `prod.md`.
+  - **CTA fixed.** The `Review case studies` button lost the `AnimatedShinyText` gradient text-shimmer (it rendered broken) and the inline `→` arrow (the decorative `Arrow19` already points at it). Text is plain white; the button keeps one clean continuous teal shimmer sweep via the new `.ts-cta-sheen` keyframe (linear, fully crosses + exits, then an off-screen gap — the old `title-pill-sheen` stalled mid-button).
+- **Verification before push.** `npm run lint` passes (0 warnings), `npm run build` passes. `.github/workflows/deploy.yml` left excluded again (remote PAT lacks `workflow` scope).
+
+---
+
 ## Current State (as of Session 34 push prep)
 
 **Session 34** is a mobile-first Anime.js motion refinement pass across the cover, Services, Clients, and every case-study slide. The goal was to remove double jagged entry motion and make the deck transition feel smoother, watery, and human on phones while keeping desktop calm.

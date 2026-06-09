@@ -113,15 +113,15 @@ const ClientsSlide = () => {
       ref={sectionRef}
       className="slide font-sans"
     >
-      {/* Heavy WebGL backdrop — desktop only (gated off mobile per prod.md) */}
-      {!isMobile && (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-          <PrismaticBurst
-            colors={["#4bc2c2", "#14b8a6", "#0f766e", "#134e4a", "#0a2322"]}
-            speed={0.18}
-          />
-        </div>
-      )}
+      {/* PrismaticBurst shimmer backdrop. Documented mobile exception to the
+          desktop-only WebGL rule (prod.md): the Clients slide runs it on mobile too.
+          The component already caps DPR at 1.25 and pauses its RAF offscreen. */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <PrismaticBurst
+          colors={["#4bc2c2", "#14b8a6", "#0f766e", "#134e4a", "#0a2322"]}
+          speed={0.18}
+        />
+      </div>
       {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
       <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-12 md:px-12 md:pb-12 md:pt-16">
         <header className="cl-heading text-left self-start">

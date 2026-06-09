@@ -13,12 +13,12 @@ const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
 const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
 const CaseStudySlide = lazy(() => import("@/components/slides/CaseStudySlide"));
+const KurarayCaseStudy = lazy(() => import("@/components/slides/KurarayCaseStudy"));
 const BaxsaaCaseStudy = lazy(() => import("@/components/slides/BaxsaaCaseStudy"));
 const CultFitCaseStudy = lazy(() => import("@/components/slides/CultFitCaseStudy"));
 const GirlUpCaseStudy = lazy(() => import("@/components/slides/GirlUpCaseStudy"));
 const CTPCaseStudy = lazy(() => import("@/components/slides/CTPCaseStudy"));
 const VNTCaseStudy = lazy(() => import("@/components/slides/VNTCaseStudy"));
-const RaychemRPGCaseStudy = lazy(() => import("@/components/slides/RaychemRPGCaseStudy"));
 const ContactSlide = lazy(() => import("@/components/slides/ContactSlide"));
 
 const slides: ComponentType[] = [
@@ -27,12 +27,12 @@ const slides: ComponentType[] = [
   ServicesSlide,
   ClientsSlide,
   CaseStudySlide,
+  KurarayCaseStudy,
   BaxsaaCaseStudy,
   CultFitCaseStudy,
   GirlUpCaseStudy,
   CTPCaseStudy,
   VNTCaseStudy,
-  RaychemRPGCaseStudy,
   ContactSlide,
 ];
 
@@ -68,7 +68,7 @@ const Index = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
   const isMobile = useIsMobile();
 
-  // Case studies (Mitsui through Raychem) are immersive on mobile — hide the
+  // Case studies (Mitsui through VNT) are immersive on mobile — hide the
   // whole nav bar (logo + menu) there. Desktop keeps the nav untouched.
   const onCaseStudy = currentSlide >= 4 && currentSlide <= 10;
 
