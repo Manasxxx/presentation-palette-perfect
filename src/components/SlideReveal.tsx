@@ -7,9 +7,23 @@ interface SlideRevealProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
   nativeMotion?: boolean;
+  /**
+   * Mobile seam blend (see slide-edge-colors.ts): the shared color this slide
+   * melts into at its top/bottom joint with the neighbouring slide. Rendered
+   * as short edge gradients so the boundary never reads as a divider line.
+   */
+  seamTopColor?: string;
+  seamBottomColor?: string;
 }
 
-const SlideReveal = ({ children, className = "", nativeMotion = false, ...props }: SlideRevealProps) => {
+const SlideReveal = ({
+  children,
+  className = "",
+  nativeMotion = false,
+  seamTopColor,
+  seamBottomColor,
+  ...props
+}: SlideRevealProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const triggered = useRef(false);
   const isMobile = useIsMobile();
@@ -82,7 +96,24 @@ const SlideReveal = ({ children, className = "", nativeMotion = false, ...props 
   if (isMobile) {
     return (
       <div className={`${className} bg-background`} {...props}>
-        <MobileSlideMotion>{children}</MobileSlideMotion>
+        <MobileSlideMotion nativeMotion={nativeMotion}>{children}</MobileSlideMotion>
+        {/* Seam blend: both sides of a slide joint fade to the same mixed
+            color, so the boundary is one continuous wash instead of a line.
+            Static color overlays (not motion), so not reduced-motion gated. */}
+        {seamTopColor && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 h-[8svh]"
+            style={{ background: `linear-gradient(to bottom, ${seamTopColor}, transparent)` }}
+          />
+        )}
+        {seamBottomColor && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[8svh]"
+            style={{ background: `linear-gradient(to top, ${seamBottomColor}, transparent)` }}
+          />
+        )}
       </div>
     );
   }

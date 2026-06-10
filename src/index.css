@@ -242,69 +242,39 @@
     }
   }
 
-  /* Mobile seam blend (see Index.tsx). Fixed soft fades to the deck background
-     at the top and bottom viewport edges, so slide-to-slide joints dissolve. */
-  .deck-seam-fade {
-    position: fixed;
-    left: 0;
-    right: 0;
-    height: 9svh;
-    z-index: 40;
-    pointer-events: none;
-  }
+  /* The old fixed .deck-seam-fade viewport overlays were replaced by per-slide
+     seam gradients colored from the two adjacent slides' edge colors — see
+     src/pages/slide-edge-colors.ts and the SlideReveal mobile branch. */
 
-  .deck-seam-fade-top {
-    top: 0;
-    background: linear-gradient(
-      to bottom,
-      hsl(var(--background) / 0.85) 0%,
-      hsl(var(--background) / 0) 100%
-    );
-  }
-
-  .deck-seam-fade-bottom {
-    bottom: 0;
-    background: linear-gradient(
-      to top,
-      hsl(var(--background) / 0.85) 0%,
-      hsl(var(--background) / 0) 100%
-    );
-  }
-
-  /* Phase B signature transition (mobile, see MobileTransitionLayer.tsx).
-     A teal light band + a centred glow mark, scrubbed by inter-slide scroll. */
-  .deck-sig-wash {
-    /* Uses the site's signature teal (--primary). A vertical band layered over
-       a wide radial bloom so the field reads as a travelling sweep, not just a
-       static circle, as it pans with the scroll. */
-    background:
-      linear-gradient(
-        to bottom,
-        hsl(var(--primary) / 0) 0%,
-        hsl(var(--primary) / 0.4) 50%,
-        hsl(var(--primary) / 0) 100%
-      ),
-      radial-gradient(
-        130% 100% at 50% 50%,
-        hsl(var(--primary) / 0.95) 0%,
-        hsl(var(--primary) / 0.5) 42%,
-        hsl(var(--primary) / 0) 82%
-      );
-    will-change: opacity, transform;
-  }
-
-  .deck-sig-mark {
-    width: 140px;
-    height: 140px;
-    margin: 0;
-    border-radius: 9999px;
+  /* Phase B signature transition (mobile, see MobileTransitionLayer.tsx) —
+     the "liquid crest": a thin teal line + soft bloom position-locked to the
+     physical seam between two slides, travelling with the finger. Mobile
+     analog of the desktop liquid-wash. Replaced the old full-bleed teal wash
+     and the centred circular glow mark (read as a stray circle). */
+  .deck-sig-crest-bloom {
     background: radial-gradient(
-      circle at 50% 50%,
-      hsl(var(--primary) / 0.5) 0%,
-      hsl(var(--primary) / 0) 70%
+      55% 50% at 50% 50%,
+      hsl(var(--primary) / 0.32) 0%,
+      hsl(var(--primary) / 0.12) 55%,
+      hsl(var(--primary) / 0) 100%
     );
-    box-shadow: 0 0 64px 14px hsl(var(--primary) / 0.3);
-    will-change: opacity, transform;
+    will-change: filter;
+  }
+
+  .deck-sig-crest-line {
+    left: 4%;
+    right: 4%;
+    top: 50%;
+    height: 1.5px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      to right,
+      hsl(var(--primary) / 0) 0%,
+      hsl(var(--primary) / 0.9) 22%,
+      hsl(var(--primary) / 0.9) 78%,
+      hsl(var(--primary) / 0) 100%
+    );
+    box-shadow: 0 0 18px 2px hsl(var(--primary) / 0.45);
   }
 
   .hexagon-pattern {

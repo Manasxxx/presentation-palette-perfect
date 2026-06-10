@@ -11,6 +11,7 @@ import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getMountedSlideIndexes, getSlideIndexFromScroll } from "./slide-window";
 import { indexForSlug, slugForIndex } from "./slide-routes";
+import { seamColor } from "./slide-edge-colors";
 
 const MobileTransitionLayer = lazy(() => import("@/components/MobileTransitionLayer"));
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
@@ -230,17 +231,6 @@ const Index = () => {
       style={{ scrollSnapType: isMobile ? "y proximity" : "y mandatory", WebkitOverflowScrolling: "touch" }}
     >
 
-      {/* Mobile seam blend: fixed soft fades at the viewport top/bottom edges.
-          Every slide boundary scrolls through these bands, so the joint between
-          one slide's end and the next slide's start melts into the shared dark
-          background instead of reading as a hard divider line. */}
-      {isMobile && !prefersReducedMotion && (
-        <>
-          <div className="deck-seam-fade deck-seam-fade-top" aria-hidden="true" />
-          <div className="deck-seam-fade deck-seam-fade-bottom" aria-hidden="true" />
-        </>
-      )}
-
       <PillNav
         visible={navActive && !(isMobile && onCaseStudy)}
         currentSlide={currentSlide}
@@ -248,7 +238,17 @@ const Index = () => {
       />
       <DebugMenu currentSlide={currentSlide} onNavigate={navigateToSlide} />
       {slides.map((SlideComponent, index) => (
-        <SlideReveal key={index} className="relative" data-slide-index={index} nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}>
+        <SlideReveal
+          key={index}
+          className="relative"
+          data-slide-index={index}
+          nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}
+          // Mobile seam blend: both sides of each slide joint fade to the same
+          // mix of the two adjacent slides' edge colors (slide-edge-colors.ts),
+          // so the boundary reads as one wash, not a divider line.
+          seamTopColor={isMobile ? seamColor(index - 1) : undefined}
+          seamBottomColor={isMobile ? seamColor(index) : undefined}
+        >
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>
               {index === 0 ? (

@@ -1,16 +1,43 @@
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useMotionTemplate,
 } from "motion/react";
+import { animate, stagger, cubicBezier } from "animejs";
 import { useDeckScrollContainer } from "./deck-scroll-context";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface MobileSlideMotionProps {
   children: ReactNode;
+  /**
+   * Slides that own their own animejs entrance (Services, Clients, case
+   * studies) skip the staggered child reveal so content is never animated
+   * twice. They still get the scroll-linked cross-fade.
+   */
+  nativeMotion?: boolean;
 }
+
+const staggerEase = cubicBezier(0.22, 1, 0.36, 1);
+
+/**
+ * Walks down through single-child wrapper layers and returns the first node
+ * with several element children — the slide's real content row/stack. Those
+ * children are what stagger in one by one.
+ */
+const findStaggerTargets = (root: HTMLElement): HTMLElement[] => {
+  let node: HTMLElement = root;
+  for (let depth = 0; depth < 6; depth++) {
+    const kids = Array.from(node.children).filter(
+      (c): c is HTMLElement => c instanceof HTMLElement
+    );
+    if (kids.length === 0) return [];
+    if (kids.length > 1) return kids.slice(0, 12);
+    node = kids[0];
+  }
+  return [];
+};
 
 /**
  * Mobile-only, scroll-linked slide reveal. With scroll-snap removed on mobile,
@@ -19,9 +46,14 @@ interface MobileSlideMotionProps {
  * instead of hard-cutting. Driven by Motion `useScroll` against the deck's real
  * scroll container (via context), not the window.
  *
+ * On top of the cross-fade, non-native-motion slides get a staggered child
+ * reveal when they settle into view: top-level elements rise in one by one
+ * (animejs), and the sequence replays each time the slide is revisited. This
+ * is what makes the snap feel "presented" rather than one flat fade.
+ *
  * Desktop never renders this — it keeps the existing animejs `SlideReveal`.
  */
-const MobileSlideMotion = ({ children }: MobileSlideMotionProps) => {
+const MobileSlideMotion = ({ children, nativeMotion = false }: MobileSlideMotionProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const container = useDeckScrollContainer();
   const reducedMotion = usePrefersReducedMotion();
@@ -46,6 +78,68 @@ const MobileSlideMotion = ({ children }: MobileSlideMotionProps) => {
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [26, 0, -26]);
   const blurPx = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [5, 0, 0, 5]);
   const filter = useMotionTemplate`blur(${blurPx}px)`;
+
+  useEffect(() => {
+    if (nativeMotion || reducedMotion) return;
+    const root = ref.current;
+    if (!root) return;
+
+    const targets = findStaggerTargets(root);
+    if (targets.length < 2) return;
+
+    let armed = true; // hidden + waiting to play
+
+    const hide = () => {
+      for (const t of targets) {
+        t.style.opacity = "0";
+        t.style.transform = "translateY(20px)";
+      }
+    };
+
+    const play = () => {
+      animate(targets, {
+        opacity: [0, 1],
+        translateY: [20, 0],
+        duration: 560,
+        delay: stagger(110),
+        ease: staggerEase,
+      });
+    };
+
+    hide();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio >= 0.5 && armed) {
+          armed = false;
+          play();
+        } else if (entry.intersectionRatio === 0 && !armed) {
+          // Fully offscreen: re-arm so the sequence replays on the next visit.
+          armed = true;
+          hide();
+        }
+      },
+      { threshold: [0, 0.5] }
+    );
+    observer.observe(root);
+    // Safety net: if the observer never fires ≥0.5 (e.g. slide taller than the
+    // viewport), reveal anyway so content can't stay hidden.
+    const fallback = window.setTimeout(() => {
+      if (armed) {
+        armed = false;
+        play();
+      }
+    }, 1600);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallback);
+      for (const t of targets) {
+        t.style.opacity = "";
+        t.style.transform = "";
+      }
+    };
+  }, [nativeMotion, reducedMotion]);
 
   if (reducedMotion) {
     return <div className="relative">{children}</div>;

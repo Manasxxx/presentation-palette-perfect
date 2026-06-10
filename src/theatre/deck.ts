@@ -15,21 +15,17 @@ export const deckProject = getProject("OwlSurf Deck");
 
 export const transitionSheet = deckProject.sheet("slide-transition");
 
-/** The branded sweep params, scrubbed by inter-slide scroll progress. */
+/** The branded crest params, scrubbed by inter-slide scroll progress. */
 export const signatureSweep = transitionSheet.object("signature sweep", {
-  tealOpacity: types.number(0.7, { range: [0, 1], label: "Teal opacity" }),
-  travelY: types.number(50, { range: [0, 160], label: "Travel Y (px)" }),
-  blurPx: types.number(10, { range: [0, 28], label: "Blur (px)" }),
-  glowScale: types.number(1.25, { range: [0.6, 2], label: "Glow scale" }),
-  markOpacity: types.number(0.7, { range: [0, 1], label: "Mark opacity" }),
+  tealOpacity: types.number(0.8, { range: [0, 1], label: "Crest opacity" }),
+  blurPx: types.number(18, { range: [0, 40], label: "Bloom blur (px)" }),
+  glowScale: types.number(1, { range: [0.5, 2], label: "Crest scale" }),
 });
 
 export interface SignatureSweepValues {
   tealOpacity: number;
-  travelY: number;
   blurPx: number;
   glowScale: number;
-  markOpacity: number;
 }
 
 // Theatre studio (the dev-only authoring panel that renders a top toolbar) is
