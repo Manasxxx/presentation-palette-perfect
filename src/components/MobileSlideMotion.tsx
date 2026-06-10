@@ -76,7 +76,15 @@ const MobileSlideMotion = ({ children, nativeMotion = false }: MobileSlideMotion
   // never fully blanks a slide (opacity floors at 0.4).
   const opacity = useTransform(scrollYProgress, [0, 0.22, 0.78, 1], [0.45, 1, 1, 0.45]);
   const y = useTransform(scrollYProgress, [0, 0.5, 1], [18, 0, -18]);
-  const blurPx = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [3.5, 0, 0, 3.5]);
+  // Native-motion slides (Clients + case studies) paint their own full-bleed
+  // backgrounds. Blurring the whole slide wrapper samples transparent pixels at
+  // the viewport edge on iOS, which shows up as a dark left-edge artifact near
+  // the heading. Keep the cross-fade + lift, but no wrapper blur there.
+  const blurPx = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.8, 1],
+    nativeMotion ? [0, 0, 0, 0] : [3.5, 0, 0, 3.5],
+  );
   const filter = useMotionTemplate`blur(${blurPx}px)`;
 
   useEffect(() => {

@@ -15,14 +15,14 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 38 (current) is a mobile copy + Contact relayout + motion-smoothing pass, plus a new **DEHN** case study. See the Session 38 block in `context.md` for full detail.
+Session 39 (current) is a mobile scroll/case-study carousel polish pass, plus docs/push prep. See the Session 39 block in `context.md` for full detail.
 
-- **Deck is now 13 slides.** DEHN (German lightning/surge/earthing maker, case `08`, brand red, six `dehn-*.webp` creatives from Downloads) added after VNT; cases are 4–11, Contact is 12. All bookkeeping updated (`Index.tsx`, `PillNav`, `DebugMenu`, `slide-routes.ts`, `slide-edge-colors.ts`). DEHN's client logo was NOT added to the Clients slide (owner: already on the slider).
-- **Mobile copy pass** (cover + contact excluded): new `mobileSubtitle` on `CaseStudyLayout` + Mitsui `isMobile` branch; tightened `mobileOutcomes`; de-jargoned two `mobileServices` titles. Parity rule relaxed: mobile may be a shorter variant of the same message.
-- **Contact**: "Bring the product…" paragraph removed entirely (desktop too); mobile column centered, mark 248px, full-width CTA pair.
-- **Seam fixes**: yellow band at Contact's top was the VNT→Contact mix — VNT/Kuraray/GirlUp bottom edge colors desaturated; gradients 8→6.5svh with 45% mid-stop.
-- **Motion**: springs are desktop-only now (`getSlideContentEase`); mobile entrances use settle ease, smaller rises, no scale pop; stagger + cross-fade calmed.
-- **Verification.** `npm run lint` (0 warnings) + `npm run build` pass; owner approved on device. Push scope: code + assets + docs; `.github/workflows/deploy.yml` excluded again (remote PAT lacks `workflow` scope).
+- **Mobile snap:** `deck-snap.ts` + test added. Mobile uses stronger `y mandatory` with `scroll-snap-stop: normal` so slides catch harder without hard one-slide locking. Import bug that caused black page was fixed and phone-shaped smoke check was clean.
+- **Cover + Clients:** mobile cover badges have almost no white padding and larger art; globe is centered inside 100vw to avoid right-edge clipping. Clients heading is now `Our Clients`.
+- **Case order:** DEHN moved to case `03` after Kuraray; Baxsaa/CultFit/GirlUp/CTP/VNT shifted to `04`-`08`. Bookkeeping updated (`Index.tsx`, `DebugMenu`, `slide-routes.ts`, `slide-edge-colors.ts`, case-number props).
+- **Mobile case carousels:** all case-study mobile carousels now use the custom stacked-card carousel in `CaseStudyCarousel.tsx`/`index.css`, with auto-advance, thin translucent glass frame, 1px padding, slight blur, wider cards, and small image zoom. DEHN keeps the wide aspect for horizontal creatives. Desktop carousel remains unchanged.
+- **Known unresolved bug:** real iPhone still shows a dark translucent vertical ghost strip near the left margin of some mobile case headings. It disappears after touch/interaction, likely iOS paint/repaint. Tried disabling case seam overlays, wrapper blur, and mobile bg clip-path/circle wipe; not fully solved. Parked for next pass.
+- **Verification.** `npm run lint` + `npm run build` pass. Push scope excludes `.github/workflows/deploy.yml` again because remote PAT lacks `workflow` scope.
 
 ### (Session 37 archive) closed out the parked Session-36 mobile transition work, iterating live on the owner's phone (LAN dev server). Everything is mobile-gated; **desktop is byte-for-byte unchanged**.
 

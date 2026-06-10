@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { getMountedSlideIndexes, getSlideIndexFromScroll } from "./slide-window";
 import { indexForSlug, slugForIndex } from "./slide-routes";
 import { seamColor } from "./slide-edge-colors";
+import { getDeckSnapConfig } from "./deck-snap";
 
 const MobileTransitionLayer = lazy(() => import("@/components/MobileTransitionLayer"));
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
@@ -34,12 +35,12 @@ const slides: ComponentType[] = [
   ClientsSlide,
   CaseStudySlide,
   KurarayCaseStudy,
+  DEHNCaseStudy,
   BaxsaaCaseStudy,
   CultFitCaseStudy,
   GirlUpCaseStudy,
   CTPCaseStudy,
   VNTCaseStudy,
-  DEHNCaseStudy,
   ContactSlide,
 ];
 
@@ -224,13 +225,15 @@ const Index = () => {
     return () => window.clearTimeout(release);
   }, [location.pathname, prefersReducedMotion]);
 
+  const snapConfig = getDeckSnapConfig(isMobile);
+
   return (
     <DeckScrollContext.Provider value={containerRef}>
     <div
       ref={containerRef}
       data-deck-scroll-container
       className={`h-screen w-full overflow-y-auto overflow-x-hidden bg-background${prefersReducedMotion ? "" : " scroll-smooth"}`}
-      style={{ scrollSnapType: isMobile ? "y proximity" : "y mandatory", WebkitOverflowScrolling: "touch" }}
+      style={{ scrollSnapType: snapConfig.container, WebkitOverflowScrolling: "touch" }}
     >
 
       <PillNav
@@ -248,8 +251,8 @@ const Index = () => {
           // Mobile seam blend: both sides of each slide joint fade to the same
           // mix of the two adjacent slides' edge colors (slide-edge-colors.ts),
           // so the boundary reads as one wash, not a divider line.
-          seamTopColor={isMobile ? seamColor(index - 1) : undefined}
-          seamBottomColor={isMobile ? seamColor(index) : undefined}
+          seamTopColor={isMobile && !(index >= 4 && index <= 11) ? seamColor(index - 1) : undefined}
+          seamBottomColor={isMobile && !(index >= 4 && index <= 11) ? seamColor(index) : undefined}
         >
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>

@@ -223,17 +223,17 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
       {/* Globe — top hemisphere rises from the bottom edge. Runs on mobile too
           (user-requested exception to the desktop-only WebGL rule; cobe is a light
-          single-canvas renderer). On mobile the globe is anchored so its center sits
-          exactly on the bottom edge (only the dotted top half shows). */}
+          single-canvas renderer). On mobile the globe sits inside the viewport with no horizontal bleed,
+          so it cannot drift into the right edge. */}
       <div
         className="absolute pointer-events-none"
         style={
           isMobile
             ? {
-                top: 'calc(100% - 97.5vw)',
+                top: 'calc(100% - 82vw)',
                 left: '50%',
-                width: '130vw',
-                height: '130vw',
+                width: '100vw',
+                height: '100vw',
                 transform: 'translateX(-50%)',
               }
             : {
@@ -245,7 +245,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               }
         }
       >
-        <Globe className={`${isMobile ? "opacity-60" : "opacity-25"} !max-w-none !w-full`} />
+        <Globe className={`${isMobile ? "opacity-50" : "opacity-25"} !max-w-none !w-full`} />
       </div>
 
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
@@ -384,13 +384,13 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center rounded-lg bg-white px-2.5 py-1.5 shadow-[0_4px_18px_rgba(0,0,0,0.28)] md:h-[62px] md:px-3.5 md:py-2"
+                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center rounded-lg bg-white px-0.5 py-0.5 shadow-[0_4px_18px_rgba(0,0,0,0.28)] md:h-[62px] md:px-1 md:py-1"
                   style={{ opacity: 0 }}
                 >
                   <img
                     src={badge.src}
                     alt={badge.label}
-                    className="block h-full w-auto max-w-[26vw] object-contain md:max-w-none"
+                    className="block h-[96%] w-auto max-w-[30vw] object-contain md:h-[98%] md:max-w-none"
                     loading="eager"
                     decoding="async"
                   />

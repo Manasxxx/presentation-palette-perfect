@@ -15,12 +15,12 @@ const SLIDE_LABELS = [
   "Clients",
   "Case Studies (Mitsui)",
   "Kuraray",
+  "DEHN",
   "Baxsaa",
   "CultFit",
   "GirlUp",
   "CTP",
   "VNT",
-  "DEHN",
   "Contact",
 ];
 

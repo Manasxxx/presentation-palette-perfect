@@ -18,7 +18,7 @@ const stats = [
 
 const CultFitCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="04"
+    caseNumber="05"
     title="Cult"
     accentTitle=".fit"
     subtitle="Fitness platform. Performance creatives and social proof turned attention into membership intent."

@@ -5,6 +5,21 @@
 
 ---
 
+## Current State (as of Session 39 push prep)
+
+**Session 39** is a mobile-only deck feel + case-study carousel pass, with minor copy naming updates. Desktop code paths are intentionally unchanged except copy where requested.
+
+- **Mobile scroll snap strengthened.** New `src/pages/deck-snap.ts` centralizes the deck snap config with regression coverage in `deck-snap.test.ts`. Mobile now uses `y mandatory` with `scroll-snap-stop: normal`: stronger slide catch, but natural swipes can still move through more than one slide. This fixed the accidental black-page crash from the first snap pass by importing the helper in `Index.tsx` and verifying with a phone-shaped Playwright smoke check.
+- **Cover mobile polish.** Partner badge chips on the cover now have almost no white padding and larger badge art. The mobile globe was resized/centered to stop right-edge clipping (`100vw`, centered, lower opacity). The earlier LAN dev-server issue was not a Vite failure; the Mac IP changed to `192.168.0.132`.
+- **Clients heading copy.** Clients slide heading is now `Our Clients` across desktop and mobile. Standing rule from owner: layout/motion changes remain mobile-only unless stated, but names/copy/descriptions may change desktop too.
+- **Case-study order changed.** DEHN moved to case `03`, immediately after Kuraray. Baxsaa/CultFit/GirlUp/CTP/VNT are now cases `04`-`08`. Updated `Index.tsx`, `DebugMenu`, `slide-routes.ts`, `slide-edge-colors.ts`, and case-number props.
+- **Mobile case-study carousel rebuilt.** All mobile case studies now use the new custom stacked-card carousel in `CaseStudyCarousel.tsx` (`.cs-mobile-stack*`) instead of the old Blossom cover-flow. It auto-advances every 3s, uses thin translucent glass frames with 1px padding, slightly stronger blur, larger near-full-width cards, and a small image zoom. DEHN keeps a wide aspect via `mobileWideCarousel`. Desktop still uses the original Blossom `.cs-cards` stack.
+- **Mobile case-study layout tuning.** Case headings were shifted up (`pt-8`), and no-stat/non-DEHN case images were enlarged and aligned to the proof-table width during the iteration before the stack was rolled out globally. DEHN horizontal images were made wide to avoid clipping.
+- **Known unresolved bug parked.** On real iPhone, some mobile case-study slides can show a dark translucent vertical ghost strip near the left margin of the heading. It disappears after touch/interaction, so it appears to be an iOS paint/repaint artifact. Attempts made this session: removed case-slide seam overlays, disabled wrapper blur for native-motion slides, and removed mobile `clip-path`/circle wipe on case backgrounds. Still not fully solved. Park it for the next pass.
+- **Verification.** `npm run lint` and `npm run build` pass. Known build notices remain stale Browserslist/caniuse-lite and the large desktop-gated `vendor-3d` chunk. `.github/workflows/deploy.yml` remains excluded from this push because the remote auth lacks workflow scope.
+
+---
+
 ## Current State (as of Session 38 push prep)
 
 **Session 38** is a mobile copy + Contact relayout + motion-smoothing pass, plus a new DEHN case study. Mobile-gated except where noted; desktop visual changes are only the removed Contact paragraph and the new DEHN slide.

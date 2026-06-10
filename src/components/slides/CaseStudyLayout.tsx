@@ -35,6 +35,7 @@ type CaseStudyLayoutProps = {
   market?: string;
   owlsurfRole?: string;
   proofPoints?: ProofPoint[];
+  mobileWideCarousel?: boolean;
 };
 
 const CaseStudyLayout = ({
@@ -52,6 +53,7 @@ const CaseStudyLayout = ({
   market = "B2B buyer context",
   owlsurfRole = "Positioning, creative, demand, and proof",
   proofPoints = [],
+  mobileWideCarousel = false,
 }: CaseStudyLayoutProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
@@ -74,12 +76,14 @@ const CaseStudyLayout = ({
       if (triggered) return;
       setTriggered(true);
 
-      animate(el.querySelector(".bg-wipe")!, {
-        clipPath: ["circle(5% at 50% 50%)", "circle(150% at 50% 50%)"],
-        opacity: [0, 1],
-        duration: isMobile ? 1100 : 1800,
-        ease: slideSettleEase,
-      });
+      if (!isMobile) {
+        animate(el.querySelector(".bg-wipe")!, {
+          clipPath: ["circle(5% at 50% 50%)", "circle(150% at 50% 50%)"],
+          opacity: [0, 1],
+          duration: 1800,
+          ease: slideSettleEase,
+        });
+      }
 
       animateSlideHeading(el, ".cs-heading", isMobile, 90);
 
@@ -141,11 +145,11 @@ const CaseStudyLayout = ({
     <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
       <div
         className="bg-wipe absolute inset-0 z-0"
-        style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "circle(150% at 50% 50%)" : "circle(5% at 50% 50%)", background }}
+        style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "none" : "circle(5% at 50% 50%)", background }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background }} />
 
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-10 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
         <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
           <span
             className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
@@ -237,7 +241,13 @@ const CaseStudyLayout = ({
 
         <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[50%] md:top-[58%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
-            <CaseStudyCarousel slides={slides} accentColor={accentColor} />
+            <CaseStudyCarousel
+              slides={slides}
+              accentColor={accentColor}
+              mobileWide={mobileWideCarousel}
+              mobileTableWidth={!mobileWideCarousel && stats.length === 0}
+              mobileStack
+            />
           </div>
         </div>
       </div>

@@ -126,7 +126,7 @@ const ClientsSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-12 md:px-12 md:pb-12 md:pt-16">
         <header className="cl-heading text-left self-start">
           <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
-            <span className="cl-title-accent font-sans not-italic text-primary inline-block pr-2">CLIENTS</span>
+            <span className="cl-title-accent font-sans not-italic text-primary inline-block pr-2">Our Clients</span>
           </h2>
         </header>
 

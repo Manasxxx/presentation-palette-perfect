@@ -27,7 +27,7 @@ const sliderImages = [
 
 const VNTCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="07"
+    caseNumber="08"
     title="VNT"
     accentTitle="Mobility"
     subtitle="EV charging infrastructure in India. We mapped the value for hosts, drivers, and partners."

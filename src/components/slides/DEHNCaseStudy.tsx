@@ -20,7 +20,7 @@ const sliderImages = [
 
 const DEHNCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="08"
+    caseNumber="03"
     title="DEHN"
     accentTitle="Electricals"
     subtitle="A German maker of lightning protection, surge protection, and earthing systems. We turned safety engineering into clear stories for the people who plan and protect infrastructure."
@@ -35,6 +35,7 @@ const DEHNCaseStudy = () => (
     ]}
     slides={sliderImages}
     accentColor={dehnRed}
+    mobileWideCarousel
     background={`linear-gradient(160deg, hsl(220 20% 9%), hsl(355 45% 15%), hsl(${dehnRed} / 0.3))`}
   />
 );
