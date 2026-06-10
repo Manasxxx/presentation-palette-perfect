@@ -33,6 +33,14 @@ export const slideSettleEase = cubicBezier(0.16, 1, 0.3, 1);
 export const slideHeadingSpring = spring({ stiffness: 135, damping: 18, mass: 0.88 });
 export const slideContentSpring = spring({ stiffness: 105, damping: 15, mass: 0.9 });
 
+/**
+ * Mobile entrances avoid spring overshoot entirely — on phones the bounce
+ * lands on top of the proximity-snap settle and reads as jank, not life.
+ * Desktop keeps the springs.
+ */
+export const getSlideContentEase = (isMobile: boolean) =>
+  isMobile ? slideSettleEase : slideContentSpring;
+
 export const animateSlideHeading = (
   root: ParentNode,
   selector: string,
@@ -46,11 +54,11 @@ export const animateSlideHeading = (
   animate(targets, {
     opacity: [0, 1],
     translateY: [profile.headingDropY, 0],
-    scale: [0.96, 1],
+    scale: isMobile ? [0.985, 1] : [0.96, 1],
     filter: ["blur(12px)", "blur(0px)"],
-    duration: profile.headingDuration,
+    duration: isMobile ? 880 : profile.headingDuration,
     delay,
-    ease: slideHeadingSpring,
+    ease: isMobile ? slideSettleEase : slideHeadingSpring,
   });
 };
 

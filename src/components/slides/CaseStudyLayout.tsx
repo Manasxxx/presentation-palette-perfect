@@ -24,6 +24,8 @@ type CaseStudyLayoutProps = {
   title: string;
   accentTitle: string;
   subtitle: string;
+  /** Shorter glanceable subtitle for the mobile stack; desktop keeps `subtitle`. */
+  mobileSubtitle?: string;
   slides: SlideImage[];
   stats?: ProofStat[];
   accentColor: string;
@@ -40,6 +42,7 @@ const CaseStudyLayout = ({
   title,
   accentTitle,
   subtitle,
+  mobileSubtitle,
   slides,
   stats = [],
   accentColor,
@@ -166,7 +169,7 @@ const CaseStudyLayout = ({
             className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0, color: muted }}
           >
-            {subtitle}
+            {isMobile && mobileSubtitle ? mobileSubtitle : subtitle}
           </p>
           <div
             className="hidden"

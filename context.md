@@ -5,6 +5,19 @@
 
 ---
 
+## Current State (as of Session 38 push prep)
+
+**Session 38** is a mobile copy + Contact relayout + motion-smoothing pass, plus a new DEHN case study. Mobile-gated except where noted; desktop visual changes are only the removed Contact paragraph and the new DEHN slide.
+
+- **Mobile copy pass (Cover + Contact excluded by request).** New `mobileSubtitle` prop on `CaseStudyLayout` — desktop keeps the fuller `subtitle`, mobile shows a tighter "Who they are. What we did." line. All 7 layout case studies got one; Mitsui's inline subtitle branches on `isMobile` ("Specialty chemicals giant. We ran their digital across APAC."). `mobileOutcomes` descs (Who We Are) tightened to one short line each; `mobileServices` titles de-jargoned ("Films & Collateral"→"Films & Sales Assets", "Reputation & Intel"→"Reputation & Insights"). **Parity rule relaxed:** mobile may carry a shorter variant of the same message, never a different message.
+- **Contact slide.** The `Bring the product, the market, and the sales problem…` paragraph was **removed entirely (desktop too, owner request)**. Mobile relayout keeping all elements: column vertically centered, ripple mark 248px, CTAs a full-width equal pair (`flex-1 py-3.5`), footer untouched; desktop restored via `sm:`/`md:` tokens.
+- **Yellow band at Contact's top fixed.** It was the VNT→Contact seam: VNT's bottom edge color `hsl(105 40% 52%)` (yellow-green) mixed with Contact's near-black read as olive. VNT bottom is now `hsl(140 30% 28%)`. Same treatment for the two worst remaining seams: Kuraray bottom desaturated to `hsl(207 38% 22%)` (no saturated band into Baxsaa's beige) and GirlUp bottom to `hsl(268 14% 26%)` (no mauve band into CTP's sage). Seam gradients shortened 8→6.5svh with a 45% mid-stop so color releases faster.
+- **Motion smoothing — springs are desktop-only now.** New `getSlideContentEase(isMobile)` in `slide-motion.ts`: mobile gets `slideSettleEase` (no overshoot), desktop keeps `slideContentSpring`/`slideHeadingSpring`. `animateSlideHeading` uses settle ease + scale 0.985 + 880ms on mobile. Call sites converted: Contact `ct-reveal` (no scale, 16px rise), Who We Are chips, Services mobile stepper (18px rise, settle ease). Rationale: spring overshoot landing on the proximity-snap settle read as jank. `MobileSlideMotion` stagger softened (14px rise, 640ms, 95ms apart) and the scroll cross-fade calmed (y ±18, blur 3.5, floor 0.45).
+- **New DEHN case study** (`src/components/slides/DEHNCaseStudy.tsx`). DEHN SE = German maker of lightning protection, surge protection, and earthing systems (identity confirmed by the creative content: railway earthing, power grids, radio base stations). Case `08` after VNT, deck now **13 slides**: cases 4–11, Contact 12. Brand red `353 100% 44%` (#E2001A), dark slate→red gradient, six WebP creatives converted from Downloads `DEHN SLIDE IMAGES` via sharp (`dehn-*.webp`). No stat pills (no metrics provided). Bookkeeping updated everywhere: `Index.tsx` (lazy import, slides array, `onCaseStudy` 4–11, `nativeMotion` 4–11), `PillNav` (Contact `slideIndex` 12, `slideToNavIndex` ≤11→Cases), `DebugMenu` ("DEHN"), `slide-routes.ts` (`/work/dehn`), `slide-edge-colors.ts` (DEHN edges + Contact reindex). The DEHN client-logo addition to the Clients slide was **not** made — the owner says the logo is already on the client slider.
+- **Verification.** `npm run lint` (0 warnings) + `npm run build` pass; owner reviewed copy, Contact layout, seams, and motion feel live on device over the LAN dev server.
+
+---
+
 ## Current State (as of Session 37 push prep)
 
 **Session 37** finished the parked Session-36 mobile transition work on the owner's live device (LAN dev server). All changes are mobile-gated; desktop byte-for-byte unchanged.

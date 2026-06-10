@@ -192,7 +192,9 @@ const CaseStudySlide = () => {
             className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/85 md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
-            Specialty chemicals across APAC. We made technical value visible across regions, formats, and paid channels.
+            {isMobile
+              ? "Specialty chemicals giant. We ran their digital across APAC."
+              : "Specialty chemicals across APAC. We made technical value visible across regions, formats, and paid channels."}
           </p>
           <div
             className="hidden"

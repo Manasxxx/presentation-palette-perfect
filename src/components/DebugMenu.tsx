@@ -20,6 +20,7 @@ const SLIDE_LABELS = [
   "GirlUp",
   "CTP",
   "VNT",
+  "DEHN",
   "Contact",
 ];
 

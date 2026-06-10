@@ -5,7 +5,7 @@ import FlyonFooter from "@/components/blocks/FlyonFooter";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase, slideSettleEase } from "./slide-motion";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, getSlideContentEase, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 const rotatingComplexity = ["complex", "technical", "complicated", "confusing", "overwhelming"];
 const rotatingChoose = ["understand", "explain", "buy", "get", "choose"];
@@ -26,11 +26,11 @@ const ContactSlide = () => {
 
       animate(el.querySelectorAll(".ct-reveal"), {
         opacity: [0, 1],
-        translateY: [24, 0],
-        scale: [0.96, 1],
+        translateY: [isMobile ? 16 : 24, 0],
+        scale: isMobile ? [1, 1] : [0.96, 1],
         duration: 850,
         delay: stagger(profile.itemStagger, { start: profile.contentDelay }),
-        ease: slideContentSpring,
+        ease: getSlideContentEase(isMobile),
       });
 
       animateSlideHeading(el, ".ct-heading", isMobile, 120);
@@ -75,9 +75,9 @@ const ContactSlide = () => {
       <div className="absolute inset-0 bg-[#07090d]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_56%)]" />
 
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-start px-6 pb-32 pt-6 text-center md:justify-center md:pb-32 md:pt-8">
+      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 pb-[6.75rem] pt-8 text-center md:justify-center md:pb-32 md:pt-8">
         {/* OwlSurf ripple mark — hero */}
-        <div className="ct-mark relative mb-5 aspect-square w-[293px] opacity-0 md:mb-4 md:w-[372px]">
+        <div className="ct-mark relative mb-7 aspect-square w-[248px] opacity-0 md:mb-4 md:w-[372px]">
           <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full border border-white/12 opacity-0">
             <div className="absolute inset-[0.55rem] rounded-full border border-primary/25 md:inset-3" />
             <div className="absolute inset-5 rounded-full bg-primary/[0.05] blur-sm md:inset-7" />
@@ -102,15 +102,11 @@ const ContactSlide = () => {
           </span>
         </h2>
 
-        <p className="ct-reveal mt-4 hidden max-w-[19rem] font-body text-sm leading-relaxed text-white/60 opacity-0 md:mt-4 md:block md:max-w-[34rem] md:text-lg">
-          Bring the product, the market, and the sales problem. You’ll see it the way your buyers should, fast.
-        </p>
-
-        <div className="ct-reveal mt-6 flex w-full max-w-[20rem] flex-row items-center justify-center gap-2.5 opacity-0 sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:gap-3 md:mt-5">
+        <div className="ct-reveal mt-9 flex w-full max-w-[21rem] flex-row items-stretch justify-center gap-3 opacity-0 sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:gap-3 md:mt-5">
           <a
             href="mailto:growth@owlsurf.com"
             aria-label="Email growth@owlsurf.com"
-            className={`group inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-5 py-3 font-sans text-sm font-bold uppercase tracking-[0.05em] text-background shadow-[0_0_30px_rgba(75,194,194,0.3)] transition duration-300 hover:bg-primary/90 md:px-6 md:text-base${isMobile ? " relative overflow-hidden" : ""}`}
+            className={`group inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-5 py-3.5 font-sans text-sm font-bold uppercase tracking-[0.05em] text-background shadow-[0_0_30px_rgba(75,194,194,0.3)] transition duration-300 hover:bg-primary/90 sm:flex-none sm:shrink-0 sm:py-3 md:px-6 md:text-base${isMobile ? " relative overflow-hidden" : ""}`}
           >
             {isMobile && (
               <span className="ts-cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
@@ -121,7 +117,7 @@ const ContactSlide = () => {
           <a
             href="tel:+919520367546"
             aria-label="Call +91 9520 367546"
-            className={`inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full border border-white/22 px-5 py-3 font-sans text-sm font-semibold tracking-[0.03em] text-white/82 transition duration-300 hover:border-primary/60 hover:text-primary md:px-6 md:text-base${isMobile ? " relative overflow-hidden" : ""}`}
+            className={`inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-full border border-white/22 px-5 py-3.5 font-sans text-sm font-semibold tracking-[0.03em] text-white/82 transition duration-300 hover:border-primary/60 hover:text-primary sm:flex-none sm:shrink-0 sm:py-3 md:px-6 md:text-base${isMobile ? " relative overflow-hidden" : ""}`}
           >
             {isMobile && (
               <span className="ts-cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-primary/35 to-transparent" />

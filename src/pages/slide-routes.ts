@@ -6,10 +6,10 @@
  * slide is deep-linkable and browser back/forward steps between slides. Desktop
  * ignores this map and stays a single one-page deck.
  *
- * Order must match the `slides` array in `Index.tsx` (12 slides):
+ * Order must match the `slides` array in `Index.tsx` (13 slides):
  * Cover(0), Positioning(1), Services(2), Clients(3),
- * case studies 4-10 (Mitsui, Kuraray, Baxsaa, CultFit, GirlUp, CTP, VNT),
- * Contact(11).
+ * case studies 4-11 (Mitsui, Kuraray, Baxsaa, CultFit, GirlUp, CTP, VNT, DEHN),
+ * Contact(12).
  */
 export const SLIDE_SLUGS: readonly string[] = [
   "/",
@@ -23,6 +23,7 @@ export const SLIDE_SLUGS: readonly string[] = [
   "/work/girlup",
   "/work/ctp",
   "/work/vnt",
+  "/work/dehn",
   "/contact",
 ];
 

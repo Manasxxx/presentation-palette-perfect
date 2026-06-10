@@ -9,12 +9,12 @@ const navItems = [
   { label: 'Services', slideIndex: 2 },
   { label: 'Proof', slideIndex: 3 },
   { label: 'Cases', slideIndex: 4 },
-  { label: 'Contact', slideIndex: 11 },
+  { label: 'Contact', slideIndex: 12 },
 ];
 
 const slideToNavIndex = (slideIndex: number): number => {
   if (slideIndex <= 3) return slideIndex;
-  if (slideIndex <= 10) return 4; // case studies map to "Cases"
+  if (slideIndex <= 11) return 4; // case studies map to "Cases"
   return 5; // Contact
 };
 

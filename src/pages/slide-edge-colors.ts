@@ -27,19 +27,24 @@ export const slideEdgeColors: SlideEdgeColors[] = [
   { top: dark, bottom: dark },
   // 4 Mitsui — deep blue → cyan-tinted dark
   { top: "hsl(210 80% 16%)", bottom: "hsl(199 45% 18%)" },
-  // 5 Kuraray — dark navy → brand blue
-  { top: "hsl(210 35% 10%)", bottom: "hsl(205 60% 26%)" },
+  // 5 Kuraray — dark navy → brand blue (desaturated so the mix with Baxsaa's
+  // beige reads as a quiet grey-blue, not a saturated band)
+  { top: "hsl(210 35% 10%)", bottom: "hsl(207 38% 22%)" },
   // 6 Baxsaa — light warm beige
   { top: "hsl(36 33% 93%)", bottom: "hsl(28 24% 82%)" },
   // 7 CultFit — dark purple → pink-tinted dark
   { top: "hsl(260 20% 8%)", bottom: "hsl(340 35% 14%)" },
-  // 8 Girl Up — teal → purple-tinted teal
-  { top: "hsl(168 70% 26%)", bottom: "hsl(268 30% 30%)" },
+  // 8 Girl Up — teal → purple-tinted dark (desaturated so the mix with CTP's
+  // light sage doesn't read as a mauve band)
+  { top: "hsl(168 70% 26%)", bottom: "hsl(268 14% 26%)" },
   // 9 CTP — light sage
   { top: "hsl(95 30% 92%)", bottom: "hsl(95 25% 80%)" },
-  // 10 VNT — light green → brand green
-  { top: "hsl(120 25% 75%)", bottom: "hsl(105 40% 52%)" },
-  // 11 Contact
+  // 10 VNT — light green → deep green (kept dark/desaturated so the mix with
+  // Contact's near-black doesn't read as a yellow band at Contact's top)
+  { top: "hsl(120 25% 75%)", bottom: "hsl(140 30% 28%)" },
+  // 11 DEHN — dark slate → deep red-tinted dark
+  { top: "hsl(220 20% 9%)", bottom: "hsl(355 40% 16%)" },
+  // 12 Contact
   { top: "hsl(220 30% 4%)", bottom: "hsl(220 30% 4%)" },
 ];
 

@@ -103,15 +103,15 @@ const SlideReveal = ({
         {seamTopColor && (
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 z-20 h-[8svh]"
-            style={{ background: `linear-gradient(to bottom, ${seamTopColor}, transparent)` }}
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 h-[6.5svh]"
+            style={{ background: `linear-gradient(to bottom, ${seamTopColor} 0%, color-mix(in oklab, ${seamTopColor} 45%, transparent) 45%, transparent 100%)` }}
           />
         )}
         {seamBottomColor && (
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[8svh]"
-            style={{ background: `linear-gradient(to top, ${seamBottomColor}, transparent)` }}
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[6.5svh]"
+            style={{ background: `linear-gradient(to top, ${seamBottomColor} 0%, color-mix(in oklab, ${seamBottomColor} 45%, transparent) 45%, transparent 100%)` }}
           />
         )}
       </div>

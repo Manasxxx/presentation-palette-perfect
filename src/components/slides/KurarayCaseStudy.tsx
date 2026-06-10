@@ -31,6 +31,7 @@ const KurarayCaseStudy = () => (
     title="Kuraray"
     accentTitle="Chemicals"
     subtitle="A Japanese specialty chemicals maker behind films, resins, and elastomers used in safety glass, packaging, and cars. We turned a deep materials portfolio into a clear story buyers could follow."
+    mobileSubtitle="Japanese specialty chemicals maker. We turned a deep materials portfolio into a story buyers could follow."
     proofNote="What it proves: making a wide, technical materials range easy to grasp for the people who specify and buy it."
     market="Specialty chemicals and materials"
     owlsurfRole="Positioning, technical storytelling, buyer-facing content"

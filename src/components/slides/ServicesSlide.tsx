@@ -31,7 +31,7 @@ import LightRays from "@/components/LightRays";
 import CardSwap, { Card } from "@/components/ui/CardSwap/CardSwap";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
-import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase } from "./slide-motion";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase, slideSettleEase } from "./slide-motion";
 import brandStoryIllustration from "@/assets/service-illustration-brand-story.svg";
 import videoIllustration from "@/assets/service-illustration-video.svg";
 import designSystemIllustration from "@/assets/service-illustration-design-system.svg";
@@ -274,7 +274,7 @@ const categories: Category[] = [
 const mobileServices: Record<string, { icon: LucideIcon; title: string }[]> = {
   content: [
     { icon: Target, title: "Positioning & Story" },
-    { icon: Film, title: "Films & Collateral" },
+    { icon: Film, title: "Films & Sales Assets" },
     { icon: Sparkles, title: "Thought Leadership" },
   ],
   reach: [
@@ -285,7 +285,7 @@ const mobileServices: Record<string, { icon: LucideIcon; title: string }[]> = {
   discovery: [
     { icon: Search, title: "SEO & Discovery" },
     { icon: MessageSquare, title: "Social & Community" },
-    { icon: ShieldCheck, title: "Reputation & Intel" },
+    { icon: ShieldCheck, title: "Reputation & Insights" },
   ],
   engineering: [
     { icon: Database, title: "Automation & CRM" },
@@ -367,12 +367,12 @@ const ServicesSlide = () => {
     if (steps.length) {
       animate(steps, {
         opacity: [0, 1],
-        translateY: [26, 0],
-        scale: [0.94, 1],
+        translateY: [18, 0],
+        scale: [0.985, 1],
         filter: ["blur(12px)", "blur(0px)"],
         delay: stagger(profile.itemStagger, { start: start + 110 }),
-        duration: 680,
-        ease: slideContentSpring,
+        duration: 720,
+        ease: slideSettleEase,
       });
     }
     lastMobilePanelKeyRef.current = activeKeyRef.current;

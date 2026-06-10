@@ -24,6 +24,7 @@ const CTPCaseStudy = () => (
     title="Check This"
     accentTitle="Property"
     subtitle="Australian property tech. We clarified the product story so searchers could understand and act faster."
+    mobileSubtitle="Australian property tech. We made the product story clear enough to act on."
     proofNote="What it proves: category education, search intent, and clearer conversion paths for a technical marketplace."
     market="Australian property technology"
     owlsurfRole="Search, category education, conversion journey"

@@ -24,6 +24,7 @@ const CultFitCaseStudy = lazy(() => import("@/components/slides/CultFitCaseStudy
 const GirlUpCaseStudy = lazy(() => import("@/components/slides/GirlUpCaseStudy"));
 const CTPCaseStudy = lazy(() => import("@/components/slides/CTPCaseStudy"));
 const VNTCaseStudy = lazy(() => import("@/components/slides/VNTCaseStudy"));
+const DEHNCaseStudy = lazy(() => import("@/components/slides/DEHNCaseStudy"));
 const ContactSlide = lazy(() => import("@/components/slides/ContactSlide"));
 
 const slides: ComponentType[] = [
@@ -38,6 +39,7 @@ const slides: ComponentType[] = [
   GirlUpCaseStudy,
   CTPCaseStudy,
   VNTCaseStudy,
+  DEHNCaseStudy,
   ContactSlide,
 ];
 
@@ -88,7 +90,7 @@ const Index = () => {
 
   // Case studies (Mitsui through VNT) are immersive on mobile — hide the
   // whole nav bar (logo + menu) there. Desktop keeps the nav untouched.
-  const onCaseStudy = currentSlide >= 4 && currentSlide <= 10;
+  const onCaseStudy = currentSlide >= 4 && currentSlide <= 11;
 
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -242,7 +244,7 @@ const Index = () => {
           key={index}
           className="relative"
           data-slide-index={index}
-          nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}
+          nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 11)}
           // Mobile seam blend: both sides of each slide joint fade to the same
           // mix of the two adjacent slides' edge colors (slide-edge-colors.ts),
           // so the boundary reads as one wash, not a divider line.

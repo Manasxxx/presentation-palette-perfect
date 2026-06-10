@@ -22,6 +22,7 @@ const CultFitCaseStudy = () => (
     title="Cult"
     accentTitle=".fit"
     subtitle="Fitness platform. Performance creatives and social proof turned attention into membership intent."
+    mobileSubtitle="Fitness platform. Our ads and social proof turned attention into memberships."
     proofNote="What it proves: fast-moving campaign creative, measurable audience response, and conversion-minded storytelling."
     market="Fitness and wellness platform"
     owlsurfRole="Campaign creative, paid media, performance narrative"

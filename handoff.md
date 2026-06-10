@@ -15,7 +15,16 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 37 (current) closed out the parked Session-36 mobile transition work, iterating live on the owner's phone (LAN dev server). Everything is mobile-gated; **desktop is byte-for-byte unchanged**.
+Session 38 (current) is a mobile copy + Contact relayout + motion-smoothing pass, plus a new **DEHN** case study. See the Session 38 block in `context.md` for full detail.
+
+- **Deck is now 13 slides.** DEHN (German lightning/surge/earthing maker, case `08`, brand red, six `dehn-*.webp` creatives from Downloads) added after VNT; cases are 4–11, Contact is 12. All bookkeeping updated (`Index.tsx`, `PillNav`, `DebugMenu`, `slide-routes.ts`, `slide-edge-colors.ts`). DEHN's client logo was NOT added to the Clients slide (owner: already on the slider).
+- **Mobile copy pass** (cover + contact excluded): new `mobileSubtitle` on `CaseStudyLayout` + Mitsui `isMobile` branch; tightened `mobileOutcomes`; de-jargoned two `mobileServices` titles. Parity rule relaxed: mobile may be a shorter variant of the same message.
+- **Contact**: "Bring the product…" paragraph removed entirely (desktop too); mobile column centered, mark 248px, full-width CTA pair.
+- **Seam fixes**: yellow band at Contact's top was the VNT→Contact mix — VNT/Kuraray/GirlUp bottom edge colors desaturated; gradients 8→6.5svh with 45% mid-stop.
+- **Motion**: springs are desktop-only now (`getSlideContentEase`); mobile entrances use settle ease, smaller rises, no scale pop; stagger + cross-fade calmed.
+- **Verification.** `npm run lint` (0 warnings) + `npm run build` pass; owner approved on device. Push scope: code + assets + docs; `.github/workflows/deploy.yml` excluded again (remote PAT lacks `workflow` scope).
+
+### (Session 37 archive) closed out the parked Session-36 mobile transition work, iterating live on the owner's phone (LAN dev server). Everything is mobile-gated; **desktop is byte-for-byte unchanged**.
 
 - **Current goal.** Make the mobile slide transition feel human and well-made: no flash, no stray circle, elements presenting one by one, no visible divider line between slides.
 - **What changed (headlines).** See the Session 37 block in `context.md` for full detail. (1) Sweep flash fixed: dt-based eased follower (fast attack / ~450ms release) replaces the raw scroll coupling + instant idle clear in `MobileTransitionLayer.tsx`. (2) The circular glow mark (`.deck-sig-mark`) deleted. (3) The full-bleed teal wash redesigned into the **"liquid crest"** — a thin teal hairline + bloom position-locked to the physical slide seam, riding the finger through the viewport; Theatre params now `tealOpacity`/`blurPx`/`glowScale`. (4) Staggered entrance: non-native-motion slides (Cover, Who We Are, Contact) reveal top-level elements one by one via animejs in `MobileSlideMotion.tsx`; native-motion slides skip it (no double motion). (5) Color-aware seam blend: per-slide edge colors in **new `src/pages/slide-edge-colors.ts`**, each joint blends through the oklab 50/50 mix with short 8svh gradients on both sides — replaces the fixed dark-only `.deck-seam-fade` overlays, which themselves read as a divider on the light case studies.

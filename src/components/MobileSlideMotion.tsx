@@ -74,9 +74,9 @@ const MobileSlideMotion = ({ children, nativeMotion = false }: MobileSlideMotion
   // Kept gentle: the proximity snap now settles each slide centred, and the
   // seam fades blend the joints, so the cross-fade only needs a light lift —
   // never fully blanks a slide (opacity floors at 0.4).
-  const opacity = useTransform(scrollYProgress, [0, 0.22, 0.78, 1], [0.4, 1, 1, 0.4]);
-  const y = useTransform(scrollYProgress, [0, 0.5, 1], [26, 0, -26]);
-  const blurPx = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [5, 0, 0, 5]);
+  const opacity = useTransform(scrollYProgress, [0, 0.22, 0.78, 1], [0.45, 1, 1, 0.45]);
+  const y = useTransform(scrollYProgress, [0, 0.5, 1], [18, 0, -18]);
+  const blurPx = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [3.5, 0, 0, 3.5]);
   const filter = useMotionTemplate`blur(${blurPx}px)`;
 
   useEffect(() => {
@@ -92,16 +92,16 @@ const MobileSlideMotion = ({ children, nativeMotion = false }: MobileSlideMotion
     const hide = () => {
       for (const t of targets) {
         t.style.opacity = "0";
-        t.style.transform = "translateY(20px)";
+        t.style.transform = "translateY(14px)";
       }
     };
 
     const play = () => {
       animate(targets, {
         opacity: [0, 1],
-        translateY: [20, 0],
-        duration: 560,
-        delay: stagger(110),
+        translateY: [14, 0],
+        duration: 640,
+        delay: stagger(95),
         ease: staggerEase,
       });
     };

@@ -3,7 +3,7 @@ import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, ArrowUpRight, Eye, H
 import { animate, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase, slideSettleEase } from "./slide-motion";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, getSlideContentEase, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 type Sector = { label: string; tag: string; icon: LucideIcon };
 
@@ -28,9 +28,9 @@ const differentiators: Differentiator[] = [
 // Mobile-only: the five outcomes above consolidated into three, each with a
 // one-line sentence (comprehension, internal buy-in, lower risk).
 const mobileOutcomes: Differentiator[] = [
-  { icon: Eye, label: "Understood faster", desc: "Buyers grasp your technical product before the first sales call, with far less explaining." },
-  { icon: Handshake, label: "Easier internal buy-in", desc: "Champions and your team carry one clear story to the people who sign off." },
-  { icon: ShieldCheck, label: "Lower perceived risk", desc: "Concrete proof reassures serious, high-stakes buyers and de-risks the decision." },
+  { icon: Eye, label: "Understood faster", desc: "Buyers get what you sell before the first call." },
+  { icon: Handshake, label: "Easier internal buy-in", desc: "Your champions carry one clear story to the people who sign off." },
+  { icon: ShieldCheck, label: "Lower perceived risk", desc: "Real numbers make a high-stakes decision feel safe." },
 ];
 
 // Mobile-only: priority sectors render as an auto-scrolling marquee pill (like the Clients slide)
@@ -148,11 +148,11 @@ const SkyrocketSlide = () => {
           if (chips.length) {
             animate(chips, {
               opacity: [0, 1],
-              translateY: [18, 0],
-              scale: [0.9, 1],
+              translateY: [isMobile ? 14 : 18, 0],
+              scale: isMobile ? [0.98, 1] : [0.9, 1],
               delay: stagger(70, { start: 640 }),
-              duration: 560,
-              ease: slideContentSpring,
+              duration: isMobile ? 620 : 560,
+              ease: getSlideContentEase(isMobile),
             });
           }
 
