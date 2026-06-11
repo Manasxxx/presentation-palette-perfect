@@ -788,6 +788,48 @@
   }
 }
 
+/* Mitsui desktop trial (Session 42): larger stage + ground shadow.
+   Stage sits right-of-center with the fanned side cards clear of the slide edge:
+   wrapper left = calc(100% - 6rem - card-width/2). If --card-width changes here,
+   update the wrapper's md:left-[calc(100%-20rem)] to match. */
+.cs-cards-stage--xl {
+  --card-width: 28rem;
+}
+.cs-cards-stage--xl .cs-cards {
+  --card-width: 28rem;
+}
+.cs-cards-stage--xl .cs-cards-ground {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--card-width) * -0.09);
+  width: calc(var(--card-width) * 1.16);
+  height: calc(var(--card-width) * 0.16);
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, hsl(220 60% 4% / 0.55), hsl(220 60% 4% / 0) 70%);
+  pointer-events: none;
+}
+
+/* MagicUI Ripple (Contact slide logo backdrop). */
+@keyframes ripple {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+.animate-ripple {
+  animation: ripple var(--duration, 2s) ease calc(var(--i, 0) * 0.2s) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ripple {
+    animation: none;
+  }
+}
+
 /* Fallback for browsers without scroll-driven animations: a static, centered card. */
 @supports not (animation-timeline: --cs-cards) {
   .cs-cards {

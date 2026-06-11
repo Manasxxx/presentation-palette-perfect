@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
+import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
@@ -154,8 +155,22 @@ const CaseStudyLayout = ({
         style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "none" : "circle(5% at 50% 50%)", background }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background }} />
+      {/* Brand-colored interactive grid (desktop only; mobile has no hover).
+          MagicUI demo recipe: radial spotlight mask + skew + 200% height. */}
+      {!isMobile && (
+        <InteractiveGridPattern
+          width={40}
+          height={40}
+          squares={[48, 36]}
+          className="z-[1] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
+          strokeColor={`hsl(${accentColor} / 0.24)`}
+          hoverFillColor={`hsl(${accentColor} / 0.4)`}
+        />
+      )}
 
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
+      {/* md:pointer-events-none lets the grid receive hover through this
+          full-slide layer; the carousel auto-advances, so it needs no mouse. */}
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
         {/* Hallmark · redesign v2 (ported from Mitsui): Split Studio — claim + open
             ledger left, creatives right, stat-led proof strip bottom. Mobile untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
@@ -253,8 +268,9 @@ const CaseStudyLayout = ({
           </div>
         )}
 
-        <div className={`order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[64%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2 ${stats.length > 0 ? "md:top-[44%]" : "md:top-[50%]"}`}>
-          <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
+        <div className={`cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2 ${stats.length > 0 ? "md:top-[44%]" : "md:top-[50%]"}`}>
+          <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
+            <div className="cs-cards-ground hidden md:block" aria-hidden="true" />
             <CaseStudyCarousel
               slides={slides}
               accentColor={accentColor}

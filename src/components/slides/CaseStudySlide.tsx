@@ -10,6 +10,7 @@ import mitsuiExtra2 from "@/assets/mitsui-extra-2.webp";
 import mitsuiExtra4 from "@/assets/mitsui-extra-4.webp";
 import mitsuiExtra5 from "@/assets/mitsui-extra-5.webp";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
+import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
@@ -179,7 +180,24 @@ const CaseStudySlide = () => {
         style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "none" : "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
+      {/* Mitsui-blue interactive grid (desktop only; mobile has no hover).
+          MagicUI demo recipe: radial spotlight mask + skew + 200% height.
+          Squares 48x36 at 40px = 1920x1440 of real grid, enough to fill the
+          masked region on wide screens. */}
+      {!isMobile && (
+        <InteractiveGridPattern
+          width={40}
+          height={40}
+          squares={[48, 36]}
+          className="z-[1] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
+          strokeColor={`hsl(${mitsuiCyan} / 0.24)`}
+          hoverFillColor={`hsl(${mitsuiCyan} / 0.4)`}
+        />
+      )}
+      {/* md:pointer-events-none lets the interactive grid receive hover through
+          the empty areas of this full-slide layer; the carousel stage re-enables
+          its own pointer events below. Mobile keeps normal event flow. */}
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
         {/* Hallmark · redesign v2: Split Studio — claim + ledger left, creatives right,
             stat-led proof strip across the bottom. Mobile order-flow untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
@@ -266,8 +284,9 @@ const CaseStudySlide = () => {
         </div>
 
         {/* RIGHT: creative gallery */}
-        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[64%] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
-          <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
+        <div className="cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
+          <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
+            <div className="cs-cards-ground hidden md:block" aria-hidden="true" />
             <CaseStudyCarousel slides={sliderImages} accentColor={mitsuiCyan} mobileStack />
           </div>
         </div>

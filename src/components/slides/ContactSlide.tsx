@@ -3,6 +3,7 @@ import { animate, stagger } from "animejs";
 import { ArrowUpRight } from "lucide-react";
 import FlyonFooter from "@/components/blocks/FlyonFooter";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
+import { Ripple } from "@/components/ui/ripple";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, getSlideContentEase, slideEditorialEase, slideSettleEase } from "./slide-motion";
@@ -78,6 +79,15 @@ const ContactSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 pb-[6.75rem] pt-8 text-center md:justify-center md:pb-32 md:pt-8">
         {/* OwlSurf ripple mark — hero */}
         <div className="ct-mark relative mb-7 aspect-square w-[248px] opacity-0 md:mb-4 md:w-[372px]">
+          {/* MagicUI ripple, centered exactly behind the logo mark. Fixed square
+              box (not inset-0) so the rings can extend past the mark without the
+              mask repeating; radial mask fades them out before the box edge. */}
+          <Ripple
+            mainCircleSize={236}
+            mainCircleOpacity={0.2}
+            numCircles={7}
+            className="left-1/2 top-1/2 h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(circle,white_28%,transparent_68%)]"
+          />
           <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full border border-white/12 opacity-0">
             <div className="absolute inset-[0.55rem] rounded-full border border-primary/25 md:inset-3" />
             <div className="absolute inset-5 rounded-full bg-primary/[0.05] blur-sm md:inset-7" />
