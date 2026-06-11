@@ -5,6 +5,19 @@
 
 ---
 
+## Current State (as of Session 41 push prep)
+
+**Session 41** is a desktop performance pass plus a cover badge-clip fix. No visual or motion-design changes — same look, fewer wasted frames. Mobile untouched.
+
+- **Cover badge clip fixed (`TitleSlide.tsx`).** On shorter desktop viewports the fixed vertical sizes (`md:py-20` content padding + the signal aside's `md:min-h-[31rem]` + the bottom block's `md:gap-10`) summed past the slide height, so `justify-between` pushed the partner badge strip past the `overflow-hidden` slide edge. All three are now svh clamps (`md:py-[clamp(2.5rem,6svh,5rem)]`, `md:min-h-[min(31rem,46svh)]`, `md:gap-[clamp(1rem,3svh,2.5rem)]`) that resolve to the exact old values on tall viewports — byte-identical look there — and compress instead of clipping on short ones.
+- **Hyperspeed now pauses offscreen (`Hyperspeed.tsx`).** The deck keeps neighbour slides mounted (`SLIDE_MOUNT_RADIUS = 1`), and Hyperspeed had no visibility gate — its three.js + bloom pipeline rendered full-viewport frames behind the Cover and Services slides constantly. This was the main idle lag source and a violation of the standing "every loop pauses offscreen" rule. Added `App.setPaused()` + an IntersectionObserver in the component: the rAF loop stops while the canvas is offscreen, and `clock.getDelta()` is flushed on resume so motion doesn't jump.
+- **Globe backing store capped (`globe.tsx`).** The desktop globe container is 120% of the slide, and cobe rendered at `offsetWidth * 2` — a ~3460×3460 WebGL buffer (~12M px/frame) for a 25%-opacity ambient with only the top hemisphere visible. Render size is now `min(offsetWidth * 2, 2048)`. Mobile (small canvas) is unaffected by the cap.
+- **Standing `will-change` removed from slide wrappers (`SlideReveal.tsx`).** Every one of the 13 desktop slide content wrappers held `will-change: transform, opacity` permanently — 13 full-viewport compositor layers alive at once. It is now set just before the reveal animation and cleared in its `onComplete` (same pattern `DeckTransitionLayer` already used).
+- **OwlSurfLogo frame loop gated (`OwlSurfLogo.tsx`).** The animated owl (cover + contact) drove a 30fps rAF → `setState` React re-render loop forever, including while its slide was mounted offscreen. The loop now runs only while the SVG intersects the viewport.
+- **Verification.** `npm run lint` (0 errors, 1 pre-existing `badge.tsx` react-refresh warning), `npx vitest run` 16/16, `npm run build` pass. `.github/workflows/deploy.yml` remains excluded from the push (remote PAT lacks `workflow` scope).
+
+---
+
 ## Current State (as of Session 40 push prep)
 
 **Session 40** is a desktop readability/scannability pass on the Services slide and a desktop case-study layout v2 rolled out to all eight case studies. Mobile is untouched everywhere.

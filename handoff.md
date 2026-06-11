@@ -15,7 +15,17 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 40 (current) is a desktop scan/readability pass: Services slide ledger rework + case-study Split Studio v2 across all eight case studies. Mobile untouched. See the Session 40 block in `context.md` for full detail.
+Session 41 (current) is a desktop performance pass + cover badge-clip fix. No visual or motion-design changes. Mobile untouched. See the Session 41 block in `context.md` for full detail.
+
+- **Cover badge clip (`TitleSlide.tsx`):** fixed vertical sizes (`md:py-20`, aside `md:min-h-[31rem]`, bottom `md:gap-10`) summed past short viewports — `justify-between` pushed the partner badge strip past the `overflow-hidden` slide edge. All three are now svh clamps that resolve to the exact old values on tall viewports and compress instead of clipping on short ones.
+- **Hyperspeed (`Hyperspeed.tsx`):** new `App.setPaused()` + IntersectionObserver — the three.js + bloom loop no longer renders full-viewport frames while its slide is mounted offscreen (was the main idle lag on Cover/Services; deck keeps neighbours mounted). `clock.getDelta()` flushed on resume so motion doesn't jump.
+- **Globe (`globe.tsx`):** ambient cover globe's WebGL backing store capped at 2048 (was `offsetWidth * 2` of a 120% container ≈ 3460² ≈ 12M px/frame at 25% opacity).
+- **SlideReveal (`SlideReveal.tsx`):** standing `will-change: transform, opacity` removed from all 13 slide content wrappers (13 permanent full-viewport compositor layers); now set just before the reveal animation and cleared in `onComplete`.
+- **OwlSurfLogo (`OwlSurfLogo.tsx`):** the 30fps rAF → setState loop is IO-gated; runs only while the SVG is in view.
+- **What to do next:** unchanged from Session 40 — iPhone ghost-strip suspects (mobile `backdrop-blur-sm` on proof table/stat pills, stack-card `box-shadow`, Motion cross-fade wrapper, `will-change` on stack cards, `bg-wipe` layer, forced-recomposite nudge), `DebugMenu` removal decision, true 1200×630 OG card.
+- **Verification:** `npm run lint` (0 errors, 1 pre-existing badge.tsx warning), `npx vitest run` 16/16, `npm run build` pass. Push excludes `.github/workflows/deploy.yml` (remote PAT lacks `workflow` scope).
+
+### (Session 40 archive) desktop scan/readability pass: Services slide ledger rework + case-study Split Studio v2 across all eight case studies. Mobile untouched. See the Session 40 block in `context.md` for full detail.
 
 - **Services (desktop):** ordinal anchors `01–05`, brighter bigger descriptions (`white/70`, `text-lg/xl`), legible tags, quiet row hover tint, visible `+5` HoverCard depth cue. File: `ServicesSlide.tsx`.
 - **Case studies (desktop, all 8):** stats moved to a bottom proof strip (big 900-weight numerals, hairline rule, per-cell `md:border-l` dividers — not `divide-x`, it loses to `md:border-0`); Market/Buyer/Role box opened into a hairline ledger; header column `36%`; carousel right-of-center (`left-[64%]`, `top-[44%]`/`top-[50%]` with/without stats). Files: `CaseStudySlide.tsx` (Mitsui) + `CaseStudyLayout.tsx` (shared 7). Mitsui subtitle deduped vs Market row. `lightMode` (Baxsaa/CTP/VNT) handled via `statBorder` + isMobile-branched inline colors.

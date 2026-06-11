@@ -51,6 +51,10 @@ const SlideReveal = ({
       if (triggered.current) return;
       triggered.current = true;
 
+      // Promote to a compositor layer only for the reveal itself — a standing
+      // will-change here holds a full-viewport GPU layer per slide forever.
+      content.style.willChange = "transform, opacity, filter";
+
       // Content reveal — only animate the inner wrapper, not the outer container
       animate(content, {
         opacity: [0, 1],
@@ -58,6 +62,9 @@ const SlideReveal = ({
         filter: ["blur(10px)", "blur(0px)"],
         duration: isMobile ? 720 : 980,
         ease: slideRevealEase,
+        onComplete: () => {
+          content.style.willChange = "";
+        },
       });
 
       // Top wipe line
@@ -125,7 +132,7 @@ const SlideReveal = ({
         data-slide-content
         data-native-slide-motion={nativeMotion ? "true" : undefined}
         className="relative"
-        style={{ opacity: 1, willChange: "transform, opacity" }}
+        style={{ opacity: 1 }}
       >
         {!nativeMotion && (
           <>

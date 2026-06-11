@@ -23,11 +23,28 @@ interface OwlSurfLogoProps {
 
 export const OwlSurfLogo: React.FC<OwlSurfLogoProps> = ({ className, style }) => {
   const [frame, setFrame] = useState(0);
+  const svgRef = useRef<SVGSVGElement>(null);
   const rafRef = useRef<number>(0);
   const startRef = useRef<number>(0);
   const lastFrameRef = useRef<number>(-1);
+  const [inView, setInView] = useState(false);
+
+  // The deck keeps neighbour slides mounted — only run the 30fps frame loop
+  // while the logo is actually on screen.
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
+    if (!inView) return;
+
     const animate = (timestamp: number) => {
       if (!startRef.current) startRef.current = timestamp;
       const elapsed = timestamp - startRef.current;
@@ -43,7 +60,7 @@ export const OwlSurfLogo: React.FC<OwlSurfLogoProps> = ({ className, style }) =>
 
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  }, [inView]);
 
   const t = (frame / DURATION) * Math.PI * 2;
   const earAngle = Math.sin(t * 3) * 3;
@@ -67,6 +84,7 @@ export const OwlSurfLogo: React.FC<OwlSurfLogoProps> = ({ className, style }) =>
 
   return (
     <svg
+      ref={svgRef}
       viewBox="0 0 800 816.29"
       xmlns="http://www.w3.org/2000/svg"
       className={className}

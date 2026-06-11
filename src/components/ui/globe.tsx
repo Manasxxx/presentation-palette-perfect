@@ -126,16 +126,20 @@ export function Globe({
     window.addEventListener("resize", onResize);
     onResize();
 
+    // Ambient backdrop: cap the WebGL backing store so the oversized desktop
+    // container (120% of the slide) doesn't allocate a huge retina buffer.
+    const renderSize = () => Math.min(widthRef.current * 2, 2048);
+
     const globe = createGlobe(canvasRef.current!, {
       ...config,
-      width: widthRef.current * 2,
-      height: widthRef.current * 2,
+      width: renderSize(),
+      height: renderSize(),
       onRender: (state) => {
         springRef.current.step();
         if (!pointerInteracting.current) phiRef.current += 0.005;
         state.phi = phiRef.current + springRef.current.get();
-        state.width = widthRef.current * 2;
-        state.height = widthRef.current * 2;
+        state.width = renderSize();
+        state.height = renderSize();
       },
     });
     globeRef.current = globe;

@@ -927,6 +927,7 @@ class App {
   clock: THREE.Clock;
   assets: Record<string, unknown>;
   disposed: boolean;
+  paused: boolean;
   road: Road;
   leftCarLights: CarLights;
   rightCarLights: CarLights;
@@ -978,6 +979,7 @@ class App {
     this.clock = new THREE.Clock();
     this.assets = {};
     this.disposed = false;
+    this.paused = false;
 
     this.road = new Road(this, options);
     this.leftCarLights = new CarLights(
@@ -1213,8 +1215,27 @@ class App {
     this.composer.setSize(width, height, updateStyles);
   }
 
+  /**
+   * The deck keeps neighbour slides mounted, so without this gate the bloom
+   * pipeline keeps rendering full-viewport frames while the slide is offscreen.
+   */
+  setPaused(paused: boolean) {
+    if (this.paused === paused) return;
+    this.paused = paused;
+    if (paused) {
+      if (this.animationFrameId !== null) {
+        cancelAnimationFrame(this.animationFrameId);
+        this.animationFrameId = null;
+      }
+      return;
+    }
+    if (this.disposed) return;
+    this.clock.getDelta(); // flush the pause gap so motion doesn't jump
+    this.tick();
+  }
+
   tick() {
-    if (this.disposed || !this) return;
+    if (this.disposed || this.paused) return;
     if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
       const canvas = this.renderer.domElement;
       this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -1266,7 +1287,15 @@ const Hyperspeed: FC<HyperspeedProps> = ({ effectOptions = DEFAULT_EFFECT_OPTION
       if (!myApp.disposed) myApp.init();
     });
 
+    // Pause the render loop while the canvas is offscreen.
+    const io = new IntersectionObserver(
+      ([entry]) => appRef.current?.setPaused(!entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+    io.observe(container);
+
     return () => {
+      io.disconnect();
       if (appRef.current) {
         appRef.current.dispose();
         appRef.current = null;

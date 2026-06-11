@@ -251,7 +251,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-20"
+        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-[clamp(2.5rem,6svh,5rem)]"
       >
         {/* TOP: brand lockup */}
         <div className="flex flex-row items-start justify-center gap-6 md:justify-between">
@@ -306,7 +306,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             </h1>
           </div>
 
-          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:min-h-[31rem]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:min-h-[min(31rem,46svh)]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
             <div
               className="ts-signal-line absolute left-[13%] top-[20%] h-[62%] w-[62%] rounded-full border border-white/10"
               style={{ opacity: 0, animation: "ts-orbit-drift 18s linear infinite" }}
@@ -350,7 +350,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
 
         {/* BOTTOM: centered CTA over a centered partner badge strip */}
-        <div className="flex -translate-y-4 flex-col items-center gap-4 md:translate-y-0 md:gap-10">
+        <div className="flex -translate-y-4 flex-col items-center gap-4 md:translate-y-0 md:gap-[clamp(1rem,3svh,2.5rem)]">
           {onViewCaseStudies && (
             <div className="relative">
               <Arrow19
