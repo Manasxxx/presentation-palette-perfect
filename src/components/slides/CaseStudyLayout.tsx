@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
+import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 type SlideImage = {
   image: string;
@@ -87,16 +87,19 @@ const CaseStudyLayout = ({
 
       animateSlideHeading(el, ".cs-heading", isMobile, 90);
 
-      animate(el.querySelector(".cs-subtitle")!, {
+      const subtitle = el.querySelector(".cs-subtitle")!;
+      animate(subtitle, {
         opacity: [0, 1],
         translateY: [16, 0],
         filter: ["blur(7px)", "blur(0px)"],
         duration: isMobile ? 680 : 760,
         delay: profile.copyDelay + 40,
         ease: slideEditorialEase,
+        onComplete: () => clearInlineFilter(subtitle),
       });
 
-      animate(el.querySelector(".cs-slider")!, {
+      const slider = el.querySelector(".cs-slider")!;
+      animate(slider, {
         opacity: [0, 1],
         scale: [0.985, 1],
         translateY: [18, 0],
@@ -104,6 +107,7 @@ const CaseStudyLayout = ({
         duration: isMobile ? 920 : 1080,
         delay: profile.contentDelay + 160,
         ease: slideEditorialEase,
+        onComplete: () => clearInlineFilter(slider),
       });
 
       animate(el.querySelectorAll(".cs-stat"), {
@@ -115,13 +119,15 @@ const CaseStudyLayout = ({
         ease: slideEditorialEase,
       });
 
-      animate(el.querySelectorAll(".cs-proof"), {
+      const proofEls = el.querySelectorAll(".cs-proof");
+      animate(proofEls, {
         opacity: [0, 1],
         translateY: [18, 0],
         filter: ["blur(8px)", "blur(0px)"],
         delay: stagger(profile.itemStagger, { start: profile.contentDelay + 160 }),
         duration: 680,
         ease: slideEditorialEase,
+        onComplete: () => clearInlineFilter(proofEls),
       });
     };
 

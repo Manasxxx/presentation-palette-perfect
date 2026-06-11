@@ -283,7 +283,7 @@ const categories: Category[] = [
 ];
 
 // Mobile-only: each category collapsed to three headline groups so the stepper stays
-// light on phones. Desktop CardSwap keeps the full five services + descriptions.
+// light on phones. The desktop ledger keeps the full five services + descriptions.
 const mobileServices: Record<string, { icon: LucideIcon; title: string }[]> = {
   content: [
     { icon: Target, title: "Positioning & Story" },
