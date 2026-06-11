@@ -28,21 +28,16 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import LightRays from "@/components/LightRays";
-import CardSwap, { Card } from "@/components/ui/CardSwap/CardSwap";
+import { Separator } from "@/components/ui/separator";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
-import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideContentSpring, slideEditorialEase, slideSettleEase } from "./slide-motion";
-import brandStoryIllustration from "@/assets/service-illustration-brand-story.svg";
-import videoIllustration from "@/assets/service-illustration-video.svg";
-import designSystemIllustration from "@/assets/service-illustration-design-system.svg";
-import researchIllustration from "@/assets/service-illustration-research.svg";
-import thoughtLeadershipIllustration from "@/assets/service-illustration-thought-leadership.svg";
+import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 type Service = {
   icon: LucideIcon;
   title: string;
   description: string;
-  illustration?: ServiceIllustrationKind;
 };
 
 type Category = {
@@ -52,29 +47,52 @@ type Category = {
   services: Service[];
 };
 
-type ServiceIllustrationKind = "story" | "video" | "system" | "research" | "thought";
-
-const serviceIllustrations: Record<ServiceIllustrationKind, string> = {
-  story: brandStoryIllustration,
-  video: videoIllustration,
-  system: designSystemIllustration,
-  research: researchIllustration,
-  thought: thoughtLeadershipIllustration,
+// Desktop-only: the whole offer as five plain-language cards, all visible at once.
+// Verb-led titles + one concrete sentence + deliverable chips — no jargon.
+type DesktopService = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  tags: string[];
 };
 
-const ServiceClipArt = ({ kind }: { kind: ServiceIllustrationKind }) => {
-  return (
-    <div className="pointer-events-none relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-primary/20 bg-primary/[0.055]">
-      <img
-        src={serviceIllustrations[kind]}
-        alt=""
-        className="h-[92%] w-[92%] object-contain drop-shadow-[0_18px_28px_rgba(75,194,194,0.16)]"
-        loading="eager"
-        decoding="async"
-      />
-    </div>
-  );
-};
+const desktopServices: DesktopService[] = [
+  {
+    icon: PenTool,
+    title: "Tell Your Story",
+    description:
+      "We turn your product into clear words, videos, and sales decks buyers actually get.",
+    tags: ["Videos", "Sales decks", "Whitepapers"],
+  },
+  {
+    icon: Megaphone,
+    title: "Get You Seen",
+    description:
+      "Ads, PR, and trade shows that put you in front of the right buyers.",
+    tags: ["Paid ads", "PR", "Events"],
+  },
+  {
+    icon: Search,
+    title: "Get You Found",
+    description:
+      "Show up when buyers search — and look trustworthy when they check you out.",
+    tags: ["SEO", "Reviews", "Reputation"],
+  },
+  {
+    icon: Database,
+    title: "Track Your Buyers",
+    description:
+      "One clean system that shows which leads are real and where they came from.",
+    tags: ["CRM", "Automation", "Analytics"],
+  },
+  {
+    icon: Bot,
+    title: "Put AI to Work",
+    description:
+      "AI tools that draft content, answer questions, and save your team hours every week.",
+    tags: ["AI content", "Assistants", "Workflows"],
+  },
+];
 
 const categories: Category[] = [
   {
@@ -87,35 +105,30 @@ const categories: Category[] = [
         title: "Technical Positioning",
         description:
           "Turn specs and expertise into a story buyers actually get.",
-        illustration: "story",
       },
       {
         icon: Film,
         title: "Explainer Films",
         description:
           "Plant, product, and process films that make the value obvious.",
-        illustration: "video",
       },
       {
         icon: PenTool,
         title: "Sales Collateral",
         description:
           "Decks, brochures, and booth material your sales team can use.",
-        illustration: "system",
       },
       {
         icon: FileText,
         title: "Whitepapers",
         description:
           "In-depth docs for buyers who want proof before they trust you.",
-        illustration: "research",
       },
       {
         icon: Sparkles,
         title: "Executive POV",
         description:
           "Bylines, talks, and expert notes that make your leaders credible.",
-        illustration: "thought",
       },
     ],
   },
@@ -431,17 +444,7 @@ const ServicesSlide = () => {
         duration: isMobile ? 760 : 640,
         ease: slideEditorialEase,
       });
-      if (!isMobile) {
-        animate(el.querySelector(".sv-card-stage")!, {
-          opacity: [0, 1],
-          scale: [0.9, 1],
-          translateY: [38, 0],
-          filter: ["blur(10px)", "blur(0px)"],
-          duration: 980,
-          delay: profile.contentDelay + 140,
-          ease: slideContentSpring,
-        });
-      } else {
+      if (isMobile) {
         animateMobilePanel(profile.contentDelay + 220);
         window.setTimeout(() => setMobileEntryReady(true), profile.contentDelay + 980);
       }
@@ -480,17 +483,35 @@ const ServicesSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col px-8 pt-16 pb-6 md:px-12 md:pt-20 md:pb-10">
         <header className="sv-header text-left self-start">
           <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
-            WHAT WE BUILD
+            {isMobile ? "WHAT WE BUILD" : "OUR SERVICES"}
           </span>
-          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
-            <span className="font-sans not-italic">BUYER </span>
-            <span className="sv-title-accent font-sans not-italic text-primary inline-block pr-2">
-              SYSTEMS
-            </span>
+          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3rem,4.8vw,5.2rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
+            {isMobile ? (
+              <>
+                <span className="font-sans not-italic">BUYER </span>
+                <span className="sv-title-accent font-sans not-italic text-primary inline-block pr-2">
+                  SYSTEMS
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="font-sans not-italic">WHAT WE </span>
+                <span className="sv-title-accent font-sans not-italic text-primary inline-block pr-2">
+                  DO
+                </span>
+              </>
+            )}
           </h2>
-          <p className="mt-2.5 max-w-[45rem] font-body text-sm leading-snug text-white/58 md:mt-3 md:text-lg">
-            Five systems that make a complex product easy to buy.
-          </p>
+          {isMobile ? (
+            <p className="mt-2.5 max-w-[45rem] font-body text-sm leading-snug text-white/58">
+              Five systems that make a complex product easy to buy.
+            </p>
+          ) : (
+            <p className="mt-3 max-w-[45rem] font-serif text-lg italic leading-snug text-white/65 md:text-xl">
+              Five things we do to help you sell more.{" "}
+              <span className="text-primary">That&rsquo;s it.</span>
+            </p>
+          )}
         </header>
 
         <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[3vh] md:grid md:flex-initial md:gap-10">
@@ -586,133 +607,76 @@ const ServicesSlide = () => {
             </div>
           ) : (
             <>
-              {/* Left: compact category tabs (vertical column on desktop) */}
-              <div
-                className="sv-tabs col-span-12 -mx-1 flex flex-row gap-2 overflow-x-auto px-1 pb-1 md:col-span-4 md:mx-0 md:flex-col md:gap-4 md:overflow-visible md:px-0 md:pb-0"
-                role="tablist"
-                aria-label="Service categories"
-                aria-orientation="vertical"
-              >
-                {categories.map((cat, index) => {
-                  const active = cat.key === activeKey;
-                  const CatIcon = cat.icon;
+              {/* Hallmark · redesign v2: editorial ledger, scan-first · theme: OwlSurf (locked brand)
+                  Each row reads left→right in one pass: ordinal anchor (01–05, genuinely
+                  ordinal — "Five things"), title column, one bright plain sentence,
+                  small-caps deliverables right. Quiet row hover tint + visible "+5" depth
+                  cue replace the invisible HoverCard affordance. No icon boxes, no cards. */}
+              <div className="sv-tabs col-span-12 flex flex-1 flex-col justify-center">
+                {desktopServices.map((svc, index) => {
+                  const detail = categories[index];
                   return (
-                    <button
-                      key={cat.key}
-                      type="button"
-                      role="tab"
-                      id={`sv-tab-${cat.key}`}
-                      aria-selected={active}
-                      aria-controls="sv-panel"
-                      tabIndex={active ? 0 : -1}
-                      ref={(el) => { tabRefs.current[index] = el; }}
-                      onClick={() => setActiveKey(cat.key)}
-                      onKeyDown={(event) => handleTabKey(event, index)}
-                      className={`sv-tab group relative flex shrink-0 items-center justify-between gap-3 text-left rounded-xl border px-4 py-3 transition-[border-color,background-color,color] duration-300 md:shrink md:gap-4 md:px-5 md:py-4 ${
-                        active
-                          ? "border-primary/60 bg-primary/10"
-                          : "border-border/40 bg-white/[0.02] hover:border-primary/30 hover:bg-white/[0.05]"
-                      }`}
-                    >
-                      {active && (
-                        <span className="absolute left-0 top-[20%] bottom-[20%] w-[3px] rounded-full bg-primary" />
-                      )}
-                      <div className="flex items-center gap-3 min-w-0">
-                        <span
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                            active
-                              ? "bg-primary/25 text-primary"
-                              : "bg-white/5 text-muted-foreground"
-                          }`}
-                        >
-                          <CatIcon className="h-[18px] w-[18px]" />
-                        </span>
-                        <span
-                          className={`block font-sans text-base md:text-lg font-black uppercase tracking-tight truncate transition-colors ${
-                            active ? "text-white" : "text-foreground/80"
-                          }`}
-                        >
-                          {cat.label}
-                        </span>
-                      </div>
-                      <span
-                        className={`hidden shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 transition-colors md:inline-block ${
-                          active
-                            ? "bg-primary/25 text-primary"
-                            : "bg-white/5 text-muted-foreground"
-                        }`}
-                      >
-                        {cat.services.length}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Right: CardSwap stack — 5 cards per category, simpler content */}
-              <div
-                className="sv-card-stage relative col-span-12 h-auto md:col-span-8 md:h-[460px]"
-                style={{ opacity: 0 }}
-                role="tabpanel"
-                id="sv-panel"
-                aria-labelledby={`sv-tab-${activeKey}`}
-              >
-                <CardSwap
-                  key={activeKey}
-                  width={520}
-                  height={270}
-                  cardDistance={48}
-                  verticalDistance={52}
-                  delay={3000}
-                  pauseOnHover
-                  skewAmount={5}
-                  easing="elastic"
-                  reduceMotion={prefersReducedMotion}
-                >
-                  {activeCategory.services.map((svc) => {
-                    const Icon = svc.icon;
-                    const hasIllustration =
-                      activeCategory.key === "content" && svc.illustration;
-                    return (
-                      <Card key={svc.title}>
-                        <div className="relative flex h-full w-full flex-col overflow-hidden">
-                          {/* Vertical accent stripe on the left edge */}
-                          <span className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r bg-primary" />
-
-                          {/* Top edge: tight icon + compact monster heading — peeks above when stacked */}
-                          <div className="relative z-10 flex items-center gap-2.5 px-5 pt-2.5">
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15">
-                              <Icon className="h-3.5 w-3.5 text-primary" />
-                            </div>
-                            <h3 className="font-sans text-[0.95rem] md:text-base font-black uppercase tracking-tight text-primary leading-none truncate">
+                    <div key={svc.title} className="contents">
+                      {index > 0 && <Separator className="bg-white/[0.07]" />}
+                      <HoverCard openDelay={150} closeDelay={80}>
+                        <HoverCardTrigger asChild>
+                          <article
+                            tabIndex={0}
+                            className="sv-tab group -mx-4 grid cursor-default grid-cols-[2.75rem_minmax(0,23rem)_minmax(0,1fr)_auto] items-baseline gap-x-8 rounded-lg px-4 py-6 transition-colors duration-300 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 xl:py-7"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="font-sans text-sm font-bold tabular-nums tracking-[0.08em] text-primary/45 transition-colors duration-300 group-hover:text-primary"
+                            >
+                              0{index + 1}
+                            </span>
+                            <h3 className="font-sans text-2xl font-black uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-primary xl:text-3xl">
                               {svc.title}
                             </h3>
-                          </div>
-
-                          {/* Body content */}
-                          <div className="relative z-10 flex-1">
-                            {hasIllustration ? (
-                              <div className="grid h-full grid-cols-[0.9fr_1.1fr] gap-4 px-5 pb-4 pt-4">
-                                <div className="flex min-w-0 items-start">
-                                  <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
-                                    {svc.description}
-                                  </p>
+                            <p className="max-w-[36rem] font-body text-lg leading-snug text-white/70 transition-colors duration-300 group-hover:text-white/90 xl:text-xl">
+                              {svc.description}
+                            </p>
+                            <span className="hidden items-baseline gap-4 whitespace-nowrap lg:flex">
+                              <span className="font-sans text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary/75 transition-colors duration-300 group-hover:text-primary">
+                                {svc.tags.join("  ·  ")}
+                              </span>
+                              <span className="font-sans text-[0.7rem] font-bold tabular-nums text-white/30 transition-colors duration-300 group-hover:text-primary">
+                                +{detail.services.length}
+                              </span>
+                            </span>
+                          </article>
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                          side="bottom"
+                          align="start"
+                          sideOffset={4}
+                          className="w-[24rem] rounded-xl border-white/10 bg-[#111] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
+                        >
+                          <span className="mb-3 block font-serif text-sm italic text-white/60">
+                            Inside {svc.title.toLowerCase()} —
+                          </span>
+                          <ul className="flex flex-col gap-2">
+                            {detail.services.map((sub) => (
+                              <li key={sub.title} className="flex items-baseline gap-2.5">
+                                <span aria-hidden="true" className="text-primary">
+                                  –
+                                </span>
+                                <div className="min-w-0">
+                                  <span className="font-sans text-[0.8rem] font-bold text-white">
+                                    {sub.title}.
+                                  </span>{" "}
+                                  <span className="font-body text-xs leading-snug text-white/55">
+                                    {sub.description}
+                                  </span>
                                 </div>
-                                <ServiceClipArt kind={hasIllustration} />
-                              </div>
-                            ) : (
-                              <div className="px-5 pt-4">
-                                <p className="text-sm md:text-[0.95rem] text-white/80 leading-relaxed">
-                                  {svc.description}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </Card>
-                    );
-                  })}
-                </CardSwap>
+                              </li>
+                            ))}
+                          </ul>
+                        </HoverCardContent>
+                      </HoverCard>
+                    </div>
+                  );
+                })}
               </div>
             </>
           )}

@@ -15,7 +15,17 @@ Do not update `handoff.md` at session end, during context clearing, or during or
 
 ## Current Goal
 
-Session 39 (current) is a mobile scroll/case-study carousel polish pass, plus docs/push prep. See the Session 39 block in `context.md` for full detail.
+Session 40 (current) is a desktop scan/readability pass: Services slide ledger rework + case-study Split Studio v2 across all eight case studies. Mobile untouched. See the Session 40 block in `context.md` for full detail.
+
+- **Services (desktop):** ordinal anchors `01–05`, brighter bigger descriptions (`white/70`, `text-lg/xl`), legible tags, quiet row hover tint, visible `+5` HoverCard depth cue. File: `ServicesSlide.tsx`.
+- **Case studies (desktop, all 8):** stats moved to a bottom proof strip (big 900-weight numerals, hairline rule, per-cell `md:border-l` dividers — not `divide-x`, it loses to `md:border-0`); Market/Buyer/Role box opened into a hairline ledger; header column `36%`; carousel right-of-center (`left-[64%]`, `top-[44%]`/`top-[50%]` with/without stats). Files: `CaseStudySlide.tsx` (Mitsui) + `CaseStudyLayout.tsx` (shared 7). Mitsui subtitle deduped vs Market row. `lightMode` (Baxsaa/CTP/VNT) handled via `statBorder` + isMobile-branched inline colors.
+- **Who We Are (desktop):** `SkyrocketSlide.tsx` outcomes consolidated 5 → 3 (Understood faster / Easier internal buy-in / Lower perceived risk), support copy tightened + brightened.
+- **CardSwap is now orphaned** (`CardSwap.jsx` unimported) — left in place, removal needs an explicit decision.
+- **What failed:** first ledger-row edit missed because the proof container markup was a single line; `divide-x` was avoided after spotting the `md:border-0` cascade conflict.
+- **What to do next:** owner visual review of all 8 case studies on desktop (especially light-mode Baxsaa/CTP/VNT strip contrast and DEHN without stats); decide CardSwap deletion; iPhone ghost-strip bug still parked; `DebugMenu` removal still pending.
+- **Verification:** `npm run lint` (0 errors, 1 pre-existing badge.tsx warning) + `npm run build` pass. Push excludes `.github/workflows/deploy.yml` (remote PAT lacks `workflow` scope).
+
+### (Session 39 archive) mobile scroll/case-study carousel polish pass, plus docs/push prep. See the Session 39 block in `context.md` for full detail.
 
 - **Mobile snap:** `deck-snap.ts` + test added. Mobile uses stronger `y mandatory` with `scroll-snap-stop: normal` so slides catch harder without hard one-slide locking. Import bug that caused black page was fixed and phone-shaped smoke check was clean.
 - **Cover + Clients:** mobile cover badges have almost no white padding and larger art; globe is centered inside 100vw to avoid right-edge clipping. Clients heading is now `Our Clients`.

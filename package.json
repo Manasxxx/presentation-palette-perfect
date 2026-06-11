@@ -15,8 +15,12 @@
   },
   "dependencies": {
     "@blossom-carousel/react": "^1.1.1",
+    "@radix-ui/react-hover-card": "^1.1.16",
+    "@radix-ui/react-separator": "^1.1.9",
+    "@radix-ui/react-slot": "^1.2.5",
     "@theatre/core": "^0.7.2",
     "animejs": "^4.3.6",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cobe": "^0.6.5",
     "lucide-react": "^0.462.0",

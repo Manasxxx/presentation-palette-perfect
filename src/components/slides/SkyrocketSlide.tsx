@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, ArrowUpRight, Eye, Handshake, MessageSquareText, ShieldCheck, UsersRound, type LucideIcon } from "lucide-react";
+import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, Eye, Handshake, ShieldCheck, type LucideIcon } from "lucide-react";
 import { animate, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -17,12 +17,12 @@ const sectors: Sector[] = [
 
 type Differentiator = { icon: LucideIcon; label: string; desc: string };
 
+// Desktop: three consolidated buyer outcomes (was five icon-cards). Fuller
+// wording than the mobile variants of the same three messages below.
 const differentiators: Differentiator[] = [
-  { icon: Eye, label: "Clear first look", desc: "Buyers understand what you do before the sales call starts." },
-  { icon: Handshake, label: "Faster buy-in", desc: "Internal champions get language they can repeat upstairs." },
-  { icon: MessageSquareText, label: "Less explaining", desc: "Technical details become simple without becoming shallow." },
-  { icon: ShieldCheck, label: "Credible proof", desc: "Proof points reduce perceived risk for serious buyers." },
-  { icon: UsersRound, label: "Sales alignment", desc: "Sales, marketing, and leadership tell the same story." },
+  { icon: Eye, label: "Understood faster", desc: "Buyers grasp what you sell before the first call starts." },
+  { icon: Handshake, label: "Easier internal buy-in", desc: "Champions carry one clear story to the people who sign off." },
+  { icon: ShieldCheck, label: "Lower perceived risk", desc: "Real proof makes a high-stakes decision feel safe." },
 ];
 
 // Mobile-only: the five outcomes above consolidated into three, each with a
@@ -204,15 +204,15 @@ const SkyrocketSlide = () => {
               </span>
             </h2>
 
-            <p className="who-copy mt-2 hidden max-w-[520px] font-body leading-[1.5] text-white/70 text-sm sm:block md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
-              We turn dense product truth into market-facing clarity for teams selling into plants, labs, factories, institutions, and procurement rooms.
+            <p className="who-copy mt-2 hidden max-w-[520px] font-body leading-[1.5] text-white/85 text-sm sm:block md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
+              We turn dense product truth into market-facing clarity for the teams selling it.
             </p>
           </div>
 
           {/* where we work */}
           <div className="md:col-span-5 md:border-l md:border-white/10 md:pl-12 lg:pl-16">
             <div className="who-kicker" style={{ opacity: 0 }}>
-              <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
+              <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-[0.7rem] md:font-bold md:tracking-[0.26em] md:text-white/60 md:drop-shadow-none">
                 Priority sectors
               </span>
             </div>
@@ -235,39 +235,30 @@ const SkyrocketSlide = () => {
               </div>
             </div>
 
-            {/* Desktop: vertical sector list (unchanged) */}
+            {/* Desktop: quiet numbered sector ledger */}
             <div className="hidden md:mt-6 md:flex md:flex-col md:gap-0">
-              {sectors.map((sector) => {
-                const Icon = sector.icon;
-                return (
-                  <div
-                    key={sector.label}
-                    className="who-sector group flex shrink-0 items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-2.5 transition-colors duration-300 hover:border-owl-teal/40 md:shrink md:gap-4 md:rounded-none md:border-x-0 md:border-b md:bg-transparent md:px-0 md:py-4 md:first:border-t"
-                    style={{ opacity: 0 }}
-                  >
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/15 bg-owl-teal/10 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 md:h-11 md:w-11">
-                      <Icon className="h-[1rem] w-[1rem] md:h-[1.2rem] md:w-[1.2rem]" strokeWidth={1.8} />
-                    </span>
-                    <span className="flex min-w-0 flex-col">
-                      <span className="font-sans text-[0.86rem] font-black leading-tight text-white md:text-base">
-                        {sector.label}
-                      </span>
-                      <span className="hidden font-body text-xs leading-tight text-white/45 md:block md:text-[0.8rem]">
-                        {sector.tag}
-                      </span>
-                    </span>
-                    <ArrowUpRight className="ml-auto hidden h-4 w-4 shrink-0 -translate-x-1 text-white/0 transition-colors duration-300 group-hover:translate-x-0 group-hover:text-owl-teal md:block" strokeWidth={2} />
-                  </div>
-                );
-              })}
+              {sectors.map((sector, i) => (
+                <div
+                  key={sector.label}
+                  className="who-sector group flex items-baseline gap-5 border-b border-white/10 py-[1.15rem] transition-colors duration-300 first:border-t hover:border-owl-teal/35"
+                  style={{ opacity: 0 }}
+                >
+                  <span className="font-sans text-[0.72rem] font-bold tabular-nums leading-none tracking-[0.08em] text-owl-teal/70">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-sans text-[1.05rem] font-black leading-none text-white/90 transition-colors duration-300 group-hover:text-white lg:text-[1.15rem]">
+                    {sector.label}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* BOTTOM — buyer outcomes (full width) */}
         <div className="border-t border-white/10 pt-7 md:pt-9">
-          <div className="who-copy mb-3 md:mb-6" style={{ opacity: 0 }}>
-            <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
+          <div className="who-copy mb-3 md:mb-7" style={{ opacity: 0 }}>
+            <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-[0.7rem] md:font-bold md:tracking-[0.26em] md:text-white/60 md:drop-shadow-none">
               What this means for buyers
             </span>
           </div>
@@ -298,31 +289,22 @@ const SkyrocketSlide = () => {
             })}
           </div>
 
-          {/* Desktop: 5-col cards with supporting copy (unchanged) */}
-          <div className="hidden md:grid md:grid-cols-5 md:gap-4 lg:gap-6">
-            {differentiators.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.label}
-                  className="who-chip group relative flex min-w-0 items-start gap-3 overflow-hidden rounded-lg border border-white/10 bg-white/[0.035] p-4 backdrop-blur-sm transition-[transform,border-color,background-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-owl-teal/45 hover:bg-owl-teal/[0.06] hover:shadow-[0_10px_30px_rgba(75,194,194,0.16)] lg:gap-4 lg:p-5"
-                  style={{ opacity: 0 }}
-                >
-                  <span className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-owl-teal/0 transition-colors duration-300 group-hover:bg-owl-teal" />
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-owl-teal/30 bg-owl-teal/12 text-owl-teal transition-colors duration-300 group-hover:bg-owl-teal/20 lg:h-11 lg:w-11">
-                    <Icon className="h-[1.15rem] w-[1.15rem] lg:h-[1.25rem] lg:w-[1.25rem]" strokeWidth={1.9} />
-                  </span>
-                  <span className="flex min-w-0 flex-col gap-1">
-                    <span className="font-sans text-[0.82rem] font-black uppercase leading-tight tracking-[0.04em] text-white lg:text-[0.95rem]">
-                      {item.label}
-                    </span>
-                    <span className="font-body text-xs leading-snug text-white/55 lg:text-sm">
-                      {item.desc}
-                    </span>
-                  </span>
-                </div>
-              );
-            })}
+          {/* Desktop: three open outcome columns, hairline-divided, no card chrome */}
+          <div className="hidden md:grid md:grid-cols-3 md:gap-10 lg:gap-14">
+            {differentiators.map((item) => (
+              <div
+                key={item.label}
+                className="who-chip group min-w-0 border-l-2 border-owl-teal/40 pl-5 transition-colors duration-300 hover:border-owl-teal lg:pl-6"
+                style={{ opacity: 0 }}
+              >
+                <span className="block font-sans text-[0.95rem] font-black uppercase leading-tight tracking-[0.04em] text-white lg:text-[1.05rem]">
+                  {item.label}
+                </span>
+                <span className="mt-1.5 block max-w-[36ch] font-body text-[0.95rem] leading-snug text-white/75 lg:text-[1.05rem]">
+                  {item.desc}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

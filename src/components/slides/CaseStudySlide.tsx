@@ -174,7 +174,9 @@ const CaseStudySlide = () => {
       />
       <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
       <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14">
-        <header className="order-1 text-left md:absolute md:left-12 md:top-24 md:w-[32%] lg:w-[30%]">
+        {/* Hallmark · redesign v2: Split Studio — claim + ledger left, creatives right,
+            stat-led proof strip across the bottom. Mobile order-flow untouched. */}
+        <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
           <span
             className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
             style={{ opacity: isMobile ? 1 : 0, color: `hsl(${mitsuiCyan})` }}
@@ -191,12 +193,12 @@ const CaseStudySlide = () => {
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/85 md:mt-3 md:max-w-[34rem] md:text-[1.24rem]"
+            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/85 md:mt-3 md:max-w-[30rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
             {isMobile
               ? "Specialty chemicals giant. We ran their digital across APAC."
-              : "Specialty chemicals across APAC. We made technical value visible across regions, formats, and paid channels."}
+              : "Specialty chemicals giant. We made technical value visible across regions, formats, and paid channels."}
           </p>
           <div
             className="hidden"
@@ -206,28 +208,30 @@ const CaseStudySlide = () => {
           </div>
         </header>
 
-        <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[45%] md:w-[32%] md:max-w-none md:rounded-none md:border-white/16 md:bg-white/[0.045] lg:w-[30%]" style={{ opacity: isMobile ? 1 : 0 }}>
-          {mitsuiProofPoints.map((point) => (
-            <div key={point.label} className="grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:p-4">
-              <span className="font-sans text-[9.5px] font-black uppercase tracking-[0.16em]" style={{ color: `hsl(${mitsuiCyan})` }}>
+        <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[46%] md:w-[34%] md:max-w-none md:rounded-none md:border-0 md:bg-transparent md:backdrop-blur-none lg:w-[32%]" style={{ opacity: isMobile ? 1 : 0 }}>
+          {mitsuiProofPoints.map((point, pointIndex) => (
+            <div key={point.label} className={`grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-3.5 md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
+              <span className="font-sans text-[9.5px] font-black uppercase tracking-[0.16em] md:text-[0.68rem]" style={{ color: `hsl(${mitsuiCyan})` }}>
                 {point.label}
               </span>
-              <span className="font-body text-[0.72rem] leading-tight text-white/92 md:text-base">
+              <span className="font-body text-[0.72rem] leading-tight text-white/92 md:text-[1.02rem] md:leading-snug">
                 {point.value}
               </span>
             </div>
           ))}
         </div>
 
-        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:right-12 md:top-[8.45rem] md:w-[68%] md:grid-cols-5 md:gap-2 lg:w-[66%]">
-          {statDefs.map((stat) => (
+        {/* Desktop: stat-led proof strip across the bottom (big numerals, hairline
+            dividers). Mobile keeps the compact 2x2 pill grid untouched. */}
+        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-4 md:gap-0 md:border-t md:border-white/10">
+          {statDefs.map((stat, statIndex) => (
             <div
               key={stat.label}
-              className="cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/22 bg-black/40 px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:min-h-[3.4rem] md:gap-2 md:border-white/16 md:bg-white/[0.055] md:px-3 md:py-1"
+              className={`cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/22 bg-black/40 px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:justify-center md:gap-1.5 md:rounded-none md:border-0 md:bg-transparent md:px-7 md:py-4 md:shadow-none md:backdrop-blur-none ${statIndex === 0 ? "md:pl-0" : "md:border-l md:border-l-white/10"}`}
               style={{ opacity: isMobile ? 1 : 0 }}
             >
               <div
-                className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal text-white md:gap-1.5 md:text-[clamp(1.1rem,1.45vw,1.55rem)]"
+                className="flex min-h-0 shrink-0 items-center gap-1 tabular-nums text-[1.12rem] font-semibold leading-none tracking-normal text-white md:gap-2 md:text-[clamp(1.8rem,2.3vw,2.5rem)] md:font-black"
                 style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}
               >
                 <span className="tabular-nums" style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
@@ -235,16 +239,16 @@ const CaseStudySlide = () => {
                 </span>
                 {stat.trend && (
                   <span
-                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full md:h-6 md:w-6"
+                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full md:h-7 md:w-7"
                     style={{ backgroundColor: `hsl(${mitsuiCyan} / 0.18)`, color: `hsl(${mitsuiCyan})` }}
                     aria-hidden="true"
                   >
-                    <ArrowUpRight className="h-2.5 w-2.5 md:h-3.5 md:w-3.5" strokeWidth={2.6} />
+                    <ArrowUpRight className="h-2.5 w-2.5 md:h-4 md:w-4" strokeWidth={2.6} />
                   </span>
                 )}
               </div>
               <div
-                className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] text-white/95 md:pl-2.5 md:tracking-[0.015em] md:text-[9px] lg:text-[10px]"
+                className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] text-white/95 md:w-auto md:border-l-0 md:pl-0 md:text-[0.7rem] md:font-bold md:tracking-[0.14em] md:text-white/60"
                 style={{
                   borderColor: `hsl(${mitsuiCyan} / 0.4)`,
                 }}
@@ -256,7 +260,7 @@ const CaseStudySlide = () => {
         </div>
 
         {/* RIGHT: creative gallery */}
-        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[50%] md:top-[58%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[64%] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <CaseStudyCarousel slides={sliderImages} accentColor={mitsuiCyan} mobileStack />
           </div>
