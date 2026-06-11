@@ -30,10 +30,12 @@ const PillNav = ({
   onNavigate,
 }: PillNavProps) => {
   const ease = 'out(4)';
-  const baseColor = 'hsl(0, 0%, 100%)';
-  const pillColor = 'hsl(214, 30%, 6%)';
+  // Glass blend-in (Session 42): pills sit transparent on the bar's dark
+  // glass; teal is the only fill (active pill + hover circle + accents).
+  const baseColor = 'hsl(180, 45%, 53%)';
+  const pillColor = 'transparent';
   const hoveredPillTextColor = 'hsl(214, 30%, 6%)';
-  const pillTextColor = 'hsl(0, 0%, 100%)';
+  const pillTextColor = 'hsl(0 0% 100% / 0.85)';
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);
