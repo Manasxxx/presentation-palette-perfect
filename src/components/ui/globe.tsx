@@ -128,10 +128,16 @@ export function Globe({
 
     // Ambient backdrop: cap the WebGL backing store so the oversized desktop
     // container (120% of the slide) doesn't allocate a huge retina buffer.
-    const renderSize = () => Math.min(widthRef.current * 2, 2048);
+    // The cap must flow through devicePixelRatio: phenomenon sizes the canvas
+    // buffer from clientWidth * dpr, while width/height only set the shader
+    // resolution uniform — if they disagree the globe renders shrunken and
+    // offscreen (Session 41/42 invisible-globe bug).
+    const dpr = widthRef.current > 0 ? Math.min(2, 2048 / widthRef.current) : 2;
+    const renderSize = () => widthRef.current * dpr;
 
     const globe = createGlobe(canvasRef.current!, {
       ...config,
+      devicePixelRatio: dpr,
       width: renderSize(),
       height: renderSize(),
       onRender: (state) => {
