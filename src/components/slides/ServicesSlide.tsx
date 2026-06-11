@@ -480,12 +480,14 @@ const ServicesSlide = () => {
           className="opacity-40 pointer-events-none"
         />
       )}
-      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-16 pb-6 md:px-12 md:pt-20 md:pb-10">
+      {/* Desktop paddings are svh clamps: identical on tall viewports, compress
+          on short ones so the five ledger rows never clip (Session 42). */}
+      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-16 pb-6 md:px-12 md:pt-[clamp(2.75rem,8svh,5rem)] md:pb-[clamp(1.25rem,4svh,2.5rem)]">
         <header className="sv-header text-left self-start">
-          <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-xs md:tracking-[0.26em]">
+          <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:mb-[clamp(0.4rem,1.2svh,0.75rem)] md:text-xs md:tracking-[0.26em]">
             {isMobile ? "WHAT WE BUILD" : "OUR SERVICES"}
           </span>
-          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[clamp(3rem,4.8vw,5.2rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
+          <h2 className="font-sans text-[2rem] sm:text-[2.6rem] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
             {isMobile ? (
               <>
                 <span className="font-sans not-italic">BUYER </span>
@@ -507,14 +509,14 @@ const ServicesSlide = () => {
               Five systems that make a complex product easy to buy.
             </p>
           ) : (
-            <p className="mt-3 max-w-[45rem] font-serif text-lg italic leading-snug text-white/65 md:text-xl">
+            <p className="mt-3 max-w-[45rem] font-serif text-lg italic leading-snug text-white/65 md:mt-[clamp(0.4rem,1.2svh,0.75rem)] md:text-[min(1.25rem,3svh)]">
               Five things we do to help you sell more.{" "}
               <span className="text-primary">That&rsquo;s it.</span>
             </p>
           )}
         </header>
 
-        <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[3vh] md:grid md:flex-initial md:gap-10">
+        <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[clamp(0.5rem,2svh,1.5rem)] md:grid md:flex-initial md:gap-10">
           {isMobile ? (
             <div className="col-span-12 flex h-full flex-col justify-center gap-6 pb-[6vh]">
               <div className="flex flex-col gap-2.5">
@@ -622,7 +624,7 @@ const ServicesSlide = () => {
                         <HoverCardTrigger asChild>
                           <article
                             tabIndex={0}
-                            className="sv-tab group -mx-4 grid cursor-default grid-cols-[2.75rem_minmax(0,23rem)_minmax(0,1fr)_auto] items-baseline gap-x-8 rounded-lg px-4 py-6 transition-colors duration-300 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 xl:py-7"
+                            className="sv-tab group -mx-4 grid cursor-default grid-cols-[2.75rem_minmax(0,23rem)_minmax(0,1fr)_auto] items-baseline gap-x-8 rounded-lg px-4 py-[clamp(0.5rem,1.8svh,1.5rem)] transition-colors duration-300 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 xl:py-[clamp(0.6rem,2svh,1.75rem)]"
                           >
                             <span
                               aria-hidden="true"
@@ -630,10 +632,10 @@ const ServicesSlide = () => {
                             >
                               0{index + 1}
                             </span>
-                            <h3 className="font-sans text-2xl font-black uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-primary xl:text-3xl">
+                            <h3 className="font-sans text-[min(1.5rem,3.8svh)] font-black uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-primary xl:text-[min(1.875rem,4svh)]">
                               {svc.title}
                             </h3>
-                            <p className="max-w-[36rem] font-body text-lg leading-snug text-white/70 transition-colors duration-300 group-hover:text-white/90 xl:text-xl">
+                            <p className="max-w-[36rem] font-body text-[min(1.125rem,2.9svh)] leading-snug text-white/70 transition-colors duration-300 group-hover:text-white/90 xl:text-[min(1.25rem,3svh)]">
                               {svc.description}
                             </p>
                             <span className="hidden items-baseline gap-4 whitespace-nowrap lg:flex">
