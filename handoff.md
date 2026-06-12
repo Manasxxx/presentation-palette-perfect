@@ -8,27 +8,26 @@ Update `handoff.md` ONLY before push. Not at session end, context clearing, or o
 
 ## Current Goal
 
-Session 44 (current): case-study readability pass, DEHN wide desktop cards, mobile nav replaced with Modern Mobile Menu.
+Session 45 (current): mobile menu space pass, Services mobile = desktop pillar accordion, low-power perf mode.
 
-- **Case-study readability (desktop only):** `CaseStudyLayout.tsx` `muted` → `white/0.9` dark / `0 0% 20%` light; desktop stat labels → `white/0.8` dark / `0 0% 20%` light; same ported to Mitsui (`CaseStudySlide.tsx`). Root cause on light slides: CTP + Baxsaa gradient end stops were translucent brand tints compositing over the dark section bg into a dark corner under dark-ink stats — now opaque light stops (`hsl(95 30% 74%)`, `hsl(8 28% 79%)`). Standing rule added to prod.md: light case-study backgrounds need opaque end stops.
-- **DEHN wide desktop cards:** `desktopWideCarousel` prop → `.cs-cards--wide` (`aspect-ratio: 1256/650`, 2px card inset). Kills the letterbox on DEHN's landscape creatives; other cases keep square cards.
-- **Mobile nav replaced:** `src/components/ui/modern-mobile-menu.tsx` (NEW, local 21st.dev easemize port; `.imenu*` CSS reconstructed in `PillNav.css`). Always-visible icon bar, active item = icon bounce + label + underline grown to label width; controlled by `currentSlide`. Old hamburger + popover + backdrop deleted; mobile logo hidden (hide rule must stay after `.pill-logo` base rule — cascade order). Desktop nav byte-identical.
-- **Harness:** `mobile-shots.mjs` names array fixed to current deck order; new `scripts/crop-shots.mjs` (full-res text-region crops; ~5s settle per slide or it catches entrances mid-flight).
-- **Verification:** `npm run lint` (0 errors; pre-existing badge.tsx + brand-marks.tsx warnings), vitest 16/16, `npm run build` pass.
+- **Mobile heading clearance:** slides 1-3 mobile-only `pt-[5.25rem]` (Skyrocket/Services/Clients) so headings clear the ~70px menu bar; desktop verbatim via `md:`.
+- **Mobile nav hidden on cover:** `Index.tsx` mobile visibility gains `currentSlide !== 0`; menu animates in from slide 1.
+- **Services mobile rebuilt (old item 2 CLOSED):** old categories/stepper/tablist/`mobileServices` deleted; mobile renders the same five `pillarServices` (renamed from `desktopServices`) as an auto-advancing accordion — expanded card (teal tint, description + tag row with `tagIcons` lucide icons; brand tags keep marks), others compressed to `GET [OUTCOME]` rows (mobile "Get", desktop keeps "BE"). 3.5s auto-advance, tap re-arms, reduced-motion paused, `grid-rows 0fr→1fr` collapse. Header copy unified (`OUR SERVICES` / `WHAT WE DO`). Desktop byte-identical.
+- **Low-power perf mode (owner: live site choppy on weaker laptop):** new `src/hooks/use-low-power.tsx` FPS watchdog (median rAF frame > 28ms after load ⇒ low-power, sticky per session). **Nothing unmounts** (owner rule: optimize, never remove): Hyperspeed `maxPixelRatio` / LightRays + PrismaticBurst `maxDpr` drop 1.25 → 0.75 — same visuals, ~64% fewer fragments. Healthy machines unchanged.
+- **Verification:** lint clean, vitest 16/16, `npm run build` pass.
 
 ## Open Items / Next Steps
 
-0. **CHECK FIRST (owner asked for this reminder): review the new mobile nav on a real device** — Modern Mobile Menu bar (Session 44), plus the readability changes and DEHN wide cards on the live site.
+0. **CHECK FIRST: verify on the previously-laggy laptop** that the live site is smooth now (low-power mode kicks in after ~5s; first session may stutter during sampling). Also re-check the Session 45 mobile changes (menu clearance, cover nav hide, Services accordion) on a real phone.
 
 1. **iPhone ghost strip (mobile case headings) — OPEN.** Dark translucent vertical strip near left margin, clears on touch. Ruled out (S39-40): seam overlays, wrapper blur, clip-path/circle wipe, card backdrop-filter, residual blur(0px). Next suspects: mobile `backdrop-blur-sm` on proof table/stat pills, stack-card `box-shadow`, Motion cross-fade wrapper, `will-change` on stack cards, or forced-recomposite nudge on slide settle. (S43 removed the `bg-wipe` layer entirely — if the strip persists, that suspect is now eliminated by absence.)
-2. **Services mobile rename pass.** Desktop now sells five outcome pillars (Found/Seen/Understood/Trusted/Known); mobile still shows the old five categories. Owner parked it: "we will come back to it."
-3. **`DebugMenu.tsx`** — temp mobile FAB, owner keeps shipping it. Standing "remove before prod" unresolved.
-4. **True 1200×630 OG card** — `index.html` still uses `/favicon.png` stopgap.
-5. **`deploy.yml` retry flags** — in working tree, NOT pushed (remote PAT lacks `workflow` scope). Land via `gh auth refresh -s workflow` or GitHub web editor. Always exclude this file from pushes until then.
-6. **Security:** GitHub PAT in plaintext in `.git/config` remote URL. Rotate + move to SSH/credential helper.
-7. **`npm audit`** advisories outstanding (deferred by user).
-8. **Parked plan:** `ui-design-plan.scratch.md` (gitignored, local only, do not commit). Three phases; pick up by phase.
-9. **Hyperspeed on mobile** still flagged unreliable (`prod.md`); revisit if owner asks.
+2. **`DebugMenu.tsx`** — temp mobile FAB, owner keeps shipping it. Standing "remove before prod" unresolved.
+3. **True 1200×630 OG card** — `index.html` still uses `/favicon.png` stopgap.
+4. **`deploy.yml` retry flags** — in working tree, NOT pushed (remote PAT lacks `workflow` scope). Land via `gh auth refresh -s workflow` or GitHub web editor. Always exclude this file from pushes until then.
+5. **Security:** GitHub PAT in plaintext in `.git/config` remote URL. Rotate + move to SSH/credential helper.
+6. **`npm audit`** advisories outstanding (deferred by user).
+7. **Parked plan:** `ui-design-plan.scratch.md` (gitignored, local only, do not commit). Three phases; pick up by phase.
+8. **Hyperspeed on mobile** still flagged unreliable (`prod.md`); S45 low-power DPR scaling should help weak phones — re-test before deeper work.
 
 ## Current State
 

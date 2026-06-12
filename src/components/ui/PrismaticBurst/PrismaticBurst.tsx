@@ -15,6 +15,9 @@ export type PrismaticBurstProps = {
   hoverDampness?: number;
   rayCount?: number;
   mixBlendMode?: React.CSSProperties['mixBlendMode'] | 'none';
+  // Renderer DPR cap. 1.25 is the brand default (prod.md); low-power machines
+  // pass a lower cap so the same burst renders fewer fragments.
+  maxDpr?: number;
 };
 
 const vertexShader = `#version 300 es
@@ -225,7 +228,8 @@ const PrismaticBurst = ({
   offset = { x: 0, y: 0 },
   hoverDampness = 0,
   rayCount,
-  mixBlendMode = 'lighten'
+  mixBlendMode = 'lighten',
+  maxDpr = 1.25
 }: PrismaticBurstProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const programRef = useRef<Program | null>(null);
@@ -250,7 +254,7 @@ const PrismaticBurst = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
     const renderer = new Renderer({ dpr, alpha: false, antialias: false });
     rendererRef.current = renderer;
 
@@ -390,7 +394,8 @@ const PrismaticBurst = ({
       rendererRef.current = null;
       gradTexRef.current = null;
     };
-  }, []);
+    // maxDpr: re-init once if the low-power verdict lands after mount.
+  }, [maxDpr]);
 
   useEffect(() => {
     const canvas = rendererRef.current?.gl?.canvas as HTMLCanvasElement | undefined;

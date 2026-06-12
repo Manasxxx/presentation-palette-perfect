@@ -47,6 +47,9 @@ interface LightRaysProps {
   noiseAmount?: number;
   distortion?: number;
   className?: string;
+  // Renderer DPR cap. 1.25 is the brand default (prod.md); low-power machines
+  // pass a lower cap so the same rays render fewer fragments.
+  maxDpr?: number;
 }
 
 const LightRays = ({
@@ -62,7 +65,8 @@ const LightRays = ({
   mouseInfluence = 0.1,
   noiseAmount = 0.0,
   distortion = 0.0,
-  className = ''
+  className = '',
+  maxDpr = 1.25
 }: LightRaysProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const uniformsRef = useRef<LightRaysUniforms | null>(null);
@@ -100,7 +104,7 @@ const LightRays = ({
       await new Promise(resolve => setTimeout(resolve, 10));
       if (!containerRef.current) return;
 
-      const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, 1.25), alpha: true, premultipliedAlpha: false });
+      const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio, maxDpr), alpha: true, premultipliedAlpha: false });
       rendererRef.current = renderer;
       const gl = renderer.gl;
       gl.clearColor(0, 0, 0, 0);
@@ -221,7 +225,7 @@ void main() {
 
       const updatePlacement = () => {
         if (!containerRef.current || !renderer) return;
-        renderer.dpr = Math.min(window.devicePixelRatio, 1.25);
+        renderer.dpr = Math.min(window.devicePixelRatio, maxDpr);
         const { clientWidth: wCSS, clientHeight: hCSS } = containerRef.current;
         renderer.setSize(wCSS, hCSS);
         const dpr = renderer.dpr;
@@ -283,7 +287,7 @@ void main() {
         cleanupFunctionRef.current = null;
       }
     };
-  }, [isVisible, raysOrigin, raysColor, raysSpeed, lightSpread, rayLength, pulsating, fadeDistance, saturation, followMouse, mouseInfluence, noiseAmount, distortion]);
+  }, [isVisible, raysOrigin, raysColor, raysSpeed, lightSpread, rayLength, pulsating, fadeDistance, saturation, followMouse, mouseInfluence, noiseAmount, distortion, maxDpr]);
 
   useEffect(() => {
     if (!uniformsRef.current || !containerRef.current || !rendererRef.current) return;

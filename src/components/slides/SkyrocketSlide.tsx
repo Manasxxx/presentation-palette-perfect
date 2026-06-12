@@ -3,6 +3,7 @@ import { FlaskConical, GraduationCap, Pill, Warehouse, Zap, Eye, Handshake, Shie
 import { animate, stagger } from "animejs";
 import Hyperspeed from "@/components/ui/Hyperspeed/Hyperspeed";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLowPowerMode } from "@/hooks/use-low-power";
 import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, getSlideContentEase, slideEditorialEase, slideSettleEase } from "./slide-motion";
 
 type Sector = { label: string; tag: string; icon: LucideIcon };
@@ -55,6 +56,7 @@ const SkyrocketSlide = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [triggered, setTriggered] = useState(false);
   const isMobile = useIsMobile();
+  const lowPower = useLowPowerMode();
   const hyperspeedOptions = useMemo(
     () => ({
       onSpeedUp: () => { },
@@ -93,8 +95,10 @@ const SkyrocketSlide = () => {
         rightCars: [0x0f766e, 0x115e59, 0x134e4a],
         sticks: 0x4bc2c2,
       },
+      // Same scene, fewer fragments on struggling machines (FPS watchdog).
+      maxPixelRatio: lowPower ? 0.75 : 1.25,
     }),
-    [isMobile]
+    [isMobile, lowPower]
   );
 
   useEffect(() => {
@@ -183,7 +187,7 @@ const SkyrocketSlide = () => {
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-5 py-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-5 pt-[5.25rem] pb-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
         <div className="grid gap-8 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}

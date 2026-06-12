@@ -52,6 +52,9 @@ interface HyperspeedOptions {
   carFloorSeparation: [number, number];
   colors: Colors;
   isHyper?: boolean;
+  // Renderer pixel-ratio cap. 1.25 is the brand default (prod.md); low-power
+  // machines pass a lower cap so the same scene renders fewer fragments.
+  maxPixelRatio?: number;
 }
 
 interface HyperspeedProps {
@@ -954,7 +957,7 @@ class App {
       alpha: true
     });
     this.renderer.setSize(container.offsetWidth, container.offsetHeight, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, options.maxPixelRatio ?? 1.25));
 
     this.composer = new EffectComposer(this.renderer);
     container.appendChild(this.renderer.domElement);

@@ -4,6 +4,7 @@ import LogoLoop from "@/components/ui/LogoLoop/LogoLoop";
 import { GoogleMark, MetaMark } from "@/components/ui/brand-marks";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLowPowerMode } from "@/hooks/use-low-power";
 import { animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase } from "./slide-motion";
 import cultfitLogo from "@/assets/client-cultfit.png";
 import vntLogo from "@/assets/client-vnt.png";
@@ -62,6 +63,7 @@ const ClientsSlide = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const triggered = useRef(false);
   const isMobile = useIsMobile();
+  const lowPower = useLowPowerMode();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -116,15 +118,17 @@ const ClientsSlide = () => {
     >
       {/* PrismaticBurst shimmer backdrop. Documented mobile exception to the
           desktop-only WebGL rule (prod.md): the Clients slide runs it on mobile too.
-          The component already caps DPR at 1.25 and pauses its RAF offscreen. */}
+          DPR cap 1.25, RAF pauses offscreen; low-power machines drop the cap to
+          0.75 (FPS watchdog) so the same shimmer renders fewer fragments. */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
         <PrismaticBurst
           colors={["#4bc2c2", "#14b8a6", "#0f766e", "#134e4a", "#0a2322"]}
           speed={0.18}
+          maxDpr={lowPower ? 0.75 : 1.25}
         />
       </div>
       {/* Full-width wrapper to defeat .slide's items-center/justify-center */}
-      <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-12 md:px-12 md:pb-12 md:pt-16">
+      <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-[5.25rem] md:px-12 md:pb-12 md:pt-16">
         <header className="cl-heading text-left self-start">
           <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
             <span className="font-sans not-italic">Our </span>

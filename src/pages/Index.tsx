@@ -239,8 +239,9 @@ const Index = () => {
       <PillNav
         // Glass nav behavior (Session 42): main slides keep the nav pinned on
         // desktop; case studies stay immersive — hidden until activity, then
-        // the idle timer clears it again. Mobile is unchanged.
-        visible={isMobile ? navActive && !onCaseStudy : onCaseStudy ? navActive : true}
+        // the idle timer clears it again. Mobile also hides on the cover
+        // (slide 0) so the hook lands clean.
+        visible={isMobile ? navActive && !onCaseStudy && currentSlide !== 0 : onCaseStudy ? navActive : true}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
