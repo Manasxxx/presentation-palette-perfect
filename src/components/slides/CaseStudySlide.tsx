@@ -84,15 +84,6 @@ const CaseStudySlide = () => {
       if (triggered) return;
       setTriggered(true);
 
-      if (!isMobile) {
-        animate(el.querySelector(".bg-wipe")!, {
-          clipPath: ["circle(5% at 50% 50%)", "circle(150% at 50% 50%)"],
-          opacity: [0, 1],
-          duration: 1800,
-          ease: slideSettleEase,
-        });
-      }
-
       animateSlideHeading(el, ".cs-heading", isMobile, 90);
 
       const subtitle = el.querySelector(".cs-subtitle")!;
@@ -175,11 +166,7 @@ const CaseStudySlide = () => {
 
   return (
     <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
-      <div
-        className="bg-wipe absolute inset-0 z-0"
-        style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "none" : "circle(5% at 50% 50%)", background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }}
-      />
-      <div className="absolute inset-0 z-[-1]" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
+      <div className="absolute inset-0 z-0" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
       {/* Mitsui-blue interactive grid (desktop only; mobile has no hover).
           MagicUI demo recipe: radial spotlight mask + skew + 200% height.
           Squares 48x36 at 40px = 1920x1440 of real grid, enough to fill the

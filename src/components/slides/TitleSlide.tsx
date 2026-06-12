@@ -257,15 +257,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <div className="flex flex-row items-start justify-center gap-6 md:justify-between">
           <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left">
             <span className="block font-sans font-black uppercase leading-none tracking-tight text-owl-teal md:text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
-              <span className="ts-brand-token inline-block font-sans not-italic" style={{ opacity: 0 }}>OWL</span>
-              <span className="ts-brand-token ts-title-accent mx-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
+              <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
+              <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
                 SURF
               </span>
               <span className="ts-brand-token ml-2 inline-block font-sans not-italic text-white md:ml-3" style={{ opacity: 0 }}>DIGITAL</span>
             </span>
-            <span className="ts-brand-subtitle mt-2.5 hidden font-sans text-white/72 md:block md:text-[clamp(1rem,1.5vw,1.45rem)]" style={{ opacity: 0 }}>
-              <span className="font-semibold not-italic tracking-tight">where tech meets </span>
-              <span className="font-serif italic text-owl-teal">design</span>
+            <span className="ts-brand-subtitle mt-3.5 hidden md:inline-flex md:-ml-4 items-center gap-[0.8ch] rounded-full border border-owl-teal/35 bg-owl-teal/[0.07] px-5 py-2" style={{ opacity: 0 }}>
+              <span className="font-sans font-bold not-italic uppercase leading-none tracking-[0.22em] text-white/85 text-[clamp(0.7rem,0.9vw,0.9rem)]">Where Tech Meets</span>
+              <span className="font-sans font-black not-italic uppercase leading-none tracking-[0.22em] text-owl-teal text-[clamp(0.7rem,0.9vw,0.9rem)]">Design</span>
             </span>
           </div>
           <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 md:block" aria-hidden="true" style={{ opacity: 0 }}>

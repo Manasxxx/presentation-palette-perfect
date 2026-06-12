@@ -3,7 +3,7 @@ import { animate, stagger } from "animejs";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
+import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase } from "./slide-motion";
 
 type SlideImage = {
   image: string;
@@ -77,15 +77,6 @@ const CaseStudyLayout = ({
       if (triggered) return;
       setTriggered(true);
 
-      if (!isMobile) {
-        animate(el.querySelector(".bg-wipe")!, {
-          clipPath: ["circle(5% at 50% 50%)", "circle(150% at 50% 50%)"],
-          opacity: [0, 1],
-          duration: 1800,
-          ease: slideSettleEase,
-        });
-      }
-
       animateSlideHeading(el, ".cs-heading", isMobile, 90);
 
       const subtitle = el.querySelector(".cs-subtitle")!;
@@ -150,11 +141,7 @@ const CaseStudyLayout = ({
 
   return (
     <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
-      <div
-        className="bg-wipe absolute inset-0 z-0"
-        style={{ opacity: isMobile ? 1 : 0, clipPath: isMobile ? "none" : "circle(5% at 50% 50%)", background }}
-      />
-      <div className="absolute inset-0 z-[-1]" style={{ background }} />
+      <div className="absolute inset-0 z-0" style={{ background }} />
       {/* Brand-colored interactive grid (desktop only; mobile has no hover).
           MagicUI demo recipe: radial spotlight mask + skew + 200% height. */}
       {!isMobile && (

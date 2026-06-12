@@ -28,8 +28,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import LightRays from "@/components/LightRays";
-import { Separator } from "@/components/ui/separator";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { brandMarks } from "@/components/ui/brand-marks";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
@@ -47,50 +46,39 @@ type Category = {
   services: Service[];
 };
 
-// Desktop-only: the whole offer as five plain-language cards, all visible at once.
-// Verb-led titles + one concrete sentence + deliverable chips — no jargon.
+// Desktop-only: five outcome-led pillar cards, all visible at once (D2, Session 43).
+// One pillar per card: "Be [outcome]" + one concrete sentence + three deliverable tags.
 type DesktopService = {
-  icon: LucideIcon;
-  title: string;
+  outcome: string;
   description: string;
   tags: string[];
 };
 
 const desktopServices: DesktopService[] = [
   {
-    icon: PenTool,
-    title: "Tell Your Story",
-    description:
-      "We turn your product into clear words, videos, and sales decks buyers actually get.",
-    tags: ["Videos", "Sales decks", "Whitepapers"],
+    outcome: "Found",
+    description: "Show up when buyers search, in Google and in AI answers.",
+    tags: ["SEO", "AI Search", "Reviews"],
   },
   {
-    icon: Megaphone,
-    title: "Get You Seen",
-    description:
-      "Ads, PR, and trade shows that put you in front of the right buyers.",
-    tags: ["Paid ads", "PR", "Events"],
+    outcome: "Seen",
+    description: "Ads that put you in front of the right buyers.",
+    tags: ["Meta", "Google", "LinkedIn"],
   },
   {
-    icon: Search,
-    title: "Get You Found",
-    description:
-      "Show up when buyers search — and look trustworthy when they check you out.",
-    tags: ["SEO", "Reviews", "Reputation"],
+    outcome: "Understood",
+    description: "Words, films, and decks buyers actually get.",
+    tags: ["Videos", "Decks", "Whitepapers"],
   },
   {
-    icon: Database,
-    title: "Track Your Buyers",
-    description:
-      "One clean system that shows which leads are real and where they came from.",
-    tags: ["CRM", "Automation", "Analytics"],
+    outcome: "Trusted",
+    description: "A site that holds up when buyers check you out.",
+    tags: ["Web", "UX", "CRM"],
   },
   {
-    icon: Bot,
-    title: "Put AI to Work",
-    description:
-      "AI tools that draft content, answer questions, and save your team hours every week.",
-    tags: ["AI content", "Assistants", "Workflows"],
+    outcome: "Known",
+    description: "Presence where your industry gathers.",
+    tags: ["Events", "PR", "Launches"],
   },
 ];
 
@@ -509,9 +497,9 @@ const ServicesSlide = () => {
               Five systems that make a complex product easy to buy.
             </p>
           ) : (
-            <p className="mt-3 max-w-[45rem] font-serif text-lg italic leading-snug text-white/65 md:mt-[clamp(0.4rem,1.2svh,0.75rem)] md:text-[min(1.25rem,3svh)]">
+            <p className="mt-3 max-w-[45rem] font-body text-lg leading-snug text-white/65 md:mt-[clamp(0.4rem,1.2svh,0.75rem)] md:text-[min(1.25rem,3svh)]">
               Five things we do to help you sell more.{" "}
-              <span className="text-primary">That&rsquo;s it.</span>
+              <span className="font-serif italic text-primary">That&rsquo;s it.</span>
             </p>
           )}
         </header>
@@ -609,76 +597,57 @@ const ServicesSlide = () => {
             </div>
           ) : (
             <>
-              {/* Hallmark · redesign v2: editorial ledger, scan-first · theme: OwlSurf (locked brand)
-                  Each row reads left→right in one pass: ordinal anchor (01–05, genuinely
-                  ordinal — "Five things"), title column, one bright plain sentence,
-                  small-caps deliverables right. Quiet row hover tint + visible "+5" depth
-                  cue replace the invisible HoverCard affordance. No icon boxes, no cards. */}
-              <div className="sv-tabs col-span-12 flex flex-1 flex-col justify-center">
-                {desktopServices.map((svc, index) => {
-                  const detail = categories[index];
-                  return (
-                    <div key={svc.title} className="contents">
-                      {index > 0 && <Separator className="bg-white/[0.07]" />}
-                      <HoverCard openDelay={150} closeDelay={80}>
-                        <HoverCardTrigger asChild>
-                          <article
-                            tabIndex={0}
-                            className="sv-tab group -mx-4 grid cursor-default grid-cols-[2.75rem_minmax(0,23rem)_minmax(0,1fr)_auto] items-baseline gap-x-8 rounded-lg px-4 py-[clamp(0.5rem,1.8svh,1.5rem)] transition-colors duration-300 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 xl:py-[clamp(0.6rem,2svh,1.75rem)]"
-                          >
-                            <span
-                              aria-hidden="true"
-                              className="font-sans text-sm font-bold tabular-nums tracking-[0.08em] text-primary/45 transition-colors duration-300 group-hover:text-primary"
-                            >
-                              0{index + 1}
-                            </span>
-                            <h3 className="font-sans text-[min(1.5rem,3.8svh)] font-black uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-primary xl:text-[min(1.875rem,4svh)]">
-                              {svc.title}
-                            </h3>
-                            <p className="max-w-[36rem] font-body text-[min(1.125rem,2.9svh)] leading-snug text-white/70 transition-colors duration-300 group-hover:text-white/90 xl:text-[min(1.25rem,3svh)]">
-                              {svc.description}
-                            </p>
-                            <span className="hidden items-baseline gap-4 whitespace-nowrap lg:flex">
-                              <span className="font-sans text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary/75 transition-colors duration-300 group-hover:text-primary">
-                                {svc.tags.join("  ·  ")}
-                              </span>
-                              <span className="font-sans text-[0.7rem] font-bold tabular-nums text-white/30 transition-colors duration-300 group-hover:text-primary">
-                                +{detail.services.length}
-                              </span>
-                            </span>
-                          </article>
-                        </HoverCardTrigger>
-                        <HoverCardContent
-                          side="bottom"
-                          align="start"
-                          sideOffset={4}
-                          className="w-[24rem] rounded-xl border-white/10 bg-[#111] p-5 shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
-                        >
-                          <span className="mb-3 block font-serif text-sm italic text-white/60">
-                            Inside {svc.title.toLowerCase()} —
-                          </span>
-                          <ul className="flex flex-col gap-2">
-                            {detail.services.map((sub) => (
-                              <li key={sub.title} className="flex items-baseline gap-2.5">
-                                <span aria-hidden="true" className="text-primary">
-                                  –
-                                </span>
-                                <div className="min-w-0">
-                                  <span className="font-sans text-[0.8rem] font-bold text-white">
-                                    {sub.title}.
-                                  </span>{" "}
-                                  <span className="font-body text-xs leading-snug text-white/55">
-                                    {sub.description}
-                                  </span>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        </HoverCardContent>
-                      </HoverCard>
+              {/* Hallmark · redesign v3 (D2): five outcome-led pillar glass cards · theme: OwlSurf (locked brand)
+                  One pillar per card, all depth visible: ordinal, "BE [OUTCOME]" verb pair,
+                  one plain sentence, hairline rule, three small-caps deliverable tags.
+                  Reads in one pass as: found · seen · understood · trusted · known.
+                  No HoverCard, no hidden depth. Glass per brand: translucent fill +
+                  backdrop blur + hairline border, teal lift on hover. */}
+              <div className="sv-tabs col-span-12 grid flex-1 grid-cols-6 content-center gap-[clamp(1rem,1.8vw,1.75rem)]">
+                {desktopServices.map((svc, index) => (
+                  <article
+                    key={svc.outcome}
+                    className={`sv-tab group flex min-h-[min(11.5rem,26svh)] gap-[clamp(1.25rem,2vw,2.25rem)] rounded-xl border border-white/10 bg-white/[0.04] p-[clamp(1.1rem,1.6vw,1.75rem)] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(75,194,194,0.18),inset_0_1px_0_rgba(255,255,255,0.06)] ${
+                      index < 3 ? "col-span-2" : "col-span-3"
+                    }`}
+                  >
+                    <div className="flex shrink-0 flex-col">
+                      <h3 className="font-sans font-black uppercase leading-[1.05] tracking-tight">
+                        <span className="block text-[min(0.95rem,2.3svh)] text-white/55">Be</span>
+                        <span className="block text-[min(1.5rem,3.5svh)] text-primary drop-shadow-[0_0_14px_rgba(75,194,194,0.25)] xl:text-[min(1.75rem,3.8svh)]">
+                          {svc.outcome}
+                        </span>
+                      </h3>
+                      <span
+                        aria-hidden="true"
+                        className="mt-auto font-sans text-sm font-bold tabular-nums tracking-[0.08em] text-white/40 transition-colors duration-300 group-hover:text-primary/70"
+                      >
+                        0{index + 1}
+                      </span>
                     </div>
-                  );
-                })}
+                    <div className="flex min-w-0 flex-1 flex-col">
+                      <p className="font-body text-[min(0.95rem,2.5svh)] leading-snug text-white/70 transition-colors duration-300 group-hover:text-white/90">
+                        {svc.description}
+                      </p>
+                      <ul className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/10 pt-[clamp(0.6rem,1.6svh,0.9rem)]">
+                        {svc.tags.map((tag) => {
+                          const Mark = brandMarks[tag];
+                          return (
+                            <li
+                              key={tag}
+                              className="flex items-center gap-1.5 font-sans text-[0.66rem] font-bold uppercase tracking-[0.14em] text-primary/75 transition-colors duration-300 group-hover:text-primary"
+                            >
+                              {Mark && (
+                                <Mark className={tag === "AI Search" ? "shrink-0" : "h-3.5 w-3.5 shrink-0"} />
+                              )}
+                              {tag}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </article>
+                ))}
               </div>
             </>
           )}

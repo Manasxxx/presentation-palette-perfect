@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { animate } from "animejs";
 import LogoLoop from "@/components/ui/LogoLoop/LogoLoop";
+import { GoogleMark, MetaMark } from "@/components/ui/brand-marks";
 import PrismaticBurst from "@/components/ui/PrismaticBurst/PrismaticBurst";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideHeading, getSharedSlideMotionProfile, slideEditorialEase } from "./slide-motion";
@@ -44,7 +45,7 @@ const mobileRow3 = allClients.slice(6, 9);
 const renderClientLogo = (client: Client, key: React.Key) => (
   <div
     key={key}
-    className="flex h-[96px] w-[188px] items-center justify-center rounded-lg border border-white/12 bg-[#0b1217]/72 px-4 backdrop-blur-sm transition duration-300 hover:border-primary/60 hover:bg-primary/10 md:h-[128px] md:w-[252px] md:px-5"
+    className="flex h-[96px] w-[188px] items-center justify-center rounded-lg border border-white/12 bg-[#0b1217]/72 px-4 backdrop-blur-sm transition-[border-color,background-color,transform] duration-300 hover:border-primary/60 hover:bg-primary/10 md:h-[128px] md:w-[252px] md:px-5"
   >
     <img
       src={client.src}
@@ -126,7 +127,8 @@ const ClientsSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col px-8 pb-10 pt-12 md:px-12 md:pb-12 md:pt-16">
         <header className="cl-heading text-left self-start">
           <h2 className="font-sans text-[2.4rem] sm:text-[3rem] md:text-[clamp(3.4rem,5.9vw,6.6rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-2 [overflow-wrap:anywhere]">
-            <span className="cl-title-accent font-sans not-italic text-primary inline-block pr-2">Our Clients</span>
+            <span className="font-sans not-italic">Our </span>
+            <span className="cl-title-accent font-sans not-italic text-primary inline-block pr-2">Clients</span>
           </h2>
         </header>
 
@@ -210,14 +212,24 @@ const ClientsSlide = () => {
                 { n: "End-to-end", l: "Brand to demand" },
                 { n: "6", l: "Sectors served" },
                 { n: "India + APAC", l: "Markets reached" },
-                { n: "Meta + Google", l: "Certified partner" },
+                {
+                  n: (
+                    <span className="flex items-center gap-1.5">
+                      <MetaMark className="h-4 w-4 shrink-0" />
+                      <span aria-hidden="true" className="text-white/40">+</span>
+                      <GoogleMark className="h-4 w-4 shrink-0" />
+                      <span className="sr-only">Meta + Google</span>
+                    </span>
+                  ),
+                  l: "Certified partner",
+                },
                 { n: "B2B", l: "Built for complex sales" },
               ].map((stat) => (
                 <span
                   key={stat.l}
                   className="flex items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.045] px-4 py-2 backdrop-blur-sm"
                 >
-                  <span className="font-sans text-[0.82rem] font-black leading-none tracking-tight text-primary">
+                  <span className="font-sans text-[0.82rem] font-black tabular-nums leading-none tracking-tight text-primary">
                     {stat.n}
                   </span>
                   <span className="font-body text-[0.62rem] font-semibold uppercase leading-none tracking-[0.14em] text-white/55">

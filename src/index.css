@@ -855,12 +855,7 @@
   .cs-subtitle,
   .cs-slider,
   .cs-proof,
-  .cs-stat,
-  .bg-wipe {
+  .cs-stat {
     opacity: 1 !important;
-  }
-
-  .bg-wipe {
-    clip-path: none !important;
   }
 }
