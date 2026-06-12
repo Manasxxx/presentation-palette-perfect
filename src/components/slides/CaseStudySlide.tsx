@@ -204,7 +204,7 @@ const CaseStudySlide = () => {
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/85 md:mt-3 md:max-w-[30rem] md:text-[1.24rem]"
+            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/90 md:mt-3 md:max-w-[30rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
             {isMobile
@@ -259,7 +259,7 @@ const CaseStudySlide = () => {
                 )}
               </div>
               <div
-                className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] text-white/95 md:w-auto md:border-l-0 md:pl-0 md:text-[0.7rem] md:font-bold md:tracking-[0.14em] md:text-white/60"
+                className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] text-white/95 md:w-auto md:border-l-0 md:pl-0 md:text-[0.7rem] md:font-bold md:tracking-[0.14em] md:text-white/80"
                 style={{
                   borderColor: `hsl(${mitsuiCyan} / 0.4)`,
                 }}

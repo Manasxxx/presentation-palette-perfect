@@ -18,6 +18,8 @@ const stats = [
   { value: "3.2X", label: "Reported ROI" },
 ];
 
+// Background end stop must stay opaque: a translucent hsl(green / alpha) stop
+// composites over the dark section bg into a dark corner under the dark-ink stat strip.
 const CTPCaseStudy = () => (
   <CaseStudyLayout
     caseNumber="07"
@@ -36,7 +38,7 @@ const CTPCaseStudy = () => (
     slides={sliderImages}
     stats={stats}
     accentColor={ctpGreen}
-    background={`linear-gradient(160deg, hsl(95 30% 92%), hsl(95 20% 88%), hsl(${ctpGreen} / 0.2))`}
+    background={`linear-gradient(160deg, hsl(95 30% 92%), hsl(95 20% 88%), hsl(95 30% 74%))`}
     lightMode
   />
 );

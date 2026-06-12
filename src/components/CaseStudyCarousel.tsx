@@ -13,6 +13,8 @@ interface CaseStudyCarouselProps {
   mobileWide?: boolean;
   mobileTableWidth?: boolean;
   mobileStack?: boolean;
+  /** Wide-aspect desktop cards for landscape creatives (e.g. DEHN 1256x650). */
+  desktopWide?: boolean;
 }
 
 const CaseStudyCarousel = ({
@@ -21,6 +23,7 @@ const CaseStudyCarousel = ({
   mobileWide = false,
   mobileTableWidth = false,
   mobileStack = false,
+  desktopWide = false,
 }: CaseStudyCarouselProps) => {
   const blossomRef = useRef<ElementRef<typeof BlossomCarousel>>(null);
   const isMobile = useIsMobile();
@@ -90,7 +93,7 @@ const CaseStudyCarousel = ({
       as="ul"
       load="always"
       ref={blossomRef}
-      className={`cs-cards${isMobile ? " cs-cards--mobile" : ""}`}
+      className={`cs-cards${isMobile ? " cs-cards--mobile" : ""}${desktopWide && !isMobile ? " cs-cards--wide" : ""}`}
       aria-label="Case-study creative carousel"
     >
       {slides.map((slide) => (

@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { animate, stagger, utils } from 'animejs';
+import { Home, Compass, Wrench, Users, FolderOpen, Mail } from 'lucide-react';
+import { InteractiveMenu } from '@/components/ui/modern-mobile-menu';
 import '@/styles/PillNav.css';
 import logoImg from '@/assets/logo-main.webp';
 
 const navItems = [
-  { label: 'Cover', slideIndex: 0 },
-  { label: 'Positioning', slideIndex: 1 },
-  { label: 'Services', slideIndex: 2 },
-  { label: 'Proof', slideIndex: 3 },
-  { label: 'Cases', slideIndex: 4 },
-  { label: 'Contact', slideIndex: 12 },
+  { label: 'Cover', slideIndex: 0, icon: Home },
+  { label: 'Positioning', slideIndex: 1, icon: Compass },
+  { label: 'Services', slideIndex: 2, icon: Wrench },
+  { label: 'Proof', slideIndex: 3, icon: Users },
+  { label: 'Cases', slideIndex: 4, icon: FolderOpen },
+  { label: 'Contact', slideIndex: 12, icon: Mail },
 ];
 
 const slideToNavIndex = (slideIndex: number): number => {
@@ -37,12 +39,9 @@ const PillNav = ({
   const hoveredPillTextColor = 'hsl(214, 30%, 6%)';
   const pillTextColor = 'hsl(0 0% 100% / 0.85)';
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const circleRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const pillGeomRef = useRef<{ h: number }[]>([]);
   const logoImgRef = useRef<HTMLImageElement>(null);
-  const hamburgerRef = useRef<HTMLButtonElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -54,7 +53,7 @@ const PillNav = ({
     const movingItems = [
       logoRef.current,
       ...Array.from(container.querySelectorAll('.pill-list > li')),
-      hamburgerRef.current,
+      ...Array.from(container.querySelectorAll('.imenu__item')),
     ].filter(Boolean) as HTMLElement[];
 
     utils.remove([container, ...movingItems]);
@@ -111,13 +110,6 @@ const PillNav = ({
       document.fonts.ready.then(layout).catch(() => { });
     }
 
-    const menu = mobileMenuRef.current;
-    if (menu) {
-      menu.style.transformOrigin = 'top center';
-      utils.set(menu, { opacity: 0, scaleY: 1 });
-      menu.style.visibility = 'hidden';
-    }
-
     // Initial load animation
     const logo = logoRef.current;
     const navI = navItemsRef.current;
@@ -171,75 +163,6 @@ const PillNav = ({
     animate(img, { rotate: 360, duration: 600, ease });
   };
 
-  const toggleMobileMenu = () => {
-    const newState = !isMobileMenuOpen;
-    setIsMobileMenuOpen(newState);
-
-    const hamburger = hamburgerRef.current;
-    const menu = mobileMenuRef.current;
-    const backdrop = document.querySelector('.mobile-menu-backdrop') as HTMLElement;
-
-    if (hamburger) {
-      const lines = hamburger.querySelectorAll('.hamburger-line');
-      if (newState) {
-        animate(lines[0], { rotate: 45, translateY: 3, duration: 300, ease });
-        animate(lines[1], { rotate: -45, translateY: -3, duration: 300, ease });
-      } else {
-        animate(lines[0], { rotate: 0, translateY: 0, duration: 300, ease });
-        animate(lines[1], { rotate: 0, translateY: 0, duration: 300, ease });
-      }
-    }
-
-    if (backdrop) {
-      if (newState) {
-        backdrop.style.visibility = 'visible';
-        animate(backdrop, { opacity: 1, duration: 300, ease });
-      } else {
-        animate(backdrop, {
-          opacity: 0,
-          duration: 200,
-          ease,
-          onComplete: () => { backdrop.style.visibility = 'hidden'; },
-        });
-      }
-    }
-
-    if (menu) {
-      if (newState) {
-        menu.style.visibility = 'visible';
-        utils.set(menu, { opacity: 0, translateY: 10 });
-        animate(menu, { opacity: 1, translateY: 0, duration: 300, ease });
-      } else {
-        animate(menu, {
-          opacity: 0,
-          translateY: 10,
-          duration: 200,
-          ease,
-          onComplete: () => { menu.style.visibility = 'hidden'; },
-        });
-      }
-    }
-  };
-
-  // Close the mobile menu on Escape, move focus into it on open, and return
-  // focus to the hamburger on close — keyboard-accessible disclosure.
-  useEffect(() => {
-    if (!isMobileMenuOpen) return;
-    const hamburger = hamburgerRef.current;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') toggleMobileMenu();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    mobileMenuRef.current
-      ?.querySelector<HTMLButtonElement>('.mobile-menu-link')
-      ?.focus();
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      hamburger?.focus();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobileMenuOpen]);
-
   const activeNavIndex = slideToNavIndex(currentSlide);
 
   const cssVars = {
@@ -291,44 +214,16 @@ const PillNav = ({
           </ul>
         </div>
 
-        <button
-          className="mobile-menu-button mobile-only"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
-          aria-expanded={isMobileMenuOpen}
-          aria-controls="mobile-nav-menu"
-          ref={hamburgerRef}
-        >
-          <span className="hamburger-line" />
-          <span className="hamburger-line" />
-        </button>
+        {/* Mobile: Modern Mobile Menu (21st.dev easemize port) replaces the
+            old hamburger + popover. */}
+        <div className="mobile-only imenu-wrap">
+          <InteractiveMenu
+            items={navItems.map(({ label, icon }) => ({ label, icon }))}
+            activeIndex={activeNavIndex}
+            onItemClick={(i) => onNavigate(navItems[i].slideIndex)}
+          />
+        </div>
       </nav>
-
-      <div
-        className="mobile-menu-backdrop mobile-only"
-        onClick={() => {
-          if (isMobileMenuOpen) toggleMobileMenu();
-        }}
-      />
-
-      <div className="mobile-menu-popover mobile-only" id="mobile-nav-menu" ref={mobileMenuRef} style={cssVars}>
-        <ul className="mobile-menu-list">
-          {navItems.map((item, i) => (
-            <li key={item.label}>
-              <button
-                className={`mobile-menu-link${activeNavIndex === i ? ' is-active' : ''}`}
-                aria-current={activeNavIndex === i ? 'page' : undefined}
-                onClick={() => {
-                  toggleMobileMenu();
-                  onNavigate(item.slideIndex);
-                }}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };

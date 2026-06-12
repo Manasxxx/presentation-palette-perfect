@@ -37,6 +37,8 @@ type CaseStudyLayoutProps = {
   owlsurfRole?: string;
   proofPoints?: ProofPoint[];
   mobileWideCarousel?: boolean;
+  /** Wide-aspect desktop cards for landscape creatives (e.g. DEHN 1256x650). */
+  desktopWideCarousel?: boolean;
 };
 
 const CaseStudyLayout = ({
@@ -55,12 +57,13 @@ const CaseStudyLayout = ({
   owlsurfRole = "Positioning, creative, demand, and proof",
   proofPoints = [],
   mobileWideCarousel = false,
+  desktopWideCarousel = false,
 }: CaseStudyLayoutProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
   const isMobile = useIsMobile();
   const ink = lightMode ? "hsl(0 0% 15%)" : "white";
-  const muted = lightMode ? "hsl(0 0% 28%)" : "hsl(0 0% 100% / 0.84)";
+  const muted = lightMode ? "hsl(0 0% 20%)" : "hsl(0 0% 100% / 0.9)";
   const statBorder = lightMode ? "hsl(0 0% 0% / 0.14)" : "hsl(0 0% 100% / 0.18)";
   const statInk = lightMode ? "hsl(0 0% 15%)" : "white";
   const proofRows = [
@@ -244,7 +247,7 @@ const CaseStudyLayout = ({
                   style={{
                     color: isMobile
                       ? (lightMode ? "hsl(0 0% 12%)" : "hsl(0 0% 100% / 0.96)")
-                      : (lightMode ? "hsl(0 0% 30%)" : "hsl(0 0% 100% / 0.6)"),
+                      : (lightMode ? "hsl(0 0% 20%)" : "hsl(0 0% 100% / 0.8)"),
                     borderColor: `hsl(${accentColor} / 0.4)`,
                   }}
                 >
@@ -264,6 +267,7 @@ const CaseStudyLayout = ({
               mobileWide={mobileWideCarousel}
               mobileTableWidth={!mobileWideCarousel && stats.length === 0}
               mobileStack
+              desktopWide={desktopWideCarousel}
             />
           </div>
         </div>

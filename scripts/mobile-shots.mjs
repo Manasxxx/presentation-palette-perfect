@@ -9,8 +9,9 @@ const outDir = `scripts/_shots/${TAG}`;
 mkdirSync(outDir, { recursive: true });
 
 const names = [
-  'title', 'whoweare', 'ourteam', 'services', 'clients',
-  'mitsui', 'baxsaa', 'cultfit', 'girlup', 'ctp', 'vnt', 'raychem', 'contact',
+  'title', 'whoweare', 'services', 'clients',
+  'mitsui', 'kuraray', 'dehn', 'baxsaa', 'cultfit', 'girlup', 'ctp', 'vnt',
+  'contact',
 ];
 
 const browser = await chromium.launch();

@@ -36,6 +36,7 @@
     padding: 0 1rem;
     background: transparent;
   }
+
 }
 
 .pill-nav-items {
@@ -73,6 +74,15 @@
   object-fit: cover;
   display: block;
   border-radius: 50%;
+}
+
+/* The Modern Mobile Menu bar replaces the logo + hamburger pair on mobile;
+   its Cover item covers the logo's go-home role. Must stay after the
+   .pill-logo base rule (same specificity, cascade order decides). */
+@media (max-width: 768px) {
+  .pill-logo {
+    display: none;
+  }
 }
 
 .pill-list {
@@ -176,96 +186,128 @@
   }
 }
 
-.mobile-menu-button {
-  width: var(--nav-h);
-  height: var(--nav-h);
-  border-radius: 50%;
+/* ── Modern Mobile Menu (21st.dev easemize port, mobile-only top bar) ──
+   Icon row on the nav glass; the active item bounces its icon, reveals its
+   label, and grows an underline to the label's measured width (--lineWidth,
+   set from JS in modern-mobile-menu.tsx). */
+
+.imenu-wrap {
+  width: 100%;
+}
+
+.imenu {
+  --imenu-active-color: #4bc2c2;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 2px;
+  padding: 5px 8px;
+  border-radius: 9999px;
   background: hsla(214, 30%, 6%, 0.72);
   border: 1px solid hsla(0, 0%, 100%, 0.12);
   backdrop-filter: blur(18px) saturate(1.2);
   -webkit-backdrop-filter: blur(18px) saturate(1.2);
-  display: none;
+}
+
+.imenu__item {
+  position: relative;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 6px 2px 7px;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  color: hsla(0, 0%, 100%, 0.65);
   cursor: pointer;
-  padding: 0;
-  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@media (max-width: 768px) {
-  .mobile-menu-button {
-    display: flex;
+.imenu__item.active {
+  color: var(--imenu-active-color);
+}
+
+.imenu__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imenu__icon .icon {
+  width: 17px;
+  height: 17px;
+}
+
+.imenu__item.active .imenu__icon .icon {
+  animation: imenu-icon-bounce 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imenu__text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imenu__text.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Active underline: grows to the measured label width. */
+.imenu__item::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 2px;
+  width: 0;
+  border-radius: 2px;
+  background: var(--imenu-active-color);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.imenu__item.active::after {
+  width: var(--lineWidth, 0px);
+}
+
+@keyframes imenu-icon-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-0.3em);
+  }
+  40% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-0.1em);
+  }
+  80% {
+    transform: translateY(0);
   }
 }
 
-.hamburger-line {
-  width: 16px;
-  height: 2px;
-  background: #4bc2c2;
-  border-radius: 1px;
-  display: block;
-  transform-origin: center center;
-}
+@media (prefers-reduced-motion: reduce) {
+  .imenu__item.active .imenu__icon .icon {
+    animation: none;
+  }
 
-.mobile-menu-backdrop {
-  position: fixed;
-  inset: 0;
-  background: hsla(0, 0%, 0%, 0.55);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 997;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.mobile-menu-popover {
-  position: fixed;
-  top: 4em;
-  left: 1rem;
-  right: 1rem;
-  background: hsla(214, 30%, 8%, 0.85);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
-  border: 1px solid hsla(0, 0%, 100%, 0.1);
-  border-radius: 27px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-  z-index: 998;
-  opacity: 0;
-  transform-origin: top center;
-  visibility: hidden;
-}
-
-.mobile-menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 3px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.mobile-menu-popover .mobile-menu-link {
-  display: block;
-  padding: 12px 16px;
-  color: hsla(0, 0%, 100%, 0.9);
-  background-color: hsla(0, 0%, 100%, 0.06);
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 50px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-  border: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.mobile-menu-popover .mobile-menu-link:hover,
-.mobile-menu-popover .mobile-menu-link.is-active {
-  cursor: pointer;
-  background-color: #4bc2c2;
-  color: hsl(214, 30%, 6%);
+  .imenu__item::after,
+  .imenu__text {
+    transition: none;
+  }
 }

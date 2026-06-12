@@ -21,6 +21,8 @@ const stats = [
   { value: "97/100", label: "Mobile score" },
 ];
 
+// Background end stop must stay opaque: a translucent hsl(maroon / alpha) stop
+// composites over the dark section bg into a dark corner under the dark-ink stat strip.
 const BaxsaaCaseStudy = () => (
   <CaseStudyLayout
     caseNumber="04"
@@ -37,7 +39,7 @@ const BaxsaaCaseStudy = () => (
     slides={sliderImages}
     stats={stats}
     accentColor={baxsaaMaroon}
-    background={`linear-gradient(160deg, hsl(36 33% 93%), hsl(36 25% 88%), hsl(${baxsaaMaroon} / 0.15))`}
+    background={`linear-gradient(160deg, hsl(36 33% 93%), hsl(36 25% 88%), hsl(8 28% 79%))`}
     lightMode
   />
 );

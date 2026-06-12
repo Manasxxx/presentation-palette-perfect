@@ -36,6 +36,7 @@ const DEHNCaseStudy = () => (
     slides={sliderImages}
     accentColor={dehnRed}
     mobileWideCarousel
+    desktopWideCarousel
     background={`linear-gradient(160deg, hsl(220 20% 9%), hsl(355 45% 15%), hsl(${dehnRed} / 0.3))`}
   />
 );

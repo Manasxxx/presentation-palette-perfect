@@ -788,6 +788,21 @@
   }
 }
 
+/* Wide-aspect desktop cards (DEHN: all creatives 1256x650). The square card
+   letterboxes landscape creatives with heavy vertical padding; match the card
+   box to the creative aspect instead. Mobile branches unaffected. */
+.cs-cards--wide .cs-cards-slide {
+  aspect-ratio: 1256 / 650;
+}
+
+.cs-cards--wide .cs-cards-card {
+  padding: 2px;
+}
+
+.cs-cards--wide .cs-cards-card img {
+  border-radius: calc(1rem - 2px);
+}
+
 /* Mitsui desktop trial (Session 42): larger stage + ground shadow.
    Stage sits right-of-center with the fanned side cards clear of the slide edge:
    wrapper left = calc(100% - 6rem - card-width/2). If --card-width changes here,
