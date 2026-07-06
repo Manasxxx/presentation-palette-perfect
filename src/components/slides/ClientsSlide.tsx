@@ -211,17 +211,17 @@ const ClientsSlide = () => {
             />
 
             {/* Credibility strip — pills in the same family as the sector / outcome pills */}
-            <div className="mt-10 flex flex-wrap justify-center gap-2.5">
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
               {[
                 { n: "End-to-end", l: "Brand to demand" },
                 { n: "6", l: "Sectors served" },
                 { n: "India + APAC", l: "Markets reached" },
                 {
                   n: (
-                    <span className="flex items-center gap-1.5">
-                      <MetaMark className="h-4 w-4 shrink-0" />
+                    <span className="flex items-center gap-2">
+                      <MetaMark className="h-5 w-5 shrink-0" />
                       <span aria-hidden="true" className="text-white/40">+</span>
-                      <GoogleMark className="h-4 w-4 shrink-0" />
+                      <GoogleMark className="h-5 w-5 shrink-0" />
                       <span className="sr-only">Meta + Google</span>
                     </span>
                   ),
@@ -231,12 +231,12 @@ const ClientsSlide = () => {
               ].map((stat) => (
                 <span
                   key={stat.l}
-                  className="flex items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.045] px-4 py-2 backdrop-blur-sm"
+                  className="flex min-h-[3.25rem] items-center justify-center gap-3 rounded-full border border-white/14 bg-white/[0.06] px-6 py-3 backdrop-blur-sm"
                 >
-                  <span className="font-sans text-[0.82rem] font-black tabular-nums leading-none tracking-tight text-primary">
+                  <span className="font-sans text-[1.02rem] font-black tabular-nums leading-none tracking-tight text-primary">
                     {stat.n}
                   </span>
-                  <span className="font-body text-[0.62rem] font-semibold uppercase leading-none tracking-[0.14em] text-white/55">
+                  <span className="font-body text-[0.78rem] font-bold uppercase leading-none tracking-[0.16em] text-white/70">
                     {stat.l}
                   </span>
                 </span>

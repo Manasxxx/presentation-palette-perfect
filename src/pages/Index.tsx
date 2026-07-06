@@ -21,7 +21,6 @@ const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
 const CaseStudySlide = lazy(() => import("@/components/slides/CaseStudySlide"));
 const KurarayCaseStudy = lazy(() => import("@/components/slides/KurarayCaseStudy"));
 const BaxsaaCaseStudy = lazy(() => import("@/components/slides/BaxsaaCaseStudy"));
-const CultFitCaseStudy = lazy(() => import("@/components/slides/CultFitCaseStudy"));
 const GirlUpCaseStudy = lazy(() => import("@/components/slides/GirlUpCaseStudy"));
 const CTPCaseStudy = lazy(() => import("@/components/slides/CTPCaseStudy"));
 const VNTCaseStudy = lazy(() => import("@/components/slides/VNTCaseStudy"));
@@ -37,7 +36,6 @@ const slides: ComponentType[] = [
   KurarayCaseStudy,
   DEHNCaseStudy,
   BaxsaaCaseStudy,
-  CultFitCaseStudy,
   GirlUpCaseStudy,
   CTPCaseStudy,
   VNTCaseStudy,
@@ -91,7 +89,7 @@ const Index = () => {
 
   // Case studies (Mitsui through VNT) are immersive on mobile — hide the
   // whole nav bar (logo + menu) there. Desktop keeps the nav untouched.
-  const onCaseStudy = currentSlide >= 4 && currentSlide <= 11;
+  const onCaseStudy = currentSlide >= 4 && currentSlide <= 10;
 
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -251,12 +249,12 @@ const Index = () => {
           key={index}
           className="relative"
           data-slide-index={index}
-          nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 11)}
+          nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}
           // Mobile seam blend: both sides of each slide joint fade to the same
           // mix of the two adjacent slides' edge colors (slide-edge-colors.ts),
           // so the boundary reads as one wash, not a divider line.
-          seamTopColor={isMobile && !(index >= 4 && index <= 11) ? seamColor(index - 1) : undefined}
-          seamBottomColor={isMobile && !(index >= 4 && index <= 11) ? seamColor(index) : undefined}
+          seamTopColor={isMobile && !(index >= 4 && index <= 10) ? seamColor(index - 1) : undefined}
+          seamBottomColor={isMobile && !(index >= 4 && index <= 10) ? seamColor(index) : undefined}
         >
           {mountedSlides.has(index) ? (
             <Suspense fallback={<SlideFallback />}>

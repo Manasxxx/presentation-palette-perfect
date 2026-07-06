@@ -8,17 +8,17 @@ Update `handoff.md` ONLY before push. Not at session end, context clearing, or o
 
 ## Current Goal
 
-Session 45 (current): mobile menu space pass, Services mobile = desktop pillar accordion, low-power perf mode.
+Session 46: visual polish, CultFit case removal, Mitsui asset add, mobile/desktop visibility checks.
 
-- **Mobile heading clearance:** slides 1-3 mobile-only `pt-[5.25rem]` (Skyrocket/Services/Clients) so headings clear the ~70px menu bar; desktop verbatim via `md:`.
-- **Mobile nav hidden on cover:** `Index.tsx` mobile visibility gains `currentSlide !== 0`; menu animates in from slide 1.
-- **Services mobile rebuilt (old item 2 CLOSED):** old categories/stepper/tablist/`mobileServices` deleted; mobile renders the same five `pillarServices` (renamed from `desktopServices`) as an auto-advancing accordion — expanded card (teal tint, description + tag row with `tagIcons` lucide icons; brand tags keep marks), others compressed to `GET [OUTCOME]` rows (mobile "Get", desktop keeps "BE"). 3.5s auto-advance, tap re-arms, reduced-motion paused, `grid-rows 0fr→1fr` collapse. Header copy unified (`OUR SERVICES` / `WHAT WE DO`). Desktop byte-identical.
-- **Low-power perf mode (owner: live site choppy on weaker laptop):** new `src/hooks/use-low-power.tsx` FPS watchdog (median rAF frame > 28ms after load ⇒ low-power, sticky per session). **Nothing unmounts** (owner rule: optimize, never remove): Hyperspeed `maxPixelRatio` / LightRays + PrismaticBurst `maxDpr` drop 1.25 → 0.75 — same visuals, ~64% fewer fragments. Healthy machines unchanged.
-- **Verification:** lint clean, vitest 16/16, `npm run build` pass.
+- **Mitsui creatives:** converted three supplied JPGs to WebP and added them to the Mitsui carousel as `mitsui-extra-6/7/8.webp`.
+- **Deck structure:** removed the CultFit case-study slide from the deck, routes, debug menu, nav mapping, edge-color map, and screenshot harness. Contact is now slide 11; case block is slides 4-10. Cult.fit client logo remains on Clients.
+- **Carousel polish:** removed bottom/card shadows from all case-study carousels; DEHN desktop wide cards enlarged (`32rem`) and shifted left; shared case proof tables enlarged; VNT light slide proof text now black for readability.
+- **Visibility polish:** cover partner badges now fit to image height without black shadow/wrapper; Clients proof pills enlarged and higher-contrast; case-study interactive checker grid made stronger; Contact black areas got subtle teal side/bottom glow.
+- **Verification:** local dev server `http://localhost:8080/`; mobile shots all 12 slides (`scripts/_shots/codex-mobile-004956`) and desktop shots all 12 slides (`scripts/_shots/codex-desktop-005102`) showed no horizontal overflow. Contact sheets visually reviewed. Smoothness probe ran; headless mobile improved after low-power sampling, desktop headless remained rough but visual pass was acceptable. Full `npm run lint` hung locally and was stopped; no full lint/build pass claimed.
 
 ## Open Items / Next Steps
 
-0. **CHECK FIRST: verify on the previously-laggy laptop** that the live site is smooth now (low-power mode kicks in after ~5s; first session may stutter during sampling). Also re-check the Session 45 mobile changes (menu clearance, cover nav hide, Services accordion) on a real phone.
+0. **Live-device follow-up:** local Playwright mobile/desktop visibility checks passed with no horizontal overflow in Session 46, but still verify on the previously-laggy laptop and a real phone after deploy. Low-power mode kicks in after ~5s; first session may stutter during sampling.
 
 1. **iPhone ghost strip (mobile case headings) — OPEN.** Dark translucent vertical strip near left margin, clears on touch. Ruled out (S39-40): seam overlays, wrapper blur, clip-path/circle wipe, card backdrop-filter, residual blur(0px). Next suspects: mobile `backdrop-blur-sm` on proof table/stat pills, stack-card `box-shadow`, Motion cross-fade wrapper, `will-change` on stack cards, or forced-recomposite nudge on slide settle. (S43 removed the `bg-wipe` layer entirely — if the strip persists, that suspect is now eliminated by absence.)
 2. **`DebugMenu.tsx`** — temp mobile FAB, owner keeps shipping it. Standing "remove before prod" unresolved.
@@ -33,11 +33,11 @@ Session 45 (current): mobile menu space pass, Services mobile = desktop pillar a
 
 Vite + React SPA, fixed dev port: `http://localhost:8080/` (LAN `http://192.168.0.132:8080/`).
 
-13 slides: Cover (0), Who We Are (1), Services (2), Clients (3), cases 4–11 = Mitsui, Kuraray, DEHN, Baxsaa, CultFit, GirlUp, CTP, VNT (order changed Session 39), Contact (12).
+12 slides: Cover (0), Who We Are (1), Services (2), Clients (3), cases 4–10 = Mitsui, Kuraray, DEHN, Baxsaa, GirlUp, CTP, VNT, Contact (11). CultFit case study removed Session 46; Cult.fit remains as a Clients logo.
 
 Per-slide detail, standing rules, and "do not reintroduce" lists live in `prod.md`. Session history + deploy runbook live in `context.md`.
 
-Deck-order or case-count changes must update together: `Index.tsx` (slides array + `onCaseStudy` + `nativeMotion`), `PillNav`, `DebugMenu`, `slide-routes.ts`, `slide-edge-colors.ts`, case-number props.
+Deck-order or case-count changes must update together: `Index.tsx` (slides array + `onCaseStudy` + `nativeMotion`), `PillNav`, `DebugMenu`, `slide-routes.ts`, `slide-edge-colors.ts`, `scripts/mobile-shots.mjs`, case-number props.
 
 ## Deployment
 

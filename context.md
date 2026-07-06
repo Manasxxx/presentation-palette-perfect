@@ -5,17 +5,15 @@
 
 ---
 
-## Current State (Session 45 push prep)
+## Current State (Session 46 push prep)
 
-Mobile menu space pass, Services mobile rebuilt as the desktop pillar accordion, low-power perf mode (FPS watchdog → DPR scaling).
+Session 46: visual polish, CultFit case removal, Mitsui asset add, mobile/desktop visibility checks.
 
-- **Mobile heading clearance.** Slides 1-3 got mobile-only top padding `pt-[5.25rem]` so headings clear the ~70px Modern Mobile Menu bar: `SkyrocketSlide.tsx` (`py-9` split → `pt-[5.25rem] pb-9`), `ServicesSlide.tsx` (`pt-16` →), `ClientsSlide.tsx` (`pt-12` →). Desktop restored verbatim via `md:` tokens.
-- **Mobile nav hidden on cover.** `Index.tsx` visibility: mobile branch gains `currentSlide !== 0` — menu animates in from slide 1, hides on return to cover. Desktop untouched.
-- **Services mobile = desktop pillars (handoff item 2 closed).** Old mobile UI deleted entirely (segmented bar + stepper, `categories` 25-service data, `mobileServices`, WAI-ARIA tablist + roving focus, panel animations, ~24 lucide icon imports; file 661 → ~300 lines). Mobile now renders the same five `pillarServices` (renamed from `desktopServices`) as an **auto-advancing accordion**: one card expanded (teal border/tint/glow, description `0.85rem leading-relaxed`, tag row), others compressed to a `GET [OUTCOME]` row (mobile says "Get", desktop keeps "BE"; both words `1.1rem`). Auto-advance 3.5s re-armed on tap, paused reduced-motion, starts after entrance (`mobileEntryReady`); collapse via `grid-rows-[0fr→1fr]` + opacity, 500ms brand ease. Tags carry small lucide icons via new `tagIcons` map (SEO→Search, Reviews→Star, Videos→Film, Decks→Presentation, Whitepapers→FileText, Web→Globe, UX→PenTool, CRM→Database, Events→CalendarDays, PR→Megaphone, Launches→Rocket); brand tags keep official marks. Header copy unified with desktop (`OUR SERVICES` / `WHAT WE DO` / "Five things we do…"). Desktop branch byte-identical.
-- **Low-power perf mode (owner-reported choppy live site on a weaker laptop).** New `src/hooks/use-low-power.tsx`: samples rAF frame times for 3.5s (after a 1.5s settle); median > 28ms (~35fps) ⇒ low-power, sticky per session (`sessionStorage` `owlsurf-low-power`). **Nothing unmounts** (owner rule): the three ambient shaders drop their DPR cap 1.25 → 0.75 instead — new `maxPixelRatio` option on `Hyperspeed` (used in `setPixelRatio`, set once at construct), new `maxDpr` prop on `LightRays` (init + `updatePlacement`) and `PrismaticBurst` (init effect deps `[] → [maxDpr]` so a late verdict re-inits once). Healthy machines unchanged.
-- **Verification.** Lint clean on touched files, vitest 16/16, `npm run build` pass. `.github/workflows/deploy.yml` excluded (PAT still lacks `workflow` scope).
-
----
+- **Mitsui creatives:** converted three supplied JPGs to WebP and added them to the Mitsui carousel as `mitsui-extra-6/7/8.webp`.
+- **Deck structure:** removed the CultFit case-study slide from the deck, routes, debug menu, nav mapping, edge-color map, and screenshot harness. Contact is now slide 11; case block is slides 4-10. Cult.fit client logo remains on Clients.
+- **Carousel polish:** removed bottom/card shadows from all case-study carousels; DEHN desktop wide cards enlarged (`32rem`) and shifted left; shared case proof tables enlarged; VNT light slide proof text now black for readability.
+- **Visibility polish:** cover partner badges now fit to image height without black shadow/wrapper; Clients proof pills enlarged and higher-contrast; case-study interactive checker grid made stronger; Contact black areas got subtle teal side/bottom glow.
+- **Verification:** local dev server `http://localhost:8080/`; mobile shots all 12 slides (`scripts/_shots/codex-mobile-004956`) and desktop shots all 12 slides (`scripts/_shots/codex-desktop-005102`) showed no horizontal overflow. Contact sheets visually reviewed. Smoothness probe ran; headless mobile improved after low-power sampling, desktop headless remained rough but visual pass was acceptable. Full `npm run lint` hung locally and was stopped; no full lint/build pass claimed.
 
 ## Deployment Pipeline & Operations
 
@@ -38,6 +36,13 @@ Mobile menu space pass, Services mobile rebuilt as the desktop pillar accordion,
 ---
 
 ## Session Log (compressed; details in git history + prod.md rules)
+
+### Session 46 — visual polish, CultFit case removal, Mitsui asset add
+
+- Added three supplied Mitsui JPG creatives as WebP assets (`mitsui-extra-6/7/8.webp`) and appended them to the Mitsui carousel.
+- Removed the CultFit case-study slide and dead case creatives; updated slide registry, URL slugs, nav/debug labels, edge colors, and screenshot harness. Deck is now 12 slides: Cover, Who We Are, Services, Clients, Mitsui, Kuraray, DEHN, Baxsaa, GirlUp, CTP, VNT, Contact.
+- Visual polish: no carousel bottom shadows, larger DEHN wide cards, fitted cover badges, larger Clients proof pills, stronger case checker grid, larger proof tables, black VNT proof text, and added teal glow to Contact dark areas.
+- Verification: mobile + desktop Playwright screenshots for all 12 slides showed no horizontal overflow; contact sheets visually reviewed. Smoothness probe ran; full lint hung locally and was stopped, so no full lint/build pass is claimed.
 
 ### Session 44 — case-study readability + DEHN wide cards + Modern Mobile Menu
 - Readability (desktop only): `CaseStudyLayout` `muted` → `white/0.9` dark / `0 0% 20%` light, stat labels → `white/0.8` / `0 0% 20%`; ported to Mitsui. Root cause on light slides: CTP + Baxsaa translucent gradient end stops composited dark under dark-ink stats → opaque light stops (`hsl(95 30% 74%)`, `hsl(8 28% 79%)`). Standing rule in prod.md.

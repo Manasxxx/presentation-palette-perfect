@@ -17,7 +17,6 @@ const SLIDE_LABELS = [
   "Kuraray",
   "DEHN",
   "Baxsaa",
-  "CultFit",
   "GirlUp",
   "CTP",
   "VNT",

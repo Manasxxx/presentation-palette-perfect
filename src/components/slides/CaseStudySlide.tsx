@@ -9,6 +9,9 @@ import mitsuiExtra1 from "@/assets/mitsui-extra-1.webp";
 import mitsuiExtra2 from "@/assets/mitsui-extra-2.webp";
 import mitsuiExtra4 from "@/assets/mitsui-extra-4.webp";
 import mitsuiExtra5 from "@/assets/mitsui-extra-5.webp";
+import mitsuiExtra6 from "@/assets/mitsui-extra-6.webp";
+import mitsuiExtra7 from "@/assets/mitsui-extra-7.webp";
+import mitsuiExtra8 from "@/assets/mitsui-extra-8.webp";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -41,6 +44,9 @@ const sliderImages = [
   { image: mitsuiExtra2, alt: "Mitsui Chemicals additional creative 2" },
   { image: mitsuiExtra4, alt: "Mitsui Chemicals additional creative 4" },
   { image: mitsuiExtra5, alt: "Mitsui Chemicals additional creative 5" },
+  { image: mitsuiExtra6, alt: "Mitsui Chemicals healthcare and ophthalmic solutions creative" },
+  { image: mitsuiExtra7, alt: "Mitsui Chemicals material brand identity creative" },
+  { image: mitsuiExtra8, alt: "Mitsui Chemicals laboratory brand identity creative" },
 ];
 
 const mitsuiProofPoints = [
@@ -176,9 +182,9 @@ const CaseStudySlide = () => {
           width={40}
           height={40}
           squares={[48, 36]}
-          className="z-[1] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
-          strokeColor={`hsl(${mitsuiCyan} / 0.24)`}
-          hoverFillColor={`hsl(${mitsuiCyan} / 0.4)`}
+          className="z-[1] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 opacity-100 [mask-image:radial-gradient(1200px_circle_at_center,white,transparent)]"
+          strokeColor={`hsl(${mitsuiCyan} / 0.42)`}
+          hoverFillColor={`hsl(${mitsuiCyan} / 0.5)`}
         />
       )}
       {/* md:pointer-events-none lets the interactive grid receive hover through
@@ -219,13 +225,13 @@ const CaseStudySlide = () => {
           </div>
         </header>
 
-        <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[46%] md:w-[34%] md:max-w-none md:rounded-none md:border-0 md:bg-transparent md:backdrop-blur-none lg:w-[32%]" style={{ opacity: isMobile ? 1 : 0 }}>
+        <div className="cs-proof order-3 max-w-[29rem] overflow-hidden rounded-[1rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-none md:border-0 md:bg-transparent md:backdrop-blur-none lg:w-[35%]" style={{ opacity: isMobile ? 1 : 0 }}>
           {mitsuiProofPoints.map((point, pointIndex) => (
-            <div key={point.label} className={`grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-3.5 md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
-              <span className="font-sans text-[9.5px] font-black uppercase tracking-[0.16em] md:text-[0.68rem]" style={{ color: `hsl(${mitsuiCyan})` }}>
+            <div key={point.label} className={`grid grid-cols-[5.15rem_minmax(0,1fr)] items-center border-b border-white/16 px-3.5 py-2 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
+              <span className="font-sans text-[10.5px] font-black uppercase tracking-[0.15em] md:text-[0.78rem]" style={{ color: `hsl(${mitsuiCyan})` }}>
                 {point.label}
               </span>
-              <span className="font-body text-[0.72rem] leading-tight text-white/92 md:text-[1.02rem] md:leading-snug">
+              <span className="font-body text-[0.82rem] font-medium leading-snug text-white/92 md:text-[1.14rem] md:leading-snug">
                 {point.value}
               </span>
             </div>
@@ -273,7 +279,6 @@ const CaseStudySlide = () => {
         {/* RIGHT: creative gallery */}
         <div className="cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
-            <div className="cs-cards-ground hidden md:block" aria-hidden="true" />
             <CaseStudyCarousel slides={sliderImages} accentColor={mitsuiCyan} mobileStack />
           </div>
         </div>

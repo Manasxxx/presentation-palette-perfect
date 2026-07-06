@@ -33,15 +33,13 @@ export const slideEdgeColors: SlideEdgeColors[] = [
   { top: "hsl(220 20% 9%)", bottom: "hsl(355 40% 16%)" },
   // 7 Baxsaa — light warm beige
   { top: "hsl(36 33% 93%)", bottom: "hsl(28 24% 82%)" },
-  // 8 CultFit — dark purple → pink-tinted dark
-  { top: "hsl(260 20% 8%)", bottom: "hsl(340 35% 14%)" },
-  // 9 Girl Up — teal → purple-tinted dark
+  // 8 Girl Up — teal → purple-tinted dark
   { top: "hsl(168 70% 26%)", bottom: "hsl(268 14% 26%)" },
-  // 10 CTP — light sage
+  // 9 CTP — light sage
   { top: "hsl(95 30% 92%)", bottom: "hsl(95 25% 80%)" },
-  // 11 VNT — light green → deep green
+  // 10 VNT — light green → deep green
   { top: "hsl(120 25% 75%)", bottom: "hsl(140 30% 28%)" },
-  // 12 Contact
+  // 11 Contact
   { top: "hsl(220 30% 4%)", bottom: "hsl(220 30% 4%)" },
 ];
 

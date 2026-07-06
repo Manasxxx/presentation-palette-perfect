@@ -11,12 +11,12 @@ const navItems = [
   { label: 'Services', slideIndex: 2, icon: Wrench },
   { label: 'Proof', slideIndex: 3, icon: Users },
   { label: 'Cases', slideIndex: 4, icon: FolderOpen },
-  { label: 'Contact', slideIndex: 12, icon: Mail },
+  { label: 'Contact', slideIndex: 11, icon: Mail },
 ];
 
 const slideToNavIndex = (slideIndex: number): number => {
   if (slideIndex <= 3) return slideIndex;
-  if (slideIndex <= 11) return 4; // case studies map to "Cases"
+  if (slideIndex <= 10) return 4; // case studies map to "Cases"
   return 5; // Contact
 };
 

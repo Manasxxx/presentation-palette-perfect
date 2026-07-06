@@ -152,9 +152,9 @@ const CaseStudyLayout = ({
           width={40}
           height={40}
           squares={[48, 36]}
-          className="z-[1] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 [mask-image:radial-gradient(900px_circle_at_center,white,transparent)]"
-          strokeColor={`hsl(${accentColor} / 0.24)`}
-          hoverFillColor={`hsl(${accentColor} / 0.4)`}
+          className="z-[1] inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 opacity-100 [mask-image:radial-gradient(1200px_circle_at_center,white,transparent)]"
+          strokeColor={`hsl(${accentColor} / 0.42)`}
+          hoverFillColor={`hsl(${accentColor} / 0.5)`}
         />
       )}
 
@@ -197,7 +197,7 @@ const CaseStudyLayout = ({
         </header>
 
         <div
-          className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[0.9rem] border backdrop-blur-sm md:absolute md:left-12 md:top-[46%] md:w-[34%] md:max-w-none md:rounded-none md:border-0 md:backdrop-blur-none lg:w-[32%]"
+          className="cs-proof order-3 max-w-[29rem] overflow-hidden rounded-[1rem] border backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-none md:border-0 md:backdrop-blur-none lg:w-[35%]"
           style={{
             opacity: isMobile ? 1 : 0,
             borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.22)" : "hsl(0 0% 100% / 0.22)") : statBorder,
@@ -207,13 +207,13 @@ const CaseStudyLayout = ({
           {proofRows.map((point, pointIndex) => (
             <div
               key={`${point.label}-${point.value}`}
-              className={`grid grid-cols-[4.65rem_minmax(0,1fr)] items-center border-b px-3 py-1.5 last:border-b-0 md:grid-cols-[6.7rem_minmax(0,1fr)] md:px-0 md:py-3.5 md:last:border-b ${pointIndex === 0 ? "md:border-t" : ""}`}
+              className={`grid grid-cols-[5.15rem_minmax(0,1fr)] items-center border-b px-3.5 py-2 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t" : ""}`}
               style={{ borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.16)" : "hsl(0 0% 100% / 0.16)") : statBorder }}
             >
-              <span className="font-sans text-[9.5px] font-black uppercase tracking-[0.16em] md:text-[0.68rem]" style={{ color: `hsl(${accentColor})` }}>
+              <span className="font-sans text-[10.5px] font-black uppercase tracking-[0.15em] md:text-[0.78rem]" style={{ color: lightMode ? "hsl(0 0% 8%)" : `hsl(${accentColor})` }}>
                 {point.label}
               </span>
-              <span className="font-body text-[0.72rem] leading-tight md:text-[1.02rem] md:leading-snug" style={{ color: isMobile ? (lightMode ? "hsl(0 0% 10%)" : "hsl(0 0% 100% / 0.92)") : muted }}>
+              <span className="font-body text-[0.82rem] font-medium leading-snug md:text-[1.14rem] md:leading-snug" style={{ color: lightMode ? "hsl(0 0% 8%)" : (isMobile ? "hsl(0 0% 100% / 0.92)" : muted) }}>
                 {point.value}
               </span>
             </div>
@@ -258,9 +258,8 @@ const CaseStudyLayout = ({
           </div>
         )}
 
-        <div className={`cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2 ${stats.length > 0 ? "md:top-[44%]" : "md:top-[50%]"}`}>
+        <div className={`cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute ${desktopWideCarousel ? "md:left-[calc(100%-22rem)]" : "md:left-[calc(100%-20rem)]"} md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2 ${stats.length > 0 ? "md:top-[44%]" : "md:top-[50%]"}`}>
           <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
-            <div className="cs-cards-ground hidden md:block" aria-hidden="true" />
             <CaseStudyCarousel
               slides={slides}
               accentColor={accentColor}

@@ -10,7 +10,7 @@ mkdirSync(outDir, { recursive: true });
 
 const names = [
   'title', 'whoweare', 'services', 'clients',
-  'mitsui', 'kuraray', 'dehn', 'baxsaa', 'cultfit', 'girlup', 'ctp', 'vnt',
+  'mitsui', 'kuraray', 'dehn', 'baxsaa', 'girlup', 'ctp', 'vnt',
   'contact',
 ];
 
@@ -35,7 +35,9 @@ const indices = ONLY ?? names.map((_, i) => i);
 for (const i of indices) {
   await page.evaluate((idx) => {
     const c = document.querySelector('[data-deck-scroll-container]');
-    c.scrollTo({ top: idx * window.innerHeight, behavior: 'auto' });
+    const slide = c.querySelector('.slide');
+    const slideHeight = slide?.getBoundingClientRect().height || window.innerHeight;
+    c.scrollTo({ top: idx * slideHeight, behavior: 'auto' });
   }, i);
   // wait for lazy mount + entrance anim + deferred lanyard (650ms)
   await page.waitForTimeout(2600);

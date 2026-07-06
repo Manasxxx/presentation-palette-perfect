@@ -384,13 +384,13 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center rounded-lg bg-white px-0.5 py-0.5 shadow-[0_4px_18px_rgba(0,0,0,0.28)] md:h-[62px] md:px-1 md:py-1"
+                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center overflow-hidden rounded-lg md:h-[62px]"
                   style={{ opacity: 0 }}
                 >
                   <img
                     src={badge.src}
                     alt={badge.label}
-                    className="block h-[96%] w-auto max-w-[30vw] object-contain md:h-[98%] md:max-w-none"
+                    className="block h-full w-auto max-w-[30vw] object-contain md:max-w-none"
                     loading="eager"
                     decoding="async"
                   />

@@ -22,7 +22,7 @@ const stats = [
 // composites over the dark section bg into a dark corner under the dark-ink stat strip.
 const CTPCaseStudy = () => (
   <CaseStudyLayout
-    caseNumber="07"
+    caseNumber="06"
     title="Check This"
     accentTitle="Property"
     subtitle="Australian property tech. We clarified the product story so searchers could understand and act faster."

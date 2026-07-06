@@ -74,7 +74,9 @@ const ContactSlide = () => {
   return (
     <section ref={sectionRef} className="slide overflow-hidden bg-background font-sans">
       <div className="absolute inset-0 bg-[#07090d]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_56%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.2),transparent_56%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_76%,rgba(75,194,194,0.13),transparent_34%),radial-gradient(circle_at_84%_76%,rgba(75,194,194,0.12),transparent_34%),linear-gradient(115deg,rgba(75,194,194,0.07),transparent_28%,transparent_70%,rgba(75,194,194,0.06))]" />
+      <div className="absolute inset-x-0 bottom-0 h-[42%] bg-[linear-gradient(0deg,rgba(75,194,194,0.08),transparent_72%)]" />
 
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6 pb-[6.75rem] pt-8 text-center md:justify-center md:pb-32 md:pt-8">
         {/* OwlSurf ripple mark — hero */}
