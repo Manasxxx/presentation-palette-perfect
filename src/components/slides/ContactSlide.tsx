@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { animate, stagger } from "animejs";
-import { ArrowUpRight } from "lucide-react";
 import FlyonFooter from "@/components/blocks/FlyonFooter";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import { Ripple } from "@/components/ui/ripple";
@@ -114,29 +113,6 @@ const ContactSlide = () => {
           </span>
         </h2>
 
-        <div className="ct-reveal mt-9 flex w-full max-w-[21rem] flex-row items-stretch justify-center gap-3 opacity-0 sm:w-auto sm:max-w-none sm:flex-row sm:items-center sm:gap-3 md:mt-5">
-          <a
-            href="mailto:growth@owlsurf.com"
-            aria-label="Email growth@owlsurf.com"
-            className={`group inline-flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-5 py-3.5 font-sans text-sm font-bold uppercase tracking-[0.05em] text-background shadow-[0_0_30px_rgba(75,194,194,0.3)] transition duration-300 hover:bg-primary/90 sm:flex-none sm:shrink-0 sm:py-3 md:px-6 md:text-base${isMobile ? " relative overflow-hidden" : ""}`}
-          >
-            {isMobile && (
-              <span className="ts-cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
-            )}
-            {isMobile ? "Hi" : "growth@owlsurf.com"}
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
-          </a>
-          <a
-            href="tel:+919520367546"
-            aria-label="Call +91 9520 367546"
-            className={`inline-flex flex-1 items-center justify-center whitespace-nowrap rounded-full border border-white/22 px-5 py-3.5 font-sans text-sm font-semibold tracking-[0.03em] text-white/82 transition duration-300 hover:border-primary/60 hover:text-primary sm:flex-none sm:shrink-0 sm:py-3 md:px-6 md:text-base${isMobile ? " relative overflow-hidden" : ""}`}
-          >
-            {isMobile && (
-              <span className="ts-cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-primary/35 to-transparent" />
-            )}
-            {isMobile ? "Call us" : "+91 9520 367546"}
-          </a>
-        </div>
       </div>
 
       <div className="ct-reveal absolute inset-x-5 bottom-10 z-[46] opacity-0 md:inset-x-12 md:bottom-8">

@@ -25,6 +25,13 @@ const sliderImages = [
   { image: kurarayMission, alt: "Kuraray sustainability mission creative" },
 ];
 
+const stats = [
+  { value: "1L+", label: "Impressions" },
+  { value: "5K+", label: "Clicks" },
+  { value: "10%+", label: "Organic engagement" },
+  { value: "5K+", label: "Members reached" },
+];
+
 const KurarayCaseStudy = () => (
   <CaseStudyLayout
     caseNumber="02"
@@ -41,6 +48,7 @@ const KurarayCaseStudy = () => (
       { label: "Proof", value: "EVAL, PVOH, MOWITAL, and SEPTON shown by what they enable" },
     ]}
     slides={sliderImages}
+    stats={stats}
     accentColor={kurarayBlue}
     background={`linear-gradient(160deg, hsl(210 35% 10%), hsl(208 55% 16%), hsl(${kurarayBlue} / 0.45))`}
   />

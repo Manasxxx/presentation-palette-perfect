@@ -25,6 +25,13 @@ const sliderImages = [
   { image: vntSustainable, alt: "VNT sustainability creative" },
 ];
 
+const stats = [
+  { value: "60K+", label: "Impressions" },
+  { value: "12K+", label: "Clicks" },
+  { value: "18%", label: "Organic engagement" },
+  { value: "13K+", label: "Members reached" },
+];
+
 const VNTCaseStudy = () => (
   <CaseStudyLayout
     caseNumber="07"
@@ -41,6 +48,7 @@ const VNTCaseStudy = () => (
       { label: "Proof", value: "Maps, use cases, and partner logic made the category tangible" },
     ]}
     slides={sliderImages}
+    stats={stats}
     accentColor={vntGreen}
     background={`linear-gradient(160deg, hsl(120 25% 75%), hsl(140 30% 68%), hsl(${vntGreen} / 0.5))`}
     lightMode

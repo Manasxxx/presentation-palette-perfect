@@ -608,9 +608,9 @@
 
 .cs-mobile-stack {
   position: relative;
-  width: calc(100vw - 1.6rem);
-  max-width: 27rem;
-  aspect-ratio: 1 / 0.88;
+  width: calc(100vw - 3rem);
+  max-width: 24.5rem;
+  aspect-ratio: 1 / 0.82;
   margin-inline: auto;
   overflow: visible;
 }
@@ -628,8 +628,8 @@
   /* No backdrop-filter here: iOS WebKit mispaints backdrop snapshots on these
      rotated, auto-transitioning cards — it rendered as a dark translucent
      vertical ghost strip until the next touch repaint (Session 40 fix). */
-  background: hsl(0 0% 100% / 0.06);
-  padding: 1px;
+  background: hsl(0 0% 100% / 0.035);
+  padding: 0;
   box-shadow: none;
   opacity: 0;
   transform-origin: center 76%;
@@ -665,7 +665,7 @@
   display: block;
   height: 100%;
   width: 100%;
-  border-radius: calc(1rem - 1px);
+  border-radius: 1rem;
   object-fit: contain;
   object-position: center;
 }

@@ -4,7 +4,6 @@ import TitleSlide from "@/components/slides/TitleSlide";
 
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
-import DebugMenu from "@/components/DebugMenu";
 import DeckTransitionLayer from "@/components/DeckTransitionLayer";
 import { DeckScrollContext } from "@/components/deck-scroll-context";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
@@ -235,15 +234,12 @@ const Index = () => {
     >
 
       <PillNav
-        // Glass nav behavior (Session 42): main slides keep the nav pinned on
-        // desktop; case studies stay immersive — hidden until activity, then
-        // the idle timer clears it again. Mobile also hides on the cover
-        // (slide 0) so the hook lands clean.
-        visible={isMobile ? navActive && !onCaseStudy && currentSlide !== 0 : onCaseStudy ? navActive : true}
+        // Case-study slides are fully immersive: no top navigation on mobile or desktop.
+        // Mobile also hides on the cover (slide 0) so the hook lands clean.
+        visible={onCaseStudy ? false : isMobile ? navActive && currentSlide !== 0 : true}
         currentSlide={currentSlide}
         onNavigate={navigateToSlide}
       />
-      <DebugMenu currentSlide={currentSlide} onNavigate={navigateToSlide} />
       {slides.map((SlideComponent, index) => (
         <SlideReveal
           key={index}

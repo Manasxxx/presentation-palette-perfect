@@ -26,10 +26,11 @@ interface StatDef {
 }
 
 const statDefs: StatDef[] = [
-  { label: "APAC impressions", num: 5.8, suffix: "M", decimals: 1 },
-  { label: "Site-bound clicks", num: 104, suffix: "K", decimals: 0 },
-  { label: "Engagement lift", num: 99.2, suffix: "%", decimals: 1, trend: true },
-  { label: "Reported ROI", num: 3, suffix: "X", decimals: 0 },
+  { label: "Impressions", num: 4, suffix: "M+", decimals: 0 },
+  { label: "Clicks", num: 50, suffix: "K+", decimals: 0 },
+  { label: "New followers", num: 4, suffix: "K+", decimals: 0 },
+  { label: "Organic engagement rate", num: 13, suffix: "%", decimals: 0, trend: true },
+  { label: "Members reached", num: 67, suffix: "K+", decimals: 0 },
 ];
 
 const mitsuiBlue = "210 100% 30%";
@@ -190,17 +191,11 @@ const CaseStudySlide = () => {
       {/* md:pointer-events-none lets the interactive grid receive hover through
           the empty areas of this full-slide layer; the carousel stage re-enables
           its own pointer events below. Mobile keeps normal event flow. */}
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2 px-5 pt-7 pb-6 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
         {/* Hallmark · redesign v2: Split Studio — claim + ledger left, creatives right,
             stat-led proof strip across the bottom. Mobile order-flow untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
-          <span
-            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
-            style={{ opacity: isMobile ? 1 : 0, color: `hsl(${mitsuiCyan})` }}
-          >
-            Case proof 01
-          </span>
-          <h2 className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.6rem,4.1vw,4.9rem)] md:pb-2" style={{ opacity: isMobile ? 1 : 0 }}>
+          <h2 className="cs-heading font-sans text-[clamp(1.62rem,8.8vw,2.25rem)] font-black uppercase leading-[1.02] tracking-normal text-white text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.6rem,4.1vw,4.9rem)] md:pb-2" style={{ opacity: isMobile ? 1 : 0 }}>
             <span className="font-sans not-italic md:block">Mitsui </span>
             <span
               className="cs-title-accent font-sans not-italic inline-block pr-2"
@@ -225,13 +220,13 @@ const CaseStudySlide = () => {
           </div>
         </header>
 
-        <div className="cs-proof order-3 max-w-[29rem] overflow-hidden rounded-[1rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-none md:border-0 md:bg-transparent md:backdrop-blur-none lg:w-[35%]" style={{ opacity: isMobile ? 1 : 0 }}>
+        <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[1rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-none md:border-0 md:bg-transparent md:backdrop-blur-none lg:w-[35%]" style={{ opacity: isMobile ? 1 : 0 }}>
           {mitsuiProofPoints.map((point, pointIndex) => (
-            <div key={point.label} className={`grid grid-cols-[5.15rem_minmax(0,1fr)] items-center border-b border-white/16 px-3.5 py-2 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
-              <span className="font-sans text-[10.5px] font-black uppercase tracking-[0.15em] md:text-[0.78rem]" style={{ color: `hsl(${mitsuiCyan})` }}>
+            <div key={point.label} className={`grid grid-cols-[4.75rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1.5 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
+              <span className="font-sans text-[9.5px] font-black uppercase tracking-[0.14em] md:text-[0.78rem]" style={{ color: `hsl(${mitsuiCyan})` }}>
                 {point.label}
               </span>
-              <span className="font-body text-[0.82rem] font-medium leading-snug text-white/92 md:text-[1.14rem] md:leading-snug">
+              <span className="font-body text-[0.74rem] font-medium leading-snug text-white/92 md:text-[1.14rem] md:leading-snug">
                 {point.value}
               </span>
             </div>
@@ -240,11 +235,11 @@ const CaseStudySlide = () => {
 
         {/* Desktop: stat-led proof strip across the bottom (big numerals, hairline
             dividers). Mobile keeps the compact 2x2 pill grid untouched. */}
-        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-4 md:gap-0 md:border-t md:border-white/10">
+        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-x-2 gap-y-3 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-5 md:gap-0 md:border-t md:border-white/10">
           {statDefs.map((stat, statIndex) => (
             <div
               key={stat.label}
-              className={`cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/22 bg-black/40 px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:justify-center md:gap-1.5 md:rounded-none md:border-0 md:bg-transparent md:px-7 md:py-4 md:shadow-none md:backdrop-blur-none ${statIndex === 0 ? "md:pl-0" : "md:border-l md:border-l-white/10"}`}
+              className={`cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/22 bg-black/40 px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:justify-center md:gap-1.5 md:rounded-none md:border-0 md:bg-transparent md:px-7 md:py-4 md:shadow-none md:backdrop-blur-none ${statIndex === statDefs.length - 1 ? "col-span-2 w-[calc(50%-0.25rem)] justify-self-center md:col-span-1 md:w-auto md:justify-self-auto" : ""} ${statIndex === 0 ? "md:pl-0" : "md:border-l md:border-l-white/10"}`}
               style={{ opacity: isMobile ? 1 : 0 }}
             >
               <div
@@ -277,7 +272,7 @@ const CaseStudySlide = () => {
         </div>
 
         {/* RIGHT: creative gallery */}
-        <div className="cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="cs-cards-stage--xl order-2 mt-2 mb-5 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <CaseStudyCarousel slides={sliderImages} accentColor={mitsuiCyan} mobileStack />
           </div>

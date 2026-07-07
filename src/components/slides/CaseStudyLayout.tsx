@@ -39,6 +39,8 @@ type CaseStudyLayoutProps = {
   mobileWideCarousel?: boolean;
   /** Wide-aspect desktop cards for landscape creatives (e.g. DEHN 1256x650). */
   desktopWideCarousel?: boolean;
+  /** Adds extra mobile breathing room for dense case slides. */
+  mobileRoomySpacing?: boolean;
 };
 
 const CaseStudyLayout = ({
@@ -58,6 +60,7 @@ const CaseStudyLayout = ({
   proofPoints = [],
   mobileWideCarousel = false,
   desktopWideCarousel = false,
+  mobileRoomySpacing = false,
 }: CaseStudyLayoutProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const [triggered, setTriggered] = useState(false);
@@ -160,16 +163,10 @@ const CaseStudyLayout = ({
 
       {/* md:pointer-events-none lets the grid receive hover through this
           full-slide layer; the carousel auto-advances, so it needs no mouse. */}
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2.5 px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
+      <div className={`relative z-10 flex h-full w-full flex-col justify-start px-5 pt-8 pb-8 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none ${mobileRoomySpacing ? "gap-3" : "gap-2.5"}`}>
         {/* Hallmark · redesign v2 (ported from Mitsui): Split Studio — claim + open
             ledger left, creatives right, stat-led proof strip bottom. Mobile untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
-          <span
-            className="cs-heading text-[10px] md:text-xs tracking-[0.3em] font-medium mb-3 hidden uppercase md:block"
-            style={{ opacity: isMobile ? 1 : 0, color: `hsl(${accentColor})` }}
-          >
-            Case proof {caseNumber}
-          </span>
           <h2
             className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.45rem,4vw,4.8rem)] md:pb-2"
             style={{ opacity: isMobile ? 1 : 0, color: ink }}
@@ -223,7 +220,7 @@ const CaseStudyLayout = ({
         {stats.length > 0 && (
           /* Desktop: stat-led proof strip across the bottom. Mobile keeps the pills. */
           <div
-            className="cs-stats order-4 grid grid-cols-2 gap-2 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-4 md:gap-0 md:border-t"
+            className={`cs-stats order-4 grid grid-cols-2 gap-x-2 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-4 md:gap-0 md:border-t ${mobileRoomySpacing ? "gap-y-3" : "gap-y-2"}`}
             style={{ borderColor: statBorder }}
           >
             {stats.map((stat, statIndex) => (
@@ -258,7 +255,7 @@ const CaseStudyLayout = ({
           </div>
         )}
 
-        <div className={`cs-cards-stage--xl order-2 mt-3 mb-1 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute ${desktopWideCarousel ? "md:left-[calc(100%-22rem)]" : "md:left-[calc(100%-20rem)]"} md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2 ${stats.length > 0 ? "md:top-[44%]" : "md:top-[50%]"}`}>
+        <div className={`cs-cards-stage--xl order-2 mt-3 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute ${mobileRoomySpacing ? "mb-4" : "mb-1"} ${desktopWideCarousel ? "md:left-[calc(100%-22rem)]" : "md:left-[calc(100%-20rem)]"} md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2 ${stats.length > 0 ? "md:top-[44%]" : "md:top-[50%]"}`}>
           <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <CaseStudyCarousel
               slides={slides}

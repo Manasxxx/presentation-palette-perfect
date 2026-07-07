@@ -230,11 +230,13 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         style={
           isMobile
             ? {
-                top: 'calc(100% - 82vw)',
-                left: '50%',
-                width: '100vw',
-                height: '100vw',
-                transform: 'translateX(-50%)',
+                top: 'calc(100% - 66vw)',
+                left: '-12vw',
+                right: '-12vw',
+                width: '124vw',
+                height: '124vw',
+                transform: 'none',
+                marginInline: 'auto',
               }
             : {
                 top: '100%',

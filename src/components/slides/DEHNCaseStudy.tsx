@@ -18,6 +18,13 @@ const sliderImages = [
   { image: dehnSafetyTips, alt: "DEHN electrical safety tips creative" },
 ];
 
+const stats = [
+  { value: "2.5L+", label: "Impressions" },
+  { value: "18K+", label: "Clicks" },
+  { value: "20-30%", label: "Organic engagement" },
+  { value: "3K+", label: "Monthly visitors" },
+];
+
 const DEHNCaseStudy = () => (
   <CaseStudyLayout
     caseNumber="03"
@@ -34,9 +41,11 @@ const DEHNCaseStudy = () => (
       { label: "Proof", value: "Railways, power grids, and telecom shown as protected systems" },
     ]}
     slides={sliderImages}
+    stats={stats}
     accentColor={dehnRed}
     mobileWideCarousel
     desktopWideCarousel
+    mobileRoomySpacing
     background={`linear-gradient(160deg, hsl(220 20% 9%), hsl(355 45% 15%), hsl(${dehnRed} / 0.3))`}
   />
 );

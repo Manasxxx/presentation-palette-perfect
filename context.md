@@ -5,15 +5,18 @@
 
 ---
 
-## Current State (Session 46 push prep)
+## Current State (Session 47 push prep)
 
-Session 46: visual polish, CultFit case removal, Mitsui asset add, mobile/desktop visibility checks.
+Session 47: mobile-first case-study metric/content pass, contact/footer cleanup, cover globe tuning, and dead-file cleanup.
 
-- **Mitsui creatives:** converted three supplied JPGs to WebP and added them to the Mitsui carousel as `mitsui-extra-6/7/8.webp`.
-- **Deck structure:** removed the CultFit case-study slide from the deck, routes, debug menu, nav mapping, edge-color map, and screenshot harness. Contact is now slide 11; case block is slides 4-10. Cult.fit client logo remains on Clients.
-- **Carousel polish:** removed bottom/card shadows from all case-study carousels; DEHN desktop wide cards enlarged (`32rem`) and shifted left; shared case proof tables enlarged; VNT light slide proof text now black for readability.
-- **Visibility polish:** cover partner badges now fit to image height without black shadow/wrapper; Clients proof pills enlarged and higher-contrast; case-study interactive checker grid made stronger; Contact black areas got subtle teal side/bottom glow.
-- **Verification:** local dev server `http://localhost:8080/`; mobile shots all 12 slides (`scripts/_shots/codex-mobile-004956`) and desktop shots all 12 slides (`scripts/_shots/codex-desktop-005102`) showed no horizontal overflow. Contact sheets visually reviewed. Smoothness probe ran; headless mobile improved after low-power sampling, desktop headless remained rough but visual pass was acceptable. Full `npm run lint` hung locally and was stopped; no full lint/build pass claimed.
+- **CTP creatives:** converted nine supplied Check This Property JPGs to WebP (`ctp-creative-4..12.webp`) and appended them to the CTP carousel.
+- **Case metrics:** updated Mitsui, Kuraray, DEHN, and VNT metrics. Mitsui now shows 4M+ impressions, 50K+ clicks, 4K+ new followers, 13% organic engagement, and 67K+ members reached. Kuraray, DEHN, and VNT use four-pill metric sets.
+- **Case mobile polish:** removed `Case proof NN` eyebrows across cases, tightened Mitsui mobile table/creative spacing, centered Mitsui's fifth mobile pill, added DEHN mobile breathing room, and reduced mobile stacked-card glass padding.
+- **Navigation:** removed the mobile debug menu and hides top navigation on all case-study slides (4-10) on both mobile and desktop.
+- **Contact/footer:** contact CTA pills removed; tappable email and two phone numbers moved into the footer with mail/phone icons. Desktop contact info is centered to the ripple/logo; mobile footer uses logo-left/contact-right with social links below.
+- **Cover:** mobile globe re-centered, enlarged, and shifted lower.
+- **Cleanup:** removed unused debug/UI helper components plus unused old badge/team/service assets. `.github/workflows/deploy.yml` remains a local modified file and must stay excluded from this push.
+- **Verification:** `git diff --check` passed, `npm run lint` passed with 2 existing fast-refresh warnings, `npm run build` passed. `npx vitest run` hung twice after printing only the Vitest header and was stopped; no test pass claimed.
 
 ## Deployment Pipeline & Operations
 
@@ -36,6 +39,14 @@ Session 46: visual polish, CultFit case removal, Mitsui asset add, mobile/deskto
 ---
 
 ## Session Log (compressed; details in git history + prod.md rules)
+
+### Session 47 — mobile case metrics, contact/footer, globe, cleanup
+
+- Added nine CTP WebP carousel creatives from supplied JPGs and wired them into `CTPCaseStudy`.
+- Updated case-study proof metrics for Mitsui, Kuraray, DEHN, and VNT; removed all case-proof eyebrows; tuned mobile case spacing, including Mitsui and DEHN.
+- Removed `DebugMenu` and hid the top nav for case-study slides on both mobile and desktop.
+- Reworked Contact so email/phone live in `FlyonFooter` as tappable links with icons; desktop contact info aligns to the ripple/logo, mobile is logo-left/contact-right.
+- Re-centered/enlarged/lowered the mobile cover globe and removed unused old UI/helper files and dead assets.
 
 ### Session 46 — visual polish, CultFit case removal, Mitsui asset add
 
@@ -180,7 +191,7 @@ Session 46: visual polish, CultFit case removal, Mitsui asset add, mobile/deskto
 ## Known Issues / TODOs
 
 - [ ] iPhone ghost strip on mobile case headings (see handoff item 1).
-- [ ] `DebugMenu.tsx` removal decision before "real" prod.
+- [x] `DebugMenu.tsx` removed in Session 47.
 - [ ] True 1200×630 OG card (favicon stopgap live).
 - [ ] `deploy.yml` retry flags unpushed (needs `workflow` scope); PAT rotation outstanding.
 - [ ] `npm audit` advisories (user deferred).
@@ -206,7 +217,6 @@ src/
     DeckTransitionLayer.tsx   — desktop liquid wash
     CaseStudyCarousel.tsx     — Blossom stack (desktop .cs-cards / mobile .cs-mobile-stack)
     PillNav.tsx               — idle-hiding nav (Anime.js)
-    DebugMenu.tsx             — TEMP mobile FAB
     OwlSurfLogo.tsx           — animated SVG mark (IO-gated loop)
     blocks/FlyonFooter.tsx    — contact footer
     slides/                   — TitleSlide, SkyrocketSlide, ServicesSlide, ClientsSlide,
