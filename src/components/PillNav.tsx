@@ -6,10 +6,10 @@ import '@/styles/PillNav.css';
 import logoImg from '@/assets/logo-main.webp';
 
 const navItems = [
-  { label: 'Cover', slideIndex: 0, icon: Home },
-  { label: 'Positioning', slideIndex: 1, icon: Compass },
-  { label: 'Services', slideIndex: 2, icon: Wrench },
-  { label: 'Proof', slideIndex: 3, icon: Users },
+  { label: 'Home', slideIndex: 0, icon: Home },
+  { label: 'About', slideIndex: 1, icon: Compass },
+  { label: 'Work', slideIndex: 2, icon: Wrench },
+  { label: 'Clients', slideIndex: 3, icon: Users },
   { label: 'Cases', slideIndex: 4, icon: FolderOpen },
   { label: 'Contact', slideIndex: 11, icon: Mail },
 ];

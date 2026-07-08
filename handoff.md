@@ -8,16 +8,15 @@ Update `handoff.md` ONLY before push. Not at session end, context clearing, or o
 
 ## Current Goal
 
-Session 47: mobile-first case-study metric/content pass, contact/footer cleanup, cover globe tuning, and dead-file cleanup.
+Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repair, and contact/footer tuning.
 
-- **CTP creatives:** converted nine supplied Check This Property JPGs to WebP (`ctp-creative-4..12.webp`) and appended them to the CTP carousel.
-- **Case metrics:** updated Mitsui, Kuraray, DEHN, and VNT bottom/mobile stats; Mitsui uses five desktop columns and centers the fifth mobile pill, while Kuraray/DEHN/VNT use four metric pills.
-- **Case mobile polish:** removed all `Case proof NN` eyebrows, added DEHN mobile breathing room, tightened Mitsui mobile table/image spacing, and reduced mobile stacked-card glass padding.
-- **Navigation:** removed the mobile debug FAB/component and hid the top nav on all case-study slides (mobile and desktop) for an immersive case block.
-- **Contact/footer:** removed CTA pills from Contact, moved tappable email + two phone numbers into `FlyonFooter`, added mail/phone icons, aligned desktop center with the ripple/logo, and made mobile logo-left/contact-right without using more vertical space.
-- **Cover:** re-centered the mobile globe, then zoomed it in and moved it lower.
-- **Cleanup:** removed unused debug/UI helper files and clearly unused old badge/team/service assets.
-- **Verification:** `git diff --check` passed, `npm run lint` passed with 2 existing fast-refresh warnings, `npm run build` passed. `npx vitest run` hung twice after printing only the Vitest header and was stopped; no test pass claimed. Local live server used for visual checks at `http://localhost:8080/`.
+- **Dev server:** added durable `npm run dev:server` via `scripts/start-dev-server.sh`; it clears stale port 8080 listeners, starts Vite detached, writes `.codex-runtime/`, and reuses an existing healthy server. `.codex-runtime/` is ignored.
+- **Navigation / slide copy:** desktop nav labels simplified to `Home / About / Work / Clients / Cases / Contact`; removed the Slide 2 line `We turn dense product truth into market-facing clarity for the teams selling it.`
+- **Services:** service cards now read `GET YOU [OUTCOME]`, with more scannable desktop cards and mobile accordion cards; removed the services subtitle line. Mobile accordion expand/collapse behavior preserved.
+- **Clients:** LogoLoop speeds lowered and track compositing tuned for smoother marquee motion.
+- **Case studies:** desktop names now stay on one line; proof tables now carry a subtle tint and label colors match the adjacent text color; bottom stat descriptors got a small readability tint and heavier/larger type. Desktop carousel replaced the scroll-timeline Blossom stack with a deterministic fanned stack to avoid Safari/desktop drift over the content.
+- **Contact:** mobile hero/ripple/headline shifted up; mobile footer redesigned as a more scannable card without removing info; email forced lowercase on mobile; mobile ripple uses OwlSurf teal with dark outline rings removed; `Let’s talk` moved below the rotating headline.
+- **Verification:** `git diff --check` passed; `npm run lint` passed with 2 existing fast-refresh warnings; `npm run build` passed. `npx vitest run` timed out after the Vitest header again, so no test pass is claimed.
 
 ## Open Items / Next Steps
 

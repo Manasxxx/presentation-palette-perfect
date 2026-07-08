@@ -168,10 +168,10 @@ const CaseStudyLayout = ({
             ledger left, creatives right, stat-led proof strip bottom. Mobile untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
           <h2
-            className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-left pb-1 [overflow-wrap:anywhere] md:text-[clamp(2.45rem,4vw,4.8rem)] md:pb-2"
+            className="cs-heading font-sans text-[clamp(1.78rem,9.8vw,2.55rem)] font-black uppercase leading-[1.02] tracking-normal text-left pb-1 [overflow-wrap:anywhere] md:whitespace-nowrap md:text-[clamp(2.25rem,3.45vw,4.35rem)] md:pb-2"
             style={{ opacity: isMobile ? 1 : 0, color: ink }}
           >
-            <span className="font-sans not-italic md:block">{title} </span>
+            <span className="font-sans not-italic">{title} </span>
             <span
               className="cs-title-accent font-sans not-italic inline-block pr-2"
               style={{ color: `hsl(${accentColor})` }}
@@ -194,11 +194,13 @@ const CaseStudyLayout = ({
         </header>
 
         <div
-          className="cs-proof order-3 max-w-[29rem] overflow-hidden rounded-[1rem] border backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-none md:border-0 md:backdrop-blur-none lg:w-[35%]"
+          className="cs-proof order-3 max-w-[29rem] overflow-hidden rounded-[1rem] border backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-[0.75rem] md:border md:px-5 md:backdrop-blur-[2px] lg:w-[35%]"
           style={{
             opacity: isMobile ? 1 : 0,
             borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.22)" : "hsl(0 0% 100% / 0.22)") : statBorder,
-            backgroundColor: isMobile ? (lightMode ? "hsl(0 0% 100% / 0.7)" : "hsl(0 0% 0% / 0.42)") : "transparent",
+            backgroundColor: isMobile
+              ? (lightMode ? "hsl(0 0% 100% / 0.7)" : "hsl(0 0% 0% / 0.42)")
+              : (lightMode ? "hsl(0 0% 100% / 0.18)" : "hsl(0 0% 0% / 0.16)"),
           }}
         >
           {proofRows.map((point, pointIndex) => (
@@ -207,7 +209,7 @@ const CaseStudyLayout = ({
               className={`grid grid-cols-[5.15rem_minmax(0,1fr)] items-center border-b px-3.5 py-2 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t" : ""}`}
               style={{ borderColor: isMobile ? (lightMode ? "hsl(0 0% 0% / 0.16)" : "hsl(0 0% 100% / 0.16)") : statBorder }}
             >
-              <span className="font-sans text-[10.5px] font-black uppercase tracking-[0.15em] md:text-[0.78rem]" style={{ color: lightMode ? "hsl(0 0% 8%)" : `hsl(${accentColor})` }}>
+              <span className="font-sans text-[10.5px] font-black uppercase tracking-[0.15em] md:text-[0.78rem]" style={{ color: lightMode ? "hsl(0 0% 8%)" : (isMobile ? "hsl(0 0% 100% / 0.92)" : muted) }}>
                 {point.label}
               </span>
               <span className="font-body text-[0.82rem] font-medium leading-snug md:text-[1.14rem] md:leading-snug" style={{ color: lightMode ? "hsl(0 0% 8%)" : (isMobile ? "hsl(0 0% 100% / 0.92)" : muted) }}>
@@ -240,12 +242,15 @@ const CaseStudyLayout = ({
                   {stat.value}
                 </div>
                 <div
-                  className="flex min-h-0 w-full items-center border-l pl-2 font-body text-[9.2px] font-semibold uppercase leading-[1.02] tracking-[0.035em] md:w-auto md:border-l-0 md:pl-0 md:text-[0.7rem] md:font-bold md:tracking-[0.14em]"
+                  className="flex min-h-0 w-full items-center rounded-full border-l px-2 py-0.5 font-body text-[10.9px] font-semibold uppercase leading-[1.02] tracking-[0.05em] md:w-fit md:-translate-x-2 md:border-l-0 md:px-2 md:py-0.5 md:text-[0.83rem] md:font-extrabold md:tracking-[0.145em]"
                   style={{
                     color: isMobile
                       ? (lightMode ? "hsl(0 0% 12%)" : "hsl(0 0% 100% / 0.96)")
                       : (lightMode ? "hsl(0 0% 20%)" : "hsl(0 0% 100% / 0.8)"),
                     borderColor: `hsl(${accentColor} / 0.4)`,
+                    backgroundColor: isMobile
+                      ? (lightMode ? "hsl(0 0% 100% / 0.58)" : "hsl(0 0% 0% / 0.34)")
+                      : (lightMode ? "hsl(0 0% 100% / 0.18)" : "hsl(0 0% 0% / 0.16)"),
                   }}
                 >
                   {stat.label}

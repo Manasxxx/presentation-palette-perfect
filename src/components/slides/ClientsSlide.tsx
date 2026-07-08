@@ -142,7 +142,7 @@ const ClientsSlide = () => {
           <div className="flex flex-col gap-4 md:hidden">
             <LogoLoop
               logos={mobileRow1}
-              speed={58}
+              speed={46}
               direction="left"
               logoHeight={96}
               gap={22}
@@ -155,7 +155,7 @@ const ClientsSlide = () => {
             />
             <LogoLoop
               logos={mobileRow2}
-              speed={66}
+              speed={52}
               direction="right"
               logoHeight={96}
               gap={22}
@@ -168,7 +168,7 @@ const ClientsSlide = () => {
             />
             <LogoLoop
               logos={mobileRow3}
-              speed={54}
+              speed={44}
               direction="left"
               logoHeight={96}
               gap={22}
@@ -185,7 +185,7 @@ const ClientsSlide = () => {
           <div className="hidden md:flex md:flex-col md:gap-6">
             <LogoLoop
               logos={firstRow}
-              speed={64}
+              speed={50}
               direction="left"
               logoHeight={96}
               gap={22}
@@ -198,7 +198,7 @@ const ClientsSlide = () => {
             />
             <LogoLoop
               logos={secondRow}
-              speed={57}
+              speed={46}
               direction="right"
               logoHeight={96}
               gap={22}

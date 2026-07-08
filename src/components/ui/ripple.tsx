@@ -10,12 +10,16 @@ interface RippleProps extends ComponentPropsWithoutRef<"div"> {
   mainCircleSize?: number;
   mainCircleOpacity?: number;
   numCircles?: number;
+  accentColor?: string;
+  ringBorderColor?: string;
 }
 
 export const Ripple = React.memo(function Ripple({
   mainCircleSize = 210,
   mainCircleOpacity = 0.24,
   numCircles = 8,
+  accentColor = "hsl(var(--foreground))",
+  ringBorderColor = accentColor,
   className,
   ...props
 }: RippleProps) {
@@ -45,7 +49,8 @@ export const Ripple = React.memo(function Ripple({
                 animationDelay,
                 borderStyle: "solid",
                 borderWidth: "1px",
-                borderColor: "hsl(var(--foreground))",
+                borderColor: ringBorderColor,
+                backgroundColor: accentColor,
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%) scale(1)",

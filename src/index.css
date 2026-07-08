@@ -866,3 +866,71 @@
     opacity: 1 !important;
   }
 }
+
+/* Stable desktop case-study stack. Replaces scroll-timeline layout that can drift
+   in Safari/desktop browsers and spill across the proof text. */
+.cs-desktop-stack {
+  --card-width: clamp(22rem, 29vw, 28rem);
+  position: relative;
+  width: calc(var(--card-width) * 1.42);
+  height: var(--card-width);
+  overflow: visible;
+  isolation: isolate;
+}
+
+.cs-desktop-stack--wide {
+  --card-width: clamp(26rem, 33vw, 32rem);
+  height: calc(var(--card-width) * 650 / 1256);
+}
+
+.cs-desktop-stack-card {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--card-width);
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid hsl(0 0% 100% / 0.18);
+  background: hsl(0 0% 100% / 0.045);
+  box-shadow: 0 18px 38px hsl(214 30% 4% / 0.34);
+  opacity: 0;
+  transform: translate3d(0, 0, 0) scale(0.82);
+  transition: transform 620ms cubic-bezier(0.18, 0.82, 0.18, 1), opacity 420ms ease;
+  will-change: transform, opacity;
+}
+
+.cs-desktop-stack-card--active {
+  z-index: 4;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+}
+
+.cs-desktop-stack-card--prev {
+  z-index: 2;
+  opacity: 0.72;
+  transform: translate3d(-18%, 5%, 0) rotate(-6deg) scale(0.78);
+}
+
+.cs-desktop-stack-card--next {
+  z-index: 3;
+  opacity: 0.82;
+  transform: translate3d(18%, 2%, 0) rotate(5deg) scale(0.82);
+}
+
+.cs-desktop-stack-card--hidden {
+  z-index: 1;
+  opacity: 0;
+  transform: translate3d(0, 0, 0) scale(0.74);
+  pointer-events: none;
+}
+
+.cs-desktop-stack-card img,
+.cs-desktop-stack-card video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(1rem - 1px);
+  object-fit: contain;
+  object-position: center;
+}

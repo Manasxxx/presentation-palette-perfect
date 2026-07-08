@@ -30,3 +30,5 @@ scripts/_shots/
 *.njsproj
 *.sln
 *.sw?
+
+.codex-runtime/

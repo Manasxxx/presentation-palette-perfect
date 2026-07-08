@@ -5,18 +5,17 @@
 
 ---
 
-## Current State (Session 47 push prep)
+## Current State (Session 48 push prep)
 
-Session 47: mobile-first case-study metric/content pass, contact/footer cleanup, cover globe tuning, and dead-file cleanup.
+Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repair, and contact/footer tuning.
 
-- **CTP creatives:** converted nine supplied Check This Property JPGs to WebP (`ctp-creative-4..12.webp`) and appended them to the CTP carousel.
-- **Case metrics:** updated Mitsui, Kuraray, DEHN, and VNT metrics. Mitsui now shows 4M+ impressions, 50K+ clicks, 4K+ new followers, 13% organic engagement, and 67K+ members reached. Kuraray, DEHN, and VNT use four-pill metric sets.
-- **Case mobile polish:** removed `Case proof NN` eyebrows across cases, tightened Mitsui mobile table/creative spacing, centered Mitsui's fifth mobile pill, added DEHN mobile breathing room, and reduced mobile stacked-card glass padding.
-- **Navigation:** removed the mobile debug menu and hides top navigation on all case-study slides (4-10) on both mobile and desktop.
-- **Contact/footer:** contact CTA pills removed; tappable email and two phone numbers moved into the footer with mail/phone icons. Desktop contact info is centered to the ripple/logo; mobile footer uses logo-left/contact-right with social links below.
-- **Cover:** mobile globe re-centered, enlarged, and shifted lower.
-- **Cleanup:** removed unused debug/UI helper components plus unused old badge/team/service assets. `.github/workflows/deploy.yml` remains a local modified file and must stay excluded from this push.
-- **Verification:** `git diff --check` passed, `npm run lint` passed with 2 existing fast-refresh warnings, `npm run build` passed. `npx vitest run` hung twice after printing only the Vitest header and was stopped; no test pass claimed.
+- **Dev server:** added `npm run dev:server` (`scripts/start-dev-server.sh`) so Codex/local sessions can reliably start/reuse Vite on `http://localhost:8080/`; runtime logs/pids live in ignored `.codex-runtime/`.
+- **Navigation / copy:** simplified nav labels to `Home / About / Work / Clients / Cases / Contact`; removed the extra Slide 2 explanatory line.
+- **Services:** cards now use `GET YOU [OUTCOME]`; desktop cards are more scannable with headline-first hierarchy and pill tags, while mobile keeps the auto-advancing expand/collapse accordion. Removed the services subtitle sentence.
+- **Clients:** reduced LogoLoop speeds and added smoother transform compositing to reduce marquee jitter.
+- **Case studies:** desktop case titles stay on one line; proof tables have subtle readability tint and labels now match adjacent text color; bottom stat descriptors are slightly larger/heavier with a small tint behind the descriptor only. Desktop carousel no longer relies on scroll-timeline layout; it uses a deterministic fanned stack to avoid desktop/Safari drift over text.
+- **Contact/footer:** mobile contact hero moved upward; mobile footer reworked into a scannable card with all contact/social/copyright info retained; mobile ripple is more OwlSurf teal and dark outline rings were removed; email displays lowercase and `Let’s talk` sits under the rotating headline.
+- **Push note:** `.github/workflows/deploy.yml` is still locally modified and must remain excluded from this push.
 
 ## Deployment Pipeline & Operations
 
@@ -39,6 +38,14 @@ Session 47: mobile-first case-study metric/content pass, contact/footer cleanup,
 ---
 
 ## Session Log (compressed; details in git history + prod.md rules)
+
+### Session 48 — nav/services/cases/contact polish + dev server hardening
+
+- Added durable `npm run dev:server` starter for local Vite sessions on port 8080.
+- Simplified navigation labels, removed Slide 2/Services extra copy, and made Services cards read `GET YOU [OUTCOME]` with clearer desktop/mobile hierarchy.
+- Replaced the desktop case-study carousel with a deterministic fanned stack after Safari/desktop drift; kept mobile stack/cover-flow behavior.
+- Made case-study titles one-line on desktop; improved proof table tint/label colors and bottom stat descriptor readability.
+- Smoothed Clients LogoLoop movement and reworked mobile Contact/footer/ripple details.
 
 ### Session 47 — mobile case metrics, contact/footer, globe, cleanup
 

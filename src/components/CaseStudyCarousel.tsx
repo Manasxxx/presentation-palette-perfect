@@ -28,12 +28,17 @@ const CaseStudyCarousel = ({
   const blossomRef = useRef<ElementRef<typeof BlossomCarousel>>(null);
   const isMobile = useIsMobile();
   const [mobileStackIndex, setMobileStackIndex] = useState(0);
+  const [desktopStackIndex, setDesktopStackIndex] = useState(0);
 
-  // Auto-advance both layouts (mobile cover-flow + desktop card stack).
+  // Auto-advance. Desktop uses our deterministic stack, not scroll-timeline state.
   useEffect(() => {
     const interval = window.setInterval(() => {
       if (isMobile && mobileStack) {
         setMobileStackIndex((index) => (index + 1) % slides.length);
+        return;
+      }
+      if (!isMobile) {
+        setDesktopStackIndex((index) => (index + 1) % slides.length);
         return;
       }
       blossomRef.current?.next();
@@ -87,26 +92,26 @@ const CaseStudyCarousel = ({
     );
   }
 
-  // ─── Blossom "cards" stack (desktop by default; opt-in on mobile for trials) ───
+  // ─── Desktop: deterministic fanned stack. No horizontal scroll state. ───
   return (
-    <BlossomCarousel
-      as="ul"
-      load="always"
-      ref={blossomRef}
-      className={`cs-cards${isMobile ? " cs-cards--mobile" : ""}${desktopWide && !isMobile ? " cs-cards--wide" : ""}`}
+    <div
+      className={`cs-desktop-stack${desktopWide ? " cs-desktop-stack--wide" : ""}`}
       aria-label="Case-study creative carousel"
     >
-      {slides.map((slide) => (
-        <li key={slide.image} className="cs-cards-slide">
+      {slides.map((slide, index) => {
+        const offset = (index - desktopStackIndex + slides.length) % slides.length;
+        const position = offset === 0 ? "active" : offset === 1 ? "next" : offset === slides.length - 1 ? "prev" : "hidden";
+        return (
           <div
-            className="cs-cards-card"
+            key={slide.image}
+            className={`cs-desktop-stack-card cs-desktop-stack-card--${position}`}
             style={{ borderColor: `hsl(${accentColor} / 0.28)` }}
           >
             <img src={slide.image} alt={slide.alt} loading="lazy" />
           </div>
-        </li>
-      ))}
-    </BlossomCarousel>
+        );
+      })}
+    </div>
   );
 };
 

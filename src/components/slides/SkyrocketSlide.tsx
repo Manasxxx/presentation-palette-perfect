@@ -187,7 +187,7 @@ const SkyrocketSlide = () => {
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-center gap-9 px-5 pt-[5.25rem] pb-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-9 px-5 pt-[4.35rem] pb-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
         <div className="grid gap-8 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
@@ -208,9 +208,6 @@ const SkyrocketSlide = () => {
               </span>
             </h2>
 
-            <p className="who-copy mt-2 hidden max-w-[520px] font-body leading-[1.5] text-white/85 text-sm sm:block md:mt-9 md:text-[clamp(1rem,1.15vw,1.3rem)]" style={{ opacity: 0 }}>
-              We turn dense product truth into market-facing clarity for the teams selling it.
-            </p>
           </div>
 
           {/* where we work */}

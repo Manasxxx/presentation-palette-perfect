@@ -180,17 +180,13 @@ const ServicesSlide = () => {
               DO
             </span>
           </h2>
-          <p className="mt-2.5 max-w-[45rem] font-body text-sm leading-snug text-white/65 md:mt-[clamp(0.4rem,1.2svh,0.75rem)] md:text-[min(1.25rem,3svh)]">
-            Five things we do to help you sell more.{" "}
-            <span className="font-serif italic text-primary">That&rsquo;s it.</span>
-          </p>
         </header>
 
         <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[clamp(0.5rem,2svh,1.5rem)] md:grid md:flex-initial md:gap-10">
           {isMobile ? (
             /* Mobile (Session 45): the desktop pillar cards as an auto-advancing
                accordion. One card expanded (full description + tags, roomy),
-               the rest compressed to a "GET [OUTCOME]" title row. Tap to expand;
+               the rest compressed to a "GET YOU [OUTCOME]" title row. Tap to expand;
                collapse animates via the grid-template-rows 0fr→1fr trick. */
             <div className="sv-tabs col-span-12 flex w-full flex-1 flex-col justify-center gap-[clamp(0.5rem,1.4svh,0.85rem)] pb-[2vh]">
               {pillarServices.map((svc, index) => {
@@ -200,22 +196,22 @@ const ServicesSlide = () => {
                     key={svc.outcome}
                     onClick={() => setActiveIndex(index)}
                     aria-expanded={active}
-                    className={`sv-tab flex flex-col rounded-xl border backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color,background-color,padding] duration-500 [transition-timing-function:cubic-bezier(0.18,0.82,0.18,1)] ${
+                    className={`sv-tab flex flex-col rounded-2xl border backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color,background-color,padding,box-shadow] duration-500 [transition-timing-function:cubic-bezier(0.18,0.82,0.18,1)] ${
                       active
-                        ? "border-primary/35 bg-primary/[0.07] px-4 py-[1.1rem] shadow-[0_0_24px_rgba(75,194,194,0.12),inset_0_1px_0_rgba(255,255,255,0.06)]"
-                        : "border-white/10 bg-white/[0.04] px-4 py-2.5"
+                        ? "border-primary/40 bg-[linear-gradient(135deg,hsl(180_45%_53%/0.12),hsl(0_0%_100%/0.035))] px-4 py-[1.05rem] shadow-[0_0_28px_rgba(75,194,194,0.13),inset_0_1px_0_rgba(255,255,255,0.08)]"
+                        : "border-white/10 bg-white/[0.04] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
                     }`}
                   >
-                    <div className="flex items-center justify-between gap-3">
-                      <h3 className="flex items-center gap-2 font-sans font-black uppercase tracking-tight">
-                        <span className={`text-[1.1rem] leading-none transition-colors duration-500 ${active ? "text-white/55" : "text-white/35"}`}>
-                          Get
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="font-sans font-black uppercase tracking-tight">
+                        <span className={`block text-[0.78rem] leading-none tracking-[0.08em] transition-colors duration-500 ${active ? "text-white/55" : "text-white/35"}`}>
+                          Get you
                         </span>
                         <span
-                          className={`text-[1.1rem] leading-none transition-colors duration-500 ${
+                          className={`mt-1 block text-[1.18rem] leading-none transition-colors duration-500 ${
                             active
                               ? "text-primary drop-shadow-[0_0_14px_rgba(75,194,194,0.25)]"
-                              : "text-white/60"
+                              : "text-white/62"
                           }`}
                         >
                           {svc.outcome}
@@ -223,8 +219,8 @@ const ServicesSlide = () => {
                       </h3>
                       <span
                         aria-hidden="true"
-                        className={`font-sans text-[0.7rem] font-bold tabular-nums tracking-[0.08em] transition-colors duration-500 ${
-                          active ? "text-primary/70" : "text-white/30"
+                        className={`rounded-full border px-2 py-1 font-sans text-[0.64rem] font-bold tabular-nums tracking-[0.08em] transition-colors duration-500 ${
+                          active ? "border-primary/30 text-primary/80" : "border-white/10 text-white/30"
                         }`}
                       >
                         0{index + 1}
@@ -239,14 +235,14 @@ const ServicesSlide = () => {
                         <p className="mt-3 font-body text-[0.85rem] leading-relaxed text-white/75">
                           {svc.description}
                         </p>
-                        <ul className="mt-3.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-white/10 pt-3">
+                        <ul className="mt-3.5 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3">
                           {svc.tags.map((tag) => {
                             const Mark = brandMarks[tag];
                             const TagIcon = tagIcons[tag];
                             return (
                               <li
                                 key={tag}
-                                className="flex items-center gap-1.5 font-sans text-[0.62rem] font-bold uppercase tracking-[0.12em] text-primary/80"
+                                className="flex items-center gap-1.5 rounded-full border border-primary/15 bg-primary/[0.06] px-2 py-1 font-sans text-[0.58rem] font-bold uppercase tracking-[0.11em] text-primary/85"
                               >
                                 {Mark ? (
                                   <Mark className={tag === "AI Search" ? "shrink-0" : "h-3 w-3 shrink-0"} />
@@ -267,7 +263,7 @@ const ServicesSlide = () => {
           ) : (
             <>
               {/* Hallmark · redesign v3 (D2): five outcome-led pillar glass cards · theme: OwlSurf (locked brand)
-                  One pillar per card, all depth visible: ordinal, "BE [OUTCOME]" verb pair,
+                  One pillar per card, all depth visible: ordinal, "GET YOU [OUTCOME]" verb pair,
                   one plain sentence, hairline rule, three small-caps deliverable tags.
                   Reads in one pass as: found · seen · understood · trusted · known.
                   No HoverCard, no hidden depth. Glass per brand: translucent fill +
@@ -276,35 +272,35 @@ const ServicesSlide = () => {
                 {pillarServices.map((svc, index) => (
                   <article
                     key={svc.outcome}
-                    className={`sv-tab group flex min-h-[min(11.5rem,26svh)] gap-[clamp(1.25rem,2vw,2.25rem)] rounded-xl border border-white/10 bg-white/[0.04] p-[clamp(1.1rem,1.6vw,1.75rem)] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(75,194,194,0.18),inset_0_1px_0_rgba(255,255,255,0.06)] ${
+                    className={`sv-tab group flex min-h-[min(11.5rem,26svh)] flex-col rounded-2xl border border-white/10 bg-[linear-gradient(135deg,hsl(0_0%_100%/0.055),hsl(0_0%_100%/0.025))] p-[clamp(1.05rem,1.45vw,1.55rem)] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] transition-[transform,border-color,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(75,194,194,0.18),inset_0_1px_0_rgba(255,255,255,0.08)] ${
                       index < 3 ? "col-span-2" : "col-span-3"
                     }`}
                   >
-                    <div className="flex shrink-0 flex-col">
-                      <h3 className="font-sans font-black uppercase leading-[1.05] tracking-tight">
-                        <span className="block text-[min(0.95rem,2.3svh)] text-white/55">Be</span>
-                        <span className="block text-[min(1.5rem,3.5svh)] text-primary drop-shadow-[0_0_14px_rgba(75,194,194,0.25)] xl:text-[min(1.75rem,3.8svh)]">
+                    <div className="flex items-start justify-between gap-5">
+                      <h3 className="font-sans font-black uppercase leading-[1.02] tracking-tight">
+                        <span className="block text-[min(0.78rem,1.8svh)] tracking-[0.08em] text-white/55">Get you</span>
+                        <span className="mt-1 block text-[min(1.7rem,3.7svh)] text-primary drop-shadow-[0_0_14px_rgba(75,194,194,0.25)] xl:text-[min(2rem,4svh)]">
                           {svc.outcome}
                         </span>
                       </h3>
                       <span
                         aria-hidden="true"
-                        className="mt-auto font-sans text-sm font-bold tabular-nums tracking-[0.08em] text-white/40 transition-colors duration-300 group-hover:text-primary/70"
+                        className="rounded-full border border-white/10 px-2.5 py-1 font-sans text-xs font-bold tabular-nums tracking-[0.08em] text-white/40 transition-colors duration-300 group-hover:border-primary/30 group-hover:text-primary/75"
                       >
                         0{index + 1}
                       </span>
                     </div>
-                    <div className="flex min-w-0 flex-1 flex-col">
-                      <p className="font-body text-[min(0.95rem,2.5svh)] leading-snug text-white/70 transition-colors duration-300 group-hover:text-white/90">
+                    <div className="mt-4 flex min-w-0 flex-1 flex-col border-t border-white/10 pt-4">
+                      <p className="max-w-[34rem] font-body text-[min(0.95rem,2.4svh)] leading-snug text-white/74 transition-colors duration-300 group-hover:text-white/90">
                         {svc.description}
                       </p>
-                      <ul className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/10 pt-[clamp(0.6rem,1.6svh,0.9rem)]">
+                      <ul className="mt-auto flex flex-wrap items-center gap-2 pt-[clamp(0.7rem,1.8svh,1rem)]">
                         {svc.tags.map((tag) => {
                           const Mark = brandMarks[tag];
                           return (
                             <li
                               key={tag}
-                              className="flex items-center gap-1.5 font-sans text-[0.66rem] font-bold uppercase tracking-[0.14em] text-primary/75 transition-colors duration-300 group-hover:text-primary"
+                              className="flex items-center gap-1.5 rounded-full border border-primary/15 bg-primary/[0.055] px-2.5 py-1 font-sans text-[0.62rem] font-bold uppercase tracking-[0.12em] text-primary/80 transition-colors duration-300 group-hover:border-primary/25 group-hover:text-primary"
                             >
                               {Mark && (
                                 <Mark className={tag === "AI Search" ? "shrink-0" : "h-3.5 w-3.5 shrink-0"} />
