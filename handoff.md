@@ -8,15 +8,14 @@ Update `handoff.md` ONLY before push. Not at session end, context clearing, or o
 
 ## Current Goal
 
-Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repair, and contact/footer tuning.
+Session 49: React Bits / Aceternity polish pass for Cover, Services, and desktop navigation.
 
-- **Dev server:** added durable `npm run dev:server` via `scripts/start-dev-server.sh`; it clears stale port 8080 listeners, starts Vite detached, writes `.codex-runtime/`, and reuses an existing healthy server. `.codex-runtime/` is ignored.
-- **Navigation / slide copy:** desktop nav labels simplified to `Home / About / Work / Clients / Cases / Contact`; removed the Slide 2 line `We turn dense product truth into market-facing clarity for the teams selling it.`
-- **Services:** service cards now read `GET YOU [OUTCOME]`, with more scannable desktop cards and mobile accordion cards; removed the services subtitle line. Mobile accordion expand/collapse behavior preserved.
-- **Clients:** LogoLoop speeds lowered and track compositing tuned for smoother marquee motion.
-- **Case studies:** desktop names now stay on one line; proof tables now carry a subtle tint and label colors match the adjacent text color; bottom stat descriptors got a small readability tint and heavier/larger type. Desktop carousel replaced the scroll-timeline Blossom stack with a deterministic fanned stack to avoid Safari/desktop drift over the content.
-- **Contact:** mobile hero/ripple/headline shifted up; mobile footer redesigned as a more scannable card without removing info; email forced lowercase on mobile; mobile ripple uses OwlSurf teal with dark outline rings removed; `Let’s talk` moved below the rotating headline.
-- **Verification:** `git diff --check` passed; `npm run lint` passed with 2 existing fast-refresh warnings; `npm run build` passed. `npx vitest run` timed out after the Vitest header again, so no test pass is claimed.
+- **Cover hero movers:** replaced the old trust/choose/believe moving treatment with local `FlipWords` movers. Both the industry mover and buyer-confidence mover now share the same timing (`3.5s`) and visual language while preserving the industry list: Solar, Industrial, Chemical, Pharma, Manufacturing, Mobility, Real Estate.
+- **Cover CTA:** replaced the `Review Case Studies` button with a local React Bits `GlassSurface` button on desktop and mobile, plus a subtle cascading shimmer sweep.
+- **Desktop navigation:** replaced the old pill-label nav with a local Aceternity-inspired `FloatingDock` on desktop. Mobile `InteractiveMenu` is unchanged.
+- **Services / What We Do:** replaced the Services background with a visible, desktop-gated React Bits-style `DotField`; added edge-only `BorderGlow` to service cards; tightened vertical spacing without changing the five-pillar taxonomy.
+- **Verification:** source guard checks passed, `npx tsc --noEmit` passed, `npm run lint` passed with existing warnings only, and `npm run build` passed. A direct `vitest` run still hung with no output, matching the previously documented local Vitest issue, so no full Vitest pass is claimed.
+- **Push note:** `.github/workflows/deploy.yml` is still locally modified and must remain excluded from this push.
 
 ## Open Items / Next Steps
 
@@ -32,7 +31,7 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 
 ## Current State
 
-Vite + React SPA, fixed dev port: `http://localhost:8080/` (LAN `http://192.168.0.132:8080/`).
+Vite + React SPA, fixed dev port: `http://localhost:8080/` (LAN may vary by network).
 
 12 slides: Cover (0), Who We Are (1), Services (2), Clients (3), cases 4–10 = Mitsui, Kuraray, DEHN, Baxsaa, GirlUp, CTP, VNT, Contact (11). CultFit case study removed Session 46; Cult.fit remains as a Clients logo.
 

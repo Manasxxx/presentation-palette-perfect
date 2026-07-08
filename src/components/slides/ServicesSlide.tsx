@@ -14,7 +14,8 @@ import {
   Rocket,
   type LucideIcon,
 } from "lucide-react";
-import LightRays from "@/components/LightRays";
+import DotField from "@/components/backgrounds/DotField";
+import BorderGlow from "@/components/ui/BorderGlow";
 import { brandMarks } from "@/components/ui/brand-marks";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLowPowerMode } from "@/hooks/use-low-power";
@@ -150,26 +151,27 @@ const ServicesSlide = () => {
 
   return (
     <section ref={sectionRef} className="slide font-sans">
-      {/* Heavy WebGL rays — desktop only (gated off mobile per prod.md).
-          Low-power machines drop the DPR cap to 0.75 (FPS watchdog) so the
-          same rays render fewer fragments. */}
+      {/* React Bits DotField background — desktop only, one Services backdrop.
+          It pauses offscreen and lowers DPR on weak machines. */}
       {!isMobile && (
-        <LightRays
-          raysColor="#4bc2c2"
-          raysOrigin="top-center"
-          raysSpeed={0.8}
-          lightSpread={0.5}
-          rayLength={3}
-          fadeDistance={1}
-          saturation={0.8}
-          followMouse={false}
-          className="opacity-40 pointer-events-none"
+        <DotField
+          style={{ position: "absolute", inset: 0 }}
+          className="pointer-events-none opacity-100 [mask-image:radial-gradient(circle_at_54%_47%,black_0%,black_72%,transparent_100%)]"
+          dotRadius={2.25}
+          dotSpacing={15}
+          cursorRadius={420}
+          bulgeStrength={48}
+          glowRadius={240}
+          waveAmplitude={0.65}
+          gradientFrom="rgba(75,194,194,0.68)"
+          gradientTo="rgba(255,255,255,0.28)"
+          glowColor="rgba(75,194,194,0.18)"
           maxDpr={lowPower ? 0.75 : 1.25}
         />
       )}
       {/* Desktop paddings are svh clamps: identical on tall viewports, compress
           on short ones so the five ledger rows never clip (Session 42). */}
-      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-[5.25rem] pb-6 md:px-12 md:pt-[clamp(2.75rem,8svh,5rem)] md:pb-[clamp(1.25rem,4svh,2.5rem)]">
+      <div className="relative z-10 flex h-full w-full flex-col px-8 pt-[5.25rem] pb-6 md:px-12 md:pt-[clamp(3.25rem,7svh,4.75rem)] md:pb-[clamp(2.25rem,5svh,3.5rem)]">
         <header className="sv-header text-left self-start">
           <span className="mb-3 block font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:mb-[clamp(0.4rem,1.2svh,0.75rem)] md:text-xs md:tracking-[0.26em]">
             OUR SERVICES
@@ -182,7 +184,7 @@ const ServicesSlide = () => {
           </h2>
         </header>
 
-        <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[clamp(0.5rem,2svh,1.5rem)] md:grid md:flex-initial md:gap-10">
+        <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[clamp(1rem,2.7svh,2.1rem)] md:grid md:flex-1 md:gap-10">
           {isMobile ? (
             /* Mobile (Session 45): the desktop pillar cards as an auto-advancing
                accordion. One card expanded (full description + tags, roomy),
@@ -268,13 +270,18 @@ const ServicesSlide = () => {
                   Reads in one pass as: found · seen · understood · trusted · known.
                   No HoverCard, no hidden depth. Glass per brand: translucent fill +
                   backdrop blur + hairline border, teal lift on hover. */}
-              <div className="sv-tabs col-span-12 grid flex-1 grid-cols-6 content-center gap-[clamp(1rem,1.8vw,1.75rem)]">
+              <div className="sv-tabs col-span-12 grid flex-1 grid-cols-6 content-center gap-x-[clamp(1.15rem,1.8vw,1.75rem)] gap-y-[clamp(1.2rem,2.4svh,1.9rem)]">
                 {pillarServices.map((svc, index) => (
-                  <article
+                  <BorderGlow
                     key={svc.outcome}
-                    className={`sv-tab group flex min-h-[min(11.5rem,26svh)] flex-col rounded-2xl border border-white/10 bg-[linear-gradient(135deg,hsl(0_0%_100%/0.055),hsl(0_0%_100%/0.025))] p-[clamp(1.05rem,1.45vw,1.55rem)] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.07)] transition-[transform,border-color,box-shadow,background-color] duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_4px_24px_rgba(75,194,194,0.18),inset_0_1px_0_rgba(255,255,255,0.08)] ${
+                    className={`sv-tab group flex min-h-[clamp(14rem,30svh,22rem)] flex-col p-[clamp(1.05rem,1.45vw,1.55rem)] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-[transform,border-color,box-shadow,background-color] duration-300 hover:-translate-y-0.5 ${
                       index < 3 ? "col-span-2" : "col-span-3"
                     }`}
+                    borderRadius={24}
+                    glowRadius={52}
+                    glowIntensity={1.35}
+                    edgeSensitivity={12}
+                    fillOpacity={0}
                   >
                     <div className="flex items-start justify-between gap-5">
                       <h3 className="font-sans font-black uppercase leading-[1.02] tracking-tight">
@@ -311,7 +318,7 @@ const ServicesSlide = () => {
                         })}
                       </ul>
                     </div>
-                  </article>
+                  </BorderGlow>
                 ))}
               </div>
             </>

@@ -16,7 +16,8 @@ import { Globe } from "@/components/ui/globe";
 import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
-import { WordRotate } from "@/components/ui/word-rotate";
+import GlassSurface from "@/components/ui/glass-surface";
+import { FlipWords } from "@/components/ui/flip-words";
 import { getTitleTextMotionProfile } from "./title-motion";
 import metaPartnerBadge from "@/assets/badge-meta-partner-trim.png";
 import googlePartnerBadge from "@/assets/badge-google-partner-2026-trim.png";
@@ -275,31 +276,31 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <div className="grid translate-y-0 items-center gap-8 md:translate-y-0 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
           <div className="relative min-w-0">
             <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left">
-              <span className="block max-w-[22rem] md:max-w-[52rem]">
-                <span className="ts-cover-line block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76 md:text-[clamp(1.25rem,1.7vw,1.72rem)] md:tracking-[0.14em]" style={{ opacity: 0 }}>
+              <span className="block max-w-[22rem] font-sans uppercase leading-[1.03] tracking-[0.01em] md:max-w-[58rem]">
+                <span className="ts-cover-line block text-[1.18rem] font-black text-white [font-weight:900] md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
                   We turn,
                 </span>
-                <span className="mt-3 block md:mt-4">
-                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-3 md:px-5 md:py-2.5 md:text-[clamp(1.65rem,3vw,3.1rem)]" style={{ opacity: 0 }}>
-                    <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
-                    <WordRotate words={rotatingIndustries} duration={1900} className="text-center" />
+                <span className="ts-cover-line mt-3 block md:mt-4" style={{ opacity: 0 }}>
+                  <span className="inline-flex align-baseline font-sans text-[1.18rem] font-black uppercase leading-none tracking-[0.01em] text-owl-teal [font-weight:900] drop-shadow-[0_0_22px_rgba(75,194,194,0.24)] md:text-[clamp(1.55rem,2.55vw,2.55rem)]">
+                    <FlipWords words={rotatingIndustries} duration={3500} className="justify-center text-center" />
                   </span>
                 </span>
-                <span className="ts-cover-line mt-3 block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76 md:text-[clamp(1.25rem,1.7vw,1.72rem)] md:tracking-[0.14em]" style={{ opacity: 0 }}>
-                  businesses, into brands that
+                <span className="ts-cover-line mt-3 block text-[1.18rem] font-black text-white [font-weight:900] md:mt-4 md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
+                  business, into
                 </span>
-                <span className="ts-cover-line mt-2 block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76 md:mt-3 md:text-[clamp(1.25rem,1.7vw,1.72rem)] md:tracking-[0.14em]" style={{ opacity: 0 }}>
-                  buyers actually
+                <span className="ts-cover-line mt-3 block text-[1.18rem] font-black text-white [font-weight:900] md:mt-4 md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
+                  Brands that buyers
                 </span>
-                <span className="mt-3 block md:mt-4">
+                <span className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 md:mt-4 md:justify-start">
+                  <span className="ts-cover-line align-baseline text-[1.18rem] font-black uppercase leading-none tracking-[0.01em] text-white [font-weight:900] md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
+                    Actually
+                  </span>
                   <span
-                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-3 md:px-5 md:py-2.5 md:text-[clamp(1.65rem,3vw,3.1rem)]"
+                    className="ts-cover-line inline-flex align-baseline font-sans text-[1.18rem] font-black uppercase leading-none tracking-[0.01em] text-owl-teal [font-weight:900] drop-shadow-[0_0_22px_rgba(75,194,194,0.24)] md:text-[clamp(1.55rem,2.55vw,2.55rem)]"
                     style={{ opacity: 0 }}
                   >
-                    <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
-                    <WordRotate words={rotatingTrustWords} duration={1900} className="text-center" />
+                    <FlipWords words={rotatingTrustWords} duration={3500} className="justify-center text-center" />
                   </span>
-                  <span className="ts-cover-line ml-1 align-baseline font-sans text-[1.08rem] font-semibold leading-none text-white/76 md:text-[clamp(1.25rem,1.7vw,1.72rem)]" style={{ opacity: 0 }}>.</span>
                 </span>
               </span>
             </h1>
@@ -360,15 +361,30 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 <button
                   type="button"
                   onClick={onViewCaseStudies}
-                  className="group relative overflow-hidden rounded-full border border-white/10 bg-white/[0.07] px-7 py-3 font-sans text-xs font-bold uppercase tracking-[0.18em] shadow-[0_4px_24px_rgba(75,194,194,0.22)] backdrop-blur-md transition-[border-color,background-color,box-shadow] duration-300 hover:border-owl-teal/45 hover:bg-owl-teal/10 hover:shadow-[0_6px_30px_rgba(75,194,194,0.32)]"
+                  className="group rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  aria-label="Review Case Studies"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="ts-cta-sheen pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent"
-                  />
-                  <span className="relative inline-flex items-center text-white transition-transform duration-300 group-hover:translate-x-0.5">
-                    <span>Review case studies</span>
-                  </span>
+                  <GlassSurface
+                    width={220}
+                    height={48}
+                    borderRadius={999}
+                    borderWidth={0.05}
+                    brightness={72}
+                    opacity={0.96}
+                    blur={8}
+                    backgroundOpacity={0.08}
+                    saturation={1.35}
+                    distortionScale={-90}
+                    className="pointer-events-none"
+                  >
+                    <span className="relative overflow-hidden font-sans text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:translate-x-0.5">
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 skew-x-[-18deg] bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-70 [animation:ts-glass-shimmer_3.2s_ease-in-out_infinite]"
+                      />
+                      <span className="relative">Review Case Studies</span>
+                    </span>
+                  </GlassSurface>
                 </button>
               </div>
             </div>

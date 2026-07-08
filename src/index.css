@@ -934,3 +934,10 @@
   object-fit: contain;
   object-position: center;
 }
+
+@keyframes ts-glass-shimmer {
+  0%, 42% { transform: translateX(0) skewX(-18deg); opacity: 0; }
+  52% { opacity: 0.75; }
+  72% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
+  100% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
+}

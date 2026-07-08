@@ -5,6 +5,17 @@
 
 ---
 
+## Current State (Session 49 push prep)
+
+Session 49: React Bits / Aceternity visual pass focused on Cover, Services, CTA, and desktop navigation.
+
+- **Cover hero:** the industry and buyer-confidence movers now use the same local `FlipWords` animation and 3.5s cadence; the industry list remains Solar, Industrial, Chemical, Pharma, Manufacturing, Mobility, and Real Estate.
+- **Cover CTA:** `Review Case Studies` now uses a local React Bits `GlassSurface` implementation with a restrained cascading shimmer, replacing the old CTA treatment on desktop and mobile.
+- **Services:** `What We Do` now has a visible desktop `DotField` backdrop and edge-only `BorderGlow` on cards; card fill/tint stays stable on hover/selection.
+- **Desktop navigation:** old desktop pill nav was replaced with a local Aceternity-inspired `FloatingDock`; mobile `InteractiveMenu` remains the same.
+- **Verification:** source guard checks passed, `npx tsc --noEmit` passed, `npm run lint` passed with existing warnings only, and `npm run build` passed. Local `vitest` still hangs with no output, so no full Vitest pass is claimed.
+- **Push note:** `.github/workflows/deploy.yml` remains locally modified and is excluded from this push.
+
 ## Current State (Session 48 push prep)
 
 Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repair, and contact/footer tuning.
@@ -38,6 +49,14 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 ---
 
 ## Session Log (compressed; details in git history + prod.md rules)
+
+### Session 49 — React Bits / Aceternity cover, services, CTA, and desktop nav polish
+
+- Replaced the Cover hero moving words with local `FlipWords` movers for both the industry word and buyer-confidence word, both at a 3.5s cadence.
+- Replaced the Cover `Review Case Studies` CTA with a local React Bits-style `GlassSurface` button and subtle shimmer sweep.
+- Replaced the desktop navigation pill list with a local Aceternity-inspired `FloatingDock`; kept the mobile `InteractiveMenu` unchanged.
+- Replaced the Services ambient background with a desktop-gated `DotField` and added edge-only `BorderGlow` on Services cards.
+- Verification: source checks, TypeScript, lint, and production build passed; Vitest still hangs locally as previously documented.
 
 ### Session 48 — nav/services/cases/contact polish + dev server hardening
 
