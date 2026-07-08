@@ -256,18 +256,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-[clamp(2.5rem,6svh,5rem)]"
       >
         {/* TOP: brand lockup */}
-        <div className="flex flex-row items-start justify-center gap-6 md:justify-between">
+        <div className="flex flex-row items-start justify-center gap-6 md:mt-5 md:-ml-4 md:justify-between lg:-ml-12">
           <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left">
-            <span className="block font-sans font-black uppercase leading-none tracking-tight text-owl-teal md:text-white text-[clamp(1.9rem,3.6vw,3.2rem)]">
+            <span className="block pb-2 text-left font-sans text-[2rem] font-black uppercase leading-[1.02] tracking-normal text-white [overflow-wrap:anywhere] sm:text-[2.6rem] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)]">
               <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
               <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
                 SURF
               </span>
               <span className="ts-brand-token ml-2 inline-block font-sans not-italic text-white md:ml-3" style={{ opacity: 0 }}>DIGITAL</span>
-            </span>
-            <span className="ts-brand-subtitle mt-3.5 hidden md:inline-flex md:-ml-4 items-center gap-[0.8ch] rounded-full border border-owl-teal/35 bg-owl-teal/[0.07] px-5 py-2" style={{ opacity: 0 }}>
-              <span className="font-sans font-bold not-italic uppercase leading-none tracking-[0.22em] text-white/85 text-[clamp(0.7rem,0.9vw,0.9rem)]">Where Tech Meets</span>
-              <span className="font-sans font-black not-italic uppercase leading-none tracking-[0.22em] text-owl-teal text-[clamp(0.7rem,0.9vw,0.9rem)]">Design</span>
             </span>
           </div>
           <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 md:block" aria-hidden="true" style={{ opacity: 0 }}>
@@ -280,29 +276,30 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           <div className="relative min-w-0">
             <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left">
               <span className="block max-w-[22rem] md:max-w-[52rem]">
-                <span className="ts-cover-line block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]" style={{ opacity: 0 }}>
-                  We turn
+                <span className="ts-cover-line block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76 md:text-[clamp(1.25rem,1.7vw,1.72rem)] md:tracking-[0.14em]" style={{ opacity: 0 }}>
+                  We turn,
                 </span>
                 <span className="mt-3 block md:mt-4">
-                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-6 md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]" style={{ opacity: 0 }}>
+                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-3 md:px-5 md:py-2.5 md:text-[clamp(1.65rem,3vw,3.1rem)]" style={{ opacity: 0 }}>
                     <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
                     <WordRotate words={rotatingIndustries} duration={1900} className="text-center" />
                   </span>
                 </span>
-                <span className="ts-cover-line mt-3 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]" style={{ opacity: 0 }}>
-                  businesses into brands
+                <span className="ts-cover-line mt-3 block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76 md:text-[clamp(1.25rem,1.7vw,1.72rem)] md:tracking-[0.14em]" style={{ opacity: 0 }}>
+                  businesses, into brands that
                 </span>
-                <span className="ts-cover-line mt-2 block font-sans text-[0.9rem] font-bold uppercase leading-none tracking-[0.22em] text-white/76 md:mt-3 md:text-[clamp(1.2rem,1.7vw,1.7rem)] md:tracking-[0.16em]" style={{ opacity: 0 }}>
+                <span className="ts-cover-line mt-2 block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76 md:mt-3 md:text-[clamp(1.25rem,1.7vw,1.72rem)] md:tracking-[0.14em]" style={{ opacity: 0 }}>
                   buyers actually
                 </span>
                 <span className="mt-3 block md:mt-4">
                   <span
-                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-6 md:px-6 md:py-3 md:text-[clamp(2.2rem,4vw,4.25rem)]"
+                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem] md:-ml-3 md:px-5 md:py-2.5 md:text-[clamp(1.65rem,3vw,3.1rem)]"
                     style={{ opacity: 0 }}
                   >
                     <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
                     <WordRotate words={rotatingTrustWords} duration={1900} className="text-center" />
                   </span>
+                  <span className="ts-cover-line ml-1 align-baseline font-sans text-[1.08rem] font-semibold leading-none text-white/76 md:text-[clamp(1.25rem,1.7vw,1.72rem)]" style={{ opacity: 0 }}>.</span>
                 </span>
               </span>
             </h1>
