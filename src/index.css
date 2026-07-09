@@ -226,7 +226,9 @@
 
 @layer components {
   .slide {
-    @apply h-[100svh] min-h-[100vh] w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
+    @apply w-full flex flex-col items-center justify-center relative overflow-hidden bg-background;
+    height: var(--deck-vh, 100svh);
+    min-height: var(--deck-vh, 100svh);
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }

@@ -5,6 +5,16 @@
 
 ---
 
+## Current State (Session 50 push prep)
+
+Session 50: mobile viewport and slide-fit repair based on live phone screenshots.
+
+- **Viewport/snap:** mobile deck height now tracks the actual visual viewport with `--deck-vh`; slide stride is updated dynamically and scroll progress is preserved while browser chrome expands/collapses. This fixes reverse-scroll clipping/empty-space drift.
+- **Cover mobile:** reverted the mobile hero layout back to the pre-desktop-polish pill treatment for the industry mover; the buyer-confidence mover uses `FlipWords`. Desktop cover remains the Session 49 version.
+- **Case studies mobile:** tightened Mitsui/shared case layouts for smaller dynamic heights, removed the second inner tint from mobile stat descriptor labels, and restored extra breathing room only for DEHN.
+- **Contact mobile:** reserved footer space and tightened the hero stack so the headline no longer overlaps the glass footer; `Let’s talk` is bigger and sits lower near the footer. Desktop remains unchanged.
+- **Verification:** TypeScript and production build passed. `.github/workflows/deploy.yml` remains excluded.
+
 ## Current State (Session 49 push prep)
 
 Session 49: React Bits / Aceternity visual pass focused on Cover, Services, CTA, and desktop navigation.
@@ -49,6 +59,14 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 ---
 
 ## Session Log (compressed; details in git history + prod.md rules)
+
+### Session 50 — mobile viewport and slide-fit repair
+
+- Added dynamic mobile viewport sizing using `visualViewport.height` and a shared `--deck-vh` so scroll snap points track the visible phone viewport as browser chrome changes.
+- Restored the mobile cover hero industry pill style while keeping the desktop hero untouched and using `FlipWords` only for the mobile buyer-confidence word.
+- Tightened mobile case-study layout after the viewport fix, removed mobile-only inner descriptor tint on stat labels, and gave DEHN its roomier mobile spacing back.
+- Reworked mobile Contact spacing to prevent headline/footer overlap and placed the larger `Let’s talk` text closer to the glass footer.
+- Verification: TypeScript and production build passed.
 
 ### Session 49 — React Bits / Aceternity cover, services, CTA, and desktop nav polish
 

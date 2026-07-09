@@ -191,7 +191,7 @@ const CaseStudySlide = () => {
       {/* md:pointer-events-none lets the interactive grid receive hover through
           the empty areas of this full-slide layer; the carousel stage re-enables
           its own pointer events below. Mobile keeps normal event flow. */}
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-2 px-5 pt-7 pb-6 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-1.5 px-5 pt-7 pb-2 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
         {/* Hallmark · redesign v2: Split Studio — claim + ledger left, creatives right,
             stat-led proof strip across the bottom. Mobile order-flow untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
@@ -222,7 +222,7 @@ const CaseStudySlide = () => {
 
         <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[1rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-[0.75rem] md:border md:border-white/12 md:bg-black/[0.16] md:px-5 md:backdrop-blur-[2px] lg:w-[35%]" style={{ opacity: isMobile ? 1 : 0 }}>
           {mitsuiProofPoints.map((point, pointIndex) => (
-            <div key={point.label} className={`grid grid-cols-[4.75rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1.5 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
+            <div key={point.label} className={`grid grid-cols-[4.75rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
               <span className="font-sans text-[10.9px] font-black uppercase tracking-[0.14em] text-white/92 md:text-[0.78rem] md:text-white/90">
                 {point.label}
               </span>
@@ -235,7 +235,7 @@ const CaseStudySlide = () => {
 
         {/* Desktop: stat-led proof strip across the bottom (big numerals, hairline
             dividers). Mobile keeps the compact 2x2 pill grid untouched. */}
-        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-x-2 gap-y-3 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-5 md:gap-0 md:border-t md:border-white/10">
+        <div ref={statsRef} className="cs-stats order-4 grid grid-cols-2 gap-x-2 gap-y-2 md:absolute md:inset-x-12 md:bottom-10 md:grid-cols-5 md:gap-0 md:border-t md:border-white/10">
           {statDefs.map((stat, statIndex) => (
             <div
               key={stat.label}
@@ -263,7 +263,7 @@ const CaseStudySlide = () => {
                 className="flex min-h-0 w-full items-center rounded-full border-l px-2 py-0.5 font-body text-[9.8px] font-bold uppercase leading-[1.02] tracking-[0.06em] text-white/95 md:w-auto md:border-l-0 md:px-2.5 md:py-1 md:text-[0.76rem] md:font-black md:tracking-[0.16em] md:text-white/90"
                 style={{
                   borderColor: `hsl(${mitsuiCyan} / 0.4)`,
-                  backgroundColor: isMobile ? "hsl(0 0% 0% / 0.34)" : "hsl(0 0% 0% / 0.16)",
+                  backgroundColor: isMobile ? "transparent" : "hsl(0 0% 0% / 0.16)",
                 }}
               >
                 {stat.label}

@@ -18,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import GlassSurface from "@/components/ui/glass-surface";
 import { FlipWords } from "@/components/ui/flip-words";
+import { WordRotate } from "@/components/ui/word-rotate";
 import { getTitleTextMotionProfile } from "./title-motion";
 import metaPartnerBadge from "@/assets/badge-meta-partner-trim.png";
 import googlePartnerBadge from "@/assets/badge-google-partner-2026-trim.png";
@@ -276,7 +277,35 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <div className="grid translate-y-0 items-center gap-8 md:translate-y-0 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
           <div className="relative min-w-0">
             <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left">
-              <span className="block max-w-[22rem] font-sans uppercase leading-[1.03] tracking-[0.01em] md:max-w-[58rem]">
+              <span className="block max-w-[22rem] md:hidden">
+                <span className="ts-cover-line block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76" style={{ opacity: 0 }}>
+                  We turn,
+                </span>
+                <span className="mt-3 block">
+                  <span className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem]" style={{ opacity: 0 }}>
+                    <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
+                    <WordRotate words={rotatingIndustries} duration={1900} className="text-center" />
+                  </span>
+                </span>
+                <span className="ts-cover-line mt-3 block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76" style={{ opacity: 0 }}>
+                  businesses, into brands that
+                </span>
+                <span className="ts-cover-line mt-2 block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76" style={{ opacity: 0 }}>
+                  buyers actually
+                </span>
+                <span className="mt-3 block">
+                  <span
+                    className="ts-pill-shell title-pill relative inline-flex overflow-hidden rounded-full border border-owl-teal/45 bg-owl-teal px-4 py-2 font-sans text-[1.42rem] font-black uppercase leading-none tracking-[0.04em] text-background shadow-[0_0_28px_rgba(75,194,194,0.28)] sm:text-[1.58rem]"
+                    style={{ opacity: 0 }}
+                  >
+                    <span className="ts-pill-glow pointer-events-none absolute inset-x-3 bottom-1 h-1 rounded-full bg-white/55 blur-sm" style={{ opacity: 0 }} />
+                    <FlipWords words={rotatingTrustWords} duration={3500} className="justify-center text-center" />
+                  </span>
+                  <span className="ts-cover-line ml-1 align-baseline font-sans text-[1.08rem] font-semibold leading-none text-white/76" style={{ opacity: 0 }}>.</span>
+                </span>
+              </span>
+
+              <span className="hidden font-sans uppercase leading-[1.03] tracking-[0.01em] md:block md:max-w-[58rem]">
                 <span className="ts-cover-line block text-[1.18rem] font-black text-white [font-weight:900] md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
                   We turn,
                 </span>

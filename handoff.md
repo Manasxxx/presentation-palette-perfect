@@ -8,13 +8,13 @@ Update `handoff.md` ONLY before push. Not at session end, context clearing, or o
 
 ## Current Goal
 
-Session 49: React Bits / Aceternity polish pass for Cover, Services, and desktop navigation.
+Session 50: mobile viewport and slide-fit repair after live phone review.
 
-- **Cover hero movers:** replaced the old trust/choose/believe moving treatment with local `FlipWords` movers. Both the industry mover and buyer-confidence mover now share the same timing (`3.5s`) and visual language while preserving the industry list: Solar, Industrial, Chemical, Pharma, Manufacturing, Mobility, Real Estate.
-- **Cover CTA:** replaced the `Review Case Studies` button with a local React Bits `GlassSurface` button on desktop and mobile, plus a subtle cascading shimmer sweep.
-- **Desktop navigation:** replaced the old pill-label nav with a local Aceternity-inspired `FloatingDock` on desktop. Mobile `InteractiveMenu` is unchanged.
-- **Services / What We Do:** replaced the Services background with a visible, desktop-gated React Bits-style `DotField`; added edge-only `BorderGlow` to service cards; tightened vertical spacing without changing the five-pillar taxonomy.
-- **Verification:** source guard checks passed, `npx tsc --noEmit` passed, `npm run lint` passed with existing warnings only, and `npm run build` passed. A direct `vitest` run still hung with no output, matching the previously documented local Vitest issue, so no full Vitest pass is claimed.
+- **Mobile viewport:** deck and slides now share a live `--deck-vh` driven from `visualViewport.height`, with scroll progress preserved during browser-bar resize. This fixes reverse-scroll snap drift and clipped/offset slides on smaller phones.
+- **Cover mobile hero:** restored the original mobile pill hero style for the industry mover; only the buyer-confidence word now uses the newer `FlipWords` animation. Desktop hero remains unchanged from Session 49.
+- **Mobile case studies:** tightened mobile case spacing after the dynamic viewport change, using bottom space under stat pills and removing the extra inner descriptor tint on mobile stat labels. DEHN keeps a roomier mobile spacing variant.
+- **Mobile contact:** resized/repositioned the contact hero stack to stop headline/footer overlap, kept footer clear, and moved `Let’s talk` lower and slightly larger near the glass footer. Desktop contact is unchanged.
+- **Verification:** `npx tsc --noEmit` passed and `npm run build` passed. Lint was not rerun after the final micro-adjustments; previous lint warnings were non-blocking existing warnings.
 - **Push note:** `.github/workflows/deploy.yml` is still locally modified and must remain excluded from this push.
 
 ## Open Items / Next Steps

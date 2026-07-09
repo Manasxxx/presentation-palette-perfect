@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useState, useEffect, useRef, type ComponentType } from "react";
+import { lazy, Suspense, useMemo, useState, useEffect, useRef, type ComponentType, type CSSProperties } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import TitleSlide from "@/components/slides/TitleSlide";
 
@@ -92,6 +92,67 @@ const Index = () => {
 
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const deckViewportHeightRef = useRef(0);
+
+  /**
+   * Mobile browser chrome changes the visible viewport while scrolling,
+   * especially on reverse scroll. Keep the deck's slide stride tied to the
+   * actual visual viewport and preserve the user's scroll progress when that
+   * height changes so snap points do not drift.
+   */
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let rafId: number | null = null;
+
+    const readViewportHeight = () => {
+      const visualHeight = window.visualViewport?.height ?? 0;
+      return Math.round(visualHeight || window.innerHeight || container.clientHeight);
+    };
+
+    const applyViewportHeight = () => {
+      rafId = null;
+      const nextHeight = readViewportHeight();
+      if (nextHeight <= 0) return;
+
+      const previousHeight = deckViewportHeightRef.current || getSlideHeight(container);
+      if (Math.abs(nextHeight - previousHeight) < 1) return;
+
+      const progress = previousHeight > 0 ? container.scrollTop / previousHeight : currentSlideRef.current;
+      deckViewportHeightRef.current = nextHeight;
+      container.style.setProperty("--deck-vh", `${nextHeight}px`);
+
+      const targetTop = Math.max(0, progress * nextHeight);
+      const previousScrollBehavior = container.style.scrollBehavior;
+      container.style.scrollBehavior = "auto";
+      container.scrollTop = targetTop;
+      window.requestAnimationFrame(() => {
+        container.style.scrollBehavior = previousScrollBehavior;
+      });
+    };
+
+    const scheduleViewportHeight = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(applyViewportHeight);
+    };
+
+    deckViewportHeightRef.current = readViewportHeight();
+    container.style.setProperty("--deck-vh", `${deckViewportHeightRef.current}px`);
+
+    window.visualViewport?.addEventListener("resize", scheduleViewportHeight);
+    window.visualViewport?.addEventListener("scroll", scheduleViewportHeight);
+    window.addEventListener("resize", scheduleViewportHeight);
+    window.addEventListener("orientationchange", scheduleViewportHeight);
+
+    return () => {
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+      window.visualViewport?.removeEventListener("resize", scheduleViewportHeight);
+      window.visualViewport?.removeEventListener("scroll", scheduleViewportHeight);
+      window.removeEventListener("resize", scheduleViewportHeight);
+      window.removeEventListener("orientationchange", scheduleViewportHeight);
+    };
+  }, []);
 
   const mountedSlides = useMemo(
     () => getMountedSlideIndexes(slides.length, currentSlide, SLIDE_MOUNT_RADIUS),
@@ -229,8 +290,13 @@ const Index = () => {
     <div
       ref={containerRef}
       data-deck-scroll-container
-      className={`h-screen w-full overflow-y-auto overflow-x-hidden bg-background${prefersReducedMotion ? "" : " scroll-smooth"}`}
-      style={{ scrollSnapType: snapConfig.container, WebkitOverflowScrolling: "touch" }}
+      className={`w-full overflow-y-auto overflow-x-hidden bg-background${prefersReducedMotion ? "" : " scroll-smooth"}`}
+      style={{
+        "--deck-vh": "100dvh",
+        height: "var(--deck-vh)",
+        scrollSnapType: snapConfig.container,
+        WebkitOverflowScrolling: "touch",
+      } as CSSProperties}
     >
 
       <PillNav
