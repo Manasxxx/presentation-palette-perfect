@@ -5,6 +5,19 @@
 
 ---
 
+## Current State (Session 51 push prep)
+
+Session 51: desktop cover hero rebuild, Aceternity floating navbar, dead-code removal.
+
+- **Cover desktop hero:** the claim column was rewritten. The five-line uppercase hook (`We turn / [industry] / business, into / Brands that buyers / Actually [trust word]`) is replaced by a two-line sentence-case headline, `We market what’s` over a teal Lora-italic `hard to explain.`, using the same heading recipe as `SkyrocketSlide` (Montserrat black, serif accent at matched size/weight, teal underglow). Below it sits a ledger hairline, then a proof line: `Built for [SECTOR] companies. / Buyers who read the spec sheet, not the tagline.`
+- **One rotator, not two.** The `rotatingTrustWords` mover was removed from the desktop cover (its five words are synonyms; the rotation carried motion, not information). `rotatingIndustries` survives as a `FlipWords` slot inside the proof line. Both movers remain on mobile, unchanged.
+- **Desktop cover layout:** the content block is a `md:grid` of `[1.04fr_0.76fr]` × `[auto_1fr_auto]`. The wordmark lockup spans both columns in row 1 (so `OWLSURF DIGITAL` and its `23vw` rule keep their original full-width position), the headline sits in row 2 column 1, the signal graphic in row 2 column 2 (row 2 only, so `self-center` aligns the logo with the headline instead of centring it across the CTA band), and the CTA + partner badges are left-aligned in row 3 column 1. Mobile keeps the old `flex flex-col justify-between` and is untouched.
+- **Desktop nav is now `FloatingNav`** (`src/components/ui/floating-navbar.tsx`, local Aceternity floating-navbar port) replacing `FloatingDock`. Icon + label pills, teal active state, last item rendered as the bordered CTA pill with the upstream gradient-hairline underline. It does **not** own `fixed` positioning or a scroll listener — `.pill-nav-container` positions it and `PillNav`'s activity timer drives show/hide. The show/hide timeline now queries `.floating-nav-item`.
+- **Dead code removed:** `LightRays.tsx` (unmounted since the Services `DotField` swap), `floating-dock.tsx`, `HyperSpeedPresets.ts`, `ai-elements/WebPreview.tsx`, `hooks/use-count-up.ts`. `ogl` stays as a dependency — `PrismaticBurst` still uses it.
+- **Fluidity:** `interactive-grid-pattern` used `transition-all`, animating `x/y/width/height` on every grid cell. Narrowed to `transition-[fill,stroke]`.
+- **Accessibility:** the cover logo link had no visible focus indicator. It now has an instant, non-animated `focus-visible` ring.
+- **Verification:** `npx tsc --noEmit`, `npm run lint` (0 errors, 7 pre-existing `glass-surface` warnings), `npx vitest run` (20/20), `npm run build` all pass. `.github/workflows/deploy.yml` remains excluded from the push.
+
 ## Current State (Session 50 push prep)
 
 Session 50: mobile viewport and slide-fit repair based on live phone screenshots.
@@ -59,6 +72,14 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 ---
 
 ## Session Log (compressed; details in git history + prod.md rules)
+
+### Session 51 — desktop cover hero rebuild + floating navbar + dead-code sweep
+- Cover desktop claim column rebuilt: `We market what’s` / `hard to explain.` (teal Lora italic), ledger hairline, proof line with a single `FlipWords` sector slot. Desktop trust-word rotator dropped; mobile keeps both movers.
+- Desktop cover became a 2-column × 3-row grid; wordmark spans both columns, logo graphic confined to row 2 so it aligns with the headline; CTA + badges left-aligned.
+- `FloatingNav` (local Aceternity floating-navbar port) replaced `FloatingDock` on desktop. Positioning + visibility still owned by `.pill-nav-container` / `PillNav`.
+- Deleted `LightRays.tsx`, `floating-dock.tsx`, `HyperSpeedPresets.ts`, `ai-elements/WebPreview.tsx`, `use-count-up.ts`.
+- `interactive-grid-pattern` `transition-all` → `transition-[fill,stroke]`. Cover logo link gained a focus ring.
+- Cover proof copy is Montserrat (owner request), deviating from the Palanquin subtitle rule.
 
 ### Session 50 — mobile viewport and slide-fit repair
 

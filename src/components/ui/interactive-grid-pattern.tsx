@@ -59,7 +59,9 @@ export function InteractiveGridPattern({
             width={width}
             height={height}
             className={cn(
-              "stroke-gray-400/30 transition-all duration-100 ease-in-out [&:not(:hover)]:duration-1000",
+              // Named properties only. `transition-all` here animated x/y/width/height
+              // on every grid cell, which is layout work on the compositor's critical path.
+              "stroke-gray-400/30 transition-[fill,stroke] duration-100 ease-in-out [&:not(:hover)]:duration-1000",
               squaresClassName,
               hoveredSquare === index ? hoverFillClassName : "fill-transparent"
             )}

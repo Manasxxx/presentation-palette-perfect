@@ -255,10 +255,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:py-[clamp(2.5rem,6svh,5rem)]"
+        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:grid md:grid-cols-[minmax(0,1.04fr)_minmax(340px,0.76fr)] md:grid-rows-[auto_1fr_auto] md:gap-x-10 md:py-[clamp(2.5rem,6svh,5rem)] lg:gap-x-16"
       >
         {/* TOP: brand lockup */}
-        <div className="flex flex-row items-start justify-center gap-6 md:mt-5 md:-ml-4 md:justify-between lg:-ml-12">
+        <div className="flex flex-row items-start justify-center gap-6 md:col-span-2 md:col-start-1 md:row-start-1 md:mt-5 md:-ml-4 md:justify-between lg:-ml-12">
           <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left">
             <span className="block pb-2 text-left font-sans text-[2rem] font-black uppercase leading-[1.02] tracking-normal text-white [overflow-wrap:anywhere] sm:text-[2.6rem] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)]">
               <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
@@ -274,9 +274,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
 
         {/* CENTER: editorial claim (left) + signal map (right) */}
-        <div className="grid translate-y-0 items-center gap-8 md:translate-y-0 md:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.7fr)] md:gap-12 lg:gap-16">
-          <div className="relative min-w-0">
-            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:text-left">
+        <div className="grid translate-y-0 items-center gap-8 md:contents">
+          <div className="relative min-w-0 md:col-start-1 md:row-start-2 md:self-center md:py-[clamp(1rem,3svh,2.75rem)]">
+            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:max-w-none md:text-left">
               <span className="block max-w-[22rem] md:hidden">
                 <span className="ts-cover-line block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76" style={{ opacity: 0 }}>
                   We turn,
@@ -305,37 +305,46 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 </span>
               </span>
 
-              <span className="hidden font-sans uppercase leading-[1.03] tracking-[0.01em] md:block md:max-w-[58rem]">
-                <span className="ts-cover-line block text-[1.18rem] font-black text-white [font-weight:900] md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
-                  We turn,
+              {/* Desktop hook. Heading recipe matches SkyrocketSlide: Montserrat black,
+                  teal Lora-italic accent at the same size and weight, teal underglow. */}
+              <span className="hidden font-sans normal-case leading-none tracking-normal md:block">
+                <span
+                  className="ts-cover-line block font-sans text-[clamp(2.4rem,3.9vw,4.6rem)] font-black leading-[0.98] tracking-[-0.02em] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] [font-weight:900]"
+                  style={{ opacity: 0 }}
+                >
+                  We market what’s
                 </span>
-                <span className="ts-cover-line mt-3 block md:mt-4" style={{ opacity: 0 }}>
-                  <span className="inline-flex align-baseline font-sans text-[1.18rem] font-black uppercase leading-none tracking-[0.01em] text-owl-teal [font-weight:900] drop-shadow-[0_0_22px_rgba(75,194,194,0.24)] md:text-[clamp(1.55rem,2.55vw,2.55rem)]">
-                    <FlipWords words={rotatingIndustries} duration={3500} className="justify-center text-center" />
+                <span
+                  className="ts-cover-line mt-1 block font-sans text-[clamp(2.4rem,3.9vw,4.6rem)] font-black leading-[0.98] tracking-[-0.02em] drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] [font-weight:900]"
+                  style={{ opacity: 0 }}
+                >
+                  <span className="font-serif italic text-owl-teal">hard to explain.</span>
+                </span>
+
+                {/* Ledger rule: the deck's hairline language, lit at the head */}
+                <span className="ts-cover-line mt-9 flex w-[min(35rem,100%)] items-center" style={{ opacity: 0 }} aria-hidden="true">
+                  <span className="h-px w-20 bg-owl-teal/70 shadow-[0_0_14px_rgba(75,194,194,0.5)]" />
+                  <span className="h-px flex-1 bg-white/15" />
+                </span>
+
+                <span
+                  className="ts-cover-line mt-6 block max-w-[38rem] font-sans text-[clamp(1.05rem,1.28vw,1.42rem)] font-medium not-italic leading-[1.5] tracking-[-0.005em] text-white/60"
+                  style={{ opacity: 0 }}
+                >
+                  <span className="flex flex-wrap items-baseline gap-x-[0.4em]">
+                    <span className="font-sans not-italic">Built for</span>
+                    <span className="inline-flex font-sans text-[0.96em] font-black uppercase leading-none tracking-[0.04em] text-owl-teal [font-weight:900] drop-shadow-[0_0_22px_rgba(75,194,194,0.3)]">
+                      <FlipWords words={rotatingIndustries} duration={3500} />
+                    </span>
+                    <span className="font-sans not-italic">companies.</span>
                   </span>
-                </span>
-                <span className="ts-cover-line mt-3 block text-[1.18rem] font-black text-white [font-weight:900] md:mt-4 md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
-                  business, into
-                </span>
-                <span className="ts-cover-line mt-3 block text-[1.18rem] font-black text-white [font-weight:900] md:mt-4 md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
-                  Brands that buyers
-                </span>
-                <span className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 md:mt-4 md:justify-start">
-                  <span className="ts-cover-line align-baseline text-[1.18rem] font-black uppercase leading-none tracking-[0.01em] text-white [font-weight:900] md:text-[clamp(1.55rem,2.55vw,2.55rem)]" style={{ opacity: 0 }}>
-                    Actually
-                  </span>
-                  <span
-                    className="ts-cover-line inline-flex align-baseline font-sans text-[1.18rem] font-black uppercase leading-none tracking-[0.01em] text-owl-teal [font-weight:900] drop-shadow-[0_0_22px_rgba(75,194,194,0.24)] md:text-[clamp(1.55rem,2.55vw,2.55rem)]"
-                    style={{ opacity: 0 }}
-                  >
-                    <FlipWords words={rotatingTrustWords} duration={3500} className="justify-center text-center" />
-                  </span>
+                  <span className="mt-2 block font-sans not-italic">Buyers who read the spec sheet, not the tagline.</span>
                 </span>
               </span>
             </h1>
           </div>
 
-          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:min-h-[min(31rem,46svh)]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:col-start-2 md:row-start-2 md:min-h-[min(31rem,46svh)] md:self-center" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
             <div
               className="ts-signal-line absolute left-[13%] top-[20%] h-[62%] w-[62%] rounded-full border border-white/10"
               style={{ opacity: 0, animation: "ts-orbit-drift 18s linear infinite" }}
@@ -358,7 +367,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Visit owlsurf.com"
-                className="relative z-10 flex h-full w-full cursor-pointer items-center justify-center transition-transform duration-300 hover:-translate-y-0.5"
+                className="relative z-10 flex h-full w-full cursor-pointer items-center justify-center rounded-full transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/70 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
               >
                 <div
                   className="ts-logo-inner flex h-full w-full items-center justify-center"
@@ -379,7 +388,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
 
         {/* BOTTOM: centered CTA over a centered partner badge strip */}
-        <div className="flex -translate-y-4 flex-col items-center gap-4 md:translate-y-0 md:gap-[clamp(1rem,3svh,2.5rem)]">
+        <div className="flex -translate-y-4 flex-col items-center gap-4 md:col-start-1 md:row-start-3 md:translate-y-0 md:items-start md:gap-[clamp(1rem,3svh,2.5rem)]">
           {onViewCaseStudies && (
             <div className="relative">
               <Arrow19
@@ -419,12 +428,12 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             </div>
           )}
 
-          {/* Partner badge strip — secondary credibility, centered */}
-          <div className="flex flex-col items-center gap-2 md:-translate-y-3 md:gap-3">
+          {/* Partner badge strip — secondary credibility, centered on mobile, left-railed on desktop */}
+          <div className="flex flex-col items-center gap-2 md:-translate-y-3 md:items-start md:gap-3">
             <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
               Platform partners
             </span>
-            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-3 md:gap-x-8">
+            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-3 md:justify-start md:gap-x-8">
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}

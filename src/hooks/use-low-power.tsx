@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 // to hold frame rate. Samples rAF frame times shortly after first mount; a
 // choppy median flips the deck into low-power mode. Nothing is removed —
 // consumers lower the WebGL render resolution (DPR cap 1.25 → 0.75) on the
-// ambient layers (Hyperspeed, LightRays, PrismaticBurst), so the same visuals
+// ambient layers (Hyperspeed, PrismaticBurst), so the same visuals
 // render ~64% fewer fragments. The verdict is sticky for the browser session.
 
 const STORAGE_KEY = "owlsurf-low-power";

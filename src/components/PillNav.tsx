@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { animate, stagger, utils } from 'animejs';
 import { Home, Compass, Wrench, Users, FolderOpen, Mail } from 'lucide-react';
 import { InteractiveMenu } from '@/components/ui/modern-mobile-menu';
-import { FloatingDock } from '@/components/ui/floating-dock';
+import { FloatingNav } from '@/components/ui/floating-navbar';
 import '@/styles/PillNav.css';
 
 const navItems = [
@@ -39,7 +39,7 @@ const PillNav = ({
     const container = containerRef.current;
     if (!container) return;
     const movingItems = [
-      ...Array.from(container.querySelectorAll('.floating-dock-item')),
+      ...Array.from(container.querySelectorAll('.floating-nav-item')),
       ...Array.from(container.querySelectorAll('.imenu__item')),
     ].filter(Boolean) as HTMLElement[];
 
@@ -69,12 +69,12 @@ const PillNav = ({
     <div className="pill-nav-container" ref={containerRef} style={{ visibility: 'hidden' }}>
       <nav className="pill-nav" aria-label="Primary">
         <div className="desktop-only">
-          <FloatingDock
+          <FloatingNav
             items={navItems.map((item, i) => {
               const Icon = item.icon;
               return {
                 title: item.label,
-                icon: <Icon aria-hidden="true" className="h-full w-full" />,
+                icon: <Icon aria-hidden="true" className="h-full w-full" strokeWidth={2} />,
                 onClick: () => onNavigate(item.slideIndex),
                 active: activeNavIndex === i,
               };
