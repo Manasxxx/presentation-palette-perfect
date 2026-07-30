@@ -8,12 +8,12 @@ const socialLinks = [
 ];
 
 const FlyonFooter = () => (
-  <footer className="w-full font-sans text-white">
-    <div className="mx-auto grid max-w-[1720px] grid-cols-[auto_1fr] items-center gap-x-3 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-3 backdrop-blur-sm md:relative md:flex md:flex-row md:justify-between md:gap-3 md:border-0 md:bg-transparent md:px-0 md:py-2.5 md:backdrop-blur-none lg:px-8">
+  <footer className="w-full font-sans text-white md:mx-auto md:max-w-[1720px] md:rounded-[1.75rem] md:border md:border-white/10 md:bg-background/45 md:px-6 md:py-3 md:backdrop-blur-xl md:ring-1 md:ring-inset md:ring-white/5 lg:px-8">
+    <div className="mx-auto grid max-w-[1720px] grid-cols-[auto_1fr] items-center gap-x-3 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-3 backdrop-blur-sm md:relative md:flex md:flex-row md:justify-between md:gap-3 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-2 md:backdrop-blur-none">
       <div className="flex min-h-12 items-center justify-self-start md:min-h-20">
         <img
           src={logoPill}
-          className="h-14 w-auto object-contain md:h-20"
+          className="h-14 w-auto object-contain md:h-16"
           alt="OwlSurf Digital"
           loading="lazy"
           decoding="async"
@@ -49,7 +49,7 @@ const FlyonFooter = () => (
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={item.label}
-                className="rounded-full border border-primary/20 bg-primary/[0.055] p-2 transition duration-300 hover:text-primary/70 md:border-0 md:bg-transparent md:p-0"
+                className="inline-flex rounded-full border border-primary/20 bg-primary/[0.055] p-2 transition-colors duration-300 hover:text-primary/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:border-0 md:bg-transparent md:p-2 md:hover:bg-primary/10"
               >
                 <Icon className="h-5 w-5" strokeWidth={1.8} />
               </a>
@@ -58,9 +58,9 @@ const FlyonFooter = () => (
       </div>
     </div>
 
-    <div className="mt-2 h-px w-full bg-white/12 md:mt-0" />
+    <div className="mt-2 h-px w-full bg-white/12 md:mx-2 md:mt-1 md:w-auto md:bg-white/10" />
 
-    <div className="mx-auto max-w-[1720px] px-0 py-2 lg:px-8">
+    <div className="mx-auto max-w-[1720px] px-0 py-2 md:py-2.5">
       <div className="text-center text-[11.5px] leading-snug text-white/62 md:text-[13px] md:leading-none">
         &copy; 2026 <span className="text-primary">OwlSurf Digital</span>. Made with ❤️ in India.
       </div>

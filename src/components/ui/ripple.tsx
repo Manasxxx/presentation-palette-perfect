@@ -39,7 +39,7 @@ export const Ripple = React.memo(function Ripple({
         return (
           <div
             key={i}
-            className="animate-ripple absolute rounded-full border bg-foreground/25 shadow-xl"
+            className="animate-ripple absolute rounded-full bg-foreground/25"
             style={
               {
                 "--i": i,
@@ -48,7 +48,7 @@ export const Ripple = React.memo(function Ripple({
                 opacity,
                 animationDelay,
                 borderStyle: "solid",
-                borderWidth: "1px",
+                borderWidth: ringBorderColor === "transparent" ? "0" : "1px",
                 borderColor: ringBorderColor,
                 backgroundColor: accentColor,
                 top: "50%",

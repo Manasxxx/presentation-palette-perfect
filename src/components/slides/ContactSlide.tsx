@@ -87,11 +87,11 @@ const ContactSlide = () => {
             mainCircleSize={236}
             mainCircleOpacity={isMobile ? 0.26 : 0.2}
             numCircles={7}
-            accentColor={isMobile ? "hsl(180 45% 53%)" : "hsl(var(--foreground))"}
-            ringBorderColor={isMobile ? "transparent" : "hsl(var(--foreground))"}
-            className="left-1/2 top-1/2 h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(circle,white_28%,transparent_68%)]"
+            accentColor="hsl(var(--primary))"
+            ringBorderColor="transparent"
+            className="left-1/2 top-1/2 h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(circle,white_28%,transparent_68%)] md:scale-[1.45]"
           />
-          <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full border border-white/12 opacity-0 max-md:border-transparent">
+          <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full opacity-0">
             <div className="absolute inset-[0.55rem] rounded-full border border-transparent md:inset-3 md:border-primary/25" />
             <div className="absolute inset-5 rounded-full bg-primary/[0.05] blur-sm md:inset-7" />
             <div className="relative flex h-[64%] w-[64%] items-center justify-center rounded-full border border-primary/35 bg-black/45 p-2 shadow-[0_0_70px_rgba(75,194,194,0.2)] max-md:border-primary/20 max-md:bg-transparent">
