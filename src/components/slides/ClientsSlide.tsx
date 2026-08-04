@@ -136,10 +136,10 @@ const ClientsSlide = () => {
           </h2>
         </header>
 
-        <div className="cl-cards relative flex flex-1 w-full flex-col justify-center gap-4 md:gap-6">
+        <div className="cl-cards relative flex flex-1 w-full flex-col justify-center gap-5 md:gap-6">
           {/* Mobile: three logo sliders (replaces the credibility pills), each a
               distinct logo set so no logo repeats across rows at the same time */}
-          <div className="flex flex-col gap-4 md:hidden">
+          <div className="flex flex-col gap-5 md:hidden">
             <LogoLoop
               logos={mobileRow1}
               speed={46}

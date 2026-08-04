@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 import { animate, stagger } from "animejs";
 import FlyonFooter from "@/components/blocks/FlyonFooter";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
-import { Ripple } from "@/components/ui/ripple";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideAccent, animateSlideHeading, getSharedSlideMotionProfile, getSlideContentEase, slideEditorialEase, slideSettleEase } from "./slide-motion";
@@ -80,23 +79,8 @@ const ContactSlide = () => {
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-start px-6 pb-[15.25rem] pt-[2.35rem] text-center md:justify-center md:pb-32 md:pt-8">
         {/* OwlSurf ripple mark — hero */}
         <div className="ct-mark relative mb-3 aspect-square w-[205px] opacity-0 md:mb-4 md:w-[372px]">
-          {/* MagicUI ripple, centered exactly behind the logo mark. Fixed square
-              box (not inset-0) so the rings can extend past the mark without the
-              mask repeating; radial mask fades them out before the box edge. */}
-          <Ripple
-            mainCircleSize={236}
-            mainCircleOpacity={isMobile ? 0.26 : 0.2}
-            numCircles={7}
-            accentColor="hsl(var(--primary))"
-            ringBorderColor="transparent"
-            className="left-1/2 top-1/2 h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 [mask-image:radial-gradient(circle,white_28%,transparent_68%)] md:scale-[1.45]"
-          />
-          <div className="ct-mark-inner relative flex h-full w-full items-center justify-center rounded-full opacity-0">
-            <div className="absolute inset-[0.55rem] rounded-full border border-transparent md:inset-3 md:border-primary/25" />
-            <div className="absolute inset-5 rounded-full bg-primary/[0.05] blur-sm md:inset-7" />
-            <div className="relative flex h-[64%] w-[64%] items-center justify-center rounded-full border border-primary/35 bg-black/45 p-2 shadow-[0_0_70px_rgba(75,194,194,0.2)] max-md:border-primary/20 max-md:bg-transparent">
-              <OwlSurfLogo className="h-full w-full rounded-full" />
-            </div>
+          <div className="ct-mark-inner relative flex h-full w-full items-center justify-center opacity-0">
+            <OwlSurfLogo className="h-[72%] w-[72%] overflow-visible drop-shadow-[0_0_42px_rgba(75,194,194,0.22)] md:h-[68%] md:w-[68%]" />
           </div>
         </div>
 

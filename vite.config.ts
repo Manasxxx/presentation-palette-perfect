@@ -7,6 +7,8 @@ export default defineConfig(() => ({
   server: {
     host: "::",
     allowedHosts: [
+      'owlsurf.com',
+      'www.owlsurf.com',
       'owlsurf.media',
       'www.owlsurf.media'
     ],
@@ -28,7 +30,6 @@ export default defineConfig(() => ({
           "vendor-react": ["react", "react-dom", "react-router-dom"],
           "vendor-anime": ["animejs"],
           "vendor-motion": ["motion"],
-          "vendor-theatre": ["@theatre/core"],
           "vendor-3d": ["ogl", "cobe", "postprocessing", "three"],
           "vendor-ui": ["lucide-react", "react-liquid-glass-card"],
         },

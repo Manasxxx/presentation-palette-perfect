@@ -233,50 +233,6 @@
     scroll-snap-stop: always;
   }
 
-  /* Mobile: stronger container snap, but normal stops so a real swipe can still
-     move naturally through more than one slide. */
-  @media (max-width: 767px) {
-    .slide {
-      scroll-snap-align: start;
-      scroll-snap-stop: normal;
-    }
-  }
-
-  /* The old fixed .deck-seam-fade viewport overlays were replaced by per-slide
-     seam gradients colored from the two adjacent slides' edge colors — see
-     src/pages/slide-edge-colors.ts and the SlideReveal mobile branch. */
-
-  /* Phase B signature transition (mobile, see MobileTransitionLayer.tsx) —
-     the "liquid crest": a thin teal line + soft bloom position-locked to the
-     physical seam between two slides, travelling with the finger. Mobile
-     analog of the desktop liquid-wash. Replaced the old full-bleed teal wash
-     and the centred circular glow mark (read as a stray circle). */
-  .deck-sig-crest-bloom {
-    background: radial-gradient(
-      55% 50% at 50% 50%,
-      hsl(var(--primary) / 0.32) 0%,
-      hsl(var(--primary) / 0.12) 55%,
-      hsl(var(--primary) / 0) 100%
-    );
-    will-change: filter;
-  }
-
-  .deck-sig-crest-line {
-    left: 4%;
-    right: 4%;
-    top: 50%;
-    height: 1.5px;
-    transform: translateY(-50%);
-    background: linear-gradient(
-      to right,
-      hsl(var(--primary) / 0) 0%,
-      hsl(var(--primary) / 0.9) 22%,
-      hsl(var(--primary) / 0.9) 78%,
-      hsl(var(--primary) / 0) 100%
-    );
-    box-shadow: 0 0 18px 2px hsl(var(--primary) / 0.45);
-  }
-
   .hexagon-pattern {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234bc2c2' fill-opacity='0.08'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
@@ -297,47 +253,6 @@
 
   .glow-white {
     box-shadow: 0 0 40px -10px hsl(0 0% 100% / 0.3);
-  }
-
-  .deck-liquid-wash {
-    border-radius: 42% 58% 48% 52% / 36% 42% 58% 64%;
-    background:
-      radial-gradient(ellipse at 50% 52%, hsl(180 64% 62% / 0.28), transparent 58%),
-      radial-gradient(ellipse at 22% 40%, hsl(180 52% 58% / 0.18), transparent 34%),
-      radial-gradient(ellipse at 78% 62%, hsl(191 58% 55% / 0.16), transparent 36%),
-      linear-gradient(180deg, transparent 0%, hsl(180 50% 55% / 0.16) 42%, transparent 88%);
-    filter: blur(28px) saturate(1.35);
-    mix-blend-mode: screen;
-    transform-origin: center;
-    will-change: opacity, transform;
-  }
-
-  .deck-liquid-wash-mobile {
-    inset-inline: -32%;
-    top: -18%;
-    height: 138%;
-    background:
-      radial-gradient(ellipse at 50% 52%, hsl(180 72% 66% / 0.42), transparent 60%),
-      radial-gradient(ellipse at 20% 38%, hsl(180 58% 60% / 0.26), transparent 36%),
-      radial-gradient(ellipse at 82% 64%, hsl(191 64% 58% / 0.24), transparent 38%),
-      linear-gradient(180deg, transparent 0%, hsl(180 56% 58% / 0.24) 44%, transparent 90%);
-    filter: blur(22px) saturate(1.5);
-  }
-
-  .deck-liquid-crest {
-    border-radius: 999px;
-    background:
-      linear-gradient(90deg, transparent 2%, hsl(180 76% 72% / 0.08) 16%, hsl(180 78% 70% / 0.34) 48%, hsl(180 76% 72% / 0.08) 82%, transparent 98%),
-      radial-gradient(ellipse at 50% 50%, hsl(180 82% 74% / 0.28), transparent 62%);
-    filter: blur(16px);
-    mix-blend-mode: screen;
-    will-change: opacity, transform;
-  }
-
-  .deck-liquid-crest-mobile {
-    inset-inline: -24%;
-    height: 22vh;
-    filter: blur(12px);
   }
 
   .title-pill::before {
@@ -942,4 +857,43 @@
   52% { opacity: 0.75; }
   72% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
   100% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
+}
+
+.ts-review-case-pill::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  inset-block: 0;
+  left: -50%;
+  width: 50%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.42), transparent);
+  animation: ts-glass-shimmer 3.2s ease-in-out infinite;
+}
+
+@keyframes mitsui-mobile-circle-reveal {
+  from {
+    clip-path: circle(0% at 50% 54%);
+  }
+
+  to {
+    clip-path: circle(150% at 50% 54%);
+  }
+}
+
+.mitsui-mobile-circle-ready {
+  clip-path: circle(0% at 50% 54%);
+}
+
+.mitsui-mobile-circle-reveal {
+  animation: mitsui-mobile-circle-reveal 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: clip-path;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mitsui-mobile-circle-ready,
+  .mitsui-mobile-circle-reveal {
+    animation: none;
+    clip-path: none;
+  }
 }

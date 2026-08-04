@@ -132,7 +132,7 @@ const CaseStudySlide = () => {
       ([entry]) => {
         if (entry.isIntersecting) reveal();
       },
-      { threshold: isMobile ? 0.18 : 0.3 }
+      { threshold: isMobile ? 0.48 : 0.3 }
     );
     observer.observe(el);
     // Desktop fallback only. On mobile the case-study slide is mounted one
@@ -172,7 +172,11 @@ const CaseStudySlide = () => {
   }, [statsTriggered, isMobile]);
 
   return (
-    <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
+    <section
+      ref={sectionRef}
+      className="slide overflow-hidden relative bg-background"
+    >
+      <div className={`relative h-full w-full overflow-hidden ${isMobile ? (triggered ? "mitsui-mobile-circle-reveal" : "mitsui-mobile-circle-ready") : ""}`}>
       <div className="absolute inset-0 z-0" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
       {/* Mitsui-blue interactive grid (desktop only; mobile has no hover).
           MagicUI demo recipe: radial spotlight mask + skew + 200% height.
@@ -191,7 +195,7 @@ const CaseStudySlide = () => {
       {/* md:pointer-events-none lets the interactive grid receive hover through
           the empty areas of this full-slide layer; the carousel stage re-enables
           its own pointer events below. Mobile keeps normal event flow. */}
-      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-1.5 px-5 pt-7 pb-2 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
+      <div className="relative z-10 flex h-full w-full flex-col justify-start gap-[clamp(0.55rem,1.35svh,0.75rem)] px-5 pt-8 pb-3 md:block md:px-12 md:pt-24 md:pb-14 md:pointer-events-none">
         {/* Hallmark · redesign v2: Split Studio — claim + ledger left, creatives right,
             stat-led proof strip across the bottom. Mobile order-flow untouched. */}
         <header className="order-1 text-left md:absolute md:left-12 md:top-20 md:w-[36%] lg:w-[34%]">
@@ -205,7 +209,7 @@ const CaseStudySlide = () => {
             </span>
           </h2>
           <p
-            className="cs-subtitle mt-1.5 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/90 md:mt-3 md:max-w-[30rem] md:text-[1.24rem]"
+            className="cs-subtitle mt-2 max-w-[22rem] font-body text-[0.82rem] leading-relaxed text-white/90 md:mt-3 md:max-w-[30rem] md:text-[1.24rem]"
             style={{ opacity: isMobile ? 1 : 0 }}
           >
             {isMobile
@@ -222,7 +226,7 @@ const CaseStudySlide = () => {
 
         <div className="cs-proof order-3 max-w-[27rem] overflow-hidden rounded-[1rem] border border-white/25 bg-black/40 backdrop-blur-sm md:absolute md:left-12 md:top-[44%] md:w-[38%] md:max-w-none md:rounded-[0.75rem] md:border md:border-white/12 md:bg-black/[0.16] md:px-5 md:backdrop-blur-[2px] lg:w-[35%]" style={{ opacity: isMobile ? 1 : 0 }}>
           {mitsuiProofPoints.map((point, pointIndex) => (
-            <div key={point.label} className={`grid grid-cols-[4.75rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-1 last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
+            <div key={point.label} className={`grid grid-cols-[4.75rem_minmax(0,1fr)] items-center border-b border-white/16 px-3 py-[clamp(0.4rem,0.9svh,0.55rem)] last:border-b-0 md:grid-cols-[7.6rem_minmax(0,1fr)] md:border-white/12 md:px-0 md:py-[1.125rem] md:last:border-b ${pointIndex === 0 ? "md:border-t md:border-t-white/12" : ""}`}>
               <span className="font-sans text-[10.9px] font-black uppercase tracking-[0.14em] text-white/92 md:text-[0.78rem] md:text-white/90">
                 {point.label}
               </span>
@@ -239,7 +243,7 @@ const CaseStudySlide = () => {
           {statDefs.map((stat, statIndex) => (
             <div
               key={stat.label}
-              className={`cs-stat flex h-[2.2rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/22 bg-black/40 px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:justify-center md:gap-1.5 md:rounded-none md:border-0 md:bg-transparent md:px-7 md:py-4 md:shadow-none md:backdrop-blur-none ${statIndex === statDefs.length - 1 ? "col-span-2 w-[calc(50%-0.25rem)] justify-self-center md:col-span-1 md:w-auto md:justify-self-auto" : ""} ${statIndex === 0 ? "md:pl-0" : "md:border-l md:border-l-white/10"}`}
+              className={`cs-stat flex h-[2.3rem] min-w-0 flex-row items-center justify-between gap-2 rounded-full border border-white/22 bg-black/40 px-3 py-0.5 text-left shadow-[0_8px_24px_rgba(0,0,0,0.12)] backdrop-blur-sm md:h-auto md:flex-col md:items-start md:justify-center md:gap-1.5 md:rounded-none md:border-0 md:bg-transparent md:px-7 md:py-4 md:shadow-none md:backdrop-blur-none ${statIndex === statDefs.length - 1 ? "col-span-2 w-[calc(50%-0.25rem)] justify-self-center md:col-span-1 md:w-auto md:justify-self-auto" : ""} ${statIndex === 0 ? "md:pl-0" : "md:border-l md:border-l-white/10"}`}
               style={{ opacity: isMobile ? 1 : 0 }}
             >
               <div
@@ -273,11 +277,12 @@ const CaseStudySlide = () => {
         </div>
 
         {/* RIGHT: creative gallery */}
-        <div className="cs-cards-stage--xl order-2 mt-2 mb-5 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="cs-cards-stage--xl order-2 mt-3 mb-6 flex min-h-0 min-w-0 items-center justify-center self-center md:absolute md:left-[calc(100%-20rem)] md:top-[44%] md:mb-0 md:mt-0 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
           <div className="cs-slider relative flex w-full items-center justify-center" style={{ opacity: isMobile ? 1 : 0 }}>
             <CaseStudyCarousel slides={sliderImages} accentColor={mitsuiCyan} mobileStack />
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

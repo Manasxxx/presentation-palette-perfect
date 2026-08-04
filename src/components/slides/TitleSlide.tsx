@@ -13,7 +13,6 @@ const Arrow19 = React.forwardRef<Arrow19Element, Arrow19Props>(
 Arrow19.displayName = "Arrow19";
 import { animate, cubicBezier, spring, stagger } from "animejs";
 import { Globe } from "@/components/ui/globe";
-import { LiquidGlassCard } from "react-liquid-glass-card";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import GlassSurface from "@/components/ui/glass-surface";
@@ -28,7 +27,7 @@ import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-par
 // height, so the row reads as a uniform, vertically-aligned partner strip.
 const credibilityBadges = [
   { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge },
-  { label: "Google Ads Agency Partner", src: googlePartnerBadge },
+  { label: "Google Ads Agency Partner", src: googlePartnerBadge, needsMobileTile: true },
   { label: "Meta Agency Partner", src: metaPartnerBadge },
 ];
 
@@ -48,14 +47,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     const profile = getTitleTextMotionProfile(isMobile);
     const editorialEase = cubicBezier(0.18, 0.82, 0.18, 1);
     const signalEase = cubicBezier(0.16, 1, 0.3, 1);
-    const wordmarkEase = spring({ stiffness: 145, damping: 18, mass: 0.9 });
-    const pillEase = spring({ stiffness: 105, damping: 14, mass: 0.8 });
+    const wordmarkEase = spring({ stiffness: 235, damping: 35, mass: 0.65 });
+    const pillEase = spring({ stiffness: 205, damping: 33, mass: 0.7 });
 
     animate(el.querySelectorAll(".ts-brand-token"), {
       opacity: [0, 1],
       translateY: [profile.wordmarkDropY, 0],
-      scale: [0.94, 1],
-      filter: ["blur(10px)", "blur(0px)"],
+      scale: [0.98, 1],
+      filter: ["blur(5px)", "blur(0px)"],
       duration: profile.wordmarkDuration,
       delay: stagger(profile.wordmarkStagger, { start: 90 }),
       ease: wordmarkEase,
@@ -73,8 +72,8 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
     animate(el.querySelectorAll(".ts-cover-line"), {
       opacity: [0, 1],
-      translateY: [34, 0],
-      filter: ["blur(12px)", "blur(0px)"],
+      translateY: [18, 0],
+      filter: ["blur(6px)", "blur(0px)"],
       duration: profile.lineDuration,
       delay: stagger(profile.lineStagger, { start: 260 }),
       ease: editorialEase,
@@ -82,9 +81,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
     animate(el.querySelectorAll(".ts-pill-shell"), {
       opacity: [0, 1],
-      translateY: [28, 0],
-      scale: [0.78, 1.035, 1],
-      filter: ["blur(14px)", "blur(0px)"],
+      translateY: [12, 0],
+      scale: [0.96, 1.008, 1],
+      filter: ["blur(6px)", "blur(0px)"],
       duration: profile.pillDuration,
       delay: stagger(profile.pillStagger, { start: 430 }),
       ease: pillEase,
@@ -100,24 +99,17 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
     animate(el.querySelector(".ts-logo-outer")!, {
       opacity: [0, 1],
-      scale: [0.85, 1],
+      scale: [0.96, 1],
       duration: 1000,
       delay: 250,
       ease: signalEase,
     });
 
     animate(el.querySelector(".ts-logo-inner")!, {
-      clipPath: ["circle(0% at 50% 50%)", "circle(50% at 50% 50%)"],
-      duration: 1200,
+      opacity: [0, 1],
+      scale: [0.92, 1],
+      duration: 900,
       delay: 400,
-      ease: signalEase,
-    });
-
-    animate(el.querySelectorAll(".ts-ring"), {
-      opacity: [0, 0.6],
-      scale: [0.6, 1],
-      duration: 1400,
-      delay: (_, i) => 500 + i * 120,
       ease: signalEase,
     });
 
@@ -151,7 +143,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       animate(btn, {
         opacity: [0, 1],
         translateY: [18, 0],
-        scale: [0.88, 1.04, 1],
+        scale: [0.97, 1.008, 1],
         duration: 950,
         delay: profile.badgeDelay - 160,
         ease: pillEase,
@@ -165,7 +157,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         scale: [0.5, 1],
         duration: 800,
         delay: 1400,
-        ease: spring({ stiffness: 200, damping: 12 }),
+        ease: spring({ stiffness: 250, damping: 34, mass: 0.6 }),
       });
     }
 
@@ -255,11 +247,11 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full h-full px-6 md:px-16 lg:px-24 flex flex-col justify-between py-14 md:grid md:grid-cols-[minmax(0,1.04fr)_minmax(340px,0.76fr)] md:grid-rows-[auto_1fr_auto] md:gap-x-10 md:py-[clamp(2.5rem,6svh,5rem)] lg:gap-x-16"
+        className="relative z-10 flex h-full w-full flex-col justify-between px-6 py-14 sm:grid sm:grid-cols-[minmax(0,1.05fr)_minmax(13rem,0.75fr)] sm:grid-rows-[auto_1fr_auto] sm:gap-x-6 sm:px-8 sm:py-[clamp(2rem,5svh,3rem)] md:grid-cols-[minmax(0,1.08fr)_minmax(16rem,0.72fr)] md:gap-x-10 md:px-10 md:py-[clamp(2.5rem,6svh,5rem)] lg:grid-cols-[minmax(0,1.04fr)_minmax(340px,0.76fr)] lg:gap-x-16 lg:px-24"
       >
         {/* TOP: brand lockup */}
-        <div className="flex flex-row items-start justify-center gap-6 md:col-span-2 md:col-start-1 md:row-start-1 md:mt-5 md:-ml-4 md:justify-between lg:-ml-12">
-          <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left">
+        <div className="flex flex-row items-start justify-center gap-6 sm:col-span-2 sm:col-start-1 sm:row-start-1 sm:mt-2 sm:justify-between md:mt-5 md:-ml-4 lg:-ml-12">
+          <div className="ts-wordmark-line w-full min-w-0 text-center sm:w-auto sm:text-left">
             <span className="block pb-2 text-left font-sans text-[2rem] font-black uppercase leading-[1.02] tracking-normal text-white [overflow-wrap:anywhere] sm:text-[2.6rem] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)]">
               <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
               <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
@@ -268,16 +260,16 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
               <span className="ts-brand-token ml-2 inline-block font-sans not-italic text-white md:ml-3" style={{ opacity: 0 }}>DIGITAL</span>
             </span>
           </div>
-          <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 md:block" aria-hidden="true" style={{ opacity: 0 }}>
+          <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 sm:block" aria-hidden="true" style={{ opacity: 0 }}>
             <div className="mt-2 h-px w-1/3 bg-owl-teal/50 shadow-[0_0_18px_rgba(75,194,194,0.32)]" />
           </div>
         </div>
 
         {/* CENTER: editorial claim (left) + signal map (right) */}
-        <div className="grid translate-y-0 items-center gap-8 md:contents">
-          <div className="relative min-w-0 md:col-start-1 md:row-start-2 md:self-center md:py-[clamp(1rem,3svh,2.75rem)]">
-            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:max-w-none md:text-left">
-              <span className="block max-w-[22rem] md:hidden">
+        <div className="grid translate-y-0 items-center gap-8 sm:contents">
+          <div className="relative min-w-0 sm:col-start-1 sm:row-start-2 sm:self-center sm:py-[clamp(0.75rem,2.5svh,2rem)] md:py-[clamp(1rem,3svh,2.75rem)]">
+            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] sm:mx-0 sm:max-w-none sm:text-left">
+              <span className="block max-w-[22rem] sm:hidden">
                 <span className="ts-cover-line block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76" style={{ opacity: 0 }}>
                   We turn,
                 </span>
@@ -307,7 +299,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
               {/* Desktop hook. Heading recipe matches SkyrocketSlide: Montserrat black,
                   teal Lora-italic accent at the same size and weight, teal underglow. */}
-              <span className="hidden font-sans normal-case leading-none tracking-normal md:block">
+              <span className="hidden font-sans normal-case leading-none tracking-normal sm:block">
                 <span
                   className="ts-cover-line block font-sans text-[clamp(2.4rem,3.9vw,4.6rem)] font-black leading-[0.98] tracking-[-0.02em] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] [font-weight:900]"
                   style={{ opacity: 0 }}
@@ -344,7 +336,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             </h1>
           </div>
 
-          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:min-h-[14.5rem] md:col-start-2 md:row-start-2 md:min-h-[min(31rem,46svh)] md:self-center" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:col-start-2 sm:row-start-2 sm:min-h-[min(22rem,40svh)] sm:self-center md:min-h-[min(31rem,46svh)]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
             <div
               className="ts-signal-line absolute left-[13%] top-[20%] h-[62%] w-[62%] rounded-full border border-white/10"
               style={{ opacity: 0, animation: "ts-orbit-drift 18s linear infinite" }}
@@ -359,23 +351,18 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             />
 
             <div className="absolute left-1/2 top-1/2 h-[12.5rem] w-[12.5rem] -translate-x-1/2 -translate-y-1/2 sm:h-[13.2rem] sm:w-[13.2rem] md:h-[18.5rem] md:w-[18.5rem]">
-              <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/35" style={{ opacity: 0, transform: "scale(1.18)" }} />
-              <div className="ts-ring absolute inset-0 rounded-full border border-white/14" style={{ opacity: 0, transform: "scale(1.55)" }} />
-              <div className="ts-ring absolute inset-0 rounded-full border border-owl-teal/18" style={{ opacity: 0, transform: "scale(2)" }} />
               <a
                 href="https://www.owlsurf.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Visit owlsurf.com"
-                className="relative z-10 flex h-full w-full cursor-pointer items-center justify-center rounded-full transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/70 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+                className="relative z-10 flex h-full w-full cursor-pointer items-center justify-center transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/70 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
               >
                 <div
                   className="ts-logo-inner flex h-full w-full items-center justify-center"
-                  style={{ clipPath: "circle(0% at 50% 50%)" }}
+                  style={{ opacity: 0 }}
                 >
-                  <LiquidGlassCard borderRadius="50%" padding="7px" blur={15} brightness={1.12} backgroundColor="rgba(75, 194, 194, 0.08)">
-                    <OwlSurfLogo className="h-full w-full rounded-full" />
-                  </LiquidGlassCard>
+                  <OwlSurfLogo className="h-full w-full overflow-visible drop-shadow-[0_0_34px_rgba(75,194,194,0.2)]" />
                 </div>
               </a>
             </div>
@@ -388,7 +375,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         </div>
 
         {/* BOTTOM: centered CTA over a centered partner badge strip */}
-        <div className="flex -translate-y-4 flex-col items-center gap-4 md:col-start-1 md:row-start-3 md:translate-y-0 md:items-start md:gap-[clamp(1rem,3svh,2.5rem)]">
+        <div className="flex -translate-y-1 flex-col items-center gap-4 sm:col-start-1 sm:row-start-3 sm:translate-y-0 sm:items-start sm:gap-[clamp(0.75rem,2svh,1.5rem)] md:gap-[clamp(1rem,3svh,2.5rem)]">
           {onViewCaseStudies && (
             <div className="relative">
               <Arrow19
@@ -413,14 +400,10 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
                     backgroundOpacity={0.08}
                     saturation={1.35}
                     distortionScale={-90}
-                    className="pointer-events-none"
+                    className="ts-review-case-pill pointer-events-none"
                   >
-                    <span className="relative overflow-hidden font-sans text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:translate-x-0.5">
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 skew-x-[-18deg] bg-gradient-to-r from-transparent via-white/45 to-transparent opacity-70 [animation:ts-glass-shimmer_3.2s_ease-in-out_infinite]"
-                      />
-                      <span className="relative">Review Case Studies</span>
+                    <span className="relative z-10 font-sans text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:translate-x-0.5">
+                      Review Case Studies
                     </span>
                   </GlassSurface>
                 </button>
@@ -429,15 +412,15 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           )}
 
           {/* Partner badge strip — secondary credibility, centered on mobile, left-railed on desktop */}
-          <div className="flex flex-col items-center gap-2 md:-translate-y-3 md:items-start md:gap-3">
+          <div className="flex flex-col items-center gap-2 sm:-translate-y-2 sm:items-start sm:gap-2.5 md:-translate-y-3 md:gap-3">
             <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
               Platform partners
             </span>
-            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-3 md:justify-start md:gap-x-8">
+            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-3 sm:justify-start sm:gap-x-4 md:gap-x-8">
               {credibilityBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="ts-cred-badge flex h-[42px] min-w-0 items-center justify-center overflow-hidden rounded-lg md:h-[62px]"
+                  className={`ts-cred-badge flex h-[42px] min-w-0 items-center justify-center overflow-hidden rounded-lg sm:h-[50px] md:h-[62px] ${badge.needsMobileTile ? "bg-white px-2 py-1 shadow-[0_6px_18px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:bg-transparent sm:p-0 sm:shadow-none sm:ring-0" : ""}`}
                   style={{ opacity: 0 }}
                 >
                   <img

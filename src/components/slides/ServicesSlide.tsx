@@ -184,7 +184,7 @@ const ServicesSlide = () => {
           </h2>
         </header>
 
-        <div className="mt-5 flex w-full flex-1 flex-col grid-cols-12 items-start gap-5 md:mt-[clamp(1rem,2.7svh,2.1rem)] md:grid md:flex-1 md:gap-10">
+        <div className="mt-6 flex w-full flex-1 flex-col grid-cols-12 items-start gap-6 md:mt-[clamp(1rem,2.7svh,2.1rem)] md:grid md:flex-1 md:gap-10">
           {isMobile ? (
             /* Mobile (Session 45): the desktop pillar cards as an auto-advancing
                accordion. One card expanded (full description + tags, roomy),

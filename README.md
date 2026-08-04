@@ -1,24 +1,24 @@
 # OwlSurf Digital — Portfolio Deck
 
-A single-page portfolio for OwlSurf Digital, built to feel like a presentation rather than a website. The whole thing is a vertical stack of full-screen slides with scroll-snap, so scrolling moves deck-style from one idea to the next. One dominant message per slide, visuals doing the heavy lifting, motion kept in service of the pitch.
+A single-page portfolio for OwlSurf Digital, built to feel like a presentation rather than a website. The whole thing is a vertical stack of full-screen slides driven by Lenis smoothing plus a nearest-slide settle, so wheel, trackpad, and touch gestures still feel native while the deck always lands cleanly. One dominant message per slide, visuals doing the heavy lifting, motion kept in service of the pitch.
 
 It's a marketing artifact first, so most of the engineering effort goes into two places that usually get ignored on a site like this: keeping it fast despite the WebGL, and keeping the motion from feeling like a screensaver.
 
 ## Architecture, and why it's built this way
 
-**The deck is an array, not a router.** `src/pages/Index.tsx` holds an ordered list of slide components and maps the container's scroll offset to a current index. There's no per-slide route; the URL stays at `/`. React Router only exists to catch unknown paths and render a branded 404 outside the deck. State is deliberately local React state and prop drilling. No Redux, no Zustand. For a linear deck the global store would be ceremony.
+**The deck is an array with route aliases.** `src/pages/Index.tsx` holds the ordered slide components and maps the Lenis scroll offset to a current index. `src/pages/slide-routes.ts` gives each slide a deep-linkable slug while every slug still renders the same continuous deck. Mobile scrolling syncs the slug; desktop deep links scroll to their slide once. State stays local React state and props. No Redux, no Zustand.
 
-**Only the current slide and its immediate neighbors are mounted.** `SLIDE_MOUNT_RADIUS` is `1`, so the next and previous slides are already present during scroll-snap movement while farther-off slides stay as height-preserving skeletons. This smooths transitions without keeping the whole deck alive. Several slides own WebGL, timers, or RAF loops, so the mounted window stays deliberately tight.
+**Only the current slide and its immediate neighbors are mounted.** `SLIDE_MOUNT_RADIUS` is `1`, so the next and previous slides are ready during movement while farther-off slides stay as height-preserving skeletons. This smooths transitions without keeping the whole deck alive. Several slides own WebGL, timers, or RAF loops, so the mounted window stays deliberately tight.
 
 **Heavy effects are desktop-only and gated in code.** `LightRays`, `PrismaticBurst`, and the cover globe mount only above 768px via `useIsMobile()`; Hyperspeed is the one currently retained ambient exception for the Who We Are slide. Ambient WebGL caps its device pixel ratio so retina displays don't cook the GPU. The old Our Team lanyard stack was removed.
 
-**Mobile gets purpose-built variants, not shrunk desktop.** The Services 3D card stack does not survive a naive resize, so phones get a readable two-row selector and Anime.js-driven build panel instead. Everything else is handled with `max`/`md:` Tailwind pairs or explicit `useIsMobile()` branches. Slides are kept inside a single viewport rather than made internally scrollable, because an oversized slide fights `scroll-snap-type: y mandatory`.
+**Mobile gets purpose-built variants, not shrunk desktop.** Phones get the Services accordion, compact case-study proof grids, dynamic visual-viewport slide height, stronger flick detection, and restrained mobile spacing. Slides stay inside one viewport rather than becoming internally scrollable, because nested vertical scrolling fights the deck gesture owner.
 
-**Anime.js owns motion.** Anime.js drives entrance choreography, the Services card swap, `PillNav`, rotating words, and the deck-level liquid transition layer. Services, Clients, and all case-study slides now mark their own native motion path so the deck overlay can supply the watery light without double-moving slide content. Reduced-motion users get instant deck scroll and shortened/no-op motion where the effect would otherwise be distracting.
+**One owner per motion.** Lenis owns deck scrolling and the final no-bounce settle. Raw virtual-scroll samples detect short flick intent so one deliberate flick advances one slide even before halfway. Anime.js owns local entrances, Services swaps, `PillNav`, and rotating words; `SlideReveal` adds only a very light content spring. Mitsui alone currently trials a mobile circular reveal. Reduced-motion users get instant deck scroll and no large decorative reveal.
 
 ## Stack
 
-Vite · React 18 · TypeScript · Tailwind CSS 3 · Anime.js · Three.js / postprocessing (Hyperspeed) · OGL / cobe (ambient effects).
+Vite · React 18 · TypeScript · Tailwind CSS 3 · Lenis · Anime.js · Motion · Three.js / postprocessing (Hyperspeed) · OGL / cobe (ambient effects).
 
 Node target is pinned in `.nvmrc` (Node 22). npm is the package manager of record; `package-lock.json` is the lockfile the deploy uses.
 
@@ -33,7 +33,7 @@ Other scripts:
 
 ```sh
 npm run build    # production build to dist/
-npm run lint     # eslint, currently clean (0 warnings)
+npm run lint     # eslint; currently 0 errors, 7 known warnings
 npm test         # vitest
 npm run images:convert   # batch PNG -> WebP, requires `npm i -D sharp`
 ```
@@ -45,13 +45,14 @@ npm run images:convert   # batch PNG -> WebP, requires `npm i -D sharp`
 ```txt
 src/
   pages/
-    Index.tsx              Slide registry, tight slide-window mounting, scroll-to-index nav
+    Index.tsx              Slide registry, Lenis lifecycle, flick/settle logic, URL sync
+    deck-flick.ts          Gesture-intent thresholds shared by wheel and touch
     NotFound.tsx           Branded 404, lives outside the deck
   components/
     slides/                One file per full-screen slide (cover, who-we-are, services, clients, 7 case studies, contact)
     ui/                    Self-contained visual primitives (CardSwap, LogoLoop, Hyperspeed, PrismaticBurst, ...)
     PillNav.tsx            Activity-driven header nav (shows on movement, hides when idle)
-    SlideReveal.tsx        IntersectionObserver wrapper that hands entrance timing to the animation libs
+    SlideReveal.tsx        Lightweight IntersectionObserver content reveal
   hooks/
     use-mobile.tsx         768px breakpoint gate for heavy effects and mobile variants
     use-reduced-motion.tsx prefers-reduced-motion source of truth
@@ -74,14 +75,14 @@ There's a small amount of process here because the deck is iterated live with pr
 
 ## Deployment
 
-Production is a static build (`npm run build` emits `dist/`) served from a VPS at **https://www.owlsurf.media**. The build is fronted by a reverse proxy with an SPA fallback to `index.html` (the 404 route is client-side). See `docs/vps-domain-migration.md`, `docs/dependencies.md`, and the example configs in `deploy/` for the server setup.
+Production is a static build (`npm run build` emits `dist/`) served from a VPS at **https://www.owlsurf.com**. The former **https://www.owlsurf.media** address redirects to the `.com` primary domain. The build is fronted by a reverse proxy with an SPA fallback to `index.html` (the 404 route is client-side). See `docs/vps-domain-migration.md`, `docs/dependencies.md`, and the example configs in `deploy/` for the server setup.
 
 ### Continuous deployment (push-to-deploy)
 
 A push to `main` updates the live site automatically in ~10-60s. The chain:
 
 1. **GitHub Actions** (`.github/workflows/deploy.yml`) fires on push to `main`.
-2. It sends `POST https://www.owlsurf.media/deploy` with an `X-Deploy-Token` header (`secrets.DEPLOY_TOKEN`).
+2. It sends `POST https://www.owlsurf.com/deploy` with an `X-Deploy-Token` header (`secrets.DEPLOY_TOKEN`). The `.media` redirect is public traffic only, not the deployment endpoint.
 3. On the VPS, a small Express webhook (`deployment/server.js`, bound to `127.0.0.1:8081`, reverse-proxied at `/deploy`) validates the token and spawns `deployment/deploy.sh` **detached** — so the HTTP `200` is just an ack, the real work runs after the response returns.
 4. `deployment/deploy.sh` runs: `git fetch` → `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. It logs to `deployment/logs/deploy.log` and self-locks via `deployment/.deploy-lock` so two deploys can't overlap.
 
@@ -94,8 +95,9 @@ The pipeline is fire-and-forget with no alerting, so a failed deploy is silent �
 1. **Check the Actions run:** `gh run list --limit 5`. A `failure` is the deploy. `gh run view <id> --log` shows why.
    - `curl: (28) ... Timeout` connecting to port 443 = the VPS was unreachable when the webhook fired (server down / rebooting / overloaded mid-build). The build/`pm2 restart` can briefly saturate a small VPS. This is **transient and not a repo bug** — the retry flags now absorb most of these.
 2. **Confirm the endpoint is healthy from your machine:**
-   - `curl -sS -o /dev/null -w "%{http_code}\n" https://www.owlsurf.media/` → expect `200`.
-   - `curl -sS -X POST https://www.owlsurf.media/deploy` → expect `403 Forbidden` (server up, rejecting the missing token).
+   - `curl -sS -o /dev/null -w "%{http_code}\n" https://www.owlsurf.com/` → expect `200`.
+   - `curl -sS -X POST https://www.owlsurf.com/deploy` → expect `403 Forbidden` (server up, rejecting the missing token).
+   - `curl -I https://www.owlsurf.media/` → expect a redirect whose destination is `https://www.owlsurf.com/`.
 3. **Re-fire the missed deploy** (the workflow does not retry itself once the job has ended): `gh run rerun <id>`. It's idempotent — it only rebuilds whatever is already on `origin/main`. No force-push, no history change, nothing on a teammate's machine is touched. Worst case it fails the same way and changes nothing. Note `git reset --hard` discards uncommitted edits made *directly on the VPS* (every deploy already does this, so don't hand-edit files on the server).
 4. **On the VPS itself:** `tail deployment/logs/deploy.log` for the build output, `pm2 status` / `pm2 logs heyowlsurf`, and remove a stale `deployment/.deploy-lock` if a deploy died without cleaning up.
 

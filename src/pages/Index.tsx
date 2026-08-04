@@ -1,19 +1,23 @@
-import { lazy, Suspense, useMemo, useState, useEffect, useRef, type ComponentType, type CSSProperties } from "react";
+import { lazy, Suspense, useCallback, useMemo, useState, useEffect, useRef, type ComponentType, type CSSProperties } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Lenis, { type VirtualScrollData } from "lenis";
 import TitleSlide from "@/components/slides/TitleSlide";
 
 import SlideReveal from "@/components/SlideReveal";
 import PillNav from "@/components/PillNav";
-import DeckTransitionLayer from "@/components/DeckTransitionLayer";
-import { DeckScrollContext } from "@/components/deck-scroll-context";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getMountedSlideIndexes, getSlideIndexFromScroll } from "./slide-window";
 import { indexForSlug, slugForIndex } from "./slide-routes";
-import { seamColor } from "./slide-edge-colors";
-import { getDeckSnapConfig } from "./deck-snap";
+import {
+  FLICK_GESTURE_GAP_MS,
+  MOBILE_FLICK_DISTANCE_THRESHOLD,
+  MOBILE_FLICK_PEAK_THRESHOLD,
+  MOBILE_FLICK_WINDOW_MS,
+  getFlickDirection,
+  type FlickDirection,
+} from "./deck-flick";
 
-const MobileTransitionLayer = lazy(() => import("@/components/MobileTransitionLayer"));
 const SkyrocketSlide = lazy(() => import("@/components/slides/SkyrocketSlide"));
 const ServicesSlide = lazy(() => import("@/components/slides/ServicesSlide"));
 const ClientsSlide = lazy(() => import("@/components/slides/ClientsSlide"));
@@ -43,6 +47,19 @@ const slides: ComponentType[] = [
 
 const SLIDE_MOUNT_RADIUS = 1;
 const NAV_IDLE_HIDE_DELAY = 1600;
+const LENIS_SCROLL_DURATION = 0.68;
+const LENIS_MOBILE_SCROLL_DURATION = 0.74;
+const LENIS_SETTLE_DURATION = 0.38;
+const LENIS_MOBILE_SETTLE_DURATION = 0.4;
+const LENIS_SETTLE_DELAY = 110;
+const LENIS_MOBILE_SETTLE_DELAY = 95;
+
+// Fast release, no overshoot. The tiny spring character now belongs to slide
+// content only; the scroll itself stays calm and physically predictable.
+const deckScrollEase = (t: number) => 1 - Math.pow(1 - t, 4);
+
+// Mobile settles decisively without bounce or overshoot.
+const mobileDeckSettleEase = (t: number) => 1 - Math.pow(1 - t, 3);
 
 /**
  * The slides are sized in `svh` (small-viewport height, constant), but
@@ -70,6 +87,10 @@ const SlideFallback = () => (
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
+  const settleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isSettlingRef = useRef(false);
   const prefersReducedMotion = usePrefersReducedMotion();
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -93,6 +114,34 @@ const Index = () => {
   const [navActive, setNavActive] = useState(true);
   const navIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const deckViewportHeightRef = useRef(0);
+
+  const scrollToSlide = useCallback((index: number, immediate = false) => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const targetIndex = Math.max(0, Math.min(index, slides.length - 1));
+    const targetTop = targetIndex * getSlideHeight(container);
+    const lenis = lenisRef.current;
+
+    if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
+    isSettlingRef.current = false;
+
+    if (!lenis || immediate || prefersReducedMotion) {
+      container.scrollTop = targetTop;
+      return;
+    }
+
+    isSettlingRef.current = true;
+    lenis.scrollTo(targetTop, {
+      duration: isMobile ? LENIS_MOBILE_SCROLL_DURATION : LENIS_SCROLL_DURATION,
+      easing: deckScrollEase,
+      lock: false,
+      userData: { initiator: "deck-navigation" },
+      onComplete: () => {
+        isSettlingRef.current = false;
+      },
+    });
+  }, [isMobile, prefersReducedMotion]);
 
   /**
    * Mobile browser chrome changes the visible viewport while scrolling,
@@ -124,11 +173,14 @@ const Index = () => {
       container.style.setProperty("--deck-vh", `${nextHeight}px`);
 
       const targetTop = Math.max(0, progress * nextHeight);
-      const previousScrollBehavior = container.style.scrollBehavior;
-      container.style.scrollBehavior = "auto";
-      container.scrollTop = targetTop;
+      const lenis = lenisRef.current;
+      if (lenis) {
+        lenis.scrollTo(targetTop, { immediate: true, force: true });
+      } else {
+        container.scrollTop = targetTop;
+      }
       window.requestAnimationFrame(() => {
-        container.style.scrollBehavior = previousScrollBehavior;
+        lenisRef.current?.resize();
       });
     };
 
@@ -153,6 +205,154 @@ const Index = () => {
       window.removeEventListener("orientationchange", scheduleViewportHeight);
     };
   }, []);
+
+  /**
+   * Lenis owns wheel/touch smoothing on the deck's real nested scroll
+   * container. Native CSS smooth-scroll and native CSS snap stay disabled
+   * while it is active; a short nearest-slide settle keeps the presentation
+   * structure without stacking two competing scroll engines.
+   */
+  useEffect(() => {
+    const wrapper = containerRef.current;
+    const content = contentRef.current;
+    if (!wrapper || !content || prefersReducedMotion) return;
+
+    const lenis = new Lenis({
+      wrapper,
+      content,
+      eventsTarget: wrapper,
+      autoRaf: true,
+      smoothWheel: true,
+      syncTouch: true,
+      lerp: isMobile ? 0.15 : 0.16,
+      syncTouchLerp: isMobile ? 0.1 : 0.12,
+      touchInertiaExponent: 1.35,
+      wheelMultiplier: 0.92,
+      touchMultiplier: isMobile ? 1.08 : 1,
+      overscroll: false,
+      stopInertiaOnNavigate: true,
+      prevent: (node) => node.hasAttribute("data-lenis-prevent"),
+    });
+
+    lenisRef.current = lenis;
+
+    const clearSettleTimer = () => {
+      if (!settleTimerRef.current) return;
+      clearTimeout(settleTimerRef.current);
+      settleTimerRef.current = null;
+    };
+
+    let gestureStartedAt = 0;
+    let lastGestureInputAt = 0;
+    let gestureDistance = 0;
+    let gesturePeak = 0;
+    let gestureStartIndex = currentSlideRef.current;
+    let flickDirection: FlickDirection = 0;
+
+    const clearGesture = () => {
+      gestureStartedAt = 0;
+      lastGestureInputAt = 0;
+      gestureDistance = 0;
+      gesturePeak = 0;
+      flickDirection = 0;
+    };
+
+    const settleToNearestSlide = () => {
+      settleTimerRef.current = null;
+      if (isSettlingRef.current) return;
+
+      if (lenis.isTouching) {
+        settleTimerRef.current = setTimeout(settleToNearestSlide, 70);
+        return;
+      }
+
+      // Let Lenis finish the user's own inertia before adding the small final
+      // settle. This avoids the tug-of-war produced by CSS scroll-snap.
+      if (Math.abs(lenis.velocity) > 0.08) {
+        settleTimerRef.current = setTimeout(settleToNearestSlide, 70);
+        return;
+      }
+
+      const slideHeight = getSlideHeight(wrapper);
+      const nearestIndex = getSlideIndexFromScroll(lenis.scroll, slideHeight, slides.length);
+      const targetIndex = flickDirection === 0
+        ? nearestIndex
+        : Math.max(0, Math.min(gestureStartIndex + flickDirection, slides.length - 1));
+      const targetTop = targetIndex * slideHeight;
+      if (Math.abs(targetTop - lenis.scroll) < 1) {
+        clearGesture();
+        return;
+      }
+
+      isSettlingRef.current = true;
+      lenis.scrollTo(targetTop, {
+        duration: isMobile ? LENIS_MOBILE_SETTLE_DURATION : LENIS_SETTLE_DURATION,
+        easing: isMobile ? mobileDeckSettleEase : deckScrollEase,
+        lock: false,
+        userData: { initiator: "deck-settle" },
+        onComplete: () => {
+          isSettlingRef.current = false;
+          clearGesture();
+        },
+      });
+    };
+
+    const scheduleSettle = () => {
+      if (isSettlingRef.current) return;
+      clearSettleTimer();
+      settleTimerRef.current = setTimeout(
+        settleToNearestSlide,
+        isMobile ? LENIS_MOBILE_SETTLE_DELAY : LENIS_SETTLE_DELAY,
+      );
+    };
+
+    const recordGesture = ({ deltaY }: VirtualScrollData) => {
+      const now = performance.now();
+      const startsNewGesture = lastGestureInputAt === 0 || now - lastGestureInputAt > FLICK_GESTURE_GAP_MS;
+
+      if (startsNewGesture) {
+        gestureStartedAt = now;
+        gestureDistance = 0;
+        gesturePeak = 0;
+        flickDirection = 0;
+        gestureStartIndex = getSlideIndexFromScroll(
+          lenis.scroll,
+          getSlideHeight(wrapper),
+          slides.length,
+        );
+      }
+
+      gestureDistance += deltaY;
+      gesturePeak = Math.max(gesturePeak, Math.abs(deltaY));
+      const detectedDirection = getFlickDirection({
+        distance: gestureDistance,
+        peak: gesturePeak,
+        durationMs: now - gestureStartedAt,
+        ...(isMobile && {
+          windowMs: MOBILE_FLICK_WINDOW_MS,
+          distanceThreshold: MOBILE_FLICK_DISTANCE_THRESHOLD,
+          peakThreshold: MOBILE_FLICK_PEAK_THRESHOLD,
+        }),
+      });
+      if (detectedDirection !== 0) flickDirection = detectedDirection;
+      lastGestureInputAt = now;
+
+      isSettlingRef.current = false;
+      clearSettleTimer();
+    };
+
+    lenis.on("scroll", scheduleSettle);
+    lenis.on("virtual-scroll", recordGesture);
+
+    return () => {
+      clearSettleTimer();
+      isSettlingRef.current = false;
+      lenis.off("scroll", scheduleSettle);
+      lenis.off("virtual-scroll", recordGesture);
+      lenis.destroy();
+      if (lenisRef.current === lenis) lenisRef.current = null;
+    };
+  }, [isMobile, prefersReducedMotion]);
 
   const mountedSlides = useMemo(
     () => getMountedSlideIndexes(slides.length, currentSlide, SLIDE_MOUNT_RADIUS),
@@ -227,13 +427,7 @@ const Index = () => {
    * Programmatically scrolls the container to a specific slide index.
    */
   const navigateToSlide = (index: number) => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    container.scrollTo({
-      top: index * getSlideHeight(container),
-      behavior: prefersReducedMotion ? "auto" : "smooth",
-    });
+    scrollToSlide(index);
   };
 
   /**
@@ -244,13 +438,21 @@ const Index = () => {
    */
   useEffect(() => {
     if (!isMobile) return;
-    const id = window.setTimeout(() => {
+    let id: ReturnType<typeof setTimeout>;
+
+    const syncUrlWhenSettled = () => {
       if (suppressUrlSyncRef.current) return;
+      if (isSettlingRef.current || lenisRef.current?.isScrolling) {
+        id = window.setTimeout(syncUrlWhenSettled, 80);
+        return;
+      }
       const slug = slugForIndex(currentSlide);
       if (slug !== window.location.pathname) {
         navigate(slug);
       }
-    }, 160);
+    };
+
+    id = window.setTimeout(syncUrlWhenSettled, 180);
     return () => window.clearTimeout(id);
   }, [currentSlide, isMobile, navigate]);
 
@@ -265,89 +467,64 @@ const Index = () => {
     if (!container) return;
 
     const targetIndex = indexForSlug(location.pathname);
-    if (targetIndex === currentSlideRef.current) return;
-
     const firstPaint = !hasSyncedInitialUrlRef.current;
     hasSyncedInitialUrlRef.current = true;
+    if (targetIndex === currentSlideRef.current) return;
 
     suppressUrlSyncRef.current = true;
     currentSlideRef.current = targetIndex;
-    container.scrollTo({
-      top: targetIndex * getSlideHeight(container),
-      behavior: firstPaint || prefersReducedMotion ? "auto" : "smooth",
-    });
+    scrollToSlide(targetIndex, firstPaint || prefersReducedMotion);
 
     const release = window.setTimeout(() => {
       suppressUrlSyncRef.current = false;
-    }, 650);
+    }, firstPaint || prefersReducedMotion ? 80 : 800);
     return () => window.clearTimeout(release);
-  }, [location.pathname, prefersReducedMotion]);
-
-  const snapConfig = getDeckSnapConfig(isMobile);
+  }, [location.pathname, prefersReducedMotion, scrollToSlide]);
 
   return (
-    <DeckScrollContext.Provider value={containerRef}>
     <div
       ref={containerRef}
       data-deck-scroll-container
-      className={`w-full overflow-y-auto overflow-x-hidden bg-background${prefersReducedMotion ? "" : " scroll-smooth"}`}
+      className="w-full overflow-y-auto overflow-x-hidden bg-background"
       style={{
         "--deck-vh": "100dvh",
         height: "var(--deck-vh)",
-        scrollSnapType: snapConfig.container,
+        // Reduced motion keeps an instant native snap. Otherwise Lenis owns
+        // both the glide and the short nearest-slide settle.
+        scrollSnapType: prefersReducedMotion ? "y mandatory" : "none",
         WebkitOverflowScrolling: "touch",
       } as CSSProperties}
     >
-
-      <PillNav
-        // Case-study slides are fully immersive: no top navigation on mobile or desktop.
-        // Mobile also hides on the cover (slide 0) so the hook lands clean.
-        visible={onCaseStudy ? false : isMobile ? navActive && currentSlide !== 0 : true}
-        currentSlide={currentSlide}
-        onNavigate={navigateToSlide}
-      />
-      {slides.map((SlideComponent, index) => (
-        <SlideReveal
-          key={index}
-          className="relative"
-          data-slide-index={index}
-          nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}
-          // Mobile seam blend: both sides of each slide joint fade to the same
-          // mix of the two adjacent slides' edge colors (slide-edge-colors.ts),
-          // so the boundary reads as one wash, not a divider line.
-          seamTopColor={isMobile && !(index >= 4 && index <= 10) ? seamColor(index - 1) : undefined}
-          seamBottomColor={isMobile && !(index >= 4 && index <= 10) ? seamColor(index) : undefined}
-        >
-          {mountedSlides.has(index) ? (
-            <Suspense fallback={<SlideFallback />}>
-              {index === 0 ? (
-                <TitleSlide onViewCaseStudies={() => navigateToSlide(4)} />
-              ) : (
-                <SlideComponent />
-              )}
-            </Suspense>
-          ) : (
-            <SlideFallback />
-          )}
-        </SlideReveal>
-      ))}
-      {/* Desktop keeps the animejs liquid-wash transition. Mobile gets the
-          Motion scroll-linked cross-fade (SlideReveal) plus the Theatre.js
-          signature sweep below. */}
-      {!isMobile && (
-        <DeckTransitionLayer
+      <div ref={contentRef} data-lenis-content className="relative w-full">
+        <PillNav
+          // Case-study slides are fully immersive: no top navigation on mobile or desktop.
+          // Mobile also hides on the cover (slide 0) so the hook lands clean.
+          visible={onCaseStudy ? false : isMobile ? navActive && currentSlide !== 0 : true}
           currentSlide={currentSlide}
-          isMobile={isMobile}
-          reducedMotion={prefersReducedMotion}
+          onNavigate={navigateToSlide}
         />
-      )}
-      {isMobile && !prefersReducedMotion && (
-        <Suspense fallback={null}>
-          <MobileTransitionLayer />
-        </Suspense>
-      )}
+        {slides.map((SlideComponent, index) => (
+          <SlideReveal
+            key={index}
+            className="relative"
+            data-slide-index={index}
+            nativeMotion={index === 2 || index === 3 || (index >= 4 && index <= 10)}
+          >
+            {mountedSlides.has(index) ? (
+              <Suspense fallback={<SlideFallback />}>
+                {index === 0 ? (
+                  <TitleSlide onViewCaseStudies={() => navigateToSlide(4)} />
+                ) : (
+                  <SlideComponent />
+                )}
+              </Suspense>
+            ) : (
+              <SlideFallback />
+            )}
+          </SlideReveal>
+        ))}
+      </div>
     </div>
-    </DeckScrollContext.Provider>
   );
 };
 

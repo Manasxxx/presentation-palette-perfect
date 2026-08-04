@@ -12,16 +12,16 @@ export interface SharedSlideMotionProfile {
 export const getSharedSlideMotionProfile = (isMobile = false): SharedSlideMotionProfile =>
   isMobile
     ? {
-        headingDropY: -26,
-        headingDuration: 780,
+        headingDropY: -16,
+        headingDuration: 680,
         accentDelay: 90,
         contentDelay: 230,
         itemStagger: 66,
         copyDelay: 260,
       }
     : {
-        headingDropY: -34,
-        headingDuration: 920,
+        headingDropY: -22,
+        headingDuration: 760,
         accentDelay: 120,
         contentDelay: 300,
         itemStagger: 84,
@@ -43,16 +43,15 @@ export const clearInlineFilter = (target: Element | NodeListOf<Element> | null) 
 
 export const slideEditorialEase = cubicBezier(0.18, 0.82, 0.18, 1);
 export const slideSettleEase = cubicBezier(0.16, 1, 0.3, 1);
-export const slideHeadingSpring = spring({ stiffness: 135, damping: 18, mass: 0.88 });
-export const slideContentSpring = spring({ stiffness: 105, damping: 15, mass: 0.9 });
+export const slideHeadingSpring = spring({ stiffness: 235, damping: 35, mass: 0.65 });
+export const slideContentSpring = spring({ stiffness: 205, damping: 33, mass: 0.7 });
 
 /**
- * Mobile entrances avoid spring overshoot entirely — on phones the bounce
- * lands on top of the proximity-snap settle and reads as jank, not life.
- * Desktop keeps the springs.
+ * Lenis now owns the deck movement on both platforms. Content gets one shared,
+ * heavily damped spring so it settles quietly without stacking a second large
+ * motion language on top of the scroll.
  */
-export const getSlideContentEase = (isMobile: boolean) =>
-  isMobile ? slideSettleEase : slideContentSpring;
+export const getSlideContentEase = (_isMobile: boolean) => slideContentSpring;
 
 export const animateSlideHeading = (
   root: ParentNode,
@@ -67,11 +66,11 @@ export const animateSlideHeading = (
   animate(targets, {
     opacity: [0, 1],
     translateY: [profile.headingDropY, 0],
-    scale: isMobile ? [0.985, 1] : [0.96, 1],
+    scale: [0.985, 1],
     filter: ["blur(12px)", "blur(0px)"],
-    duration: isMobile ? 880 : profile.headingDuration,
+    duration: isMobile ? 700 : profile.headingDuration,
     delay,
-    ease: isMobile ? slideSettleEase : slideHeadingSpring,
+    ease: slideHeadingSpring,
     onComplete: () => clearInlineFilter(targets),
   });
 };
@@ -88,11 +87,11 @@ export const animateSlideAccent = (
 
   animate(targets, {
     translateY: [-12, 0],
-    scale: [0.96, 1],
+    scale: [0.985, 1],
     filter: ["blur(10px)", "blur(0px)"],
     duration: profile.headingDuration,
     delay: delay ?? profile.accentDelay,
-    ease: slideSettleEase,
+    ease: slideContentSpring,
     onComplete: () => clearInlineFilter(targets),
   });
 };
@@ -109,12 +108,12 @@ export const animateSlideItems = (
 
   animate(targets, {
     opacity: [0, 1],
-    translateY: [24, 0],
-    scale: [0.97, 1],
+    translateY: [16, 0],
+    scale: [0.985, 1],
     filter: ["blur(8px)", "blur(0px)"],
     delay: stagger(profile.itemStagger, { start: start ?? profile.contentDelay }),
     duration: isMobile ? 620 : 760,
-    ease: slideEditorialEase,
+    ease: slideContentSpring,
     onComplete: () => clearInlineFilter(targets),
   });
 };

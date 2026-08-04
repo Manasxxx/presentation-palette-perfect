@@ -73,6 +73,7 @@ const CaseStudyCarousel = ({
         as="ul"
         load="always"
         ref={blossomRef}
+        data-lenis-prevent
         className={`cs-coverflow${mobileWide ? " cs-coverflow--wide" : ""}${mobileTableWidth ? " cs-coverflow--table" : ""}`}
         aria-label="Case-study creative carousel"
       >

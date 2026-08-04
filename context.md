@@ -5,6 +5,20 @@
 
 ---
 
+## Current State (Session 52 push prep)
+
+Session 52: responsive cover repair, Lenis deck motion, mobile spacing, and focused visual polish.
+
+- **Deck scroll owner:** Lenis now owns the nested deck container on desktop and mobile. Native CSS snap, the old desktop/mobile transition layers, seam-color plumbing, Theatre.js parameters, and the Motion mobile wrapper were removed. A short nearest-slide settle keeps every stopped view aligned without bounce.
+- **Flick intent:** raw trackpad/touch samples detect fast gestures independently of physical travel. Mobile uses lower thresholds and a slightly stronger touch multiplier, so a common short flick advances exactly one slide; slow drags settle to the nearest slide.
+- **Responsive cover:** the cover gains a compact `sm` bridge for narrow/unusual desktop widths. The `Review Case Studies` shimmer now crosses the entire glass pill, the mobile CTA/partner group sits lower, and Google receives a matching white badge tile on mobile.
+- **Mobile layout:** case studies received the largest vertical-spacing increase, with smaller spacing lifts on Who We Are, Services, and Clients. The dynamic `--deck-vh` stride remains the slide-height source of truth.
+- **Mitsui trial:** Mitsui alone has the mobile circular reveal. The observer stays on the unclipped section and the inner visual layer owns the 620ms circle expansion, avoiding the earlier blank-screen failure.
+- **Owl marks:** external circular glass/ring frames were removed from the Cover and Contact slides on both breakpoints. The animated OwlSurf SVG remains.
+- **Dependencies:** added `lenis`; removed `@theatre/core` and `@theatre/studio`. `.codex-runtime/**` is ignored by ESLint.
+- **Domain:** Vijay's upstream `0de0ef9` moved the deployment webhook to `https://www.owlsurf.com/deploy`. `.com` is the primary live domain; `.media` remains a public redirect. This pass rebased onto that commit and keeps both domains in Vite's local allowed-host list.
+- **Verification:** owner performed the visual review. Push-time static checks are recorded in `handoff.md`. `.github/workflows/deploy.yml` remains excluded.
+
 ## Current State (Session 51 push prep)
 
 Session 51: desktop cover hero rebuild, Aceternity floating navbar, dead-code removal.
@@ -53,9 +67,9 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 
 ## Deployment Pipeline & Operations
 
-> Live site https://www.owlsurf.media is push-to-deploy. Added 2026-06-04 after missed-deploy incident.
+> Primary live site https://www.owlsurf.com is push-to-deploy. https://www.owlsurf.media redirects to `.com`.
 
-**Chain.** Push to `main` → GitHub Actions `.github/workflows/deploy.yml` POSTs `https://www.owlsurf.media/deploy` (header `X-Deploy-Token: ${{ secrets.DEPLOY_TOKEN }}`) → VPS `deployment/server.js` (Express, `127.0.0.1:8081`, reverse-proxied at `/deploy`) checks token, spawns `deployment/deploy.sh` detached (`child.unref()`) → `git fetch` → `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. Logs: `deployment/logs/deploy.log`. Lock: `deployment/.deploy-lock`. Live in ~10-60s. The Actions `200` is an ack, not build success.
+**Chain.** Push to `main` → GitHub Actions `.github/workflows/deploy.yml` POSTs `https://www.owlsurf.com/deploy` (header `X-Deploy-Token: ${{ secrets.DEPLOY_TOKEN }}`) → VPS `deployment/server.js` (Express, `127.0.0.1:8081`, reverse-proxied at `/deploy`) checks token, spawns `deployment/deploy.sh` detached (`child.unref()`) → `git fetch` → `git reset --hard origin/main` → `npm ci` → `npm run build` → `pm2 restart heyowlsurf`. Logs: `deployment/logs/deploy.log`. Lock: `deployment/.deploy-lock`. Live in ~10-60s. The Actions `200` is an ack, not build success. The `.media` domain redirects public traffic to `.com`; deploy calls go directly to `.com`.
 
 **Failure mode is silent.** No alerting. Failed deploy = live site stays on previous build. Does not self-retry after the Actions job ends.
 
@@ -63,7 +77,7 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 
 **Recovery runbook.**
 1. `gh run list --limit 5` → find failure; `gh run view <id> --log`.
-2. Verify endpoint: `GET https://www.owlsurf.media/` → `200`; `POST /deploy` (no token) → `403`.
+2. Verify endpoint: `GET https://www.owlsurf.com/` → `200`; `POST https://www.owlsurf.com/deploy` (no token) → `403`; `GET https://www.owlsurf.media/` → redirect to `.com`.
 3. `gh run rerun <id>` — idempotent, only rebuilds `origin/main`.
 4. On VPS: `tail deployment/logs/deploy.log`, `pm2 status`/`pm2 logs heyowlsurf`, clear stale `deployment/.deploy-lock` if deploy died mid-run.
 
@@ -237,15 +251,15 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 
 | Decision | Why |
 |---|---|
-| Desktop scroll-snap `y mandatory` + `stop: always`; mobile `y mandatory` + `stop: normal` (S39) | Clean slide-by-slide; mobile keeps natural swipe momentum. |
+| Lenis owns desktop/mobile deck travel; nearest-slide settle owns alignment | Smooth wheel/touch motion without two competing snap engines. |
 | No Redux/Zustand | Local state + refs; nav handlers via props. |
-| Anime.js only animation library (GSAP removed S30) | One engine; Motion (mobile cross-fade) + Theatre (params) are the documented mobile exceptions. |
+| Lenis for deck travel; Anime.js for local entrances; Motion only where an individual component imports it | Clear ownership and no deck-level double animation. |
 | Slide-index math uses `getSlideHeight(container)`, never `window.innerHeight` | Mobile URL-bar growth drifts the index → black slide (S28/29 bug). |
 | Mount current slide + neighbors (`SLIDE_MOUNT_RADIUS = 1`); branded skeleton fallback | Bounded WebGL/RAF load, no black flash. |
 | Every loop (rAF/interval/WebGL/timer) pauses offscreen | Product requirement (prod.md); S41 closed the last violators. |
 | Ambient WebGL DPR cap 1.25 | Retina heat/lag control. |
 | Bare-span footgun | `span:not([class])` forces Palanquin italic — always `font-sans not-italic` on bare spans in headings. |
-| Contact logo layering | Position `ct-mark`, animate only `ct-mark-inner` — animating the positioned wrapper kills centering. |
+| Contact logo layering | Position `ct-mark`, animate only `ct-mark-inner`; external circular frame/ripple stays removed. |
 | Carousel centering | Structural transforms on a stable outer wrapper; Anime.js animates an inner element only. |
 | Case-study edits go in `CaseStudyLayout` | Mitsui (`CaseStudySlide`) is the only custom case file; keep parity when porting. |
 | No `LiquidGlassCard` for stats | Pre-baked saturate/brightness fights brand tints; custom translucent pills instead. |
@@ -270,16 +284,12 @@ Session 48: desktop/mobile polish pass, dev-server hardening, case carousel repa
 ```
 src/
   App.tsx                     — router; per-slide slug routes → Index; catch-all 404
-  pages/Index.tsx             — slide registry, mount window, scroll→index, URL sync (mobile)
+  pages/Index.tsx             — slide registry, Lenis owner, mount window, scroll→index, URL sync
   pages/slide-routes.ts       — slide index ↔ URL slug map
-  pages/slide-edge-colors.ts  — per-slide edge colors for mobile seam blend (keep in sync with deck order)
-  pages/deck-snap.ts (+test)  — snap config
+  pages/deck-flick.ts (+test) — wheel/touch flick-intent thresholds
   pages/NotFound.tsx          — branded 404
   components/
-    SlideReveal.tsx           — entrance wrapper; nativeMotion skip; mobile seam overlays
-    MobileSlideMotion.tsx     — mobile cross-fade + stagger (no scale, ever)
-    MobileTransitionLayer.tsx — liquid crest (Theatre params in src/theatre/deck.ts)
-    DeckTransitionLayer.tsx   — desktop liquid wash
+    SlideReveal.tsx           — lightweight IntersectionObserver content reveal
     CaseStudyCarousel.tsx     — Blossom stack (desktop .cs-cards / mobile .cs-mobile-stack)
     PillNav.tsx               — idle-hiding nav (Anime.js)
     OwlSurfLogo.tsx           — animated SVG mark (IO-gated loop)
@@ -288,7 +298,7 @@ src/
                                 CaseStudySlide (Mitsui), CaseStudyLayout + 7 case files,
                                 ContactSlide, slide-motion.ts (shared eases/helpers)
     ui/interactive-grid-pattern.tsx — MagicUI grid (case-study bg, S42)
-    ui/ripple.tsx             — MagicUI ripple (Contact, S42)
+    ui/ripple.tsx             — retained primitive; no longer used by Contact
     ui/word-rotate.tsx        — Anime.js rotating word pill
     ui/Hyperspeed/, LightRays.tsx, ui/PrismaticBurst/, ui/globe.tsx, ui/LogoLoop/ — WebGL/loop effects (all offscreen-paused)
   hooks/use-mobile.tsx, use-reduced-motion.tsx

@@ -187,7 +187,7 @@ const SkyrocketSlide = () => {
       </div>
       <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_30%,rgba(75,194,194,0.16),transparent_46%),linear-gradient(180deg,hsl(214_30%_5%/0.86),hsl(214_30%_6%/0.62)_50%,hsl(214_30%_5%/0.9))]" />
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-9 px-5 pt-[4.35rem] pb-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1640px] flex-col justify-start gap-10 px-5 pt-[4.35rem] pb-9 sm:px-10 md:justify-center md:gap-12 md:px-[4.5%] md:py-[4.4%]">
         {/* TOP — the message (left) + where we work (right) */}
         <div className="grid gap-8 md:grid-cols-12 md:items-start md:gap-14 lg:gap-20">
           {/* message */}
@@ -257,14 +257,14 @@ const SkyrocketSlide = () => {
         </div>
 
         {/* BOTTOM — buyer outcomes (full width) */}
-        <div className="border-t border-white/10 pt-7 md:pt-9">
+        <div className="border-t border-white/10 pt-8 md:pt-9">
           <div className="who-copy mb-3 md:mb-7" style={{ opacity: 0 }}>
             <span className="font-sans text-[0.76rem] font-black uppercase leading-none tracking-[0.2em] text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.35)] md:text-[0.7rem] md:font-bold md:tracking-[0.26em] md:text-white/60 md:drop-shadow-none">
               What this means for buyers
             </span>
           </div>
           {/* Mobile: three consolidated outcome pills, each with a one-line sentence */}
-          <div className="flex flex-col gap-2.5 md:hidden">
+          <div className="flex flex-col gap-3 md:hidden">
             {mobileOutcomes.map((item) => {
               const Icon = item.icon;
               return (

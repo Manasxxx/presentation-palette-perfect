@@ -3,20 +3,20 @@ import { describe, expect, it } from "vitest";
 import { getSharedSlideMotionProfile } from "./slide-motion";
 
 describe("shared slide motion profile", () => {
-  it("uses a top-drop title reveal on desktop slides", () => {
+  it("keeps the desktop title settle short and restrained", () => {
     expect(getSharedSlideMotionProfile(false)).toMatchObject({
-      headingDropY: -34,
-      headingDuration: 920,
+      headingDropY: -22,
+      headingDuration: 760,
       accentDelay: 120,
       contentDelay: 300,
       itemStagger: 84,
     });
   });
 
-  it("keeps the same title language noticeable on mobile", () => {
+  it("uses an even lighter title settle on mobile", () => {
     expect(getSharedSlideMotionProfile(true)).toMatchObject({
-      headingDropY: -26,
-      headingDuration: 780,
+      headingDropY: -16,
+      headingDuration: 680,
       accentDelay: 90,
       contentDelay: 230,
       itemStagger: 66,
