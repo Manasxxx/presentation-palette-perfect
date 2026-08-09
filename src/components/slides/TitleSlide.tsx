@@ -47,14 +47,14 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
     const profile = getTitleTextMotionProfile(isMobile);
     const editorialEase = cubicBezier(0.18, 0.82, 0.18, 1);
     const signalEase = cubicBezier(0.16, 1, 0.3, 1);
-    const wordmarkEase = spring({ stiffness: 235, damping: 35, mass: 0.65 });
-    const pillEase = spring({ stiffness: 205, damping: 33, mass: 0.7 });
+    const wordmarkEase = spring({ stiffness: 145, damping: 18, mass: 0.9 });
+    const pillEase = spring({ stiffness: 105, damping: 14, mass: 0.8 });
 
     animate(el.querySelectorAll(".ts-brand-token"), {
       opacity: [0, 1],
       translateY: [profile.wordmarkDropY, 0],
-      scale: [0.98, 1],
-      filter: ["blur(5px)", "blur(0px)"],
+      scale: [0.94, 1],
+      ...(!isMobile && { filter: ["blur(10px)", "blur(0px)"] }),
       duration: profile.wordmarkDuration,
       delay: stagger(profile.wordmarkStagger, { start: 90 }),
       ease: wordmarkEase,
@@ -72,8 +72,8 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
     animate(el.querySelectorAll(".ts-cover-line"), {
       opacity: [0, 1],
-      translateY: [18, 0],
-      filter: ["blur(6px)", "blur(0px)"],
+      translateY: [34, 0],
+      filter: ["blur(12px)", "blur(0px)"],
       duration: profile.lineDuration,
       delay: stagger(profile.lineStagger, { start: 260 }),
       ease: editorialEase,
@@ -81,9 +81,9 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
     animate(el.querySelectorAll(".ts-pill-shell"), {
       opacity: [0, 1],
-      translateY: [12, 0],
-      scale: [0.96, 1.008, 1],
-      filter: ["blur(6px)", "blur(0px)"],
+      translateY: [28, 0],
+      scale: [0.78, 1.035, 1],
+      filter: ["blur(14px)", "blur(0px)"],
       duration: profile.pillDuration,
       delay: stagger(profile.pillStagger, { start: 430 }),
       ease: pillEase,
@@ -143,7 +143,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       animate(btn, {
         opacity: [0, 1],
         translateY: [18, 0],
-        scale: [0.97, 1.008, 1],
+        scale: [0.88, 1.04, 1],
         duration: 950,
         delay: profile.badgeDelay - 160,
         ease: pillEase,
@@ -157,7 +157,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         scale: [0.5, 1],
         duration: 800,
         delay: 1400,
-        ease: spring({ stiffness: 250, damping: 34, mass: 0.6 }),
+        ease: spring({ stiffness: 200, damping: 12 }),
       });
     }
 
@@ -253,8 +253,8 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
         <div className="flex flex-row items-start justify-center gap-6 sm:col-span-2 sm:col-start-1 sm:row-start-1 sm:mt-2 sm:justify-between md:mt-5 md:-ml-4 lg:-ml-12">
           <div className="ts-wordmark-line w-full min-w-0 text-center sm:w-auto sm:text-left">
             <span className="block pb-2 text-left font-sans text-[2rem] font-black uppercase leading-[1.02] tracking-normal text-white [overflow-wrap:anywhere] sm:text-[2.6rem] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)]">
-              <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
-              <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
+              <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal sm:drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
+              <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal sm:drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
                 SURF
               </span>
               <span className="ts-brand-token ml-2 inline-block font-sans not-italic text-white md:ml-3" style={{ opacity: 0 }}>DIGITAL</span>

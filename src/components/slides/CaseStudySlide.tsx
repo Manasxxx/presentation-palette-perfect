@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { animate, stagger } from "animejs";
 import mitsuiCreative1 from "@/assets/mitsui-creative-1.webp";
@@ -16,6 +16,11 @@ import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase, slideSettleEase } from "./slide-motion";
+import {
+  getMobileCaseRevealBacking,
+  MobileCaseStudyRevealLayer,
+  useCaseStudyEntryReveal,
+} from "./MobileCaseStudyReveal";
 
 interface StatDef {
   label: string;
@@ -52,8 +57,8 @@ const sliderImages = [
 
 const mitsuiProofPoints = [
   { label: "Market", value: "Specialty chemicals across APAC" },
-  { label: "Buyer", value: "Regional teams, technical audiences, and channel decision-makers" },
-  { label: "Role", value: "Creative, media, reporting, and demand signals across markets" },
+  { label: "Buyer", value: "Regional teams, technical buyers, and channel partners" },
+  { label: "Role", value: "Creative, media, reporting, and campaign insights across markets" },
 ];
 
 function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; suffix: string; decimals: number; triggered: boolean }) {
@@ -77,72 +82,53 @@ function AnimatedStatValue({ num, suffix, decimals, triggered }: { num: number; 
 }
 
 const CaseStudySlide = () => {
-  const sectionRef = useRef<HTMLElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const [statsTriggered, setStatsTriggered] = useState(false);
-  const [triggered, setTriggered] = useState(false);
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
+  const animateCaseContent = useCallback((el: HTMLElement) => {
     const profile = getSharedSlideMotionProfile(isMobile);
-    const reveal = () => {
-      if (triggered) return;
-      setTriggered(true);
+    animateSlideHeading(el, ".cs-heading", isMobile, 90);
 
-      animateSlideHeading(el, ".cs-heading", isMobile, 90);
+    const subtitle = el.querySelector(".cs-subtitle")!;
+    animate(subtitle, {
+      opacity: [0, 1],
+      translateY: [16, 0],
+      filter: ["blur(7px)", "blur(0px)"],
+      duration: isMobile ? 680 : 760,
+      delay: profile.copyDelay + 40,
+      ease: slideEditorialEase,
+      onComplete: () => clearInlineFilter(subtitle),
+    });
 
-      const subtitle = el.querySelector(".cs-subtitle")!;
-      animate(subtitle, {
-        opacity: [0, 1],
-        translateY: [16, 0],
-        filter: ["blur(7px)", "blur(0px)"],
-        duration: isMobile ? 680 : 760,
-        delay: profile.copyDelay + 40,
-        ease: slideEditorialEase,
-        onComplete: () => clearInlineFilter(subtitle),
-      });
+    const slider = el.querySelector(".cs-slider")!;
+    animate(slider, {
+      opacity: [0, 1],
+      scale: [0.985, 1],
+      translateY: [18, 0],
+      filter: ["blur(8px)", "blur(0px)"],
+      duration: isMobile ? 920 : 1080,
+      delay: profile.contentDelay + 160,
+      ease: slideEditorialEase,
+      onComplete: () => clearInlineFilter(slider),
+    });
 
-      const slider = el.querySelector(".cs-slider")!;
-      animate(slider, {
-        opacity: [0, 1],
-        scale: [0.985, 1],
-        translateY: [18, 0],
-        filter: ["blur(8px)", "blur(0px)"],
-        duration: isMobile ? 920 : 1080,
-        delay: profile.contentDelay + 160,
-        ease: slideEditorialEase,
-        onComplete: () => clearInlineFilter(slider),
-      });
+    const proofEls = el.querySelectorAll(".cs-proof");
+    animate(proofEls, {
+      opacity: [0, 1],
+      translateY: [18, 0],
+      filter: ["blur(8px)", "blur(0px)"],
+      delay: stagger(profile.itemStagger, { start: profile.contentDelay + 160 }),
+      duration: 680,
+      ease: slideEditorialEase,
+      onComplete: () => clearInlineFilter(proofEls),
+    });
+  }, [isMobile]);
 
-      const proofEls = el.querySelectorAll(".cs-proof");
-      animate(proofEls, {
-        opacity: [0, 1],
-        translateY: [18, 0],
-        filter: ["blur(8px)", "blur(0px)"],
-        delay: stagger(profile.itemStagger, { start: profile.contentDelay + 160 }),
-        duration: 680,
-        ease: slideEditorialEase,
-        onComplete: () => clearInlineFilter(proofEls),
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) reveal();
-      },
-      { threshold: isMobile ? 0.48 : 0.3 }
-    );
-    observer.observe(el);
-    // Desktop fallback only. On mobile the case-study slide is mounted one
-    // slide early, so a timer can run the entry before the user reaches it.
-    const fallback = isMobile ? 0 : window.setTimeout(reveal, 900);
-    return () => {
-      observer.disconnect();
-      if (fallback) window.clearTimeout(fallback);
-    };
-  }, [triggered, isMobile]);
+  const { sectionRef, revealLayerRef, revealed } = useCaseStudyEntryReveal({
+    isMobile,
+    onReveal: animateCaseContent,
+  });
 
   useEffect(() => {
     const el = statsRef.current;
@@ -175,8 +161,13 @@ const CaseStudySlide = () => {
     <section
       ref={sectionRef}
       className="slide overflow-hidden relative bg-background"
+      style={isMobile ? getMobileCaseRevealBacking(mitsuiBlue, mitsuiCyan) : undefined}
     >
-      <div className={`relative h-full w-full overflow-hidden ${isMobile ? (triggered ? "mitsui-mobile-circle-reveal" : "mitsui-mobile-circle-ready") : ""}`}>
+      <MobileCaseStudyRevealLayer
+        isMobile={isMobile}
+        revealed={revealed}
+        revealLayerRef={revealLayerRef}
+      >
       <div className="absolute inset-0 z-0" style={{ background: `linear-gradient(160deg, hsl(${mitsuiBlue} / 0.85), hsl(210 60% 22% / 0.7), hsl(${mitsuiCyan} / 0.3))` }} />
       {/* Mitsui-blue interactive grid (desktop only; mobile has no hover).
           MagicUI demo recipe: radial spotlight mask + skew + 200% height.
@@ -213,8 +204,8 @@ const CaseStudySlide = () => {
             style={{ opacity: isMobile ? 1 : 0 }}
           >
             {isMobile
-              ? "Specialty chemicals giant. We ran their digital across APAC."
-              : "Specialty chemicals giant. We made technical value visible across regions, formats, and paid channels."}
+              ? "A specialty chemicals company. We managed its digital campaigns across APAC."
+              : "A specialty chemicals company. We made complex product stories easier to understand across regions, formats, and paid campaigns."}
           </p>
           <div
             className="hidden"
@@ -283,7 +274,7 @@ const CaseStudySlide = () => {
           </div>
         </div>
       </div>
-      </div>
+      </MobileCaseStudyRevealLayer>
     </section>
   );
 };

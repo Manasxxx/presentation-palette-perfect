@@ -1,24 +1,24 @@
 # OwlSurf Digital — Portfolio Deck
 
-A single-page portfolio for OwlSurf Digital, built to feel like a presentation rather than a website. The whole thing is a vertical stack of full-screen slides driven by Lenis smoothing plus a nearest-slide settle, so wheel, trackpad, and touch gestures still feel native while the deck always lands cleanly. One dominant message per slide, visuals doing the heavy lifting, motion kept in service of the pitch.
+A single-page portfolio for OwlSurf Digital, built to feel like a presentation rather than a website. The site is a vertical stack of full-screen slides using native deck scrolling, snap alignment, and restrained transition layers. One dominant message per slide, visuals doing the heavy lifting, motion kept in service of the pitch.
 
 It's a marketing artifact first, so most of the engineering effort goes into two places that usually get ignored on a site like this: keeping it fast despite the WebGL, and keeping the motion from feeling like a screensaver.
 
 ## Architecture, and why it's built this way
 
-**The deck is an array with route aliases.** `src/pages/Index.tsx` holds the ordered slide components and maps the Lenis scroll offset to a current index. `src/pages/slide-routes.ts` gives each slide a deep-linkable slug while every slug still renders the same continuous deck. Mobile scrolling syncs the slug; desktop deep links scroll to their slide once. State stays local React state and props. No Redux, no Zustand.
+**The deck is an array with route aliases.** `src/pages/Index.tsx` holds the ordered slide components and maps the native deck scroll offset to a current index. `src/pages/slide-routes.ts` gives each slide a deep-linkable slug while every slug still renders the same continuous deck. Mobile scrolling syncs the slug; desktop deep links scroll to their slide once. State stays local React state and props. No Redux, no Zustand.
 
-**Only the current slide and its immediate neighbors are mounted.** `SLIDE_MOUNT_RADIUS` is `1`, so the next and previous slides are ready during movement while farther-off slides stay as height-preserving skeletons. This smooths transitions without keeping the whole deck alive. Several slides own WebGL, timers, or RAF loops, so the mounted window stays deliberately tight.
+**Only the current slide and its immediate neighbors are mounted.** `SLIDE_MOUNT_RADIUS` is `1`, so the next and previous slides are ready during native deck movement while farther-off slides stay as height-preserving skeletons. This smooths transitions without keeping the whole deck alive. Several slides own WebGL, timers, or RAF loops, so the mounted window stays deliberately tight.
 
-**Heavy effects are desktop-only and gated in code.** `LightRays`, `PrismaticBurst`, and the cover globe mount only above 768px via `useIsMobile()`; Hyperspeed is the one currently retained ambient exception for the Who We Are slide. Ambient WebGL caps its device pixel ratio so retina displays don't cook the GPU. The old Our Team lanyard stack was removed.
+**Heavy effects are gated deliberately.** Hyperspeed remains desktop-only. The Clients `PrismaticBurst` and Cover globe are the two approved mobile exceptions, both with mobile performance caps. Ambient WebGL caps device pixel ratio so retina displays do not cook the GPU. The old Our Team lanyard stack and deleted LightRays effect stay out.
 
-**Mobile gets purpose-built variants, not shrunk desktop.** Phones get the Services accordion, compact case-study proof grids, dynamic visual-viewport slide height, stronger flick detection, and restrained mobile spacing. Slides stay inside one viewport rather than becoming internally scrollable, because nested vertical scrolling fights the deck gesture owner.
+**Mobile gets purpose-built variants, not shrunk desktop.** Phones get the Services accordion, compact case-study proof grids, dynamic visual-viewport slide height, timed non-draggable case creative stacks, and restrained spacing. Slides stay inside one viewport rather than becoming internally scrollable, because nested vertical scrolling fights the deck.
 
-**One owner per motion.** Lenis owns deck scrolling and the final no-bounce settle. Raw virtual-scroll samples detect short flick intent so one deliberate flick advances one slide even before halfway. Anime.js owns local entrances, Services swaps, `PillNav`, and rotating words; `SlideReveal` adds only a very light content spring. Mitsui alone currently trials a mobile circular reveal. Reduced-motion users get instant deck scroll and no large decorative reveal.
+**One owner per motion.** Native scroll and CSS snap own deck travel. The restored transition layers only decorate the seam; Anime.js owns local entrances, Services swaps, `PillNav`, and rotating words. All seven mobile cases use the approved branded inner-layer circle reveal. Reduced-motion users get instant navigation and fully visible case content.
 
 ## Stack
 
-Vite · React 18 · TypeScript · Tailwind CSS 3 · Lenis · Anime.js · Motion · Three.js / postprocessing (Hyperspeed) · OGL / cobe (ambient effects).
+Vite · React 18 · TypeScript · Tailwind CSS 3 · Anime.js · Motion · Three.js / postprocessing (Hyperspeed) · OGL / cobe (ambient effects).
 
 Node target is pinned in `.nvmrc` (Node 22). npm is the package manager of record; `package-lock.json` is the lockfile the deploy uses.
 
@@ -45,8 +45,9 @@ npm run images:convert   # batch PNG -> WebP, requires `npm i -D sharp`
 ```txt
 src/
   pages/
-    Index.tsx              Slide registry, Lenis lifecycle, flick/settle logic, URL sync
-    deck-flick.ts          Gesture-intent thresholds shared by wheel and touch
+    Index.tsx              Slide registry, native deck scroll/snap, URL sync
+    deck-snap.ts           Deck alignment helper
+    deck-transition.ts     Restored transition timing/profile
     NotFound.tsx           Branded 404, lives outside the deck
   components/
     slides/                One file per full-screen slide (cover, who-we-are, services, clients, 7 case studies, contact)

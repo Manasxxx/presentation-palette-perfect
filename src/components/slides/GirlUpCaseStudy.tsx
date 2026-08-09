@@ -27,13 +27,13 @@ const GirlUpCaseStudy = () => (
     caseNumber="05"
     title="Girl"
     accentTitle="Up"
-    subtitle="UN Foundation youth movement. We shaped issue-led creative for reach, participation, and credibility."
-    mobileSubtitle="UN Foundation youth movement. We made the creative that grew reach and participation."
+    subtitle="A youth movement by the UN Foundation. We created campaigns around important issues to grow reach, participation, and trust."
+    mobileSubtitle="A youth movement by the UN Foundation. We created campaigns that grew reach and participation."
     proofNote="What it proves: public-interest messaging with clear action paths, not just awareness for awareness' sake."
     market="Youth movement and advocacy"
-    owlsurfRole="Issue-led creative, campaign distribution, participation paths"
+    owlsurfRole="Issue-led creative, campaign reach, and clear ways to take part"
     proofPoints={[
-      { label: "Audience", value: "Young supporters, partners, and action-oriented communities" },
+      { label: "Audience", value: "Young supporters, partners, and communities ready to act" },
       { label: "Shift", value: "From broad awareness to specific participation cues" },
       { label: "Proof", value: "Reach, action clicks, and participation rate stayed connected" },
     ]}

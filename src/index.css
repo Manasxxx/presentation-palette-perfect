@@ -233,6 +233,50 @@
     scroll-snap-stop: always;
   }
 
+  /* Mobile: stronger container snap, but normal stops so a real swipe can still
+     move naturally through more than one slide. */
+  @media (max-width: 767px) {
+    .slide {
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+    }
+  }
+
+  /* The old fixed .deck-seam-fade viewport overlays were replaced by per-slide
+     seam gradients colored from the two adjacent slides' edge colors — see
+     src/pages/slide-edge-colors.ts and the SlideReveal mobile branch. */
+
+  /* Phase B signature transition (mobile, see MobileTransitionLayer.tsx) —
+     the "liquid crest": a thin teal line + soft bloom position-locked to the
+     physical seam between two slides, travelling with the finger. Mobile
+     analog of the desktop liquid-wash. Replaced the old full-bleed teal wash
+     and the centred circular glow mark (read as a stray circle). */
+  .deck-sig-crest-bloom {
+    background: radial-gradient(
+      55% 50% at 50% 50%,
+      hsl(var(--primary) / 0.32) 0%,
+      hsl(var(--primary) / 0.12) 55%,
+      hsl(var(--primary) / 0) 100%
+    );
+    will-change: filter;
+  }
+
+  .deck-sig-crest-line {
+    left: 4%;
+    right: 4%;
+    top: 50%;
+    height: 1.5px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      to right,
+      hsl(var(--primary) / 0) 0%,
+      hsl(var(--primary) / 0.9) 22%,
+      hsl(var(--primary) / 0.9) 78%,
+      hsl(var(--primary) / 0) 100%
+    );
+    box-shadow: 0 0 18px 2px hsl(var(--primary) / 0.45);
+  }
+
   .hexagon-pattern {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234bc2c2' fill-opacity='0.08'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
@@ -253,6 +297,47 @@
 
   .glow-white {
     box-shadow: 0 0 40px -10px hsl(0 0% 100% / 0.3);
+  }
+
+  .deck-liquid-wash {
+    border-radius: 42% 58% 48% 52% / 36% 42% 58% 64%;
+    background:
+      radial-gradient(ellipse at 50% 52%, hsl(180 64% 62% / 0.28), transparent 58%),
+      radial-gradient(ellipse at 22% 40%, hsl(180 52% 58% / 0.18), transparent 34%),
+      radial-gradient(ellipse at 78% 62%, hsl(191 58% 55% / 0.16), transparent 36%),
+      linear-gradient(180deg, transparent 0%, hsl(180 50% 55% / 0.16) 42%, transparent 88%);
+    filter: blur(28px) saturate(1.35);
+    mix-blend-mode: screen;
+    transform-origin: center;
+    will-change: opacity, transform;
+  }
+
+  .deck-liquid-wash-mobile {
+    inset-inline: -32%;
+    top: -18%;
+    height: 138%;
+    background:
+      radial-gradient(ellipse at 50% 52%, hsl(180 72% 66% / 0.42), transparent 60%),
+      radial-gradient(ellipse at 20% 38%, hsl(180 58% 60% / 0.26), transparent 36%),
+      radial-gradient(ellipse at 82% 64%, hsl(191 64% 58% / 0.24), transparent 38%),
+      linear-gradient(180deg, transparent 0%, hsl(180 56% 58% / 0.24) 44%, transparent 90%);
+    filter: blur(22px) saturate(1.5);
+  }
+
+  .deck-liquid-crest {
+    border-radius: 999px;
+    background:
+      linear-gradient(90deg, transparent 2%, hsl(180 76% 72% / 0.08) 16%, hsl(180 78% 70% / 0.34) 48%, hsl(180 76% 72% / 0.08) 82%, transparent 98%),
+      radial-gradient(ellipse at 50% 50%, hsl(180 82% 74% / 0.28), transparent 62%);
+    filter: blur(16px);
+    mix-blend-mode: screen;
+    will-change: opacity, transform;
+  }
+
+  .deck-liquid-crest-mobile {
+    inset-inline: -24%;
+    height: 22vh;
+    filter: blur(12px);
   }
 
   .title-pill::before {
@@ -378,151 +463,7 @@
   }
 }
 
-/* Mobile case-study creative carousel: Blossom cover-flow recipe. */
-.cs-coverflow {
-  display: block;
-  box-sizing: border-box;
-  list-style: none;
-  white-space: nowrap;
-  width: min(100%, 24rem);
-  margin-inline: auto;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding: 0 calc(50% - 9.3rem) 0;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  touch-action: pan-x;
-}
-
-.cs-coverflow::-webkit-scrollbar {
-  display: none;
-}
-
-.cs-coverflow--wide {
-  padding-inline: calc(50% - 10.75rem);
-}
-
-.cs-coverflow--wide .cs-coverflow-item {
-  width: 21.5rem;
-  aspect-ratio: 1.93 / 1;
-  view-timeline: --cs-slide inline calc(50% - 20rem);
-}
-
-.cs-coverflow--wide .cs-coverflow-stage {
-  left: 0;
-  width: 100%;
-  perspective: 700px;
-}
-
-.cs-coverflow--wide .cs-coverflow-card img {
-  object-fit: contain;
-}
-
-.cs-coverflow--table {
-  width: 100%;
-  padding-inline: 0;
-}
-
-.cs-coverflow--table .cs-coverflow-item {
-  width: calc(100vw - 1.6rem);
-  max-width: 27rem;
-  aspect-ratio: 1 / 0.9;
-  view-timeline: --cs-slide inline calc(50% - 18rem);
-}
-
-.cs-coverflow--table .cs-coverflow-stage {
-  left: 0;
-  width: 100%;
-  perspective: 620px;
-}
-
-
-.cs-coverflow-item {
-  position: relative;
-  display: inline-block;
-  width: 18.6rem;
-  aspect-ratio: 1 / 1.08;
-  scroll-snap-align: center;
-  transform-style: preserve-3d;
-  view-timeline: --cs-slide inline calc(50% - 18rem);
-}
-
-.cs-coverflow-stage {
-  position: absolute;
-  inset: 0;
-  left: -34%;
-  width: 168%;
-  perspective: 560px;
-  transform-style: preserve-3d;
-  animation: cs-coverflow-slide linear both;
-  animation-timeline: --cs-slide;
-  animation-range: contain;
-}
-
-.cs-coverflow-card {
-  height: 100%;
-  width: 100%;
-  overflow: visible;
-  padding: 0;
-  border-radius: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  transform-style: preserve-3d;
-  animation: cs-coverflow-rotate linear both;
-  animation-timeline: --cs-slide;
-  animation-range: contain;
-}
-
-.cs-coverflow-card img {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-  object-position: center;
-  transform: scale(1.045);
-  border-radius: 0.75rem;
-}
-
-@keyframes cs-coverflow-rotate {
-  0% {
-    opacity: 0.42;
-    transform: rotateY(-54deg) scale(0.88);
-  }
-
-  50% {
-    opacity: 1;
-    transform: rotateY(0deg) scale(1);
-  }
-
-  100% {
-    opacity: 0.42;
-    transform: rotateY(54deg) scale(0.88);
-  }
-}
-
-@keyframes cs-coverflow-slide {
-  0% {
-    transform: translateX(20%);
-  }
-
-  50% {
-    transform: translateX(0) scale(1.06);
-  }
-
-  100% {
-    transform: translateX(-20%);
-  }
-}
-
-@supports not (animation-timeline: --cs-slide) {
-  .cs-coverflow-stage,
-  .cs-coverflow-card {
-    animation: none;
-  }
-}
-
-
+/* Mobile case-study carousel: original timed glass-card viewer. */
 .cs-mobile-stack {
   position: relative;
   width: calc(100vw - 3rem);
@@ -530,28 +471,33 @@
   aspect-ratio: 1 / 0.82;
   margin-inline: auto;
   overflow: visible;
+  touch-action: pan-y;
 }
 
 .cs-mobile-stack--wide {
   aspect-ratio: 1.93 / 1;
 }
 
+.cs-mobile-stack--table {
+  width: calc(100vw - 1.6rem);
+  max-width: 27rem;
+  aspect-ratio: 1 / 0.9;
+}
+
 .cs-mobile-stack-card {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  padding: 0;
   border-radius: 1rem;
   border: 1px solid hsl(0 0% 100% / 0.16);
-  /* No backdrop-filter here: iOS WebKit mispaints backdrop snapshots on these
-     rotated, auto-transitioning cards — it rendered as a dark translucent
-     vertical ghost strip until the next touch repaint (Session 40 fix). */
   background: hsl(0 0% 100% / 0.035);
-  padding: 0;
   box-shadow: none;
   opacity: 0;
   transform-origin: center 76%;
   transition: transform 620ms cubic-bezier(0.18, 0.82, 0.18, 1), opacity 520ms ease;
   will-change: transform, opacity;
+  pointer-events: none;
 }
 
 .cs-mobile-stack-card--active {
@@ -562,13 +508,13 @@
 
 .cs-mobile-stack-card--prev {
   z-index: 2;
-  opacity: 0.58;
+  opacity: 0.42;
   transform: translate3d(-8%, 3%, 0) rotate(-5deg) scale(0.94);
 }
 
 .cs-mobile-stack-card--next {
   z-index: 1;
-  opacity: 0.5;
+  opacity: 0.26;
   transform: translate3d(8%, 4%, 0) rotate(5deg) scale(0.92);
 }
 
@@ -582,7 +528,7 @@
   display: block;
   height: 100%;
   width: 100%;
-  border-radius: 1rem;
+  border-radius: calc(1rem - 1px);
   object-fit: contain;
   object-position: center;
 }
@@ -606,30 +552,6 @@
 
 .cs-cards::-webkit-scrollbar {
   display: none;
-}
-
-.cs-cards--mobile {
-  --card-width: min(20.75rem, calc(100vw - 2.5rem));
-  width: calc(var(--card-width) * 3);
-  height: var(--card-width);
-  padding-inline: var(--card-width);
-  overflow-x: auto;
-  overflow-y: visible;
-}
-
-.cs-cards--mobile .cs-cards-slide {
-  width: var(--card-width);
-}
-
-.cs-cards--mobile .cs-cards-card {
-  border: 1px solid hsl(0 0% 100% / 0.16);
-  background: hsl(0 0% 100% / 0.04);
-  box-shadow: none;
-  padding: 1px;
-}
-
-.cs-cards--mobile .cs-cards-card img {
-  border-radius: calc(1rem - 1px);
 }
 
 .cs-cards-slide {
@@ -871,28 +793,30 @@
   animation: ts-glass-shimmer 3.2s ease-in-out infinite;
 }
 
-@keyframes mitsui-mobile-circle-reveal {
+@keyframes case-mobile-circle-reveal {
   from {
-    clip-path: circle(0% at 50% 54%);
+    clip-path: circle(6% at 50% 48%);
   }
 
   to {
-    clip-path: circle(150% at 50% 54%);
+    clip-path: circle(150% at 50% 48%);
   }
 }
 
-.mitsui-mobile-circle-ready {
-  clip-path: circle(0% at 50% 54%);
+.case-mobile-circle-ready {
+  clip-path: circle(6% at 50% 48%);
 }
 
-.mitsui-mobile-circle-reveal {
-  animation: mitsui-mobile-circle-reveal 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+.case-mobile-circle-reveal {
+  animation: case-mobile-circle-reveal 720ms cubic-bezier(0.37, 0, 0.63, 1) both;
+  backface-visibility: hidden;
+  transform: translateZ(0);
   will-change: clip-path;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mitsui-mobile-circle-ready,
-  .mitsui-mobile-circle-reveal {
+  .case-mobile-circle-ready,
+  .case-mobile-circle-reveal {
     animation: none;
     clip-path: none;
   }

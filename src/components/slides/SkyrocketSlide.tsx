@@ -21,16 +21,16 @@ type Differentiator = { icon: LucideIcon; label: string; desc: string };
 // Desktop: three consolidated buyer outcomes (was five icon-cards). Fuller
 // wording than the mobile variants of the same three messages below.
 const differentiators: Differentiator[] = [
-  { icon: Eye, label: "Understood faster", desc: "Buyers grasp what you sell before the first call starts." },
-  { icon: Handshake, label: "Easier internal buy-in", desc: "Champions carry one clear story to the people who sign off." },
-  { icon: ShieldCheck, label: "Lower perceived risk", desc: "Real proof makes a high-stakes decision feel safe." },
+  { icon: Eye, label: "Understood faster", desc: "Buyers understand what you sell before the first call." },
+  { icon: Handshake, label: "Easier internal buy-in", desc: "Your champion gets one clear story to share with the people who approve the purchase." },
+  { icon: ShieldCheck, label: "Lower perceived risk", desc: "Clear proof helps make a high-stakes decision feel safer." },
 ];
 
 // Mobile-only: the five outcomes above consolidated into three, each with a
 // one-line sentence (comprehension, internal buy-in, lower risk).
 const mobileOutcomes: Differentiator[] = [
-  { icon: Eye, label: "Understood faster", desc: "Buyers get what you sell before the first call." },
-  { icon: Handshake, label: "Easier internal buy-in", desc: "Your champions carry one clear story to the people who sign off." },
+  { icon: Eye, label: "Understood faster", desc: "Buyers understand what you sell before the first call." },
+  { icon: Handshake, label: "Easier internal buy-in", desc: "Your champion gets one clear story to share with the team." },
   { icon: ShieldCheck, label: "Lower perceived risk", desc: "Real numbers make a high-stakes decision feel safe." },
 ];
 

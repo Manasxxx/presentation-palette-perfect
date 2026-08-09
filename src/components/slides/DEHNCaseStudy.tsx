@@ -30,11 +30,11 @@ const DEHNCaseStudy = () => (
     caseNumber="03"
     title="DEHN"
     accentTitle="Electricals"
-    subtitle="A German maker of lightning protection, surge protection, and earthing systems. We turned safety engineering into clear stories for the people who plan and protect infrastructure."
-    mobileSubtitle="German lightning and surge protection maker. We made safety engineering easy to understand."
+    subtitle="A German company that makes lightning, surge, and earthing protection systems. We made its safety products easier to understand for the people who plan and protect infrastructure."
+    mobileSubtitle="A German maker of lightning and surge protection. We made its safety products easier to understand."
     proofNote="What it proves: technical safety products explained through the places they protect, not through spec sheets."
     market="Lightning, surge, and earthing protection"
-    owlsurfRole="Technical storytelling, creative, education-led content"
+    owlsurfRole="Technical stories, creative work, and educational content"
     proofPoints={[
       { label: "Buyer", value: "Electrical engineers, infrastructure planners, and safety leads" },
       { label: "Shift", value: "From product spec sheets to application-led safety stories" },

@@ -1,9 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import { animate, stagger } from "animejs";
 import CaseStudyCarousel from "@/components/CaseStudyCarousel";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { animateSlideHeading, clearInlineFilter, getSharedSlideMotionProfile, slideEditorialEase } from "./slide-motion";
+import {
+  getMobileCaseRevealBacking,
+  MobileCaseStudyRevealLayer,
+  useCaseStudyEntryReveal,
+} from "./MobileCaseStudyReveal";
 
 type SlideImage = {
   image: string;
@@ -62,8 +67,6 @@ const CaseStudyLayout = ({
   desktopWideCarousel = false,
   mobileRoomySpacing = false,
 }: CaseStudyLayoutProps) => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [triggered, setTriggered] = useState(false);
   const isMobile = useIsMobile();
   const ink = lightMode ? "hsl(0 0% 15%)" : "white";
   const muted = lightMode ? "hsl(0 0% 20%)" : "hsl(0 0% 100% / 0.9)";
@@ -75,78 +78,70 @@ const CaseStudyLayout = ({
     ...proofPoints,
   ].filter((point) => !["proof", "shift"].includes(point.label.toLowerCase()));
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
+  const animateCaseContent = useCallback((el: HTMLElement) => {
     const profile = getSharedSlideMotionProfile(isMobile);
-    const reveal = () => {
-      if (triggered) return;
-      setTriggered(true);
+    animateSlideHeading(el, ".cs-heading", isMobile, 90);
 
-      animateSlideHeading(el, ".cs-heading", isMobile, 90);
+    const subtitle = el.querySelector(".cs-subtitle")!;
+    animate(subtitle, {
+      opacity: [0, 1],
+      translateY: [16, 0],
+      filter: ["blur(7px)", "blur(0px)"],
+      duration: isMobile ? 680 : 760,
+      delay: profile.copyDelay + 40,
+      ease: slideEditorialEase,
+      onComplete: () => clearInlineFilter(subtitle),
+    });
 
-      const subtitle = el.querySelector(".cs-subtitle")!;
-      animate(subtitle, {
-        opacity: [0, 1],
-        translateY: [16, 0],
-        filter: ["blur(7px)", "blur(0px)"],
-        duration: isMobile ? 680 : 760,
-        delay: profile.copyDelay + 40,
-        ease: slideEditorialEase,
-        onComplete: () => clearInlineFilter(subtitle),
-      });
+    const slider = el.querySelector(".cs-slider")!;
+    animate(slider, {
+      opacity: [0, 1],
+      scale: [0.985, 1],
+      translateY: [18, 0],
+      filter: ["blur(8px)", "blur(0px)"],
+      duration: isMobile ? 920 : 1080,
+      delay: profile.contentDelay + 160,
+      ease: slideEditorialEase,
+      onComplete: () => clearInlineFilter(slider),
+    });
 
-      const slider = el.querySelector(".cs-slider")!;
-      animate(slider, {
-        opacity: [0, 1],
-        scale: [0.985, 1],
-        translateY: [18, 0],
-        filter: ["blur(8px)", "blur(0px)"],
-        duration: isMobile ? 920 : 1080,
-        delay: profile.contentDelay + 160,
-        ease: slideEditorialEase,
-        onComplete: () => clearInlineFilter(slider),
-      });
+    animate(el.querySelectorAll(".cs-stat"), {
+      opacity: [0, 1],
+      translateY: [24, 0],
+      scale: [0.96, 1],
+      delay: stagger(profile.itemStagger, { start: profile.contentDelay + 220 }),
+      duration: 760,
+      ease: slideEditorialEase,
+    });
 
-      animate(el.querySelectorAll(".cs-stat"), {
-        opacity: [0, 1],
-        translateY: [24, 0],
-        scale: [0.96, 1],
-        delay: stagger(profile.itemStagger, { start: profile.contentDelay + 220 }),
-        duration: 760,
-        ease: slideEditorialEase,
-      });
+    const proofEls = el.querySelectorAll(".cs-proof");
+    animate(proofEls, {
+      opacity: [0, 1],
+      translateY: [18, 0],
+      filter: ["blur(8px)", "blur(0px)"],
+      delay: stagger(profile.itemStagger, { start: profile.contentDelay + 160 }),
+      duration: 680,
+      ease: slideEditorialEase,
+      onComplete: () => clearInlineFilter(proofEls),
+    });
+  }, [isMobile]);
 
-      const proofEls = el.querySelectorAll(".cs-proof");
-      animate(proofEls, {
-        opacity: [0, 1],
-        translateY: [18, 0],
-        filter: ["blur(8px)", "blur(0px)"],
-        delay: stagger(profile.itemStagger, { start: profile.contentDelay + 160 }),
-        duration: 680,
-        ease: slideEditorialEase,
-        onComplete: () => clearInlineFilter(proofEls),
-      });
-    };
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) reveal();
-      },
-      { threshold: isMobile ? 0.18 : 0.3 }
-    );
-    observer.observe(el);
-    // Desktop fallback only. On mobile these slides are mounted one step early,
-    // so a timer can run the entry before the user reaches the slide.
-    const fallback = isMobile ? 0 : window.setTimeout(reveal, 900);
-    return () => {
-      observer.disconnect();
-      if (fallback) window.clearTimeout(fallback);
-    };
-  }, [triggered, isMobile]);
+  const { sectionRef, revealLayerRef, revealed } = useCaseStudyEntryReveal({
+    isMobile,
+    onReveal: animateCaseContent,
+  });
 
   return (
-    <section ref={sectionRef} className="slide overflow-hidden relative bg-background">
+    <section
+      ref={sectionRef}
+      className="slide overflow-hidden relative bg-background"
+      style={isMobile ? getMobileCaseRevealBacking(accentColor, accentColor, lightMode) : undefined}
+    >
+      <MobileCaseStudyRevealLayer
+        isMobile={isMobile}
+        revealed={revealed}
+        revealLayerRef={revealLayerRef}
+      >
       <div className="absolute inset-0 z-0" style={{ background }} />
       {/* Brand-colored interactive grid (desktop only; mobile has no hover).
           MagicUI demo recipe: radial spotlight mask + skew + 200% height. */}
@@ -273,6 +268,7 @@ const CaseStudyLayout = ({
           </div>
         </div>
       </div>
+      </MobileCaseStudyRevealLayer>
     </section>
   );
 };

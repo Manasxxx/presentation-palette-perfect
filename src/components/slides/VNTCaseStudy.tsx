@@ -37,11 +37,11 @@ const VNTCaseStudy = () => (
     caseNumber="07"
     title="VNT"
     accentTitle="Mobility"
-    subtitle="EV charging infrastructure in India. We mapped the value for hosts, drivers, and partners."
-    mobileSubtitle="EV charging network in India. We explained the value for hosts, drivers, and partners."
+    subtitle="An EV charging company in India. We explained what its network offers to site hosts, drivers, and partners."
+    mobileSubtitle="An EV charging network in India. We explained how it helps hosts, drivers, and partners."
     proofNote="What it proves: infrastructure storytelling for a market where location, trust, and adoption all matter."
     market="EV charging infrastructure"
-    owlsurfRole="Positioning, adoption story, partner-facing content"
+    owlsurfRole="Positioning, adoption stories, and partner content"
     proofPoints={[
       { label: "Buyer", value: "Hosts, drivers, real-estate partners, and fleet operators" },
       { label: "Shift", value: "From charging hardware to a clearer network value story" },

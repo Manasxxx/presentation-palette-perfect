@@ -43,13 +43,13 @@ const CTPCaseStudy = () => (
     caseNumber="06"
     title="Check This"
     accentTitle="Property"
-    subtitle="Australian property tech. We clarified the product story so searchers could understand and act faster."
-    mobileSubtitle="Australian property tech. We made the product story clear enough to act on."
+    subtitle="An Australian property tech company. We made its product easier to understand, helping searchers act faster."
+    mobileSubtitle="An Australian property tech company. We made the product easier to understand and act on."
     proofNote="What it proves: category education, search intent, and clearer conversion paths for a technical marketplace."
     market="Australian property technology"
-    owlsurfRole="Search, category education, conversion journey"
+    owlsurfRole="Search, category education, and a clearer path to action"
     proofPoints={[
-      { label: "Buyer", value: "Property searchers comparing options under uncertainty" },
+      { label: "Buyer", value: "Property buyers comparing options without all the facts" },
       { label: "Shift", value: "From product explanation to faster action and trust" },
       { label: "Proof", value: "Search reach, property clicks, and ROI tied to intent" },
     ]}

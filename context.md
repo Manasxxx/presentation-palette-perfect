@@ -5,6 +5,18 @@
 
 ---
 
+## Current State (Session 53 push prep)
+
+Session 53 restores the previous deck motion and finalizes the mobile case/contact experience.
+
+- **Deck motion:** reverted Lenis and restored native snap plus the previous desktop/mobile transition layers. Programmatic mobile jumps temporarily bypass smooth CSS behavior so Cover CTA/deep links land exactly. Theatre runtime packages are gone; the retained transition profile is static and produces no empty-project console error.
+- **Case viewer:** mobile is back to the original non-draggable timed glass stack for every case, auto-advancing every 3s. Desktop remains the deterministic fanned stack. Blossom and its stylesheet/dependencies are removed. Translucent frames stay; opaque black card backings were rejected because they created bars around portrait/mismatched creatives.
+- **Case reveals:** all seven mobile case slides share a 720ms circular inner-layer reveal with a per-brand tint. The section itself is never clipped; reverse entry and reduced motion are safe.
+- **Contact:** mobile ripple halo restored; rotating pills size to each word; the Cover-style glass `Ask AI what we do.` label sits above Claude and ChatGPT links. Gemini was removed because reliable prompt prefill is unavailable. Desktop still shows `Let’s talk`.
+- **Copy:** descriptions across cases and Who We Are are plainer and easier to understand. Services was intentionally untouched.
+- **Cover:** approved logo work retained. The mobile wordmark filter/drop-shadow was disabled to remove a rectangular compositing/light box; desktop glow remains.
+- **Verification:** TypeScript passes, Vitest 29/29, ESLint 0 errors/7 existing warnings, production build passes, and `git diff --check` passes. Mobile spot checks covered Cover, Kuraray, DEHN, CTP, Contact, auto-advance, navigation, overflow, and black-bar removal.
+
 ## Current State (Session 52 push prep)
 
 Session 52: responsive cover repair, Lenis deck motion, mobile spacing, and focused visual polish.
