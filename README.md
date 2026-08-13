@@ -16,6 +16,8 @@ It's a marketing artifact first, so most of the engineering effort goes into two
 
 **One owner per motion.** Native scroll and CSS snap own deck travel. The restored transition layers only decorate the seam; Anime.js owns local entrances, Services swaps, `PillNav`, and rotating words. All seven mobile cases use the approved branded inner-layer circle reveal. Reduced-motion users get instant navigation and fully visible case content.
 
+**The Cover keeps platform evidence factual.** `WHERE YOUR BUYERS ARE` uses an official white LinkedIn `[in]` asset plus monochrome Google and Meta marks, without claiming certification or formal platform partnership. The Cover stays on its mobile composition through `767px`; its editorial two-column grid starts at the same shared `768px` breakpoint used by `useIsMobile()`.
+
 ## Stack
 
 Vite · React 18 · TypeScript · Tailwind CSS 3 · Anime.js · Motion · Three.js / postprocessing (Hyperspeed) · OGL / cobe (ambient effects).

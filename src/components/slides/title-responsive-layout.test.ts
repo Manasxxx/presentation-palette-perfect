@@ -4,10 +4,11 @@ import { describe, expect, it } from "vitest";
 const titleSource = readFileSync("src/components/slides/TitleSlide.tsx", "utf8");
 
 describe("title slide responsive bridge", () => {
-  it("switches split-view and small-tablet widths to the compact editorial grid", () => {
-    expect(titleSource).toContain("sm:grid-cols-[minmax(0,1.05fr)_minmax(13rem,0.75fr)]");
-    expect(titleSource).toContain("sm:hidden");
-    expect(titleSource).toContain("sm:block");
+  it("keeps the mobile cover intact until the shared 768px breakpoint", () => {
+    expect(titleSource).toContain("md:grid-cols-[minmax(0,1.08fr)_minmax(16rem,0.72fr)]");
+    expect(titleSource).toContain("md:hidden");
+    expect(titleSource).toContain("md:block");
+    expect(titleSource).not.toContain("sm:grid-cols-");
   });
 
   it("reserves the 340px signal column for large screens", () => {

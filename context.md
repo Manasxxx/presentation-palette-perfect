@@ -5,6 +5,17 @@
 
 ---
 
+## Current State (Session 54 push prep)
+
+Session 54 replaces the Cover's inaccurate partner-badge claim with a clean, factual buyer-platform strip and repairs the Cover's narrow-tablet breakpoint.
+
+- **Platform proof:** `Platform partners` and the three long certification-style badge lockups are removed. The Cover now reads `WHERE YOUR BUYERS ARE` above LinkedIn, Google, and Meta symbols.
+- **Brand accuracy:** LinkedIn uses the official approved white `[in]` artwork, converted losslessly to WebP. Google and Meta use the existing inline brand marks rendered as restrained monochrome glyphs. No typed imitation or false partnership language remains.
+- **Alignment:** desktop keeps the Cover bottom group on the hero's left rail. The `R` in `REVIEW CASE STUDIES`, the `W` in `WHERE YOUR BUYERS ARE`, and the LinkedIn mark share one vertical axis; Google and Meta stay evenly spaced. Mobile keeps the group centered.
+- **Responsive repair:** the Cover no longer switches to its desktop grid at `sm` while `useIsMobile()` still reports mobile. Mobile composition now remains active through `767px`, and the desktop grid starts at the shared `md`/`768px` boundary. The responsive source test now guards that contract.
+- **Visual verification:** Cover screenshots were checked at 320, 375, 390, 414, 640, 767, 768, 1024, and 1440 widths with no horizontal overflow. TypeScript, Vitest 29/29, ESLint 0 errors/7 existing warnings, production build, and `git diff --check` pass.
+- **Push scope:** `.github/workflows/deploy.yml` remains a separate pre-existing local change and is excluded from this release.
+
 ## Current State (Session 53 push prep)
 
 Session 53 restores the previous deck motion and finalizes the mobile case/contact experience.

@@ -18,17 +18,19 @@ import { OwlSurfLogo } from "@/components/OwlSurfLogo";
 import GlassSurface from "@/components/ui/glass-surface";
 import { FlipWords } from "@/components/ui/flip-words";
 import { WordRotate } from "@/components/ui/word-rotate";
+import { GoogleMark, MetaMark } from "@/components/ui/brand-marks";
 import { getTitleTextMotionProfile } from "./title-motion";
-import metaPartnerBadge from "@/assets/badge-meta-partner-trim.png";
-import googlePartnerBadge from "@/assets/badge-google-partner-2026-trim.png";
-import linkedinMarketingPartnerBadge from "@/assets/badge-linkedin-marketing-partner-trim.png";
+import linkedinInWhite from "@/assets/linkedin-in-white.webp";
 
-// Badges are trimmed to content and shown on identical white chips at one fixed
-// height, so the row reads as a uniform, vertically-aligned partner strip.
-const credibilityBadges = [
-  { label: "LinkedIn Marketing Partner", src: linkedinMarketingPartnerBadge },
-  { label: "Google Ads Agency Partner", src: googlePartnerBadge, needsMobileTile: true },
-  { label: "Meta Agency Partner", src: metaPartnerBadge },
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 */
+const LinkedInGlyph = ({ className = "" }: { className?: string }) => (
+  <img src={linkedinInWhite} alt="" aria-hidden="true" className={`block w-auto object-contain ${className}`} />
+);
+
+const buyerPlatforms = [
+  { label: "LinkedIn", Mark: LinkedInGlyph, glyphClassName: "h-10 opacity-90 md:h-11" },
+  { label: "Google", Mark: GoogleMark, glyphClassName: "h-11 w-11 opacity-90 md:h-12 md:w-12 [&_path]:fill-current" },
+  { label: "Meta", Mark: MetaMark, glyphClassName: "h-14 w-14 opacity-90 md:h-16 md:w-16 [&_path]:fill-current" },
 ];
 
 const rotatingIndustries = ["Solar", "Industrial", "Chemical", "Pharma", "Manufacturing", "Mobility", "Real Estate"];
@@ -247,29 +249,29 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
       {/* Main content — editorial cover: brand lockup top, hook hero center, credibility baseline bottom */}
       <div
         ref={contentRef}
-        className="relative z-10 flex h-full w-full flex-col justify-between px-6 py-14 sm:grid sm:grid-cols-[minmax(0,1.05fr)_minmax(13rem,0.75fr)] sm:grid-rows-[auto_1fr_auto] sm:gap-x-6 sm:px-8 sm:py-[clamp(2rem,5svh,3rem)] md:grid-cols-[minmax(0,1.08fr)_minmax(16rem,0.72fr)] md:gap-x-10 md:px-10 md:py-[clamp(2.5rem,6svh,5rem)] lg:grid-cols-[minmax(0,1.04fr)_minmax(340px,0.76fr)] lg:gap-x-16 lg:px-24"
+        className="relative z-10 flex h-full w-full flex-col justify-between px-6 py-14 md:grid md:grid-cols-[minmax(0,1.08fr)_minmax(16rem,0.72fr)] md:grid-rows-[auto_1fr_auto] md:gap-x-10 md:px-10 md:py-[clamp(2.5rem,6svh,5rem)] lg:grid-cols-[minmax(0,1.04fr)_minmax(340px,0.76fr)] lg:gap-x-16 lg:px-24"
       >
         {/* TOP: brand lockup */}
-        <div className="flex flex-row items-start justify-center gap-6 sm:col-span-2 sm:col-start-1 sm:row-start-1 sm:mt-2 sm:justify-between md:mt-5 md:-ml-4 lg:-ml-12">
-          <div className="ts-wordmark-line w-full min-w-0 text-center sm:w-auto sm:text-left">
-            <span className="block pb-2 text-left font-sans text-[2rem] font-black uppercase leading-[1.02] tracking-normal text-white [overflow-wrap:anywhere] sm:text-[2.6rem] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)]">
-              <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal sm:drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
-              <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal sm:drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
+        <div className="flex flex-row items-start justify-center gap-6 md:col-span-2 md:col-start-1 md:row-start-1 md:mt-5 md:-ml-4 md:justify-between lg:-ml-12">
+          <div className="ts-wordmark-line w-full min-w-0 text-center md:w-auto md:text-left">
+            <span className="block pb-2 text-left font-sans text-[2rem] font-black uppercase leading-[1.02] tracking-normal text-white [overflow-wrap:anywhere] md:text-[min(clamp(3rem,4.8vw,5.2rem),10svh)]">
+              <span className="ts-brand-token inline-block font-sans not-italic text-owl-teal md:drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>OWL</span>
+              <span className="ts-brand-token ts-title-accent mr-1 inline-block font-sans not-italic text-owl-teal md:drop-shadow-[0_0_18px_rgba(75,194,194,0.28)]" style={{ opacity: 0 }}>
                 SURF
               </span>
               <span className="ts-brand-token ml-2 inline-block font-sans not-italic text-white md:ml-3" style={{ opacity: 0 }}>DIGITAL</span>
             </span>
           </div>
-          <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 sm:block" aria-hidden="true" style={{ opacity: 0 }}>
+          <div className="ts-brand-rule hidden w-[23vw] max-w-[24rem] origin-left border-t border-white/15 md:block" aria-hidden="true" style={{ opacity: 0 }}>
             <div className="mt-2 h-px w-1/3 bg-owl-teal/50 shadow-[0_0_18px_rgba(75,194,194,0.32)]" />
           </div>
         </div>
 
         {/* CENTER: editorial claim (left) + signal map (right) */}
-        <div className="grid translate-y-0 items-center gap-8 sm:contents">
-          <div className="relative min-w-0 sm:col-start-1 sm:row-start-2 sm:self-center sm:py-[clamp(0.75rem,2.5svh,2rem)] md:py-[clamp(1rem,3svh,2.75rem)]">
-            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] sm:mx-0 sm:max-w-none sm:text-left">
-              <span className="block max-w-[22rem] sm:hidden">
+        <div className="grid translate-y-0 items-center gap-8 md:contents">
+          <div className="relative min-w-0 md:col-start-1 md:row-start-2 md:self-center md:py-[clamp(1rem,3svh,2.75rem)]">
+            <h1 className="ts-hook mx-auto max-w-[48rem] text-center font-sans font-black tracking-normal text-white [overflow-wrap:anywhere] md:mx-0 md:max-w-none md:text-left">
+              <span className="block max-w-[22rem] md:hidden">
                 <span className="ts-cover-line block font-sans text-[1.08rem] font-semibold uppercase leading-none tracking-[0.15em] text-white/76" style={{ opacity: 0 }}>
                   We turn,
                 </span>
@@ -299,7 +301,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
 
               {/* Desktop hook. Heading recipe matches SkyrocketSlide: Montserrat black,
                   teal Lora-italic accent at the same size and weight, teal underglow. */}
-              <span className="hidden font-sans normal-case leading-none tracking-normal sm:block">
+              <span className="hidden font-sans normal-case leading-none tracking-normal md:block">
                 <span
                   className="ts-cover-line block font-sans text-[clamp(2.4rem,3.9vw,4.6rem)] font-black leading-[0.98] tracking-[-0.02em] text-white drop-shadow-[0_0_36px_rgba(75,194,194,0.16)] [font-weight:900]"
                   style={{ opacity: 0 }}
@@ -336,7 +338,7 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
             </h1>
           </div>
 
-          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden sm:col-start-2 sm:row-start-2 sm:min-h-[min(22rem,40svh)] sm:self-center md:min-h-[min(31rem,46svh)]" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
+          <aside className="ts-logo-outer relative min-h-[13.5rem] min-w-0 overflow-hidden md:col-start-2 md:row-start-2 md:min-h-[min(31rem,46svh)] md:self-center" style={{ opacity: 0 }} aria-label="OwlSurf editorial signal graphic">
             <div
               className="ts-signal-line absolute left-[13%] top-[20%] h-[62%] w-[62%] rounded-full border border-white/10"
               style={{ opacity: 0, animation: "ts-orbit-drift 18s linear infinite" }}
@@ -374,65 +376,65 @@ const TitleSlide = ({ onViewCaseStudies }: { onViewCaseStudies?: () => void }) =
           </aside>
         </div>
 
-        {/* BOTTOM: centered CTA over a centered partner badge strip */}
-        <div className="flex -translate-y-1 flex-col items-center gap-4 sm:col-start-1 sm:row-start-3 sm:translate-y-0 sm:items-start sm:gap-[clamp(0.75rem,2svh,1.5rem)] md:gap-[clamp(1rem,3svh,2.5rem)]">
+        {/* BOTTOM: CTA over the platforms where client buyers spend time */}
+        <div className="flex -translate-y-1 flex-col items-center gap-4 md:col-start-1 md:row-start-3 md:translate-y-0 md:items-start md:gap-[clamp(1rem,3svh,2.5rem)]">
           {onViewCaseStudies && (
-            <div className="relative">
-              <Arrow19
-                className="ts-arrow absolute -top-12 -right-8 w-14 h-14 md:w-16 md:h-16 text-primary/70 pointer-events-none"
-                style={{ opacity: 0, transform: "rotate(120deg) scaleX(-1)" }}
-              />
-              <div className="ts-button" style={{ opacity: 0 }}>
-                <button
-                  type="button"
-                  onClick={onViewCaseStudies}
-                  className="group rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  aria-label="Review Case Studies"
-                >
-                  <GlassSurface
-                    width={220}
-                    height={48}
-                    borderRadius={999}
-                    borderWidth={0.05}
-                    brightness={72}
-                    opacity={0.96}
-                    blur={8}
-                    backgroundOpacity={0.08}
-                    saturation={1.35}
-                    distortionScale={-90}
-                    className="ts-review-case-pill pointer-events-none"
+            <div className="flex w-[17rem] justify-center sm:w-[18rem] md:justify-start">
+              <div className="relative">
+                <Arrow19
+                  className="ts-arrow absolute -top-12 -right-8 w-14 h-14 md:w-16 md:h-16 text-primary/70 pointer-events-none"
+                  style={{ opacity: 0, transform: "rotate(120deg) scaleX(-1)" }}
+                />
+                <div className="ts-button" style={{ opacity: 0 }}>
+                  <button
+                    type="button"
+                    onClick={onViewCaseStudies}
+                    className="group rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:-translate-x-5"
+                    aria-label="Review Case Studies"
                   >
-                    <span className="relative z-10 font-sans text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:translate-x-0.5">
-                      Review Case Studies
-                    </span>
-                  </GlassSurface>
-                </button>
+                    <GlassSurface
+                      width={220}
+                      height={48}
+                      borderRadius={999}
+                      borderWidth={0.05}
+                      brightness={72}
+                      opacity={0.96}
+                      blur={8}
+                      backgroundOpacity={0.08}
+                      saturation={1.35}
+                      distortionScale={-90}
+                      className="ts-review-case-pill pointer-events-none"
+                    >
+                      <span className="relative z-10 font-sans text-[0.72rem] font-bold uppercase tracking-[0.18em] text-white drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)] transition-transform duration-300 group-hover:translate-x-0.5">
+                        Review Case Studies
+                      </span>
+                    </GlassSurface>
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Partner badge strip — secondary credibility, centered on mobile, left-railed on desktop */}
-          <div className="flex flex-col items-center gap-2 sm:-translate-y-2 sm:items-start sm:gap-2.5 md:-translate-y-3 md:gap-3">
-            <span className="text-[9px] md:text-[10px] font-bold tracking-[0.24em] uppercase text-white/35 font-sans">
-              Platform partners
+          {/* Platform glyph strip — no certification or partnership claim. */}
+          <div className="flex w-[17rem] flex-col items-center gap-2.5 sm:-translate-y-2 sm:w-[18rem] sm:gap-3 md:-translate-y-3 md:items-start md:gap-3.5">
+            <span className="w-full text-center font-sans text-[0.62rem] font-black uppercase tracking-[0.22em] text-white/70 sm:text-[0.68rem] md:text-left md:text-[0.72rem]">
+              Where your buyers are
             </span>
-            <div className="flex w-full flex-row flex-nowrap items-center justify-center gap-x-3 sm:justify-start sm:gap-x-4 md:gap-x-8">
-              {credibilityBadges.map((badge) => (
-                <div
-                  key={badge.label}
-                  className={`ts-cred-badge flex h-[42px] min-w-0 items-center justify-center overflow-hidden rounded-lg sm:h-[50px] md:h-[62px] ${badge.needsMobileTile ? "bg-white px-2 py-1 shadow-[0_6px_18px_rgba(0,0,0,0.18)] ring-1 ring-black/5 sm:bg-transparent sm:p-0 sm:shadow-none sm:ring-0" : ""}`}
+            <ul
+              className="grid h-14 w-full grid-cols-3 items-center md:h-16"
+              aria-label="LinkedIn, Google, and Meta"
+            >
+              {buyerPlatforms.map(({ label, Mark, glyphClassName }) => (
+                <li
+                  key={label}
+                  className="ts-cred-badge flex h-full min-w-0 items-center justify-center text-white drop-shadow-[0_0_12px_rgba(75,194,194,0.16)] md:first:justify-start md:last:justify-end"
                   style={{ opacity: 0 }}
                 >
-                  <img
-                    src={badge.src}
-                    alt={badge.label}
-                    className="block h-full w-auto max-w-[30vw] object-contain md:max-w-none"
-                    loading="eager"
-                    decoding="async"
-                  />
-                </div>
+                  <span className="sr-only">{label}</span>
+                  <Mark className={glyphClassName} />
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </div>

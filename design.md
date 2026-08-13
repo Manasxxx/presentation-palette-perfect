@@ -37,7 +37,7 @@ Editorial with technical restraint.
 
 ## What Pages Must Share
 - OwlSurf dark paper, teal accent, and restrained proof-led tone.
-- Claims must be paired with evidence, examples, sectors, client logos, case visuals, or platform partner badges.
+- Claims must be paired with evidence, examples, sectors, client logos, case visuals, or honest platform-presence marks. Never imply certification or formal platform partnership unless it is verified.
 - Copy should be concise enough to replace a PDF credentials deck.
 
 ## What Pages May Differ On
