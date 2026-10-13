@@ -24,8 +24,36 @@
       height: 100%;
     }
   </style>
-  <script id="vtag-ai-js" async src="https://r2.leadsy.ai/tag.js" data-pid="5DJkkJswveQfbSYZ"
-    data-version="062024"></script>
+ <script>
+  (function () {
+    var w = window;
+    var swan = (w.swan = w.swan || []);
+    if (swan.isLoaded) return;
+    swan.isLoaded = true;
+    swan.pk = 'cms8nn7w400050jl8ramh1z6z';
+    var sidKey = 'swan.sid';
+    var sid;
+    try {
+      sid = w.localStorage.getItem(sidKey);
+      if (!sid) {
+        sid = w.crypto && w.crypto.randomUUID
+          ? w.crypto.randomUUID()
+          : Date.now().toString(36) + Math.random().toString(36).slice(2);
+        w.localStorage.setItem(sidKey, sid);
+      }
+    } catch (e) {
+      sid = Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+    swan.sid = sid;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = "https://script.getswan.com?pk=cms8nn7w400050jl8ramh1z6z&sid=" + encodeURIComponent(sid);
+    var head = document.getElementsByTagName('head')[0];
+    head.appendChild(script);
+  })();
+</script>
+
 </head>
 
 <body>
